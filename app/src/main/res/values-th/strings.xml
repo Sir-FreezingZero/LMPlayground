@@ -350,6 +350,9 @@
     <string name="tool_web_fetch_title">ดึงหน้าเว็บ</string>
     <string name="tool_web_fetch_desc">เปิดลิงก์และอ่านเนื้อหาหลักเป็นข้อความ เพื่อให้โมเดลสรุปหรืออ้างอิงหน้าเว็บได้</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
+    <string name="tool_set_alarm_title">ตั้งปลุก</string>
+    <string name="tool_set_alarm_desc">สร้างการปลุกในแอปนาฬิกา ทำงานแบบออฟไลน์ คุณเปลี่ยนหรือลบได้ในแอปนาฬิกา</string>
+    <string name="tool_set_alarm_example">\"ตั้งปลุกตอน 6:30 น.\"</string>
     <string name="html_artifact_reload">โหลดใหม่</string>
     <string name="html_artifact_full_screen">เต็มหน้าจอ</string>
     <string name="html_artifact_live_preview">ตัวอย่างสด</string>

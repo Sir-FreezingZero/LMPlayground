@@ -351,6 +351,9 @@
     <string name="tool_web_fetch_title">Ambil halaman web</string>
     <string name="tool_web_fetch_desc">Membuka pautan dan membaca kandungan utamanya sebagai teks supaya model dapat meringkaskan atau memetik sesuatu halaman.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
+    <string name="tool_set_alarm_title">Tetapkan penggera</string>
+    <string name="tool_set_alarm_desc">Mencipta penggera dalam apl Jam anda. Berfungsi di luar talian; anda boleh menukar atau memadamkannya dalam apl Jam.</string>
+    <string name="tool_set_alarm_example">\"Tetapkan penggera pukul 6:30 pagi.\"</string>
     <string name="html_artifact_reload">Muat semula</string>
     <string name="html_artifact_full_screen">Skrin penuh</string>
     <string name="html_artifact_live_preview">Pratonton langsung</string>

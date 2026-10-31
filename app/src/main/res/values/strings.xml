@@ -368,6 +368,9 @@
     <string name="tool_web_fetch_title">Fetch web page</string>
     <string name="tool_web_fetch_desc">Opens a link and reads its main content as text so the model can summarize or quote a page.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
+    <string name="tool_set_alarm_title">Set alarm</string>
+    <string name="tool_set_alarm_desc">Creates an alarm in your Clock app. Works offline; you can change or delete it in the Clock app.</string>
+    <string name="tool_set_alarm_example">\"Set an alarm for 6:30 am.\"</string>
     <string name="html_artifact_reload">Reload</string>
     <string name="html_artifact_full_screen">Full screen</string>
     <string name="html_artifact_live_preview">Live preview</string>

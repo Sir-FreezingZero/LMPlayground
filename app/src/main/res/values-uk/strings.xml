@@ -312,6 +312,9 @@
     <string name="tool_run_javascript_title">Виконати JavaScript</string>
     <string name="tool_web_fetch_desc">Відкриває посилання й читає його основний вміст як текст, щоб модель могла підсумувати або процитувати сторінку.</string>
     <string name="tool_web_fetch_example">\"Підсумуй статтю за цим посиланням.\"</string>
+    <string name="tool_set_alarm_title">Встановити будильник</string>
+    <string name="tool_set_alarm_desc">Створює будильник у застосунку Годинник. Працює офлайн; його можна змінити або видалити в застосунку Годинник.</string>
+    <string name="tool_set_alarm_example">\"Постав будильник на 6:30 ранку.\"</string>
     <string name="html_artifact_reload">Перезавантажити</string>
     <string name="html_artifact_full_screen">На весь екран</string>
     <string name="html_artifact_live_preview">Живий перегляд</string>

@@ -20,4 +20,5 @@ fun ToolRegistry.Companion.createDefault(context: Context): ToolRegistry =
         register(GetDateTimeTool(context))
         register(WebFetchTool(webLinkStore))
         register(JavaScriptTool(context))
+        register(SetAlarmTool(context))
     }

@@ -317,6 +317,9 @@
     <string name="tool_web_fetch_title">Web sayfas\u0131 getir</string>
     <string name="tool_web_fetch_desc">Bir ba\u011Flant\u0131y\u0131 a\u00E7ar ve ana i\u00E7eri\u011Fini metin olarak okur, b\u00F6ylece model bir sayfay\u0131 \u00F6zetleyebilir veya al\u0131nt\u0131layabilir.</string>
     <string name="tool_web_fetch_example">\"Bu ba\u011Flant\u0131daki makaleyi \u00F6zetle.\"</string>
+    <string name="tool_set_alarm_title">Alarm kur</string>
+    <string name="tool_set_alarm_desc">Saat uygulamanızda bir alarm oluşturur. Çevrimdışı çalışır; Saat uygulamasından değiştirebilir veya silebilirsiniz.</string>
+    <string name="tool_set_alarm_example">\"Sabah 6:30\'a alarm kur.\"</string>
     <string name="html_artifact_reload">Yeniden yükle</string>
     <string name="html_artifact_full_screen">Tam ekran</string>
     <string name="html_artifact_live_preview">Canlı önizleme</string>

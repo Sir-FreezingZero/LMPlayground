@@ -352,6 +352,9 @@
     <string name="tool_run_javascript_title">Spustit JavaScript</string>
     <string name="tool_web_fetch_desc">Otevře odkaz a načte jeho hlavní obsah jako text, aby model mohl stránku shrnout nebo citovat.</string>
     <string name="tool_web_fetch_example">\"Shrň článek na tomto odkazu.\"</string>
+    <string name="tool_set_alarm_title">Nastavit budík</string>
+    <string name="tool_set_alarm_desc">Vytvoří budík v aplikaci Hodiny. Funguje offline; v aplikaci Hodiny ho můžete upravit nebo smazat.</string>
+    <string name="tool_set_alarm_example">\"Nastav budík na 6:30 ráno.\"</string>
     <string name="html_artifact_reload">Načíst znovu</string>
     <string name="html_artifact_full_screen">Celá obrazovka</string>
     <string name="html_artifact_live_preview">Živý náhled</string>

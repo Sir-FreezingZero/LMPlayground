@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Schedule
@@ -63,6 +64,12 @@ private val TOOL_UI: Map<String, ToolUiInfo> = mapOf(
         R.string.tool_web_fetch_desc,
         R.string.tool_web_fetch_example,
         Icons.Outlined.Public,
+    ),
+    "set_alarm" to ToolUiInfo(
+        R.string.tool_set_alarm_title,
+        R.string.tool_set_alarm_desc,
+        R.string.tool_set_alarm_example,
+        Icons.Outlined.Alarm,
     ),
 )
 

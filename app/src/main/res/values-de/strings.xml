@@ -306,6 +306,9 @@
     <string name="tool_web_fetch_title">Webseite abrufen</string>
     <string name="tool_web_fetch_desc">Öffnet einen Link und liest dessen Hauptinhalt als Text, damit das Modell eine Seite zusammenfassen oder zitieren kann.</string>
     <string name="tool_web_fetch_example">“Fasse den Artikel unter diesem Link zusammen.”</string>
+    <string name="tool_set_alarm_title">Wecker stellen</string>
+    <string name="tool_set_alarm_desc">Erstellt einen Wecker in deiner Uhr-App. Funktioniert offline; du kannst ihn in der Uhr-App ändern oder löschen.</string>
+    <string name="tool_set_alarm_example">\"Stell einen Wecker auf 6:30 Uhr.\"</string>
     <string name="html_artifact_reload">Neu laden</string>
     <string name="html_artifact_full_screen">Vollbild</string>
     <string name="html_artifact_live_preview">Live-Vorschau</string>

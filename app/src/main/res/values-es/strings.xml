@@ -314,6 +314,9 @@
     <string name="tool_web_fetch_title">Obtener página web</string>
     <string name="tool_web_fetch_desc">Abre un enlace y lee su contenido principal como texto para que el modelo pueda resumir o citar una página.</string>
     <string name="tool_web_fetch_example">\"Resume el artículo de este enlace.\"</string>
+    <string name="tool_set_alarm_title">Poner alarma</string>
+    <string name="tool_set_alarm_desc">Crea una alarma en tu app Reloj. Funciona sin conexión; puedes cambiarla o eliminarla en la app Reloj.</string>
+    <string name="tool_set_alarm_example">\"Pon una alarma a las 6:30 de la mañana.\"</string>
     <string name="html_artifact_reload">Recargar</string>
     <string name="html_artifact_full_screen">Pantalla completa</string>
     <string name="html_artifact_live_preview">Vista previa en vivo</string>

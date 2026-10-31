@@ -312,6 +312,9 @@
     <string name="tool_run_javascript_title">Uruchom JavaScript</string>
     <string name="tool_web_fetch_desc">Otwiera link i odczytuje jego główną treść jako tekst, aby model mógł podsumować lub zacytować stronę.</string>
     <string name="tool_web_fetch_example">\"Podsumuj artykuł pod tym linkiem.\"</string>
+    <string name="tool_set_alarm_title">Ustaw alarm</string>
+    <string name="tool_set_alarm_desc">Tworzy alarm w aplikacji Zegar. Działa offline; możesz go zmienić lub usunąć w aplikacji Zegar.</string>
+    <string name="tool_set_alarm_example">\"Ustaw budzik na 6:30 rano.\"</string>
     <string name="html_artifact_reload">Odśwież</string>
     <string name="html_artifact_full_screen">Pełny ekran</string>
     <string name="html_artifact_live_preview">Podgląd na żywo</string>

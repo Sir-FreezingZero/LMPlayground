@@ -11,6 +11,10 @@
     <!-- Voice dictation: audio is recorded to app-private storage and
          transcribed on device by the bundled speech model. Never uploaded. -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- Alarm tool: lets the app ask the Clock app to set an alarm
+         (AlarmClock.ACTION_SET_ALARM). A normal install-time permission;
+         the app can't read the user's alarms. -->
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
     <!-- Large-screen / Chromebook posture: app works without touch input and
          supports freeform window management. Keeping these as required="false"

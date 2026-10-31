@@ -315,6 +315,9 @@
     <string name="tool_web_fetch_title">ウェブページを取得</string>
     <string name="tool_web_fetch_desc">リンクを開いてその主要なコンテンツをテキストとして読み取り、モデルがページを要約したり引用したりできるようにします。</string>
     <string name="tool_web_fetch_example">\"このリンクの記事を要約して。\"</string>
+    <string name="tool_set_alarm_title">アラームをセット</string>
+    <string name="tool_set_alarm_desc">時計アプリにアラームを作成します。オフラインで動作し、時計アプリで変更や削除ができます。</string>
+    <string name="tool_set_alarm_example">\"朝6時30分にアラームをセットして。\"</string>
     <string name="html_artifact_reload">再読み込み</string>
     <string name="html_artifact_full_screen">全画面表示</string>
     <string name="html_artifact_live_preview">ライブプレビュー</string>

@@ -364,6 +364,9 @@
     <string name="tool_web_fetch_title">שלוף דף אינטרנט</string>
     <string name="tool_web_fetch_desc">פותח קישור וקורא את התוכן המרכזי שלו כטקסט כדי שהמודל יוכל לסכם או לצטט דף.</string>
     <string name="tool_web_fetch_example">\"סכם את המאמר בקישור הזה.\"</string>
+    <string name="tool_set_alarm_title">הגדרת שעון מעורר</string>
+    <string name="tool_set_alarm_desc">יוצר שעון מעורר באפליקציית השעון. עובד במצב לא מקוון; אפשר לשנות או למחוק אותו באפליקציית השעון.</string>
+    <string name="tool_set_alarm_example">\"תכוון שעון מעורר ל־6:30 בבוקר.\"</string>
     <string name="html_artifact_reload">טעינה מחדש</string>
     <string name="html_artifact_full_screen">מסך מלא</string>
     <string name="html_artifact_live_preview">תצוגה מקדימה חיה</string>

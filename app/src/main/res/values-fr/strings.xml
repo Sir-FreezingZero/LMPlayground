@@ -314,6 +314,9 @@
     <string name="tool_web_fetch_title">Charger une page web</string>
     <string name="tool_web_fetch_desc">Ouvre un lien et lit son contenu principal sous forme de texte pour que le modèle puisse résumer ou citer une page.</string>
     <string name="tool_web_fetch_example">\"Résume l\'article de ce lien.\"</string>
+    <string name="tool_set_alarm_title">Régler une alarme</string>
+    <string name="tool_set_alarm_desc">Crée une alarme dans votre application Horloge. Fonctionne hors ligne ; vous pouvez la modifier ou la supprimer dans l\'application Horloge.</string>
+    <string name="tool_set_alarm_example">\"Mets une alarme à 6 h 30.\"</string>
     <string name="html_artifact_reload">Recharger</string>
     <string name="html_artifact_full_screen">Plein écran</string>
     <string name="html_artifact_live_preview">Aperçu en direct</string>

@@ -349,6 +349,9 @@
     <string name="tool_run_javascript_title">Suorita JavaScript</string>
     <string name="tool_web_fetch_desc">Avaa linkin ja lukee sen pääsisällön tekstinä, jotta malli voi tiivistää tai lainata sivun.</string>
     <string name="tool_web_fetch_example">\"Tiivistä tämän linkin artikkeli.\"</string>
+    <string name="tool_set_alarm_title">Aseta herätys</string>
+    <string name="tool_set_alarm_desc">Luo herätyksen Kello-sovellukseen. Toimii offline-tilassa; voit muuttaa tai poistaa sen Kello-sovelluksessa.</string>
+    <string name="tool_set_alarm_example">\"Aseta herätys klo 6.30.\"</string>
     <string name="html_artifact_reload">Lataa uudelleen</string>
     <string name="html_artifact_full_screen">Koko näyttö</string>
     <string name="html_artifact_live_preview">Live-esikatselu</string>

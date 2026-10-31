@@ -312,6 +312,9 @@
     <string name="tool_web_fetch_title">T\u1EA3i trang web</string>
     <string name="tool_web_fetch_desc">M\u1EDF m\u1ED9t li\u00EAn k\u1EBFt v\u00E0 \u0111\u1ECDc n\u1ED9i dung ch\u00EDnh d\u01B0\u1EDBi d\u1EA1ng v\u0103n b\u1EA3n \u0111\u1EC3 m\u00F4 h\u00ECnh c\u00F3 th\u1EC3 t\u00F3m t\u1EAFt ho\u1EB7c tr\u00EDch d\u1EABn m\u1ED9t trang.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
+    <string name="tool_set_alarm_title">Đặt báo thức</string>
+    <string name="tool_set_alarm_desc">Tạo báo thức trong ứng dụng Đồng hồ. Hoạt động ngoại tuyến; bạn có thể sửa hoặc xóa trong ứng dụng Đồng hồ.</string>
+    <string name="tool_set_alarm_example">\"Đặt báo thức lúc 6:30 sáng.\"</string>
     <string name="html_artifact_reload">Tải lại</string>
     <string name="html_artifact_full_screen">Toàn màn hình</string>
     <string name="html_artifact_live_preview">Xem trước trực tiếp</string>
