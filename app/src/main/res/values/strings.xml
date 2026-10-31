@@ -359,6 +359,9 @@
     <string name="tool_run_javascript_title">Run JavaScript</string>
     <string name="tool_run_javascript_desc">Runs JavaScript in a secure sandbox for math, dates, and text processing. No internet or file access.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>
+    <string name="tool_get_date_time_title">Get date and time</string>
+    <string name="tool_get_date_time_desc">Tells the model today\'s date, the day of the week, and the current time from your phone. Works offline.</string>
+    <string name="tool_get_date_time_example">\"What day is it today?\"</string>
     <string name="tool_web_search_title">Web search</string>
     <string name="tool_web_search_desc">Searches the web and returns result titles, links, and snippets so the model can find current information.</string>
     <string name="tool_web_search_example">\"Find recent reviews of the latest Pixel phone.\"</string>

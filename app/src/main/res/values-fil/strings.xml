@@ -368,6 +368,9 @@
     <string name="tool_run_javascript_title">Patakbuhin ang JavaScript</string>
     <string name="tool_run_javascript_desc">Nagpapatakbo ng JavaScript sa isang secure na sandbox para sa math, mga petsa, at pagproseso ng teksto. Walang access sa internet o file.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>
+    <string name="tool_get_date_time_title">Alamin ang petsa at oras</string>
+    <string name="tool_get_date_time_desc">Sinasabi sa model ang petsa ngayon, ang araw ng linggo, at ang kasalukuyang oras mula sa iyong phone. Gumagana offline.</string>
+    <string name="tool_get_date_time_example">\"Anong araw ngayon?\"</string>
     <string name="whats_new_tools">Web search, fetch page, at run JavaScript</string>
     <string name="whats_new_cache">Mas mabilis na tugon gamit ang naka-cache na mga prompt &amp; tool</string>
     <plurals name="inference_notification_tokens">

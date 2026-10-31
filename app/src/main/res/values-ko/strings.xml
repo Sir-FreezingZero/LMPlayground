@@ -306,6 +306,9 @@
     <string name="tool_run_javascript_title">JavaScript 실행</string>
     <string name="tool_run_javascript_desc">수학, 날짜, 텍스트 처리를 위해 안전한 샌드박스에서 JavaScript를 실행합니다. 인터넷이나 파일에 접근하지 않습니다.</string>
     <string name="tool_run_javascript_example">\"(2 + 3) × 4는 얼마이고, 2027년 1월 1일은 무슨 요일인가요?\"</string>
+    <string name="tool_get_date_time_title">날짜 및 시간 확인</string>
+    <string name="tool_get_date_time_desc">휴대폰의 오늘 날짜, 요일, 현재 시간을 모델에게 알려 줍니다. 오프라인으로 작동합니다.</string>
+    <string name="tool_get_date_time_example">\"오늘 무슨 요일이야?\"</string>
     <string name="tool_web_search_title">웹 검색</string>
     <string name="tool_web_search_desc">웹을 검색하여 결과 제목, 링크, 스니펫을 반환해 모델이 최신 정보를 찾을 수 있게 합니다.</string>
     <string name="tool_web_search_example">\"최신 Pixel 폰의 최근 리뷰를 찾아줘.\"</string>

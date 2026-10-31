@@ -336,6 +336,9 @@
     <string name="tool_run_javascript_title">Kør JavaScript</string>
     <string name="tool_run_javascript_desc">Kører JavaScript i en sikker sandkasse til matematik, datoer og tekstbehandling. Ingen internet- eller filadgang.</string>
     <string name="tool_run_javascript_example">“Hvad er (2 + 3) × 4, og hvilken ugedag er 1. januar 2027?”</string>
+    <string name="tool_get_date_time_title">Hent dato og klokkeslæt</string>
+    <string name="tool_get_date_time_desc">Fortæller modellen dagens dato, ugedag og det aktuelle klokkeslæt fra din telefon. Virker offline.</string>
+    <string name="tool_get_date_time_example">\"Hvilken dag er det i dag?\"</string>
     <string name="tool_web_search_title">Websøgning</string>
     <string name="tool_web_search_desc">Søger på nettet og returnerer resultaternes titler, links og uddrag, så modellen kan finde aktuel information.</string>
     <string name="tool_web_search_example">“Find nylige anmeldelser af den nyeste Pixel-telefon.”</string>

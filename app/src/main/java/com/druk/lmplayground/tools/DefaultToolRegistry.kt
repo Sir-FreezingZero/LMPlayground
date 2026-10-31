@@ -17,6 +17,7 @@ fun ToolRegistry.Companion.createDefault(context: Context): ToolRegistry =
         // references instead of long URLs, web_fetch resolves them back at
         // call time. See WebLinkStore.
         register(WebSearchTool(webLinkStore))
+        register(GetDateTimeTool(context))
         register(WebFetchTool(webLinkStore))
         register(JavaScriptTool(context))
     }

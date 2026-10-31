@@ -329,6 +329,9 @@
     <string name="tool_run_javascript_title">Jalankan JavaScript</string>
     <string name="tool_run_javascript_desc">Menjalankan JavaScript dalam sandbox aman untuk matematika, tanggal, dan pemrosesan teks. Tanpa akses internet atau file.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>
+    <string name="tool_get_date_time_title">Lihat tanggal dan waktu</string>
+    <string name="tool_get_date_time_desc">Memberi tahu model tanggal hari ini, hari dalam seminggu, dan waktu saat ini dari ponsel Anda. Berfungsi offline.</string>
+    <string name="tool_get_date_time_example">\"Hari ini hari apa?\"</string>
     <string name="whats_new_tools">Pencarian web, ambil halaman, dan jalankan JavaScript</string>
     <string name="whats_new_cache">Balasan lebih cepat dengan prompt &amp; alat yang di-cache</string>
     <plurals name="inference_notification_tokens">

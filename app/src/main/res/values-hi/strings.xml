@@ -339,6 +339,9 @@
     <string name="tool_run_javascript_title">JavaScript चलाएँ</string>
     <string name="tool_run_javascript_desc">गणित, तारीखों और टेक्स्ट प्रोसेसिंग के लिए एक सुरक्षित सैंडबॉक्स में JavaScript चलाता है। इंटरनेट या फ़ाइल एक्सेस नहीं।</string>
     <string name="tool_run_javascript_example">\"(2 + 3) × 4 कितना है, और 1 जनवरी 2027 को सप्ताह का कौन सा दिन है?\"</string>
+    <string name="tool_get_date_time_title">तारीख़ और समय जानें</string>
+    <string name="tool_get_date_time_desc">मॉडल को आपके फ़ोन से आज की तारीख़, हफ़्ते का दिन और मौजूदा समय बताता है। ऑफ़लाइन काम करता है।</string>
+    <string name="tool_get_date_time_example">\"आज कौन-सा दिन है?\"</string>
 
     <!-- What\'s New (1.7.0) -->
     <string name="whats_new_tools">वेब खोज, पेज फ़ेच और JavaScript चलाना</string>

@@ -381,6 +381,9 @@
     <string name="tool_run_javascript_title">הרץ JavaScript</string>
     <string name="tool_run_javascript_desc">מריץ JavaScript בארגז חול מאובטח לחישובים, תאריכים ועיבוד טקסט. ללא גישה לאינטרנט או לקבצים.</string>
     <string name="tool_run_javascript_example">\"כמה זה (2 + 3) × 4, ובאיזה יום בשבוע חל 1 בינואר 2027?\"</string>
+    <string name="tool_get_date_time_title">קבלת תאריך ושעה</string>
+    <string name="tool_get_date_time_desc">מעדכן את המודל בתאריך של היום, ביום בשבוע ובשעה הנוכחית מהטלפון שלך. עובד במצב לא מקוון.</string>
+    <string name="tool_get_date_time_example">\"איזה יום היום?\"</string>
 
     <!-- What's New (1.7.0) -->
     <string name="whats_new_tools">חיפוש באינטרנט, שליפת דף והרצת JavaScript</string>

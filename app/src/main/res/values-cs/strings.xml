@@ -346,6 +346,9 @@
     <string name="tool_call_output">Výstup</string>
     <string name="tool_run_javascript_desc">Spouští JavaScript v zabezpečeném sandboxu pro výpočty, data a zpracování textu. Bez přístupu k internetu nebo souborům.</string>
     <string name="tool_run_javascript_example">\"Kolik je (2 + 3) × 4 a jaký den v týdnu připadá na 1. ledna 2027?\"</string>
+    <string name="tool_get_date_time_title">Zjistit datum a čas</string>
+    <string name="tool_get_date_time_desc">Sdělí modelu dnešní datum, den v týdnu a aktuální čas z vašeho telefonu. Funguje offline.</string>
+    <string name="tool_get_date_time_example">\"Jaký je dnes den?\"</string>
     <string name="tool_run_javascript_title">Spustit JavaScript</string>
     <string name="tool_web_fetch_desc">Otevře odkaz a načte jeho hlavní obsah jako text, aby model mohl stránku shrnout nebo citovat.</string>
     <string name="tool_web_fetch_example">\"Shrň článek na tomto odkazu.\"</string>

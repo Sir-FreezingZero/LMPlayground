@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Public
+import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -44,6 +45,12 @@ private val TOOL_UI: Map<String, ToolUiInfo> = mapOf(
         R.string.tool_run_javascript_desc,
         R.string.tool_run_javascript_example,
         Icons.Outlined.Code,
+    ),
+    "get_date_time" to ToolUiInfo(
+        R.string.tool_get_date_time_title,
+        R.string.tool_get_date_time_desc,
+        R.string.tool_get_date_time_example,
+        Icons.Outlined.Schedule,
     ),
     "web_search" to ToolUiInfo(
         R.string.tool_web_search_title,

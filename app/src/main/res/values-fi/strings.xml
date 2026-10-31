@@ -343,6 +343,9 @@
     <string name="tool_call_output">Tulos</string>
     <string name="tool_run_javascript_desc">Suorittaa JavaScriptiä turvallisessa hiekkalaatikossa laskutoimituksia, päivämääriä ja tekstinkäsittelyä varten. Ei internet- tai tiedostokäyttöä.</string>
     <string name="tool_run_javascript_example">\"Paljonko on (2 + 3) × 4, ja mikä viikonpäivä on 1.1.2027?\"</string>
+    <string name="tool_get_date_time_title">Hae päivämäärä ja aika</string>
+    <string name="tool_get_date_time_desc">Kertoo mallille tämän päivän päivämäärän, viikonpäivän ja nykyisen ajan puhelimestasi. Toimii offline-tilassa.</string>
+    <string name="tool_get_date_time_example">\"Mikä päivä tänään on?\"</string>
     <string name="tool_run_javascript_title">Suorita JavaScript</string>
     <string name="tool_web_fetch_desc">Avaa linkin ja lukee sen pääsisällön tekstinä, jotta malli voi tiivistää tai lainata sivun.</string>
     <string name="tool_web_fetch_example">\"Tiivistä tämän linkin artikkeli.\"</string>

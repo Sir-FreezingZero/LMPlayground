@@ -367,6 +367,9 @@
     <string name="tool_run_javascript_title">รัน JavaScript</string>
     <string name="tool_run_javascript_desc">รัน JavaScript ในแซนด์บ็อกซ์ที่ปลอดภัยสำหรับคณิตศาสตร์ วันที่ และการประมวลผลข้อความ ไม่มีการเข้าถึงอินเทอร์เน็ตหรือไฟล์</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>
+    <string name="tool_get_date_time_title">ดูวันที่และเวลา</string>
+    <string name="tool_get_date_time_desc">บอกโมเดลถึงวันที่วันนี้ วันในสัปดาห์ และเวลาปัจจุบันจากโทรศัพท์ของคุณ ทำงานแบบออฟไลน์</string>
+    <string name="tool_get_date_time_example">\"วันนี้วันอะไร\"</string>
     <string name="whats_new_tools">ค้นหาเว็บ ดึงหน้าเว็บ และรัน JavaScript</string>
     <string name="whats_new_cache">ตอบเร็วขึ้นด้วยพรอมต์ &amp; เครื่องมือที่แคชไว้</string>
     <plurals name="inference_notification_tokens">

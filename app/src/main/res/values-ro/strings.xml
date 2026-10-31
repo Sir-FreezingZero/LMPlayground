@@ -332,6 +332,9 @@
     <string name="tool_run_javascript_title">Rulează JavaScript</string>
     <string name="tool_run_javascript_desc">Rulează JavaScript într-un mediu izolat securizat pentru calcule, date și procesarea textului. Fără acces la internet sau la fișiere.</string>
     <string name="tool_run_javascript_example">\"Cât este (2 + 3) × 4 și în ce zi a săptămânii cade 1 ianuarie 2027?\"</string>
+    <string name="tool_get_date_time_title">Află data și ora</string>
+    <string name="tool_get_date_time_desc">Îi spune modelului data de azi, ziua săptămânii și ora curentă de pe telefon. Funcționează offline.</string>
+    <string name="tool_get_date_time_example">\"Ce zi e azi?\"</string>
     <string name="tool_call_input">Intrare</string>
     <string name="tool_call_output">Ieșire</string>
     <string name="response_copied">Copiat în clipboard</string>

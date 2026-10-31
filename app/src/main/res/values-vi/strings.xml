@@ -329,6 +329,9 @@
     <string name="tool_run_javascript_title">Ch\u1EA1y JavaScript</string>
     <string name="tool_run_javascript_desc">Ch\u1EA1y JavaScript trong m\u00F4i tr\u01B0\u1EDDng th\u1EED nghi\u1EC7m an to\u00E0n \u0111\u1EC3 t\u00EDnh to\u00E1n, x\u1EED l\u00FD ng\u00E0y th\u00E1ng v\u00E0 v\u0103n b\u1EA3n. Kh\u00F4ng truy c\u1EADp internet ho\u1EB7c t\u1EC7p.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) \u00D7 4, and what weekday is Jan 1 2027?\"</string>
+    <string name="tool_get_date_time_title">Xem ngày và giờ</string>
+    <string name="tool_get_date_time_desc">Cho mô hình biết ngày hôm nay, thứ trong tuần và giờ hiện tại trên điện thoại. Hoạt động ngoại tuyến.</string>
+    <string name="tool_get_date_time_example">\"Hôm nay là thứ mấy?\"</string>
     <string name="whats_new_tools">T\u00ECm ki\u1EBFm web, t\u1EA3i trang v\u00E0 ch\u1EA1y JavaScript</string>
     <string name="whats_new_cache">Ph\u1EA3n h\u1ED3i nhanh h\u01A1n v\u1EDBi l\u1EDDi nh\u1EAFc &amp; c\u00F4ng c\u1EE5 \u0111\u01B0\u1EE3c l\u01B0u trong b\u1ED9 nh\u1EDB \u0111\u1EC7m</string>
     <plurals name="inference_notification_tokens">

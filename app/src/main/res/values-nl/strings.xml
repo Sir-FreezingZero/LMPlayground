@@ -337,6 +337,9 @@
     <string name="tool_run_javascript_title">JavaScript uitvoeren</string>
     <string name="tool_run_javascript_desc">Voert JavaScript uit in een beveiligde sandbox voor berekeningen, datums en tekstverwerking. Geen internet- of bestandstoegang.</string>
     <string name="tool_run_javascript_example">“Wat is (2 + 3) × 4, en welke weekdag is 1 januari 2027?”</string>
+    <string name="tool_get_date_time_title">Datum en tijd ophalen</string>
+    <string name="tool_get_date_time_desc">Vertelt het model de datum van vandaag, de dag van de week en de huidige tijd van je telefoon. Werkt offline.</string>
+    <string name="tool_get_date_time_example">\"Welke dag is het vandaag?\"</string>
     <string name="tool_web_search_title">Zoeken op het web</string>
     <string name="tool_web_search_desc">Doorzoekt het web en geeft titels, links en fragmenten van resultaten terug, zodat het model actuele informatie kan vinden.</string>
     <string name="tool_web_search_example">“Vind recente reviews van de nieuwste Pixel-telefoon.”</string>

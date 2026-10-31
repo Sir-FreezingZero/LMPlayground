@@ -297,6 +297,9 @@
     <string name="tool_run_javascript_title">JavaScript ausführen</string>
     <string name="tool_run_javascript_desc">Führt JavaScript in einer sicheren Sandbox für Berechnungen, Datumsangaben und Textverarbeitung aus. Kein Internet- oder Dateizugriff.</string>
     <string name="tool_run_javascript_example">“Was ergibt (2 + 3) × 4, und welcher Wochentag ist der 1. Januar 2027?”</string>
+    <string name="tool_get_date_time_title">Datum und Uhrzeit abrufen</string>
+    <string name="tool_get_date_time_desc">Teilt dem Modell das heutige Datum, den Wochentag und die aktuelle Uhrzeit deines Telefons mit. Funktioniert offline.</string>
+    <string name="tool_get_date_time_example">\"Welcher Tag ist heute?\"</string>
     <string name="tool_web_search_title">Websuche</string>
     <string name="tool_web_search_desc">Durchsucht das Web und liefert Titel, Links und Ausschnitte der Ergebnisse, damit das Modell aktuelle Informationen finden kann.</string>
     <string name="tool_web_search_example">“Finde aktuelle Testberichte zum neuesten Pixel-Smartphone.”</string>

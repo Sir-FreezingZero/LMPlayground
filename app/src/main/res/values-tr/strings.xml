@@ -308,6 +308,9 @@
     <string name="tool_run_javascript_title">JavaScript \u00E7al\u0131\u015Ft\u0131r</string>
     <string name="tool_run_javascript_desc">Matematik, tarih ve metin i\u015Fleme i\u00E7in g\u00FCvenli bir korumal\u0131 alanda JavaScript \u00E7al\u0131\u015Ft\u0131r\u0131r. \u0130nternet veya dosya eri\u015Fimi yoktur.</string>
     <string name="tool_run_javascript_example">\"(2 + 3) × 4 ka\u00E7 eder ve 1 Ocak 2027 hangi g\u00FCne denk gelir?\"</string>
+    <string name="tool_get_date_time_title">Tarih ve saati al</string>
+    <string name="tool_get_date_time_desc">Modele telefonunuzdan bugünün tarihini, haftanın gününü ve şu anki saati bildirir. Çevrimdışı çalışır.</string>
+    <string name="tool_get_date_time_example">\"Bugün günlerden ne?\"</string>
     <string name="tool_web_search_title">Web aramas\u0131</string>
     <string name="tool_web_search_desc">Webde arama yapar ve sonu\u00E7 ba\u015Fl\u0131klar\u0131n\u0131, ba\u011Flant\u0131lar\u0131 ve al\u0131nt\u0131lar\u0131 d\u00F6nd\u00FCrerek modelin g\u00FCncel bilgi bulmas\u0131n\u0131 sa\u011Flar.</string>
     <string name="tool_web_search_example">\"En yeni Pixel telefonunun son incelemelerini bul.\"</string>

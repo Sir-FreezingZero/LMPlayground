@@ -343,6 +343,9 @@
     <string name="tool_run_javascript_title">تشغيل JavaScript</string>
     <string name="tool_run_javascript_desc">يشغّل JavaScript في بيئة معزولة آمنة للحسابات والتواريخ ومعالجة النصوص. لا وصول للإنترنت أو الملفات.</string>
     <string name="tool_run_javascript_example">\"كم يساوي (2 + 3) × 4، وما يوم الأسبوع الموافق 1 يناير 2027؟\"</string>
+    <string name="tool_get_date_time_title">معرفة التاريخ والوقت</string>
+    <string name="tool_get_date_time_desc">يخبر النموذج بتاريخ اليوم ويوم الأسبوع والوقت الحالي من هاتفك. يعمل دون اتصال.</string>
+    <string name="tool_get_date_time_example">\"ما هو اليوم؟\"</string>
 
     <!-- What\'s New (1.7.0) -->
     <string name="whats_new_tools">بحث في الويب وجلب الصفحات وتشغيل JavaScript</string>

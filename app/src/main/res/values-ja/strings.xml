@@ -306,6 +306,9 @@
     <string name="tool_run_javascript_title">JavaScript を実行</string>
     <string name="tool_run_javascript_desc">数学、日付、テキスト処理のために、安全なサンドボックス内で JavaScript を実行します。インターネットやファイルにはアクセスしません。</string>
     <string name="tool_run_javascript_example">\"(2 + 3) × 4 はいくつで、2027年1月1日は何曜日ですか？\"</string>
+    <string name="tool_get_date_time_title">日付と時刻を取得</string>
+    <string name="tool_get_date_time_desc">スマートフォンの今日の日付、曜日、現在時刻をモデルに伝えます。オフラインで動作します。</string>
+    <string name="tool_get_date_time_example">\"今日は何曜日？\"</string>
     <string name="tool_web_search_title">ウェブ検索</string>
     <string name="tool_web_search_desc">ウェブを検索し、結果のタイトル、リンク、抜粋を返すことで、モデルが最新の情報を見つけられるようにします。</string>
     <string name="tool_web_search_example">\"最新の Pixel スマホの最近のレビューを探して。\"</string>

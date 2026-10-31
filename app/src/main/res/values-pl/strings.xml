@@ -306,6 +306,9 @@
     <string name="tool_call_output">Wyjście</string>
     <string name="tool_run_javascript_desc">Uruchamia JavaScript w bezpiecznej piaskownicy do obliczeń, dat i przetwarzania tekstu. Bez dostępu do internetu i plików.</string>
     <string name="tool_run_javascript_example">\"Ile to jest (2 + 3) × 4 i jaki dzień tygodnia wypada 1 stycznia 2027?\"</string>
+    <string name="tool_get_date_time_title">Pobierz datę i godzinę</string>
+    <string name="tool_get_date_time_desc">Podaje modelowi dzisiejszą datę, dzień tygodnia i bieżącą godzinę z telefonu. Działa offline.</string>
+    <string name="tool_get_date_time_example">\"Jaki jest dziś dzień?\"</string>
     <string name="tool_run_javascript_title">Uruchom JavaScript</string>
     <string name="tool_web_fetch_desc">Otwiera link i odczytuje jego główną treść jako tekst, aby model mógł podsumować lub zacytować stronę.</string>
     <string name="tool_web_fetch_example">\"Podsumuj artykuł pod tym linkiem.\"</string>

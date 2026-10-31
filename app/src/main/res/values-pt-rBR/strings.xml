@@ -331,6 +331,9 @@
     <string name="tool_run_javascript_title">Executar JavaScript</string>
     <string name="tool_run_javascript_desc">Executa JavaScript em um ambiente isolado seguro para cálculos, datas e processamento de texto. Sem acesso à internet ou a arquivos.</string>
     <string name="tool_run_javascript_example">\"Quanto é (2 + 3) × 4 e que dia da semana é 1 de janeiro de 2027?\"</string>
+    <string name="tool_get_date_time_title">Obter data e hora</string>
+    <string name="tool_get_date_time_desc">Informa ao modelo a data de hoje, o dia da semana e a hora atual do seu celular. Funciona offline.</string>
+    <string name="tool_get_date_time_example">\"Que dia é hoje?\"</string>
     <string name="tool_call_input">Entrada</string>
     <string name="tool_call_output">Saída</string>
     <string name="response_copied">Copiado para a área de transferência</string>

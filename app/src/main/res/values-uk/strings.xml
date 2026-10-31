@@ -306,6 +306,9 @@
     <string name="tool_call_output">Вихід</string>
     <string name="tool_run_javascript_desc">Виконує JavaScript у безпечній пісочниці для обчислень, дат і обробки тексту. Без доступу до інтернету та файлів.</string>
     <string name="tool_run_javascript_example">\"Скільки буде (2 + 3) × 4 і який день тижня припадає на 1 січня 2027?\"</string>
+    <string name="tool_get_date_time_title">Дізнатися дату й час</string>
+    <string name="tool_get_date_time_desc">Повідомляє моделі сьогоднішню дату, день тижня й поточний час з вашого телефона. Працює офлайн.</string>
+    <string name="tool_get_date_time_example">\"Який сьогодні день?\"</string>
     <string name="tool_run_javascript_title">Виконати JavaScript</string>
     <string name="tool_web_fetch_desc">Відкриває посилання й читає його основний вміст як текст, щоб модель могла підсумувати або процитувати сторінку.</string>
     <string name="tool_web_fetch_example">\"Підсумуй статтю за цим посиланням.\"</string>

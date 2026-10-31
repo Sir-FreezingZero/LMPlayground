@@ -368,6 +368,9 @@
     <string name="tool_run_javascript_title">Jalankan JavaScript</string>
     <string name="tool_run_javascript_desc">Menjalankan JavaScript dalam kotak pasir selamat untuk matematik, tarikh dan pemprosesan teks. Tiada akses internet atau fail.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>
+    <string name="tool_get_date_time_title">Dapatkan tarikh dan masa</string>
+    <string name="tool_get_date_time_desc">Memberitahu model tarikh hari ini, hari dalam minggu dan masa semasa daripada telefon anda. Berfungsi di luar talian.</string>
+    <string name="tool_get_date_time_example">\"Hari ini hari apa?\"</string>
     <string name="whats_new_tools">Carian web, ambil halaman dan jalankan JavaScript</string>
     <string name="whats_new_cache">Balasan lebih pantas dengan gesaan &amp; alat yang dicache</string>
     <plurals name="inference_notification_tokens">

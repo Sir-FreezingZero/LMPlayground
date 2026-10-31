@@ -378,6 +378,9 @@
     <string name="tool_run_javascript_title">JavaScript চালান</string>
     <string name="tool_run_javascript_desc">গণিত, তারিখ ও টেক্সট প্রক্রিয়াকরণের জন্য একটি নিরাপদ স্যান্ডবক্সে JavaScript চালায়। ইন্টারনেট বা ফাইল অ্যাক্সেস নেই।</string>
     <string name="tool_run_javascript_example">\"(2 + 3) × 4 কত, এবং ১ জানুয়ারি ২০২৭ সপ্তাহের কোন দিন?\"</string>
+    <string name="tool_get_date_time_title">তারিখ ও সময় জানুন</string>
+    <string name="tool_get_date_time_desc">আপনার ফোন থেকে মডেলকে আজকের তারিখ, সপ্তাহের দিন ও বর্তমান সময় জানায়। অফলাইনে কাজ করে।</string>
+    <string name="tool_get_date_time_example">\"আজ কী বার?\"</string>
 
     <!-- What's New (1.7.0) -->
     <string name="whats_new_tools">ওয়েব অনুসন্ধান, পেজ ফেচ এবং JavaScript চালানো</string>

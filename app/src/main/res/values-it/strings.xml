@@ -331,6 +331,9 @@
     <string name="tool_run_javascript_title">Esegui JavaScript</string>
     <string name="tool_run_javascript_desc">Esegue JavaScript in un ambiente isolato sicuro per calcoli, date ed elaborazione del testo. Nessun accesso a internet o ai file.</string>
     <string name="tool_run_javascript_example">\"Quanto fa (2 + 3) × 4 e che giorno della settimana è il 1° gennaio 2027?\"</string>
+    <string name="tool_get_date_time_title">Ottieni data e ora</string>
+    <string name="tool_get_date_time_desc">Comunica al modello la data di oggi, il giorno della settimana e l\'ora attuale del tuo telefono. Funziona offline.</string>
+    <string name="tool_get_date_time_example">\"Che giorno è oggi?\"</string>
     <string name="tool_call_input">Input</string>
     <string name="tool_call_output">Output</string>
     <string name="response_copied">Copiato negli appunti</string>

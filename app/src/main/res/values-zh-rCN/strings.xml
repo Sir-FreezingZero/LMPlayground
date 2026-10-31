@@ -306,6 +306,9 @@
     <string name="tool_run_javascript_title">运行 JavaScript</string>
     <string name="tool_run_javascript_desc">在安全沙箱中运行 JavaScript，用于数学运算、日期和文本处理。无法访问网络或文件。</string>
     <string name="tool_run_javascript_example">\"(2 + 3) × 4 等于多少，2027 年 1 月 1 日是星期几？\"</string>
+    <string name="tool_get_date_time_title">获取日期和时间</string>
+    <string name="tool_get_date_time_desc">将手机上的今天日期、星期几和当前时间告诉模型。可离线使用。</string>
+    <string name="tool_get_date_time_example">\"今天星期几？\"</string>
     <string name="tool_web_search_title">网络搜索</string>
     <string name="tool_web_search_desc">搜索网络并返回结果的标题、链接和摘要，让模型能够查找最新信息。</string>
     <string name="tool_web_search_example">\"查找最新款 Pixel 手机的近期评测。\"</string>
