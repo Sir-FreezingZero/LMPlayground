@@ -94,6 +94,7 @@
     <string name="privacy_policy_s3_body">LM Playground ber om Internett-tillatelse for to formål: for å laste ned modellfilene du velger, og — bare hvis du slår dem på — for å drive de valgfrie nettverktøyene. Appen inneholder ingen annonsering, telemetri eller bruksanalyse, og den rapporterer ikke aktiviteten din tilbake til meg.</string>
     <string name="privacy_policy_s4_title">4. Verktøy og nettilgang</string>
     <string name="privacy_policy_s4_body">Dyktige modeller kan bruke valgfrie verktøy, som er av som standard. Når du aktiverer nettverktøyene, forlater noe informasjon enheten din: verktøyet Nettsøk sender modellens søk til DuckDuckGo, og verktøyet Hent nettside laster ned sidene modellen bestemmer seg for å åpne fra disse nettstedene. Disse forespørslene håndteres av tredjepartsnettstedene under deres egne personvernerklæringer — jeg verken mottar eller lagrer dem. Verktøyet Kjør JavaScript kjører utelukkende på enheten din i en sandkasse uten internett-tilgang. For å holde alt offline lar du bare verktøyene være av.</string>
+    <string name="privacy_policy_s4_html_body">Direkte HTML-forhåndsvisninger kjører frakoblet som standard. Hvis du slår på Internettilgang i forhåndsvisninger (Innstillinger \u2192 Verktøy), kan en nettside modellen har skrevet, laste inn filer som biblioteker, skrifter og bilder fra nettstedene den nevner, og disse nettstedene mottar forespørslene. Åpne i nettleser gir siden til nettleserappen din, som følger sine egne innstillinger.</string>
     <string name="privacy_policy_s5_title">5. Oppdateringer av personvernerklæringen</string>
     <string name="privacy_policy_s5_body">Som utvikler av LM Playground forbeholder jeg meg retten til å oppdatere denne personvernerklæringen når som helst. Eventuelle endringer vil tre i kraft umiddelbart etter at den oppdaterte erklæringen er publisert. Brukere oppfordres til å gjennomgå denne siden jevnlig og holde seg informert om hvordan personvernet deres beskyttes.</string>
     <string name="privacy_policy_s6_title">6. Aksept av denne erklæringen</string>
@@ -137,6 +138,8 @@
     <string name="faq_a14">Ja. Mens appen er i bakgrunnen, følger et varsel modellens status — lastet inn, genererer, deretter svar klart — og lar deg kopiere eller dele svaret. Du kan også aktivere en kort fullføringslyd i Innstillinger → Lyd og haptikk. Modellnedlastinger viser sitt eget fremdriftsvarsel med hastighet og beregnet gjenstående tid.</string>
     <string name="faq_q15">Sender talediktering stemmen min noe sted?</string>
     <string name="faq_a15">Nei. Trykk på mikrofonen i meldingsfeltet og snakk – en talegjenkjenningsmodell gjør ordene dine om til tekst på telefonen mens du snakker, på 35 språk. Lyden lagres aldri og sendes ingen steder, så dikteringen fungerer helt uten nett. Modellen (718 MB) lastes ned én gang, første gang du bruker mikrofonen.</string>
+    <string name="faq_q16">Hva er direkte HTML-forhåndsvisning?</string>
+    <string name="faq_a16">Når en modell skriver en nettside som en HTML-kodeblokk, vises den som et kort i svaret. Trykk på avspillingsikonet for å kjøre siden rett i chatten, eller bruk knappene på kortet for å kopiere den, lagre den som en .html-fil, åpne den i nettleseren eller vise den i fullskjerm. Forhåndsvisninger kjører frakoblet med mindre du slår på Internettilgang i forhåndsvisninger under Innstillinger \u2192 Verktøy.</string>
 
     <!-- Models Screen -->
     <string name="models">Modeller</string>
@@ -339,6 +342,20 @@
     <string name="tool_web_fetch_title">Hent nettside</string>
     <string name="tool_web_fetch_desc">Åpner en lenke og leser hovedinnholdet som tekst slik at modellen kan oppsummere eller sitere en side.</string>
     <string name="tool_web_fetch_example">“Oppsummer artikkelen på denne lenken.”</string>
+    <string name="html_artifact_reload">Last inn på nytt</string>
+    <string name="html_artifact_full_screen">Fullskjerm</string>
+    <string name="html_artifact_live_preview">Direkte forhåndsvisning</string>
+    <string name="html_artifact_code">Kode</string>
+    <string name="html_artifact_writing">Skriver…</string>
+    <string name="html_artifact_default_title">Nettside</string>
+    <string name="html_artifact_download">Last ned</string>
+    <string name="html_artifact_saved">HTML-filen er lagret</string>
+    <string name="html_artifact_save_failed">Kunne ikke lagre filen</string>
+    <string name="html_artifact_open_in_browser">Åpne i nettleser</string>
+    <string name="html_artifact_no_browser">Fant ingen app som kan åpne siden</string>
+    <string name="tools_html_preview_internet_title">Internettilgang i forhåndsvisninger</string>
+    <string name="tools_html_preview_internet_desc">Lar direkte forhåndsvisninger laste inn biblioteker, skrifter, bilder og data fra internett. Når den er av, kjører forhåndsvisninger helt frakoblet. Åpne i nettleser bruker nettleserappen din, som denne innstillingen ikke styrer. Når du slår den av, slettes alt forhåndsvisninger har lastet ned eller lagret.</string>
+    <string name="html_artifact_offline_notice">Denne siden prøvde å laste inn filer fra internett. Forhåndsvisninger er frakoblet; du kan tillate internettilgang under Innstillinger \u2192 Verktøy.</string>
     <string name="cd_supports_tools">Støtter verktøy</string>
     <string name="cd_supports_thinking">Støtter tenkning</string>
 

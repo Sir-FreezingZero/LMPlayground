@@ -94,6 +94,7 @@
     <string name="privacy_policy_s3_body">LM Playground meminta kebenaran Internet untuk dua tujuan: untuk memuat turun fail model yang anda pilih, dan — hanya jika anda menghidupkannya — untuk menggerakkan alat web pilihan. Aplikasi tidak mengandungi pengiklanan, telemetri atau analitik penggunaan, dan ia tidak melaporkan aktiviti anda kembali kepada saya.</string>
     <string name="privacy_policy_s4_title">4. Alat dan Akses Web</string>
     <string name="privacy_policy_s4_body">Model yang berkemampuan boleh menggunakan alat pilihan, yang dimatikan secara lalai. Apabila anda mendayakan alat web, sebahagian maklumat meninggalkan peranti anda: alat Carian web menghantar pertanyaan carian model ke DuckDuckGo, dan alat Ambil halaman web memuat turun halaman yang model putuskan untuk dibuka daripada tapak web tersebut. Permintaan tersebut dikendalikan oleh tapak pihak ketiga di bawah dasar privasi mereka sendiri — saya tidak menerima mahupun menyimpannya. Alat Jalankan JavaScript berjalan sepenuhnya pada peranti anda dalam kotak pasir tanpa akses internet. Untuk memastikan segalanya luar talian, biarkan sahaja alat dimatikan.</string>
+    <string name="privacy_policy_s4_html_body">Pratonton HTML langsung berjalan di luar talian secara lalai. Jika anda menghidupkan Akses internet dalam pratonton (Tetapan \u2192 Alat), halaman web yang ditulis oleh model boleh memuatkan fail seperti pustaka, fon dan imej daripada laman web yang dinyatakannya, dan laman web tersebut menerima permintaan itu. Buka dalam penyemak imbas menyerahkan halaman kepada apl penyemak imbas anda, yang mengikut tetapannya sendiri.</string>
     <string name="privacy_policy_s5_title">5. Kemas Kini Dasar Privasi</string>
     <string name="privacy_policy_s5_body">Sebagai pembangun LM Playground, saya berhak untuk mengemas kini Dasar Privasi ini pada bila-bila masa. Sebarang perubahan akan berkuat kuasa serta-merta setelah dasar yang dikemas kini disiarkan. Pengguna digalakkan untuk menyemak halaman ini secara berkala dan sentiasa dimaklumkan tentang bagaimana privasi mereka dilindungi.</string>
     <string name="privacy_policy_s6_title">6. Penerimaan Dasar Ini</string>
@@ -136,6 +137,8 @@
     <string name="faq_a14">Ya. Semasa aplikasi berada di latar belakang, satu pemberitahuan menjejaki status model \u2014 dimuatkan, menjana, kemudian respons sedia \u2014 dan membenarkan anda menyalin atau berkongsi balasan. Anda juga boleh mendayakan bunyi siap yang pendek di Tetapan \u2192 Bunyi dan Haptik. Muat turun model memaparkan pemberitahuan kemajuannya sendiri dengan kelajuan dan anggaran masa.</string>
     <string name="faq_q15">Adakah imlak suara menghantar suara saya ke mana-mana?</string>
     <string name="faq_a15">Tidak. Ketik mikrofon dalam ruang mesej dan bercakap — model pengecaman pertuturan menukar perkataan anda kepada teks pada telefon semasa anda bercakap, dalam 35 bahasa. Audio tidak pernah disimpan atau dihantar ke mana-mana, jadi imlak berfungsi sepenuhnya di luar talian. Model (718 MB) dimuat turun sekali, kali pertama anda menggunakan mikrofon.</string>
+    <string name="faq_q16">Apakah pratonton HTML langsung?</string>
+    <string name="faq_a16">Apabila model menulis halaman web sebagai blok kod HTML, balasan memaparkannya sebagai kad. Ketik ikon main untuk menjalankan halaman terus dalam sembang, atau gunakan butang kad untuk menyalinnya, menyimpannya sebagai fail .html, membukanya dalam penyemak imbas atau melihatnya dalam skrin penuh. Pratonton berjalan di luar talian melainkan anda menghidupkan Akses internet dalam pratonton dalam Tetapan \u2192 Alat.</string>
 
     <!-- Models Screen -->
     <string name="models">Model</string>
@@ -348,6 +351,20 @@
     <string name="tool_web_fetch_title">Ambil halaman web</string>
     <string name="tool_web_fetch_desc">Membuka pautan dan membaca kandungan utamanya sebagai teks supaya model dapat meringkaskan atau memetik sesuatu halaman.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
+    <string name="html_artifact_reload">Muat semula</string>
+    <string name="html_artifact_full_screen">Skrin penuh</string>
+    <string name="html_artifact_live_preview">Pratonton langsung</string>
+    <string name="html_artifact_code">Kod</string>
+    <string name="html_artifact_writing">Sedang menulis…</string>
+    <string name="html_artifact_default_title">Halaman web</string>
+    <string name="html_artifact_download">Muat turun</string>
+    <string name="html_artifact_saved">Fail HTML disimpan</string>
+    <string name="html_artifact_save_failed">Tidak dapat menyimpan fail</string>
+    <string name="html_artifact_open_in_browser">Buka dalam penyemak imbas</string>
+    <string name="html_artifact_no_browser">Tiada apl ditemui untuk membuka halaman ini</string>
+    <string name="tools_html_preview_internet_title">Akses internet dalam pratonton</string>
+    <string name="tools_html_preview_internet_desc">Membenarkan pratonton langsung memuatkan pustaka, fon, imej dan data daripada internet. Apabila dimatikan, pratonton berjalan sepenuhnya di luar talian. Buka dalam penyemak imbas menggunakan apl penyemak imbas anda, yang tidak dikawal oleh tetapan ini. Mematikannya akan memadamkan semua yang dimuat turun atau disimpan oleh pratonton.</string>
+    <string name="html_artifact_offline_notice">Halaman ini cuba memuatkan fail daripada internet. Pratonton berjalan di luar talian; anda boleh membenarkan akses internet dalam Tetapan \u2192 Alat.</string>
     <string name="tool_run_javascript_title">Jalankan JavaScript</string>
     <string name="tool_run_javascript_desc">Menjalankan JavaScript dalam kotak pasir selamat untuk matematik, tarikh dan pemprosesan teks. Tiada akses internet atau fail.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>

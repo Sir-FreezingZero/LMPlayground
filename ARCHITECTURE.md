@@ -74,6 +74,52 @@ turn — see `ConversationViewModel.buildWireContent`).
   call, then unloads (`EmbeddingModelManager`) so ~300 MB doesn't sit
   next to a multi-GB chat model.
 
+## HTML artifacts (live preview)
+
+When a model writes a web page as a ```html code block, the reply shows it
+as an artifact card instead of plain code; the user taps Live preview to
+run it. Nothing reaches the model or the engine — it is purely how the UI
+renders an assistant reply (`MessageChatBubble` → `AssistantReplyContent`).
+
+- `conversation/HtmlArtifacts` — pure Kotlin (JVM-tested in
+  `HtmlArtifactsTest`). Scans the reply's fenced blocks with CommonMark
+  fence rules and splits it into text and HTML segments; an unclosed block
+  while streaming is an incomplete artifact. html/htm/xhtml blocks of two
+  or more lines count (a one-line snippet stays ordinary code), as does an
+  unlabeled block holding a full document. With exactly one HTML block,
+  sibling ```css / ```js blocks are folded into its page. Fragments are
+  wrapped in a page with charset, viewport and base CSS.
+- `conversation/HtmlArtifactCard` — the card (title from `<title>`/`<h1>`,
+  code view that follows the stream; Live preview, Copy, Download, Open in
+  browser, Full screen) and the full-screen view (the same actions plus
+  Reload). Download writes the previewed document through the SAF
+  "save as" picker (`CreateDocument("text/html")`).
+- `conversation/HtmlPreviewWebView` — the preview WebView: JavaScript on,
+  no JS bridge, no file/content access, no popups; it never navigates away
+  from its page and tapped links open in the browser. **Offline by
+  default**: internet access is an app-wide opt-in in Settings → General,
+  written to `StoragePreferences.htmlPreviewInternet` and read when a
+  preview opens. The same page can turn the cards off altogether
+  (`StoragePreferences.livePreviews`), leaving the code as plain text.
+  `HtmlPreviewInternet` owns the setting: turning access off deletes
+  everything previews stored online (WebView HTTP cache, WebStorage,
+  cookies — previews are the app's only WebView), and the first offline
+  preview also clears data left by older, always-online builds
+  (`htmlPreviewOfflineClean` flag).
+  While it's off, network loads are blocked (`blockNetworkLoads` plus every
+  http(s) request intercepted and refused) and the card explains it when a
+  page tried to go online.
+- `conversation/LocalPageServer` — Open in browser. Browsers reliably open
+  only http(s) addresses (many refuse a content:// file), so the page is
+  served from memory at `http://127.0.0.1:PORT/<random token>/<name>.html`
+  by a tiny loopback-only HTTP server (plain java.net, JVM-tested): one
+  accept thread and a pool of 4 workers, started on first use. One page at
+  a time; any other path is a 404. The browser is a separate app, so the
+  preview's internet setting doesn't apply to it (stated in the setting's
+  description and the Privacy Policy).
+- Nothing is persisted beyond the message text itself, so cards and
+  previews come back when a chat is reopened.
+
 ## KV-cache reuse and rewind
 
 A generation session keeps its KV cache between turns and feeds only

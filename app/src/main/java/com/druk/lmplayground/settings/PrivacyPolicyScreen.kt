@@ -36,14 +36,20 @@ import com.druk.lmplayground.theme.PlaygroundTheme
 
 private data class PolicySection(
     @StringRes val titleRes: Int,
-    @StringRes val bodyRes: Int
+    @StringRes val bodyRes: Int,
+    /** An extra paragraph after [bodyRes], if any. */
+    @StringRes val extraBodyRes: Int? = null,
 )
 
 private val policySections = listOf(
     PolicySection(R.string.privacy_policy_s1_title, R.string.privacy_policy_s1_body),
     PolicySection(R.string.privacy_policy_s2_title, R.string.privacy_policy_s2_body),
     PolicySection(R.string.privacy_policy_s3_title, R.string.privacy_policy_s3_body),
-    PolicySection(R.string.privacy_policy_s4_title, R.string.privacy_policy_s4_body),
+    PolicySection(
+        R.string.privacy_policy_s4_title,
+        R.string.privacy_policy_s4_body,
+        extraBodyRes = R.string.privacy_policy_s4_html_body,
+    ),
     PolicySection(R.string.privacy_policy_s5_title, R.string.privacy_policy_s5_body),
     PolicySection(R.string.privacy_policy_s6_title, R.string.privacy_policy_s6_body),
 )
@@ -126,6 +132,14 @@ fun PrivacyPolicyContent(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+            section.extraBodyRes?.let { extra ->
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = stringResource(extra),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
             Spacer(modifier = Modifier.height(24.dp))
         }
 

@@ -98,6 +98,7 @@
     <string name="privacy_policy_s3_body">LM Playground requests Internet permission for two purposes: to download the model files you choose, and — only if you turn them on — to power the optional web tools. The app contains no advertising, telemetry, or usage analytics, and it does not report your activity back to me.</string>
     <string name="privacy_policy_s4_title">4. Tools and Web Access</string>
     <string name="privacy_policy_s4_body">Capable models can use optional tools, which are turned off by default. When you enable the web tools, some information leaves your device: the Web search tool sends the model\'s search query to DuckDuckGo, and the Fetch web page tool downloads the pages the model decides to open from those websites. Those requests are handled by the third-party sites under their own privacy policies — I neither receive nor store them. The Run JavaScript tool runs entirely on your device in a sandbox with no internet access. To keep everything offline, simply leave the tools off.</string>
+    <string name="privacy_policy_s4_html_body">Live HTML previews run offline by default. If you turn on Internet access in previews (Settings \u2192 Tools), a web page the model wrote can load files such as libraries, fonts and images from the websites it names, and those websites receive the requests. Open in browser hands the page to your browser app, which follows its own settings.</string>
     <string name="privacy_policy_s5_title">5. Privacy Policy Updates</string>
     <string name="privacy_policy_s5_body">As the developer of LM Playground, I reserve the right to update this Privacy Policy at any time. Any changes will be effective immediately upon posting the updated policy. Users are encouraged to review this page periodically and stay informed about how their privacy is protected.</string>
     <string name="privacy_policy_s6_title">6. Acceptance of This Policy</string>
@@ -140,6 +141,8 @@
     <string name="faq_a14">Yes. While the app is in the background, a notification tracks the model\'s status \u2014 loaded, generating, then response ready \u2014 and lets you copy or share the reply. You can also enable a short completion chime in Settings \u2192 Sound and Haptic. Model downloads show their own progress notification with speed and ETA.</string>
     <string name="faq_q15">Does voice dictation send my voice anywhere?</string>
     <string name="faq_a15">No. Tap the microphone in the chat input and speak \u2014 a speech-recognition model turns your words into text on your phone as you talk, in 35 languages. The audio is never saved or sent anywhere, so dictation works fully offline. The model (718 MB) downloads once, the first time you use the microphone.</string>
+    <string name="faq_q16">What is the live HTML preview?</string>
+    <string name="faq_a16">When a model writes a web page as an HTML code block, the reply shows it as a card. Tap the play icon to run the page right in the chat, or use the card\'s buttons to copy it, save it as an .html file, open it in your browser, or view it full screen. Previews run offline unless you turn on Internet access in previews in Settings \u2192 Tools.</string>
 
     <!-- Models Screen -->
     <string name="models">Models</string>
@@ -362,6 +365,20 @@
     <string name="tool_web_fetch_title">Fetch web page</string>
     <string name="tool_web_fetch_desc">Opens a link and reads its main content as text so the model can summarize or quote a page.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
+    <string name="html_artifact_reload">Reload</string>
+    <string name="html_artifact_full_screen">Full screen</string>
+    <string name="html_artifact_live_preview">Live preview</string>
+    <string name="html_artifact_code">Code</string>
+    <string name="html_artifact_writing">Writing…</string>
+    <string name="html_artifact_default_title">Web page</string>
+    <string name="html_artifact_download">Download</string>
+    <string name="html_artifact_saved">HTML file saved</string>
+    <string name="html_artifact_save_failed">Couldn\'t save the file</string>
+    <string name="html_artifact_open_in_browser">Open in browser</string>
+    <string name="html_artifact_no_browser">No app found to open this page</string>
+    <string name="tools_html_preview_internet_title">Internet access in previews</string>
+    <string name="tools_html_preview_internet_desc">Lets live previews load libraries, fonts, images and data from the internet. When off, previews run fully offline. Open in browser uses your browser app, which this setting doesn\'t control. Turning it off deletes everything previews downloaded or saved.</string>
+    <string name="html_artifact_offline_notice">This page tried to load files from the internet. Previews are offline; you can allow internet access in Settings \u2192 Tools.</string>
 
     <!-- Inference engine service notification (foreground service while a
          model is loaded so the OS does not evict the :llama process). -->
@@ -449,4 +466,9 @@
     <string name="system_prompt" tools:ignore="MissingTranslation">System Prompt</string>
     <string name="default_tools" tools:ignore="MissingTranslation">Default tools</string>
     <string name="chat_tools" tools:ignore="MissingTranslation">This chat\'s tools</string>
+    <string name="general" tools:ignore="MissingTranslation">General</string>
+    <string name="general_subtitle" tools:ignore="MissingTranslation">App settings no model controls</string>
+    <string name="general_previews" tools:ignore="MissingTranslation">Live previews</string>
+    <string name="live_previews_title" tools:ignore="MissingTranslation">Live previews</string>
+    <string name="live_previews_desc" tools:ignore="MissingTranslation">Show web pages the model writes as a card you can preview, download or open full screen. Off: they stay plain code in the reply.</string>
 </resources>

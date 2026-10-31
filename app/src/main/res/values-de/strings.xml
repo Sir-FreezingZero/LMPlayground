@@ -83,6 +83,7 @@
     <string name="privacy_policy_s3_body">LM Playground fordert die Internetberechtigung für zwei Zwecke an: zum Herunterladen der von Ihnen gewählten Modelldateien und — nur wenn Sie sie aktivieren — zum Betrieb der optionalen Web-Tools. Die App enthält keine Werbung, keine Telemetrie und keine Nutzungsanalyse und meldet Ihre Aktivitäten nicht an mich zurück.</string>
     <string name="privacy_policy_s4_title">4. Tools und Webzugriff</string>
     <string name="privacy_policy_s4_body">Leistungsfähige Modelle können optionale Tools verwenden, die standardmäßig deaktiviert sind. Wenn Sie die Web-Tools aktivieren, verlassen einige Informationen Ihr Gerät: Das Tool „Websuche“ sendet die Suchanfrage des Modells an DuckDuckGo, und das Tool „Webseite abrufen“ lädt die Seiten herunter, die das Modell auf diesen Websites öffnen möchte. Diese Anfragen werden von den Drittanbieter-Websites gemäß deren eigenen Datenschutzrichtlinien verarbeitet — ich erhalte oder speichere sie weder. Das Tool „JavaScript ausführen“ läuft vollständig auf Ihrem Gerät in einer Sandbox ohne Internetzugang. Um alles offline zu halten, lassen Sie die Tools einfach deaktiviert.</string>
+    <string name="privacy_policy_s4_html_body">Live-HTML-Vorschauen laufen standardmäßig offline. Wenn du Internetzugriff in Vorschauen aktivierst (Einstellungen \u2192 Tools), kann eine vom Modell geschriebene Webseite Dateien wie Bibliotheken, Schriften und Bilder von den darin genannten Websites laden, und diese Websites erhalten die Anfragen. Im Browser öffnen übergibt die Seite an deine Browser-App, die ihren eigenen Einstellungen folgt.</string>
     <string name="privacy_policy_s5_title">5. Aktualisierungen der Datenschutzrichtlinie</string>
     <string name="privacy_policy_s5_body">Als Entwickler von LM Playground behalte ich mir das Recht vor, diese Datenschutzrichtlinie jederzeit zu aktualisieren. Änderungen werden sofort nach Veröffentlichung der aktualisierten Richtlinie wirksam. Nutzer werden ermutigt, diese Seite regelmäßig zu überprüfen und sich darüber zu informieren, wie ihre Privatsphäre geschützt wird.</string>
     <string name="privacy_policy_s6_title">6. Akzeptanz dieser Richtlinie</string>
@@ -122,6 +123,8 @@
     <string name="faq_a14">Ja. Während die App im Hintergrund läuft, verfolgt eine Benachrichtigung den Status des Modells — geladen, generiert, dann Antwort bereit — und lässt Sie die Antwort kopieren oder teilen. Sie können unter Einstellungen → Ton und Haptik auch einen kurzen Abschlusston aktivieren. Modell-Downloads zeigen eine eigene Fortschrittsbenachrichtigung mit Geschwindigkeit und voraussichtlicher Restzeit an.</string>
     <string name="faq_q15">Sendet das Sprachdiktat meine Stimme irgendwohin?</string>
     <string name="faq_a15">Nein. Tippe auf das Mikrofon im Eingabefeld und sprich – ein Spracherkennungsmodell wandelt deine Worte direkt auf deinem Handy in Text um, während du sprichst, in 35 Sprachen. Die Aufnahme wird nie gespeichert oder irgendwohin gesendet, daher funktioniert das Diktat komplett offline. Das Modell (718 MB) wird einmal heruntergeladen, wenn du das Mikrofon zum ersten Mal verwendest.</string>
+    <string name="faq_q16">Was ist die Live-HTML-Vorschau?</string>
+    <string name="faq_a16">Wenn ein Modell eine Webseite als HTML-Codeblock schreibt, zeigt die Antwort sie als Karte an. Tippe auf das Wiedergabesymbol, um die Seite direkt im Chat auszuführen, oder nutze die Schaltflächen der Karte, um sie zu kopieren, als .html-Datei zu speichern, im Browser zu öffnen oder im Vollbild anzuzeigen. Vorschauen laufen offline, solange du Internetzugriff in Vorschauen nicht unter Einstellungen \u2192 Tools aktivierst.</string>
     <string name="models">Modelle</string>
     <string name="change_folder">Ordner ändern</string>
     <string name="delete_model">Löschen</string>
@@ -300,6 +303,20 @@
     <string name="tool_web_fetch_title">Webseite abrufen</string>
     <string name="tool_web_fetch_desc">Öffnet einen Link und liest dessen Hauptinhalt als Text, damit das Modell eine Seite zusammenfassen oder zitieren kann.</string>
     <string name="tool_web_fetch_example">“Fasse den Artikel unter diesem Link zusammen.”</string>
+    <string name="html_artifact_reload">Neu laden</string>
+    <string name="html_artifact_full_screen">Vollbild</string>
+    <string name="html_artifact_live_preview">Live-Vorschau</string>
+    <string name="html_artifact_code">Code</string>
+    <string name="html_artifact_writing">Wird geschrieben…</string>
+    <string name="html_artifact_default_title">Webseite</string>
+    <string name="html_artifact_download">Herunterladen</string>
+    <string name="html_artifact_saved">HTML-Datei gespeichert</string>
+    <string name="html_artifact_save_failed">Datei konnte nicht gespeichert werden</string>
+    <string name="html_artifact_open_in_browser">Im Browser öffnen</string>
+    <string name="html_artifact_no_browser">Keine App gefunden, die diese Seite öffnen kann</string>
+    <string name="tools_html_preview_internet_title">Internetzugriff in Vorschauen</string>
+    <string name="tools_html_preview_internet_desc">Erlaubt Live-Vorschauen, Bibliotheken, Schriften, Bilder und Daten aus dem Internet zu laden. Wenn deaktiviert, laufen Vorschauen vollständig offline. Im Browser öffnen nutzt deine Browser-App, die diese Einstellung nicht steuert. Beim Deaktivieren wird alles gelöscht, was Vorschauen heruntergeladen oder gespeichert haben.</string>
+    <string name="html_artifact_offline_notice">Diese Seite wollte Dateien aus dem Internet laden. Vorschauen sind offline; du kannst den Internetzugriff unter Einstellungen \u2192 Tools erlauben.</string>
     <string name="cd_supports_tools">Unterstützt Tools</string>
     <string name="cd_supports_thinking">Unterstützt Thinking</string>
 

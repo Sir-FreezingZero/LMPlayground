@@ -94,6 +94,7 @@
     <string name="privacy_policy_s3_body">Humihingi ang LM Playground ng pahintulot sa Internet para sa dalawang layunin: upang i-download ang mga file ng model na pinili mo, at — kung io-on mo lamang ang mga ito — upang paganahin ang mga opsyonal na web tool. Walang advertising, telemetry, o usage analytics ang app, at hindi nito iniuulat sa akin ang iyong aktibidad.</string>
     <string name="privacy_policy_s4_title">4. Mga Tool at Pag-access sa Web</string>
     <string name="privacy_policy_s4_body">Ang mga magagaling na model ay maaaring gumamit ng mga opsyonal na tool, na naka-off bilang default. Kapag in-enable mo ang mga web tool, may ilang impormasyong umaalis sa iyong device: ang Web search tool ay nagpapadala ng search query ng model sa DuckDuckGo, at ang Kunin ang web page tool ay nagda-download ng mga page na napagpasyahan ng model na buksan mula sa mga website na iyon. Ang mga kahilingang iyon ay hinahawakan ng mga third-party na site sa ilalim ng kanilang sariling patakaran sa privacy — hindi ko ito natatanggap o iniimbak. Ang Patakbuhin ang JavaScript tool ay tumatakbo nang buo sa iyong device sa isang sandbox na walang access sa internet. Upang panatilihing offline ang lahat, hayaan na lang na naka-off ang mga tool.</string>
+    <string name="privacy_policy_s4_html_body">Offline tumatakbo ang mga live HTML preview bilang default. Kung io-on mo ang Internet access sa mga preview (Settings \u2192 Tools), puwedeng mag-load ang web page na isinulat ng model ng mga file gaya ng library, font at larawan mula sa mga website na binabanggit nito, at matatanggap ng mga website na iyon ang mga request. Ipinapasa ng Buksan sa browser ang page sa iyong browser app, na sumusunod sa sarili nitong settings.</string>
     <string name="privacy_policy_s5_title">5. Mga Update sa Patakaran sa Privacy</string>
     <string name="privacy_policy_s5_body">Bilang developer ng LM Playground, nagkakaroon ako ng karapatang i-update ang Patakaran sa Privacy na ito anumang oras. Ang anumang pagbabago ay magkakabisa kaagad pagkatapos mai-post ang na-update na patakaran. Hinihikayat ang mga user na suriin ang pahinang ito paminsan-minsan at manatiling may kaalaman kung paano protektado ang kanilang privacy.</string>
     <string name="privacy_policy_s6_title">6. Pagtanggap sa Patakarang Ito</string>
@@ -136,6 +137,8 @@
     <string name="faq_a14">Oo. Habang nasa background ang app, may notification na sumusubaybay sa status ng model \u2014 naka-load, gumagawa, pagkatapos ay handa na ang tugon \u2014 at hinahayaan kang kopyahin o ibahagi ang sagot. Maaari mo ring i-enable ang isang maikling chime kapag tapos sa Mga setting \u2192 Tunog at Haptic. Ang mga pag-download ng model ay nagpapakita ng sarili nilang progress notification na may bilis at ETA.</string>
     <string name="faq_q15">Ipinapadala ba ng voice dictation ang boses ko kahit saan?</string>
     <string name="faq_a15">Hindi. I-tap ang mikropono sa message field at magsalita — isang speech-recognition model ang gagawing text ang mga salita mo sa phone mo habang nagsasalita ka, sa 35 wika. Hindi kailanman sine-save o ipinapadala kahit saan ang audio, kaya gumagana ang dictation nang ganap na offline. Isang beses lang ida-download ang model (718 MB), sa unang beses na gamitin mo ang mikropono.</string>
+    <string name="faq_q16">Ano ang live HTML preview?</string>
+    <string name="faq_a16">Kapag sumulat ang model ng web page bilang HTML code block, ipinapakita ito ng sagot bilang card. I-tap ang play icon para patakbuhin ang page mismo sa chat, o gamitin ang mga button ng card para kopyahin ito, i-save bilang .html file, buksan sa iyong browser, o tingnan nang full screen. Offline tumatakbo ang mga preview maliban kung i-on mo ang Internet access sa mga preview sa Settings \u2192 Tools.</string>
 
     <!-- Models Screen -->
     <string name="models">Mga Modelo</string>
@@ -348,6 +351,20 @@
     <string name="tool_web_fetch_title">Kunin ang web page</string>
     <string name="tool_web_fetch_desc">Nagbubukas ng link at binabasa ang pangunahing nilalaman nito bilang teksto para mabuod o ma-quote ng model ang isang page.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
+    <string name="html_artifact_reload">I-reload</string>
+    <string name="html_artifact_full_screen">Full screen</string>
+    <string name="html_artifact_live_preview">Live preview</string>
+    <string name="html_artifact_code">Code</string>
+    <string name="html_artifact_writing">Sinusulat…</string>
+    <string name="html_artifact_default_title">Web page</string>
+    <string name="html_artifact_download">I-download</string>
+    <string name="html_artifact_saved">Na-save ang HTML file</string>
+    <string name="html_artifact_save_failed">Hindi ma-save ang file</string>
+    <string name="html_artifact_open_in_browser">Buksan sa browser</string>
+    <string name="html_artifact_no_browser">Walang nahanap na app para buksan ang page na ito</string>
+    <string name="tools_html_preview_internet_title">Internet access sa mga preview</string>
+    <string name="tools_html_preview_internet_desc">Pinapayagan ang mga live preview na mag-load ng mga library, font, larawan at data mula sa internet. Kapag naka-off, tumatakbo nang ganap na offline ang mga preview. Ginagamit ng Buksan sa browser ang iyong browser app, na hindi kinokontrol ng setting na ito. Kapag in-off ito, mabubura ang lahat ng na-download o na-save ng mga preview.</string>
+    <string name="html_artifact_offline_notice">Sinubukan ng page na ito na mag-load ng mga file mula sa internet. Offline ang mga preview; puwede mong payagan ang internet access sa Settings \u2192 Tools.</string>
     <string name="tool_run_javascript_title">Patakbuhin ang JavaScript</string>
     <string name="tool_run_javascript_desc">Nagpapatakbo ng JavaScript sa isang secure na sandbox para sa math, mga petsa, at pagproseso ng teksto. Walang access sa internet o file.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>

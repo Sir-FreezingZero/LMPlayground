@@ -94,6 +94,7 @@
     <string name="privacy_policy_s3_body">LM Playground begär internetbehörighet för två syften: att ladda ned de modellfiler du väljer, och — endast om du slår på dem — för att driva de valfria webbverktygen. Appen innehåller ingen reklam, telemetri eller användningsanalys, och den rapporterar inte din aktivitet tillbaka till mig.</string>
     <string name="privacy_policy_s4_title">4. Verktyg och webbåtkomst</string>
     <string name="privacy_policy_s4_body">Kapabla modeller kan använda valfria verktyg, som är avstängda som standard. När du aktiverar webbverktygen lämnar viss information din enhet: verktyget Webbsökning skickar modellens sökfråga till DuckDuckGo, och verktyget Hämta webbsida laddar ned de sidor modellen beslutar att öppna från dessa webbplatser. Dessa förfrågningar hanteras av tredjepartswebbplatserna under deras egna integritetspolicyer — jag varken tar emot eller lagrar dem. Verktyget Kör JavaScript körs helt på din enhet i en sandlåda utan internetåtkomst. För att hålla allt offline lämnar du helt enkelt verktygen avstängda.</string>
+    <string name="privacy_policy_s4_html_body">Live-HTML-förhandsvisningar körs offline som standard. Om du slår på Internetåtkomst i förhandsvisningar (Inställningar \u2192 Verktyg) kan en webbsida som modellen skrivit läsa in filer som bibliotek, typsnitt och bilder från de webbplatser den anger, och de webbplatserna tar emot förfrågningarna. Öppna i webbläsaren lämnar över sidan till din webbläsarapp, som följer sina egna inställningar.</string>
     <string name="privacy_policy_s5_title">5. Uppdateringar av integritetspolicyn</string>
     <string name="privacy_policy_s5_body">Som utvecklare av LM Playground förbehåller jag mig rätten att uppdatera denna integritetspolicy när som helst. Eventuella ändringar träder i kraft omedelbart när den uppdaterade policyn publiceras. Användare uppmanas att regelbundet granska denna sida och hålla sig informerade om hur deras integritet skyddas.</string>
     <string name="privacy_policy_s6_title">6. Godkännande av denna policy</string>
@@ -137,6 +138,8 @@
     <string name="faq_a14">Ja. Medan appen är i bakgrunden följer en avisering modellens status — inläst, genererar, sedan svar klart — och låter dig kopiera eller dela svaret. Du kan även aktivera en kort slutförandeton i Inställningar → Ljud och haptik. Modellnedladdningar visar sin egen förloppsavisering med hastighet och beräknad återstående tid.</string>
     <string name="faq_q15">Skickar röstdikteringen min röst någonstans?</string>
     <string name="faq_a15">Nej. Tryck på mikrofonen i meddelandefältet och prata – en taligenkänningsmodell gör om dina ord till text på telefonen medan du pratar, på 35 språk. Ljudet sparas aldrig och skickas ingenstans, så dikteringen fungerar helt offline. Modellen (718 MB) laddas ned en gång, första gången du använder mikrofonen.</string>
+    <string name="faq_q16">Vad är live-HTML-förhandsvisning?</string>
+    <string name="faq_a16">När en modell skriver en webbsida som ett HTML-kodblock visas den som ett kort i svaret. Tryck på uppspelningsikonen för att köra sidan direkt i chatten, eller använd kortets knappar för att kopiera den, spara den som en .html-fil, öppna den i webbläsaren eller visa den i helskärm. Förhandsvisningar körs offline om du inte slår på Internetåtkomst i förhandsvisningar under Inställningar \u2192 Verktyg.</string>
 
     <!-- Models Screen -->
     <string name="models">Modeller</string>
@@ -339,6 +342,20 @@
     <string name="tool_web_fetch_title">Hämta webbsida</string>
     <string name="tool_web_fetch_desc">Öppnar en länk och läser dess huvudinnehåll som text så att modellen kan sammanfatta eller citera en sida.</string>
     <string name="tool_web_fetch_example">“Sammanfatta artikeln på den här länken.”</string>
+    <string name="html_artifact_reload">Läs in igen</string>
+    <string name="html_artifact_full_screen">Helskärm</string>
+    <string name="html_artifact_live_preview">Liveförhandsvisning</string>
+    <string name="html_artifact_code">Kod</string>
+    <string name="html_artifact_writing">Skriver…</string>
+    <string name="html_artifact_default_title">Webbsida</string>
+    <string name="html_artifact_download">Ladda ned</string>
+    <string name="html_artifact_saved">HTML-filen har sparats</string>
+    <string name="html_artifact_save_failed">Det gick inte att spara filen</string>
+    <string name="html_artifact_open_in_browser">Öppna i webbläsaren</string>
+    <string name="html_artifact_no_browser">Ingen app hittades som kan öppna sidan</string>
+    <string name="tools_html_preview_internet_title">Internetåtkomst i förhandsvisningar</string>
+    <string name="tools_html_preview_internet_desc">Låter liveförhandsvisningar läsa in bibliotek, typsnitt, bilder och data från internet. När det är av körs förhandsvisningar helt offline. Öppna i webbläsaren använder din webbläsarapp, som den här inställningen inte styr. När du stänger av den raderas allt som förhandsvisningar har laddat ned eller sparat.</string>
+    <string name="html_artifact_offline_notice">Den här sidan försökte läsa in filer från internet. Förhandsvisningar är offline; du kan tillåta internetåtkomst under Inställningar \u2192 Verktyg.</string>
     <string name="cd_supports_tools">Stöder verktyg</string>
     <string name="cd_supports_thinking">Stöder tänkande</string>
 

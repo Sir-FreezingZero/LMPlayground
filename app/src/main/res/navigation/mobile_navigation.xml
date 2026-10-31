@@ -52,9 +52,17 @@
             android:id="@+id/action_settings_to_system_prompts"
             app:destination="@id/nav_system_prompts" />
         <action
+            android:id="@+id/action_settings_to_general"
+            app:destination="@id/nav_general" />
+        <action
             android:id="@+id/action_settings_to_language"
             app:destination="@id/nav_language" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_general"
+        android:name="com.druk.lmplayground.settings.GeneralFragment"
+        android:label="@string/general" />
 
     <fragment
         android:id="@+id/nav_system_prompts"

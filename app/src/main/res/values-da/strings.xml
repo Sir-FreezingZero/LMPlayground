@@ -94,6 +94,7 @@
     <string name="privacy_policy_s3_body">LM Playground anmoder om internettilladelse til to formål: at downloade de modelfiler, du vælger, og — kun hvis du slår dem til — at drive de valgfrie webværktøjer. Appen indeholder ingen reklamer, telemetri eller brugsanalyse, og den rapporterer ikke din aktivitet tilbage til mig.</string>
     <string name="privacy_policy_s4_title">4. Værktøjer og webadgang</string>
     <string name="privacy_policy_s4_body">Dygtige modeller kan bruge valgfrie værktøjer, som er slået fra som standard. Når du aktiverer webværktøjerne, forlader nogle oplysninger din enhed: værktøjet Websøgning sender modellens søgeforespørgsel til DuckDuckGo, og værktøjet Hent webside downloader de sider, modellen beslutter at åbne fra disse websteder. Disse forespørgsler håndteres af tredjepartswebstederne under deres egne privatlivspolitikker — jeg hverken modtager eller gemmer dem. Værktøjet Kør JavaScript kører udelukkende på din enhed i en sandkasse uden internetadgang. For at holde alt offline skal du blot lade værktøjerne være slået fra.</string>
+    <string name="privacy_policy_s4_html_body">Live HTML-forhåndsvisninger kører som standard offline. Hvis du slår Internetadgang i forhåndsvisninger til (Indstillinger \u2192 Værktøjer), kan en webside, som modellen har skrevet, hente filer som biblioteker, skrifttyper og billeder fra de websteder, den nævner, og disse websteder modtager anmodningerne. Åbn i browser giver siden videre til din browserapp, som følger sine egne indstillinger.</string>
     <string name="privacy_policy_s5_title">5. Opdateringer af privatlivspolitikken</string>
     <string name="privacy_policy_s5_body">Som udvikler af LM Playground forbeholder jeg mig retten til at opdatere denne privatlivspolitik til enhver tid. Eventuelle ændringer træder i kraft umiddelbart efter offentliggørelsen af den opdaterede politik. Brugere opfordres til at gennemgå denne side jævnligt og holde sig informeret om, hvordan deres privatliv beskyttes.</string>
     <string name="privacy_policy_s6_title">6. Accept af denne politik</string>
@@ -137,6 +138,8 @@
     <string name="faq_a14">Ja. Mens appen er i baggrunden, følger en notifikation modellens status — indlæst, genererer, derefter svar klar — og lader dig kopiere eller dele svaret. Du kan også aktivere en kort fuldførelseslyd under Indstillinger → Lyd og haptik. Modeldownloads viser deres egen fremskridtsnotifikation med hastighed og forventet resttid.</string>
     <string name="faq_q15">Sender stemmediktering min stemme nogen steder hen?</string>
     <string name="faq_a15">Nej. Tryk på mikrofonen i beskedfeltet, og tal – en talegenkendelsesmodel gør dine ord til tekst på telefonen, mens du taler, på 35 sprog. Lyden gemmes aldrig og sendes ingen steder hen, så dikteringen virker helt offline. Modellen (718 MB) hentes én gang, første gang du bruger mikrofonen.</string>
+    <string name="faq_q16">Hvad er live HTML-forhåndsvisning?</string>
+    <string name="faq_a16">Når en model skriver en webside som en HTML-kodeblok, vises den som et kort i svaret. Tryk på afspilningsikonet for at køre siden direkte i chatten, eller brug kortets knapper til at kopiere den, gemme den som en .html-fil, åbne den i din browser eller se den i fuld skærm. Forhåndsvisninger kører offline, medmindre du slår Internetadgang i forhåndsvisninger til under Indstillinger \u2192 Værktøjer.</string>
 
     <!-- Models Screen -->
     <string name="models">Modeller</string>
@@ -339,6 +342,20 @@
     <string name="tool_web_fetch_title">Hent webside</string>
     <string name="tool_web_fetch_desc">Åbner et link og læser hovedindholdet som tekst, så modellen kan opsummere eller citere en side.</string>
     <string name="tool_web_fetch_example">“Opsummer artiklen på dette link.”</string>
+    <string name="html_artifact_reload">Genindlæs</string>
+    <string name="html_artifact_full_screen">Fuld skærm</string>
+    <string name="html_artifact_live_preview">Live-forhåndsvisning</string>
+    <string name="html_artifact_code">Kode</string>
+    <string name="html_artifact_writing">Skriver…</string>
+    <string name="html_artifact_default_title">Webside</string>
+    <string name="html_artifact_download">Download</string>
+    <string name="html_artifact_saved">HTML-filen er gemt</string>
+    <string name="html_artifact_save_failed">Filen kunne ikke gemmes</string>
+    <string name="html_artifact_open_in_browser">Åbn i browser</string>
+    <string name="html_artifact_no_browser">Der blev ikke fundet en app, der kan åbne siden</string>
+    <string name="tools_html_preview_internet_title">Internetadgang i forhåndsvisninger</string>
+    <string name="tools_html_preview_internet_desc">Lader live-forhåndsvisninger hente biblioteker, skrifttyper, billeder og data fra internettet. Når den er slået fra, kører forhåndsvisninger helt offline. Åbn i browser bruger din browserapp, som denne indstilling ikke styrer. Når du slår den fra, slettes alt, hvad forhåndsvisninger har hentet eller gemt.</string>
+    <string name="html_artifact_offline_notice">Denne side forsøgte at hente filer fra internettet. Forhåndsvisninger er offline; du kan tillade internetadgang under Indstillinger \u2192 Værktøjer.</string>
     <string name="cd_supports_tools">Understøtter værktøjer</string>
     <string name="cd_supports_thinking">Understøtter tænkning</string>
 

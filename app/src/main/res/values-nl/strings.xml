@@ -95,6 +95,7 @@
     <string name="privacy_policy_s3_body">LM Playground vraagt om internettoestemming voor twee doeleinden: om de modelbestanden te downloaden die jij kiest, en — alleen als je ze inschakelt — om de optionele webtools te laten werken. De app bevat geen advertenties, telemetrie of gebruiksanalyse en rapporteert je activiteit niet terug aan mij.</string>
     <string name="privacy_policy_s4_title">4. Tools en webtoegang</string>
     <string name="privacy_policy_s4_body">Capabele modellen kunnen optionele tools gebruiken, die standaard uitstaan. Wanneer je de webtools inschakelt, verlaat bepaalde informatie je apparaat: de tool Zoeken op het web stuurt de zoekopdracht van het model naar DuckDuckGo, en de tool Webpagina ophalen downloadt de pagina\'s die het model besluit te openen van die websites. Die verzoeken worden afgehandeld door de externe sites onder hun eigen privacybeleid — ik ontvang of bewaar ze niet. De tool JavaScript uitvoeren draait volledig op je apparaat in een sandbox zonder internettoegang. Om alles offline te houden, laat je de tools gewoon uitstaan.</string>
+    <string name="privacy_policy_s4_html_body">Live HTML-voorbeelden werken standaard offline. Als je Internettoegang in voorbeelden aanzet (Instellingen \u2192 Tools), kan een door het model geschreven webpagina bestanden zoals bibliotheken, lettertypen en afbeeldingen laden van de websites die erin staan, en die websites ontvangen de verzoeken. Openen in browser geeft de pagina door aan je browser-app, die zijn eigen instellingen volgt.</string>
     <string name="privacy_policy_s5_title">5. Updates van het privacybeleid</string>
     <string name="privacy_policy_s5_body">Als ontwikkelaar van LM Playground behoud ik me het recht voor om dit privacybeleid op elk moment bij te werken. Wijzigingen worden onmiddellijk van kracht zodra het bijgewerkte beleid wordt geplaatst. Gebruikers worden aangemoedigd om deze pagina regelmatig te bekijken en op de hoogte te blijven van hoe hun privacy wordt beschermd.</string>
     <string name="privacy_policy_s6_title">6. Aanvaarding van dit beleid</string>
@@ -138,6 +139,8 @@
     <string name="faq_a14">Ja. Terwijl de app op de achtergrond draait, houdt een melding de status van het model bij — geladen, genereren, daarna antwoord gereed — en kun je het antwoord kopiëren of delen. Je kunt ook een korte voltooiingstoon inschakelen via Instellingen → Geluid en haptiek. Modeldownloads tonen hun eigen voortgangsmelding met snelheid en resterende tijd.</string>
     <string name="faq_q15">Stuurt spraakdictatie mijn stem ergens naartoe?</string>
     <string name="faq_a15">Nee. Tik op de microfoon in het berichtveld en spreek — een spraakherkenningsmodel zet je woorden op je telefoon om in tekst terwijl je praat, in 35 talen. De audio wordt nooit opgeslagen of ergens naartoe gestuurd, dus dictatie werkt volledig offline. Het model (718 MB) wordt één keer gedownload, de eerste keer dat je de microfoon gebruikt.</string>
+    <string name="faq_q16">Wat is het live HTML-voorbeeld?</string>
+    <string name="faq_a16">Als een model een webpagina als HTML-codeblok schrijft, toont het antwoord die als kaart. Tik op het afspeelpictogram om de pagina direct in de chat uit te voeren, of gebruik de knoppen van de kaart om hem te kopiëren, als .html-bestand op te slaan, in je browser te openen of op volledig scherm te bekijken. Voorbeelden werken offline, tenzij je Internettoegang in voorbeelden aanzet via Instellingen \u2192 Tools.</string>
 
     <!-- Models Screen -->
     <string name="models">Modellen</string>
@@ -340,6 +343,20 @@
     <string name="tool_web_fetch_title">Webpagina ophalen</string>
     <string name="tool_web_fetch_desc">Opent een link en leest de belangrijkste inhoud als tekst, zodat het model een pagina kan samenvatten of citeren.</string>
     <string name="tool_web_fetch_example">“Vat het artikel achter deze link samen.”</string>
+    <string name="html_artifact_reload">Opnieuw laden</string>
+    <string name="html_artifact_full_screen">Volledig scherm</string>
+    <string name="html_artifact_live_preview">Live voorbeeld</string>
+    <string name="html_artifact_code">Code</string>
+    <string name="html_artifact_writing">Bezig met schrijven…</string>
+    <string name="html_artifact_default_title">Webpagina</string>
+    <string name="html_artifact_download">Downloaden</string>
+    <string name="html_artifact_saved">HTML-bestand opgeslagen</string>
+    <string name="html_artifact_save_failed">Kan het bestand niet opslaan</string>
+    <string name="html_artifact_open_in_browser">Openen in browser</string>
+    <string name="html_artifact_no_browser">Geen app gevonden om deze pagina te openen</string>
+    <string name="tools_html_preview_internet_title">Internettoegang in voorbeelden</string>
+    <string name="tools_html_preview_internet_desc">Laat live voorbeelden bibliotheken, lettertypen, afbeeldingen en gegevens van internet laden. Als dit uit staat, werken voorbeelden volledig offline. Openen in browser gebruikt je browser-app, die deze instelling niet regelt. Uitzetten verwijdert alles wat voorbeelden hebben gedownload of opgeslagen.</string>
+    <string name="html_artifact_offline_notice">Deze pagina probeerde bestanden van internet te laden. Voorbeelden zijn offline; je kunt internettoegang toestaan via Instellingen \u2192 Tools.</string>
     <string name="cd_supports_tools">Ondersteunt tools</string>
     <string name="cd_supports_thinking">Ondersteunt denken</string>
 

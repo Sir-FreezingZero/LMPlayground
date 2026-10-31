@@ -83,6 +83,7 @@
     <string name="privacy_policy_s3_body">LM Playground demande l\'autorisation Internet \u00E0 deux fins : t\u00E9l\u00E9charger les fichiers des mod\u00E8les que vous choisissez et \u2014 uniquement si vous les activez \u2014 faire fonctionner les outils web optionnels. L\'application ne contient aucune publicit\u00E9, t\u00E9l\u00E9m\u00E9trie ni analyse d\'utilisation, et ne me transmet aucune information sur votre activit\u00E9.</string>
     <string name="privacy_policy_s4_title">4. Outils et acc\u00E8s au web</string>
     <string name="privacy_policy_s4_body">Les mod\u00E8les capables peuvent utiliser des outils optionnels, d\u00E9sactiv\u00E9s par d\u00E9faut. Lorsque vous activez les outils web, certaines informations quittent votre appareil : l\'outil Recherche web envoie la requ\u00EAte de recherche du mod\u00E8le \u00E0 DuckDuckGo, et l\'outil Charger une page web t\u00E9l\u00E9charge les pages que le mod\u00E8le d\u00E9cide d\'ouvrir sur ces sites. Ces requ\u00EAtes sont trait\u00E9es par les sites tiers selon leurs propres politiques de confidentialit\u00E9 \u2014 je ne les re\u00E7ois ni ne les stocke. L\'outil Ex\u00E9cuter JavaScript s\'ex\u00E9cute enti\u00E8rement sur votre appareil, dans un bac \u00E0 sable sans acc\u00E8s \u00E0 Internet. Pour que tout reste hors ligne, laissez simplement les outils d\u00E9sactiv\u00E9s.</string>
+    <string name="privacy_policy_s4_html_body">Les aperçus HTML en direct fonctionnent hors ligne par défaut. Si vous activez Accès à Internet dans les aperçus (Paramètres \u2192 Outils), une page web écrite par le modèle peut charger des fichiers comme des bibliothèques, des polices et des images depuis les sites qu\'elle indique, et ces sites reçoivent les requêtes. Ouvrir dans le navigateur transmet la page à votre application de navigation, qui suit ses propres réglages.</string>
     <string name="privacy_policy_s5_title">5. Mises \u00E0 jour de la politique de confidentialit\u00E9</string>
     <string name="privacy_policy_s5_body">En tant que d\u00E9veloppeur de LM Playground, je me r\u00E9serve le droit de mettre \u00E0 jour cette Politique de Confidentialit\u00E9 \u00E0 tout moment. Tout changement sera effectif imm\u00E9diatement apr\u00E8s la publication de la politique mise \u00E0 jour. Les utilisateurs sont encourag\u00E9s \u00E0 consulter cette page r\u00E9guli\u00E8rement et \u00E0 rester inform\u00E9s sur la mani\u00E8re dont leur vie priv\u00E9e est prot\u00E9g\u00E9e.</string>
     <string name="privacy_policy_s6_title">6. Acceptation de cette politique</string>
@@ -122,6 +123,8 @@
     <string name="faq_a14">Oui. Lorsque l\'application est en arri\u00E8re-plan, une notification suit l\'\u00E9tat du mod\u00E8le \u2014 charg\u00E9, en cours de g\u00E9n\u00E9ration, puis r\u00E9ponse pr\u00EAte \u2014 et vous permet de copier ou de partager la r\u00E9ponse. Vous pouvez aussi activer un court carillon de fin dans Param\u00E8tres \u2192 Son et retour haptique. Les t\u00E9l\u00E9chargements de mod\u00E8les affichent leur propre notification de progression avec la vitesse et le temps estim\u00E9.</string>
     <string name="faq_q15">La dictée vocale envoie-t-elle ma voix quelque part ?</string>
     <string name="faq_a15">Non. Touchez le micro dans le champ de message et parlez : un modèle de reconnaissance vocale transforme vos paroles en texte sur votre téléphone pendant que vous parlez, dans 35 langues. L\'audio n\'est jamais enregistré ni envoyé nulle part, la dictée fonctionne donc entièrement hors ligne. Le modèle (718 Mo) se télécharge une seule fois, la première fois que vous utilisez le micro.</string>
+    <string name="faq_q16">Qu\'est-ce que l\'aperçu HTML en direct ?</string>
+    <string name="faq_a16">Lorsqu\'un modèle écrit une page web dans un bloc de code HTML, la réponse l\'affiche sous forme de carte. Touchez l\'icône de lecture pour exécuter la page directement dans la discussion, ou utilisez les boutons de la carte pour la copier, l\'enregistrer en fichier .html, l\'ouvrir dans votre navigateur ou l\'afficher en plein écran. Les aperçus fonctionnent hors ligne, sauf si vous activez Accès à Internet dans les aperçus dans Paramètres \u2192 Outils.</string>
     <string name="models">Mod\u00E8les</string>
     <string name="change_folder">Changer de dossier</string>
     <string name="delete_model">Supprimer</string>
@@ -311,6 +314,20 @@
     <string name="tool_web_fetch_title">Charger une page web</string>
     <string name="tool_web_fetch_desc">Ouvre un lien et lit son contenu principal sous forme de texte pour que le modèle puisse résumer ou citer une page.</string>
     <string name="tool_web_fetch_example">\"Résume l\'article de ce lien.\"</string>
+    <string name="html_artifact_reload">Recharger</string>
+    <string name="html_artifact_full_screen">Plein écran</string>
+    <string name="html_artifact_live_preview">Aperçu en direct</string>
+    <string name="html_artifact_code">Code</string>
+    <string name="html_artifact_writing">Écriture…</string>
+    <string name="html_artifact_default_title">Page web</string>
+    <string name="html_artifact_download">Télécharger</string>
+    <string name="html_artifact_saved">Fichier HTML enregistré</string>
+    <string name="html_artifact_save_failed">Impossible d\'enregistrer le fichier</string>
+    <string name="html_artifact_open_in_browser">Ouvrir dans le navigateur</string>
+    <string name="html_artifact_no_browser">Aucune application ne peut ouvrir cette page</string>
+    <string name="tools_html_preview_internet_title">Accès à Internet dans les aperçus</string>
+    <string name="tools_html_preview_internet_desc">Permet aux aperçus en direct de charger des bibliothèques, des polices, des images et des données depuis Internet. Désactivé, les aperçus fonctionnent entièrement hors ligne. Ouvrir dans le navigateur utilise votre application de navigation, que ce réglage ne contrôle pas. Le désactiver supprime tout ce que les aperçus ont téléchargé ou enregistré.</string>
+    <string name="html_artifact_offline_notice">Cette page a tenté de charger des fichiers depuis Internet. Les aperçus sont hors ligne ; vous pouvez autoriser l\'accès à Internet dans Paramètres \u2192 Outils.</string>
     <string name="tool_run_javascript_title">Exécuter JavaScript</string>
     <string name="tool_run_javascript_desc">Exécute du JavaScript dans un bac à sable sécurisé pour les calculs, les dates et le traitement de texte. Aucun accès à Internet ni aux fichiers.</string>
     <string name="tool_run_javascript_example">\"Combien font (2 + 3) × 4, et quel jour de la semaine est le 1er janvier 2027 ?\"</string>

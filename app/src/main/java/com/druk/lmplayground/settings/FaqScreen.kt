@@ -75,6 +75,7 @@ private val faqItems = listOf(
     FaqItem(R.string.faq_q13, R.string.faq_a13),
     FaqItem(R.string.faq_q14, R.string.faq_a14),
     FaqItem(R.string.faq_q15, R.string.faq_a15),
+    FaqItem(R.string.faq_q16, R.string.faq_a16),
 )
 
 @Composable

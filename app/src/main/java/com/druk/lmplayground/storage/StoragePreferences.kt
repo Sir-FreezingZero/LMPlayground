@@ -28,6 +28,29 @@ class StoragePreferences(context: Context) {
         set(value) = prefs.edit { putBoolean("haptic_on_generation", value) }
 
     /**
+     * Whether live HTML previews may load anything from the internet (CDN
+     * libraries, fonts, images, APIs). Off by default, so previews keep the
+     * app fully offline until the user opts in from Settings → General.
+     */
+    var htmlPreviewInternet: Boolean
+        get() = prefs.getBoolean("html_preview_internet", false)
+        set(value) = prefs.edit { putBoolean("html_preview_internet", value) }
+
+    /** Show ```html blocks in replies as live preview cards; off shows them as plain code. */
+    var livePreviews: Boolean
+        get() = prefs.getBoolean("live_previews", true)
+        set(value) = prefs.edit { putBoolean("live_previews", value) }
+
+    /**
+     * True once everything previews stored while online (cache, storage,
+     * cookies) has been deleted since internet access was last on. Use
+     * HtmlPreviewInternet rather than writing this directly.
+     */
+    var htmlPreviewOfflineClean: Boolean
+        get() = prefs.getBoolean("html_preview_offline_clean", false)
+        set(value) = prefs.edit { putBoolean("html_preview_offline_clean", value) }
+
+    /**
      * Disable llama.cpp CPU weight repacking (load weights memory-mapped only).
      * OFF by default → repacking stays on, which is faster but allocates a
      * second resident copy of the weights (~2x footprint) and can OOM-crash

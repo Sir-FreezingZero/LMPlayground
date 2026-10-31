@@ -83,6 +83,7 @@
     <string name="privacy_policy_s3_body">O LM Playground solicita a permiss\u00E3o de Internet para dois prop\u00F3sitos: baixar os arquivos dos modelos que voc\u00EA escolher e \u2014 somente se voc\u00EA as ativar \u2014 possibilitar as ferramentas web opcionais. O aplicativo n\u00E3o cont\u00E9m publicidade, telemetria nem an\u00E1lises de uso, e n\u00E3o reporta sua atividade para mim.</string>
     <string name="privacy_policy_s4_title">4. Ferramentas e acesso \u00E0 web</string>
     <string name="privacy_policy_s4_body">Modelos capazes podem usar ferramentas opcionais, que v\u00EAm desativadas por padr\u00E3o. Quando voc\u00EA ativa as ferramentas web, algumas informa\u00E7\u00F5es saem do seu dispositivo: a ferramenta de Busca na web envia a consulta de busca do modelo ao DuckDuckGo, e a ferramenta Carregar p\u00E1gina web baixa as p\u00E1ginas que o modelo decide abrir nesses sites. Essas solicita\u00E7\u00F5es s\u00E3o tratadas pelos sites de terceiros conforme suas pr\u00F3prias pol\u00EDticas de privacidade \u2014 eu n\u00E3o as recebo nem as armazeno. A ferramenta Executar JavaScript \u00E9 executada inteiramente no seu dispositivo, em um ambiente isolado sem acesso \u00E0 Internet. Para manter tudo offline, basta deixar as ferramentas desativadas.</string>
+    <string name="privacy_policy_s4_html_body">As prévias HTML ao vivo funcionam offline por padrão. Se você ativar Acesso à internet nas prévias (Configurações \u2192 Ferramentas), uma página web escrita pelo modelo pode carregar arquivos como bibliotecas, fontes e imagens dos sites que ela indica, e esses sites recebem as solicitações. Abrir no navegador entrega a página ao seu app de navegador, que segue as próprias configurações.</string>
     <string name="privacy_policy_s5_title">5. Atualiza\u00E7\u00F5es da pol\u00EDtica de privacidade</string>
     <string name="privacy_policy_s5_body">Como desenvolvedor do LM Playground, reservo-me o direito de atualizar esta Pol\u00EDtica de Privacidade a qualquer momento. Quaisquer altera\u00E7\u00F5es ser\u00E3o efetivas imediatamente ap\u00F3s a publica\u00E7\u00E3o da pol\u00EDtica atualizada. Os usu\u00E1rios s\u00E3o encorajados a revisar esta p\u00E1gina periodicamente e a se manter informados sobre como sua privacidade \u00E9 protegida.</string>
     <string name="privacy_policy_s6_title">6. Aceita\u00E7\u00E3o desta pol\u00EDtica</string>
@@ -122,6 +123,8 @@
     <string name="faq_a14">Sim. Enquanto o aplicativo est\u00E1 em segundo plano, uma notifica\u00E7\u00E3o acompanha o status do modelo \u2014 carregado, gerando e, ent\u00E3o, resposta pronta \u2014 e permite copiar ou compartilhar a resposta. Voc\u00EA tamb\u00E9m pode ativar um breve sinal sonoro de conclus\u00E3o em Configura\u00E7\u00F5es \u2192 Som e vibra\u00E7\u00E3o. Os downloads de modelos exibem sua pr\u00F3pria notifica\u00E7\u00E3o de progresso com velocidade e tempo estimado.</string>
     <string name="faq_q15">O ditado por voz envia minha voz para algum lugar?</string>
     <string name="faq_a15">Não. Toque no microfone no campo de mensagem e fale — um modelo de reconhecimento de fala transforma suas palavras em texto no seu celular enquanto você fala, em 35 idiomas. O áudio nunca é salvo nem enviado para lugar nenhum, então o ditado funciona totalmente offline. O modelo (718 MB) é baixado uma vez, na primeira vez que você usa o microfone.</string>
+    <string name="faq_q16">O que é a prévia HTML ao vivo?</string>
+    <string name="faq_a16">Quando um modelo escreve uma página web em um bloco de código HTML, a resposta a mostra como um cartão. Toque no ícone de reproduzir para executar a página no próprio chat, ou use os botões do cartão para copiá-la, salvá-la como arquivo .html, abri-la no navegador ou vê-la em tela cheia. As prévias funcionam offline, a menos que você ative Acesso à internet nas prévias em Configurações \u2192 Ferramentas.</string>
     <string name="models">Modelos</string>
     <string name="change_folder">Alterar pasta</string>
     <string name="delete_model">Excluir</string>
@@ -311,6 +314,20 @@
     <string name="tool_web_fetch_title">Carregar página web</string>
     <string name="tool_web_fetch_desc">Abre um link e lê seu conteúdo principal como texto para que o modelo possa resumir ou citar uma página.</string>
     <string name="tool_web_fetch_example">\"Resuma o artigo deste link.\"</string>
+    <string name="html_artifact_reload">Recarregar</string>
+    <string name="html_artifact_full_screen">Tela cheia</string>
+    <string name="html_artifact_live_preview">Prévia ao vivo</string>
+    <string name="html_artifact_code">Código</string>
+    <string name="html_artifact_writing">Escrevendo…</string>
+    <string name="html_artifact_default_title">Página web</string>
+    <string name="html_artifact_download">Baixar</string>
+    <string name="html_artifact_saved">Arquivo HTML salvo</string>
+    <string name="html_artifact_save_failed">Não foi possível salvar o arquivo</string>
+    <string name="html_artifact_open_in_browser">Abrir no navegador</string>
+    <string name="html_artifact_no_browser">Nenhum app encontrado para abrir esta página</string>
+    <string name="tools_html_preview_internet_title">Acesso à internet nas prévias</string>
+    <string name="tools_html_preview_internet_desc">Permite que as prévias ao vivo carreguem bibliotecas, fontes, imagens e dados da internet. Quando desativado, as prévias funcionam totalmente offline. Abrir no navegador usa seu app de navegador, que esta configuração não controla. Ao desativar, tudo o que as prévias baixaram ou salvaram é apagado.</string>
+    <string name="html_artifact_offline_notice">Esta página tentou carregar arquivos da internet. As prévias estão offline; você pode permitir o acesso à internet em Configurações \u2192 Ferramentas.</string>
     <string name="tool_run_javascript_title">Executar JavaScript</string>
     <string name="tool_run_javascript_desc">Executa JavaScript em um ambiente isolado seguro para cálculos, datas e processamento de texto. Sem acesso à internet ou a arquivos.</string>
     <string name="tool_run_javascript_example">\"Quanto é (2 + 3) × 4 e que dia da semana é 1 de janeiro de 2027?\"</string>

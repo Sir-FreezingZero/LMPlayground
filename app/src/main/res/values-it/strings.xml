@@ -83,6 +83,7 @@
     <string name="privacy_policy_s3_body">LM Playground richiede l\'autorizzazione Internet per due scopi: scaricare i file dei modelli che scegli e \u2014 solo se li attivi \u2014 far funzionare gli strumenti web opzionali. L\'app non contiene pubblicit\u00E0, telemetria n\u00E9 analisi d\'uso, e non mi segnala la tua attivit\u00E0.</string>
     <string name="privacy_policy_s4_title">4. Strumenti e accesso al web</string>
     <string name="privacy_policy_s4_body">I modelli capaci possono usare strumenti opzionali, disattivati per impostazione predefinita. Quando attivi gli strumenti web, alcune informazioni lasciano il tuo dispositivo: lo strumento Ricerca web invia la query di ricerca del modello a DuckDuckGo, e lo strumento Carica pagina web scarica le pagine che il modello decide di aprire da quei siti. Queste richieste sono gestite dai siti di terze parti secondo le loro informative sulla privacy \u2014 io non le ricevo n\u00E9 le memorizzo. Lo strumento Esegui JavaScript viene eseguito interamente sul tuo dispositivo, in un ambiente isolato senza accesso a Internet. Per mantenere tutto offline, lascia semplicemente gli strumenti disattivati.</string>
+    <string name="privacy_policy_s4_html_body">Le anteprime HTML dal vivo funzionano offline per impostazione predefinita. Se attivi Accesso a internet nelle anteprime (Impostazioni \u2192 Strumenti), una pagina web scritta dal modello può caricare file come librerie, font e immagini dai siti che indica, e quei siti ricevono le richieste. Apri nel browser passa la pagina alla tua app browser, che segue le proprie impostazioni.</string>
     <string name="privacy_policy_s5_title">5. Aggiornamenti dell\'informativa sulla privacy</string>
     <string name="privacy_policy_s5_body">Come sviluppatore di LM Playground, mi riservo il diritto di aggiornare questa Informativa sulla Privacy in qualsiasi momento. Qualsiasi modifica sar\u00E0 effettiva immediatamente dopo la pubblicazione dell\'informativa aggiornata. Gli utenti sono incoraggiati a controllare questa pagina periodicamente e a rimanere informati su come viene protetta la loro privacy.</string>
     <string name="privacy_policy_s6_title">6. Accettazione di questa informativa</string>
@@ -122,6 +123,8 @@
     <string name="faq_a14">S\u00EC. Mentre l\'app \u00E8 in background, una notifica tiene traccia dello stato del modello \u2014 caricato, in generazione e poi risposta pronta \u2014 e ti consente di copiare o condividere la risposta. Puoi anche attivare un breve suono di completamento in Impostazioni \u2192 Suono e vibrazione. I download dei modelli mostrano la propria notifica di avanzamento con velocit\u00E0 e tempo stimato.</string>
     <string name="faq_q15">La dettatura vocale invia la mia voce da qualche parte?</string>
     <string name="faq_a15">No. Tocca il microfono nel campo del messaggio e parla: un modello di riconoscimento vocale trasforma le tue parole in testo sul telefono mentre parli, in 35 lingue. L\'audio non viene mai salvato né inviato da nessuna parte, quindi la dettatura funziona completamente offline. Il modello (718 MB) si scarica una sola volta, la prima volta che usi il microfono.</string>
+    <string name="faq_q16">Cos\'è l\'anteprima HTML dal vivo?</string>
+    <string name="faq_a16">Quando un modello scrive una pagina web in un blocco di codice HTML, la risposta la mostra come scheda. Tocca l\'icona di riproduzione per eseguire la pagina direttamente nella chat, oppure usa i pulsanti della scheda per copiarla, salvarla come file .html, aprirla nel browser o visualizzarla a schermo intero. Le anteprime funzionano offline a meno che tu non attivi Accesso a internet nelle anteprime in Impostazioni \u2192 Strumenti.</string>
     <string name="models">Modelli</string>
     <string name="change_folder">Cambia cartella</string>
     <string name="delete_model">Elimina</string>
@@ -311,6 +314,20 @@
     <string name="tool_web_fetch_title">Carica pagina web</string>
     <string name="tool_web_fetch_desc">Apre un link e ne legge il contenuto principale come testo affinché il modello possa riassumere o citare una pagina.</string>
     <string name="tool_web_fetch_example">\"Riassumi l\'articolo a questo link.\"</string>
+    <string name="html_artifact_reload">Ricarica</string>
+    <string name="html_artifact_full_screen">Schermo intero</string>
+    <string name="html_artifact_live_preview">Anteprima dal vivo</string>
+    <string name="html_artifact_code">Codice</string>
+    <string name="html_artifact_writing">Scrittura in corso…</string>
+    <string name="html_artifact_default_title">Pagina web</string>
+    <string name="html_artifact_download">Scarica</string>
+    <string name="html_artifact_saved">File HTML salvato</string>
+    <string name="html_artifact_save_failed">Impossibile salvare il file</string>
+    <string name="html_artifact_open_in_browser">Apri nel browser</string>
+    <string name="html_artifact_no_browser">Nessuna app trovata per aprire questa pagina</string>
+    <string name="tools_html_preview_internet_title">Accesso a internet nelle anteprime</string>
+    <string name="tools_html_preview_internet_desc">Consente alle anteprime dal vivo di caricare librerie, font, immagini e dati da internet. Se disattivato, le anteprime funzionano completamente offline. Apri nel browser usa la tua app browser, che questa impostazione non controlla. Disattivandolo si elimina tutto ciò che le anteprime hanno scaricato o salvato.</string>
+    <string name="html_artifact_offline_notice">Questa pagina ha cercato di caricare file da internet. Le anteprime sono offline; puoi consentire l\'accesso a internet in Impostazioni \u2192 Strumenti.</string>
     <string name="tool_run_javascript_title">Esegui JavaScript</string>
     <string name="tool_run_javascript_desc">Esegue JavaScript in un ambiente isolato sicuro per calcoli, date ed elaborazione del testo. Nessun accesso a internet o ai file.</string>
     <string name="tool_run_javascript_example">\"Quanto fa (2 + 3) × 4 e che giorno della settimana è il 1° gennaio 2027?\"</string>

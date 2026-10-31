@@ -83,6 +83,7 @@
     <string name="privacy_policy_s3_body">LM Playground meminta izin Internet untuk dua tujuan: untuk mengunduh file model yang Anda pilih, dan — hanya jika Anda mengaktifkannya — untuk menjalankan alat web opsional. Aplikasi tidak memuat iklan, telemetri, atau analitik penggunaan, dan tidak melaporkan aktivitas Anda kembali kepada saya.</string>
     <string name="privacy_policy_s4_title">4. Alat dan Akses Web</string>
     <string name="privacy_policy_s4_body">Model yang mampu dapat menggunakan alat opsional, yang nonaktif secara default. Saat Anda mengaktifkan alat web, sebagian informasi meninggalkan perangkat Anda: alat Pencarian web mengirimkan kueri pencarian model ke DuckDuckGo, dan alat Ambil halaman web mengunduh halaman yang diputuskan model untuk dibuka dari situs-situs tersebut. Permintaan tersebut ditangani oleh situs pihak ketiga berdasarkan kebijakan privasi mereka sendiri — saya tidak menerima maupun menyimpannya. Alat Jalankan JavaScript berjalan sepenuhnya di perangkat Anda dalam sandbox tanpa akses internet. Agar semuanya tetap offline, cukup biarkan alat tetap nonaktif.</string>
+    <string name="privacy_policy_s4_html_body">Pratinjau HTML langsung berjalan offline secara default. Jika Anda mengaktifkan Akses internet di pratinjau (Setelan \u2192 Alat), halaman web yang ditulis model dapat memuat file seperti library, font, dan gambar dari situs web yang disebutkannya, dan situs web tersebut menerima permintaannya. Buka di browser menyerahkan halaman ke aplikasi browser Anda, yang mengikuti setelannya sendiri.</string>
     <string name="privacy_policy_s5_title">5. Pembaruan Kebijakan Privasi</string>
     <string name="privacy_policy_s5_body">Sebagai pengembang LM Playground, saya berhak memperbarui Kebijakan Privasi ini kapan saja. Setiap perubahan akan berlaku segera setelah kebijakan yang diperbarui dipublikasikan. Pengguna dianjurkan untuk meninjau halaman ini secara berkala dan tetap mendapat informasi tentang bagaimana privasi mereka dilindungi.</string>
     <string name="privacy_policy_s6_title">6. Penerimaan Kebijakan Ini</string>
@@ -122,6 +123,8 @@
     <string name="faq_a14">Ya. Saat aplikasi berada di latar belakang, sebuah notifikasi melacak status model \u2014 dimuat, sedang membuat, lalu respons siap \u2014 dan memungkinkan Anda menyalin atau membagikan balasan. Anda juga dapat mengaktifkan nada singkat penyelesaian di Pengaturan \u2192 Suara dan Haptik. Unduhan model menampilkan notifikasi progresnya sendiri dengan kecepatan dan perkiraan waktu.</string>
     <string name="faq_q15">Apakah dikte suara mengirim suara saya ke suatu tempat?</string>
     <string name="faq_a15">Tidak. Ketuk mikrofon di kolom pesan lalu bicara — model pengenalan ucapan mengubah kata-kata Anda menjadi teks di ponsel saat Anda berbicara, dalam 35 bahasa. Audio tidak pernah disimpan atau dikirim ke mana pun, jadi dikte berfungsi sepenuhnya offline. Model (718 MB) diunduh sekali, saat Anda pertama kali menggunakan mikrofon.</string>
+    <string name="faq_q16">Apa itu pratinjau HTML langsung?</string>
+    <string name="faq_a16">Saat model menulis halaman web sebagai blok kode HTML, balasan menampilkannya sebagai kartu. Ketuk ikon putar untuk menjalankan halaman langsung di chat, atau gunakan tombol kartu untuk menyalinnya, menyimpannya sebagai file .html, membukanya di browser, atau melihatnya dalam layar penuh. Pratinjau berjalan offline kecuali Anda mengaktifkan Akses internet di pratinjau di Setelan \u2192 Alat.</string>
     <string name="models">Model</string>
     <string name="change_folder">Ubah Folder</string>
     <string name="delete_model">Hapus</string>
@@ -309,6 +312,20 @@
     <string name="tool_web_fetch_title">Ambil halaman web</string>
     <string name="tool_web_fetch_desc">Membuka tautan dan membaca konten utamanya sebagai teks agar model dapat meringkas atau mengutip sebuah halaman.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
+    <string name="html_artifact_reload">Muat ulang</string>
+    <string name="html_artifact_full_screen">Layar penuh</string>
+    <string name="html_artifact_live_preview">Pratinjau langsung</string>
+    <string name="html_artifact_code">Kode</string>
+    <string name="html_artifact_writing">Menulis…</string>
+    <string name="html_artifact_default_title">Halaman web</string>
+    <string name="html_artifact_download">Unduh</string>
+    <string name="html_artifact_saved">File HTML disimpan</string>
+    <string name="html_artifact_save_failed">Tidak dapat menyimpan file</string>
+    <string name="html_artifact_open_in_browser">Buka di browser</string>
+    <string name="html_artifact_no_browser">Tidak ada aplikasi untuk membuka halaman ini</string>
+    <string name="tools_html_preview_internet_title">Akses internet di pratinjau</string>
+    <string name="tools_html_preview_internet_desc">Mengizinkan pratinjau langsung memuat library, font, gambar, dan data dari internet. Jika nonaktif, pratinjau berjalan sepenuhnya offline. Buka di browser menggunakan aplikasi browser Anda, yang tidak diatur oleh setelan ini. Menonaktifkannya akan menghapus semua yang diunduh atau disimpan oleh pratinjau.</string>
+    <string name="html_artifact_offline_notice">Halaman ini mencoba memuat file dari internet. Pratinjau berjalan offline; Anda dapat mengizinkan akses internet di Setelan \u2192 Alat.</string>
     <string name="tool_run_javascript_title">Jalankan JavaScript</string>
     <string name="tool_run_javascript_desc">Menjalankan JavaScript dalam sandbox aman untuk matematika, tanggal, dan pemrosesan teks. Tanpa akses internet atau file.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>

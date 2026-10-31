@@ -83,6 +83,7 @@
     <string name="privacy_policy_s3_body">LM Playground solicita el permiso de Internet con dos fines: descargar los archivos de los modelos que elijas y \u2014 solo si las activas \u2014 hacer funcionar las herramientas web opcionales. La aplicaci\u00F3n no contiene publicidad, telemetr\u00EDa ni anal\u00EDticas de uso, y no me informa de tu actividad.</string>
     <string name="privacy_policy_s4_title">4. Herramientas y acceso a la web</string>
     <string name="privacy_policy_s4_body">Los modelos capaces pueden usar herramientas opcionales, que est\u00E1n desactivadas por defecto. Cuando activas las herramientas web, parte de la informaci\u00F3n sale de tu dispositivo: la herramienta de B\u00FAsqueda web env\u00EDa la consulta de b\u00FAsqueda del modelo a DuckDuckGo, y la herramienta Obtener p\u00E1gina web descarga las p\u00E1ginas que el modelo decide abrir de esos sitios. Esas solicitudes las gestionan los sitios de terceros conforme a sus propias pol\u00EDticas de privacidad: yo no las recibo ni las almaceno. La herramienta Ejecutar JavaScript se ejecuta por completo en tu dispositivo, en un entorno aislado sin acceso a Internet. Para que todo siga sin conexi\u00F3n, simplemente deja las herramientas desactivadas.</string>
+    <string name="privacy_policy_s4_html_body">Las vistas previas HTML en vivo funcionan sin conexión de forma predeterminada. Si activas Acceso a internet en vistas previas (Ajustes \u2192 Herramientas), una página web escrita por el modelo puede cargar archivos como bibliotecas, fuentes e imágenes de los sitios web que indique, y esos sitios reciben las solicitudes. Abrir en el navegador pasa la página a tu app de navegador, que sigue su propia configuración.</string>
     <string name="privacy_policy_s5_title">5. Actualizaciones de la pol\u00EDtica de privacidad</string>
     <string name="privacy_policy_s5_body">Como desarrollador de LM Playground, me reservo el derecho de actualizar esta Pol\u00EDtica de Privacidad en cualquier momento. Cualquier cambio ser\u00E1 efectivo inmediatamente despu\u00E9s de publicar la pol\u00EDtica actualizada. Se recomienda a los usuarios revisar esta p\u00E1gina peri\u00F3dicamente y mantenerse informados sobre c\u00F3mo se protege su privacidad.</string>
     <string name="privacy_policy_s6_title">6. Aceptaci\u00F3n de esta pol\u00EDtica</string>
@@ -122,6 +123,8 @@
     <string name="faq_a14">S\u00ED. Mientras la aplicaci\u00F3n est\u00E1 en segundo plano, una notificaci\u00F3n muestra el estado del modelo \u2014 cargado, generando y luego respuesta lista \u2014 y te permite copiar o compartir la respuesta. Tambi\u00E9n puedes activar un breve tono de finalizaci\u00F3n en Ajustes \u2192 Sonido y vibraci\u00F3n. Las descargas de modelos muestran su propia notificaci\u00F3n de progreso con velocidad y tiempo estimado.</string>
     <string name="faq_q15">¿El dictado por voz envía mi voz a algún sitio?</string>
     <string name="faq_a15">No. Toca el micrófono en el campo de mensaje y habla: un modelo de reconocimiento de voz convierte tus palabras en texto en tu teléfono mientras hablas, en 35 idiomas. El audio nunca se guarda ni se envía a ningún sitio, así que el dictado funciona totalmente sin conexión. El modelo (718 MB) se descarga una vez, la primera vez que usas el micrófono.</string>
+    <string name="faq_q16">¿Qué es la vista previa HTML en vivo?</string>
+    <string name="faq_a16">Cuando un modelo escribe una página web en un bloque de código HTML, la respuesta la muestra como una tarjeta. Toca el icono de reproducir para ejecutar la página en el propio chat, o usa los botones de la tarjeta para copiarla, guardarla como archivo .html, abrirla en el navegador o verla en pantalla completa. Las vistas previas funcionan sin conexión salvo que actives Acceso a internet en vistas previas en Ajustes \u2192 Herramientas.</string>
     <string name="models">Modelos</string>
     <string name="change_folder">Cambiar carpeta</string>
     <string name="delete_model">Eliminar</string>
@@ -311,6 +314,20 @@
     <string name="tool_web_fetch_title">Obtener página web</string>
     <string name="tool_web_fetch_desc">Abre un enlace y lee su contenido principal como texto para que el modelo pueda resumir o citar una página.</string>
     <string name="tool_web_fetch_example">\"Resume el artículo de este enlace.\"</string>
+    <string name="html_artifact_reload">Recargar</string>
+    <string name="html_artifact_full_screen">Pantalla completa</string>
+    <string name="html_artifact_live_preview">Vista previa en vivo</string>
+    <string name="html_artifact_code">Código</string>
+    <string name="html_artifact_writing">Escribiendo…</string>
+    <string name="html_artifact_default_title">Página web</string>
+    <string name="html_artifact_download">Descargar</string>
+    <string name="html_artifact_saved">Archivo HTML guardado</string>
+    <string name="html_artifact_save_failed">No se pudo guardar el archivo</string>
+    <string name="html_artifact_open_in_browser">Abrir en el navegador</string>
+    <string name="html_artifact_no_browser">No se encontró ninguna app para abrir esta página</string>
+    <string name="tools_html_preview_internet_title">Acceso a internet en vistas previas</string>
+    <string name="tools_html_preview_internet_desc">Permite que las vistas previas en vivo carguen bibliotecas, fuentes, imágenes y datos de internet. Si está desactivado, las vistas previas funcionan totalmente sin conexión. Abrir en el navegador usa tu app de navegador, que este ajuste no controla. Al desactivarlo se borra todo lo que las vistas previas descargaron o guardaron.</string>
+    <string name="html_artifact_offline_notice">Esta página intentó cargar archivos de internet. Las vistas previas funcionan sin conexión; puedes permitir el acceso a internet en Ajustes \u2192 Herramientas.</string>
     <string name="tool_run_javascript_title">Ejecutar JavaScript</string>
     <string name="tool_run_javascript_desc">Ejecuta JavaScript en un entorno aislado seguro para matemáticas, fechas y procesamiento de texto. Sin acceso a internet ni a archivos.</string>
     <string name="tool_run_javascript_example">\"¿Cuánto es (2 + 3) × 4 y qué día de la semana es el 1 de enero de 2027?\"</string>

@@ -95,6 +95,7 @@
     <string name="privacy_policy_s3_body">LM Playground pyytää internetlupaa kahteen tarkoitukseen: valitsemiesi mallitiedostojen lataamiseen ja — vain jos otat ne käyttöön — valinnaisten verkkotyökalujen toimintaan. Sovellus ei sisällä mainoksia, telemetriaa tai käytön analytiikkaa, eikä se raportoi toimintaasi minulle.</string>
     <string name="privacy_policy_s4_title">4. Työkalut ja verkkoyhteys</string>
     <string name="privacy_policy_s4_body">Kyvykkäät mallit voivat käyttää valinnaisia työkaluja, jotka ovat oletuksena pois päältä. Kun otat verkkotyökalut käyttöön, osa tiedoista lähtee laitteeltasi: Verkkohaku-työkalu lähettää mallin hakukyselyn DuckDuckGoon, ja Nouda verkkosivu -työkalu lataa sivut, jotka malli päättää avata näiltä verkkosivustoilta. Nämä pyynnöt käsittelevät kolmannen osapuolen sivustot omien tietosuojakäytäntöjensä mukaisesti — en vastaanota enkä tallenna niitä. Suorita JavaScript -työkalu toimii kokonaan laitteellasi hiekkalaatikossa ilman internetyhteyttä. Pidä kaikki offline-tilassa jättämällä työkalut yksinkertaisesti pois päältä.</string>
+    <string name="privacy_policy_s4_html_body">Live-HTML-esikatselut toimivat oletuksena offline-tilassa. Jos otat käyttöön Internetyhteyden esikatseluissa (Asetukset \u2192 Työkalut), mallin kirjoittama verkkosivu voi ladata tiedostoja, kuten kirjastoja, fontteja ja kuvia, mainitsemiltaan sivustoilta, ja nämä sivustot vastaanottavat pyynnöt. Avaa selaimessa antaa sivun selainsovelluksellesi, joka noudattaa omia asetuksiaan.</string>
     <string name="privacy_policy_s5_title">5. Tietosuojakäytännön päivitykset</string>
     <string name="privacy_policy_s5_body">LM Playgroundin kehittäjänä pidätän oikeuden päivittää tätä tietosuojakäytäntöä milloin tahansa. Muutokset tulevat voimaan välittömästi, kun päivitetty käytäntö julkaistaan. Käyttäjiä kannustetaan tarkistamaan tämä sivu säännöllisesti ja pysymään ajan tasalla siitä, miten yksityisyyttäsi suojataan.</string>
     <string name="privacy_policy_s6_title">6. Tämän käytännön hyväksyminen</string>
@@ -137,6 +138,8 @@
     <string name="faq_a14">Kyllä. Kun sovellus on taustalla, ilmoitus seuraa mallin tilaa – ladattu, generoi, sitten vastaus valmis – ja antaa sinun kopioida tai jakaa vastauksen. Voit myös ottaa käyttöön lyhyen valmistumisäänen kohdassa Asetukset → Ääni ja värinä. Mallien lataukset näyttävät oman edistymisilmoituksensa nopeuden ja arvioidun jäljellä olevan ajan kanssa.</string>
     <string name="faq_q15">Lähettääkö puhesanelu ääneni jonnekin?</string>
     <string name="faq_a15">Ei. Napauta viestikentän mikrofonia ja puhu – puheentunnistusmalli muuttaa sanasi tekstiksi puhelimessasi puhuessasi, 35 kielellä. Ääntä ei koskaan tallenneta eikä lähetetä minnekään, joten sanelu toimii täysin offline-tilassa. Malli (718 Mt) ladataan kerran, kun käytät mikrofonia ensimmäisen kerran.</string>
+    <string name="faq_q16">Mikä on live-HTML-esikatselu?</string>
+    <string name="faq_a16">Kun malli kirjoittaa verkkosivun HTML-koodilohkona, vastaus näyttää sen korttina. Napauta toistokuvaketta suorittaaksesi sivun suoraan keskustelussa, tai käytä kortin painikkeita kopioidaksesi sen, tallentaaksesi sen .html-tiedostona, avataksesi sen selaimessa tai näyttääksesi sen koko näytöllä. Esikatselut toimivat offline-tilassa, ellet ota Internetyhteyttä esikatseluissa käyttöön kohdassa Asetukset \u2192 Työkalut.</string>
 
     <!-- Models Screen -->
     <string name="models">Mallit</string>
@@ -343,6 +346,20 @@
     <string name="tool_run_javascript_title">Suorita JavaScript</string>
     <string name="tool_web_fetch_desc">Avaa linkin ja lukee sen pääsisällön tekstinä, jotta malli voi tiivistää tai lainata sivun.</string>
     <string name="tool_web_fetch_example">\"Tiivistä tämän linkin artikkeli.\"</string>
+    <string name="html_artifact_reload">Lataa uudelleen</string>
+    <string name="html_artifact_full_screen">Koko näyttö</string>
+    <string name="html_artifact_live_preview">Live-esikatselu</string>
+    <string name="html_artifact_code">Koodi</string>
+    <string name="html_artifact_writing">Kirjoitetaan…</string>
+    <string name="html_artifact_default_title">Verkkosivu</string>
+    <string name="html_artifact_download">Lataa</string>
+    <string name="html_artifact_saved">HTML-tiedosto tallennettu</string>
+    <string name="html_artifact_save_failed">Tiedostoa ei voitu tallentaa</string>
+    <string name="html_artifact_open_in_browser">Avaa selaimessa</string>
+    <string name="html_artifact_no_browser">Sivun avaamiseen ei löytynyt sovellusta</string>
+    <string name="tools_html_preview_internet_title">Internetyhteys esikatseluissa</string>
+    <string name="tools_html_preview_internet_desc">Sallii live-esikatseluiden ladata kirjastoja, fontteja, kuvia ja dataa internetistä. Kun asetus on pois päältä, esikatselut toimivat täysin offline-tilassa. Avaa selaimessa käyttää selainsovellustasi, jota tämä asetus ei ohjaa. Kun asetus poistetaan käytöstä, kaikki esikatselujen lataama tai tallentama poistetaan.</string>
+    <string name="html_artifact_offline_notice">Tämä sivu yritti ladata tiedostoja internetistä. Esikatselut ovat offline-tilassa; voit sallia internetyhteyden kohdassa Asetukset \u2192 Työkalut.</string>
     <string name="tool_web_fetch_title">Nouda verkkosivu</string>
     <string name="tool_web_search_desc">Hakee verkosta ja palauttaa tulosten otsikot, linkit ja katkelmat, jotta malli voi löytää ajantasaista tietoa.</string>
     <string name="tool_web_search_example">\"Etsi tuoreita arvioita uusimmasta Pixel-puhelimesta.\"</string>

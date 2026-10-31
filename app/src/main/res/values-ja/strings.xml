@@ -83,6 +83,7 @@
     <string name="privacy_policy_s3_body">LM Playground は2つの目的でインターネット権限を要求します。あなたが選んだモデルファイルをダウンロードするため、そして——オンにした場合のみ——任意のウェブツールを動作させるためです。本アプリには広告、テレメトリー、使用状況の分析は一切含まれておらず、あなたの活動を私に報告することもありません。</string>
     <string name="privacy_policy_s4_title">4. ツールとウェブアクセス</string>
     <string name="privacy_policy_s4_body">対応モデルは任意のツールを使用できますが、これらはデフォルトでオフになっています。ウェブツールを有効にすると、一部の情報がデバイスから外部に出ます。ウェブ検索ツールはモデルの検索クエリを DuckDuckGo に送信し、ウェブページを取得ツールはモデルが開くと判断したそれらのウェブサイトのページをダウンロードします。これらのリクエストは第三者のサイトがそれぞれ独自のプライバシーポリシーに基づいて処理し、私が受け取ることも保存することもありません。JavaScript を実行ツールは、インターネットにアクセスできないサンドボックス内でデバイス上だけで動作します。すべてをオフラインに保つには、ツールをオフのままにしておくだけです。</string>
+    <string name="privacy_policy_s4_html_body">HTMLライブプレビューはデフォルトでオフラインで動作します。「プレビューでのインターネットアクセス」(設定 \u2192 ツール) をオンにすると、モデルが書いたウェブページは、ページ内で指定されたウェブサイトからライブラリ、フォント、画像などのファイルを読み込めるようになり、それらのサイトがリクエストを受け取ります。「ブラウザで開く」はページをお使いのブラウザアプリに渡し、ブラウザ側の設定に従います。</string>
     <string name="privacy_policy_s5_title">5. プライバシーポリシーの更新</string>
     <string name="privacy_policy_s5_body">LM Playground の開発者として、本プライバシーポリシーをいつでも更新する権利を留保します。変更は、このページに更新されたポリシーを掲載した時点で直ちに有効となります。ユーザーの皆様には、このページを定期的にご確認いただき、プライバシーがどのように保護されているかを把握していただくことをお勧めします。</string>
     <string name="privacy_policy_s6_title">6. 本ポリシーへの同意</string>
@@ -122,6 +123,8 @@
     <string name="faq_a14">はい。アプリがバックグラウンドにある間、通知がモデルの状態——読み込み済み、生成中、そして応答の準備完了——を追跡し、応答をコピーまたは共有できるようにします。設定 \u2192 サウンドと触覚 で短い完了チャイムを有効にすることもできます。モデルのダウンロードは、速度と残り時間を示す専用の進捗通知を表示します。</string>
     <string name="faq_q15">音声入力で自分の声がどこかに送信されますか？</string>
     <string name="faq_a15">いいえ。チャット入力欄のマイクをタップして話すと、音声認識モデルが話しているそばから端末上で文字に変換します（35 言語対応）。音声が保存されたり送信されたりすることはなく、音声入力は完全にオフラインで動作します。モデル（718 MB）は、初めてマイクを使うときに一度だけダウンロードされます。</string>
+    <string name="faq_q16">HTMLライブプレビューとは何ですか?</string>
+    <string name="faq_a16">モデルがウェブページをHTMLのコードブロックとして書くと、返信にカードとして表示されます。再生アイコンをタップするとチャット内でページを実行でき、カードのボタンでコピー、.htmlファイルとして保存、ブラウザで開く、全画面表示ができます。設定 \u2192 ツールで「プレビューでのインターネットアクセス」をオンにしない限り、プレビューはオフラインで動作します。</string>
     <string name="models">モデル</string>
     <string name="change_folder">フォルダを変更</string>
     <string name="delete_model">削除</string>
@@ -309,6 +312,20 @@
     <string name="tool_web_fetch_title">ウェブページを取得</string>
     <string name="tool_web_fetch_desc">リンクを開いてその主要なコンテンツをテキストとして読み取り、モデルがページを要約したり引用したりできるようにします。</string>
     <string name="tool_web_fetch_example">\"このリンクの記事を要約して。\"</string>
+    <string name="html_artifact_reload">再読み込み</string>
+    <string name="html_artifact_full_screen">全画面表示</string>
+    <string name="html_artifact_live_preview">ライブプレビュー</string>
+    <string name="html_artifact_code">コード</string>
+    <string name="html_artifact_writing">作成中…</string>
+    <string name="html_artifact_default_title">ウェブページ</string>
+    <string name="html_artifact_download">ダウンロード</string>
+    <string name="html_artifact_saved">HTMLファイルを保存しました</string>
+    <string name="html_artifact_save_failed">ファイルを保存できませんでした</string>
+    <string name="html_artifact_open_in_browser">ブラウザで開く</string>
+    <string name="html_artifact_no_browser">このページを開けるアプリが見つかりません</string>
+    <string name="tools_html_preview_internet_title">プレビューでのインターネットアクセス</string>
+    <string name="tools_html_preview_internet_desc">ライブプレビューがインターネットからライブラリ、フォント、画像、データを読み込めるようにします。オフにすると、プレビューは完全にオフラインで動作します。「ブラウザで開く」はお使いのブラウザアプリを使うため、この設定の対象外です。オフにすると、プレビューがダウンロード・保存したものはすべて削除されます。</string>
+    <string name="html_artifact_offline_notice">このページはインターネットからファイルを読み込もうとしました。プレビューはオフラインです。設定 \u2192 ツールでインターネットアクセスを許可できます。</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">応答を生成中…</string>

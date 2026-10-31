@@ -29,6 +29,7 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Policy
 import androidx.compose.material.icons.outlined.Storage
+import androidx.compose.material.icons.outlined.ToggleOn
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material.icons.outlined.VolumeUp
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -77,6 +78,8 @@ fun SettingsScreen(
     onAdvancedClick: () -> Unit,
     onSendFeedbackClick: () -> Unit,
     appVersion: String,
+    /** General opens full screen too. */
+    onGeneralClick: () -> Unit = {},
     /**
      * Tablet-only: when non-null, tapping Models in the master pane opens
      * this composable inline in the detail pane instead of navigating to
@@ -232,6 +235,7 @@ fun SettingsScreen(
                                 onAdvancedClick()
                             }
                         },
+                        onGeneralClick = onGeneralClick,
                         onPrivacyPolicyClick = { detail = SettingsDetail.PrivacyPolicy },
                         onFaqClick = { detail = SettingsDetail.Faq },
                         onCrashEngineClick = onCrashEngineClick
@@ -309,6 +313,7 @@ fun SettingsScreen(
                 onToolsClick = onToolsClick,
                 onSoundHapticClick = onSoundHapticClick,
                 onAdvancedClick = onAdvancedClick,
+                onGeneralClick = onGeneralClick,
                 onPrivacyPolicyClick = onPrivacyPolicyClick,
                 onFaqClick = onFaqClick,
                 onCrashEngineClick = onCrashEngineClick,
@@ -336,6 +341,7 @@ private fun SettingsList(
     onToolsClick: () -> Unit,
     onSoundHapticClick: () -> Unit,
     onAdvancedClick: () -> Unit,
+    onGeneralClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onFaqClick: () -> Unit,
     onCrashEngineClick: (() -> Unit)?,
@@ -370,6 +376,14 @@ private fun SettingsList(
             subtitle = stringResource(R.string.tools_subtitle),
             selected = selectedDetail == SettingsDetail.Tools,
             onClick = onToolsClick
+        )
+
+        // General row (opens full screen; no detail pane)
+        SettingsRow(
+            icon = Icons.Outlined.ToggleOn,
+            title = stringResource(R.string.general),
+            subtitle = stringResource(R.string.general_subtitle),
+            onClick = onGeneralClick
         )
 
         // Sound and Haptic row

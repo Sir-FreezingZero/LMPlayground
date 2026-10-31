@@ -83,6 +83,7 @@
     <string name="privacy_policy_s3_body">LM Playground prosi o uprawnienie dostępu do internetu w dwóch celach: aby pobierać wybrane przez Ciebie pliki modeli oraz — tylko jeśli je włączysz — aby obsługiwać opcjonalne narzędzia internetowe. Aplikacja nie zawiera reklam, telemetrii ani analityki użytkowania i nie raportuje mi Twojej aktywności.</string>
     <string name="privacy_policy_s4_title">4. Narzędzia i dostęp do sieci</string>
     <string name="privacy_policy_s4_body">Zdolne modele mogą korzystać z opcjonalnych narzędzi, które są domyślnie wyłączone. Gdy włączysz narzędzia internetowe, część informacji opuszcza Twoje urządzenie: narzędzie Wyszukiwanie w sieci wysyła zapytanie wyszukiwania modelu do DuckDuckGo, a narzędzie Pobierz stronę internetową pobiera strony, które model zdecyduje się otworzyć w tych witrynach. Te żądania są obsługiwane przez witryny stron trzecich zgodnie z ich własnymi politykami prywatności — ja ich nie otrzymuję ani nie przechowuję. Narzędzie Uruchom JavaScript działa w całości na Twoim urządzeniu w piaskownicy bez dostępu do internetu. Aby zachować pełen tryb offline, po prostu pozostaw narzędzia wyłączone.</string>
+    <string name="privacy_policy_s4_html_body">Podglądy HTML na żywo domyślnie działają offline. Jeśli włączysz Dostęp do internetu w podglądach (Ustawienia \u2192 Narzędzia), strona internetowa napisana przez model może wczytywać pliki, takie jak biblioteki, czcionki i obrazy, z podanych w niej witryn, a te witryny otrzymują żądania. Otwórz w przeglądarce przekazuje stronę Twojej aplikacji przeglądarki, która działa według własnych ustawień.</string>
     <string name="privacy_policy_s5_title">5. Aktualizacje Polityki prywatności</string>
     <string name="privacy_policy_s5_body">Jako twórca LM Playground zastrzegam sobie prawo do aktualizacji niniejszej Polityki prywatności w dowolnym momencie. Wszelkie zmiany wchodzą w życie natychmiast po opublikowaniu zaktualizowanej polityki. Zachęcamy użytkowników do okresowego przeglądania tej strony i pozostawania na bieżąco z tym, jak chroniona jest ich prywatność.</string>
     <string name="privacy_policy_s6_title">6. Akceptacja niniejszej polityki</string>
@@ -122,6 +123,8 @@
     <string name="faq_a14">Tak. Gdy aplikacja działa w tle, powiadomienie śledzi stan modelu — załadowany, generowanie, a następnie odpowiedź gotowa — i pozwala skopiować lub udostępnić odpowiedź. Możesz też włączyć krótki dźwięk zakończenia w Ustawienia \u2192 Dźwięk i wibracje. Pobieranie modeli pokazuje własne powiadomienie o postępie z prędkością i szacowanym czasem.</string>
     <string name="faq_q15">Czy dyktowanie głosowe wysyła gdzieś mój głos?</string>
     <string name="faq_a15">Nie. Dotknij mikrofonu w polu wiadomości i mów — model rozpoznawania mowy zamienia Twoje słowa na tekst na telefonie, gdy mówisz, w 35 językach. Dźwięk nigdy nie jest zapisywany ani nigdzie wysyłany, więc dyktowanie działa całkowicie offline. Model (718 MB) pobiera się raz, przy pierwszym użyciu mikrofonu.</string>
+    <string name="faq_q16">Czym jest podgląd HTML na żywo?</string>
+    <string name="faq_a16">Gdy model pisze stronę internetową jako blok kodu HTML, odpowiedź pokazuje ją jako kartę. Dotknij ikony odtwarzania, aby uruchomić stronę bezpośrednio w czacie, albo użyj przycisków karty, aby ją skopiować, zapisać jako plik .html, otworzyć w przeglądarce lub wyświetlić na pełnym ekranie. Podglądy działają offline, dopóki nie włączysz Dostępu do internetu w podglądach w Ustawienia \u2192 Narzędzia.</string>
     <string name="models">Modele</string>
     <string name="change_folder">Zmień folder</string>
     <string name="delete_model">Usuń</string>
@@ -306,6 +309,20 @@
     <string name="tool_run_javascript_title">Uruchom JavaScript</string>
     <string name="tool_web_fetch_desc">Otwiera link i odczytuje jego główną treść jako tekst, aby model mógł podsumować lub zacytować stronę.</string>
     <string name="tool_web_fetch_example">\"Podsumuj artykuł pod tym linkiem.\"</string>
+    <string name="html_artifact_reload">Odśwież</string>
+    <string name="html_artifact_full_screen">Pełny ekran</string>
+    <string name="html_artifact_live_preview">Podgląd na żywo</string>
+    <string name="html_artifact_code">Kod</string>
+    <string name="html_artifact_writing">Pisanie…</string>
+    <string name="html_artifact_default_title">Strona internetowa</string>
+    <string name="html_artifact_download">Pobierz</string>
+    <string name="html_artifact_saved">Zapisano plik HTML</string>
+    <string name="html_artifact_save_failed">Nie udało się zapisać pliku</string>
+    <string name="html_artifact_open_in_browser">Otwórz w przeglądarce</string>
+    <string name="html_artifact_no_browser">Nie znaleziono aplikacji, która otworzy tę stronę</string>
+    <string name="tools_html_preview_internet_title">Dostęp do internetu w podglądach</string>
+    <string name="tools_html_preview_internet_desc">Pozwala podglądom na żywo wczytywać biblioteki, czcionki, obrazy i dane z internetu. Gdy jest wyłączone, podglądy działają całkowicie offline. Otwórz w przeglądarce korzysta z Twojej aplikacji przeglądarki, której to ustawienie nie dotyczy. Wyłączenie usuwa wszystko, co podglądy pobrały lub zapisały.</string>
+    <string name="html_artifact_offline_notice">Ta strona próbowała wczytać pliki z internetu. Podglądy działają offline; dostęp do internetu możesz włączyć w Ustawienia \u2192 Narzędzia.</string>
     <string name="tool_web_fetch_title">Pobierz stronę internetową</string>
     <string name="tool_web_search_desc">Przeszukuje sieć i zwraca tytuły wyników, linki oraz fragmenty, aby model mógł znaleźć aktualne informacje.</string>
     <string name="tool_web_search_example">\"Znajdź najnowsze recenzje najnowszego telefonu Pixel.\"</string>

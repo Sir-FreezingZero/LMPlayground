@@ -149,16 +149,13 @@ fun ChatItemBubble(
             }
 
             if (split.responseContent.isNotEmpty()) {
-                val styledMessage = messageFormatter(
+                // Markdown text, with ```html code blocks shown as artifact
+                // cards that have a Live preview button.
+                AssistantReplyContent(
                     text = split.responseContent,
-                    primary = false
+                    isGenerating = isGenerating,
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(color = LocalContentColor.current),
                 )
-                SelectionContainer {
-                    Text(
-                        text = styledMessage,
-                        style = MaterialTheme.typography.bodyLarge.copy(color = LocalContentColor.current)
-                    )
-                }
             }
         }
 

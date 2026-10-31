@@ -83,6 +83,7 @@
     <string name="privacy_policy_s3_body">LM Playground 请求网络权限有两个用途：下载您选择的模型文件，以及——仅在您开启时——为可选的网络工具提供支持。本应用不含任何广告、遥测或使用情况分析，也不会向我回报您的活动。</string>
     <string name="privacy_policy_s4_title">4. 工具与网络访问</string>
     <string name="privacy_policy_s4_body">有能力的模型可以使用可选工具，这些工具默认关闭。当您启用网络工具时，部分信息会离开您的设备：网络搜索工具会将模型的搜索查询发送给 DuckDuckGo，抓取网页工具会下载模型决定打开的那些网站页面。这些请求由第三方网站按照它们自己的隐私政策处理——我既不会接收也不会存储这些信息。运行 JavaScript 工具完全在您设备上的沙箱中运行，无法访问网络。若要让一切保持离线，只需让这些工具保持关闭即可。</string>
+    <string name="privacy_policy_s4_html_body">HTML 实时预览默认离线运行。如果您开启“预览中的互联网访问”（设置 \u2192 工具），模型编写的网页可以从其指定的网站加载库、字体和图片等文件，这些网站会收到相应请求。“在浏览器中打开”会将页面交给您的浏览器应用，由浏览器按其自身设置处理。</string>
     <string name="privacy_policy_s5_title">5. 隐私政策更新</string>
     <string name="privacy_policy_s5_body">作为 LM Playground 的开发者，我保留随时更新本隐私政策的权利。任何更改将在本页面发布更新政策后立即生效。建议用户经常查看此页面，及时了解其隐私是如何受到保护的。</string>
     <string name="privacy_policy_s6_title">6. 接受本政策</string>
@@ -122,6 +123,8 @@
     <string name="faq_a14">会的。当应用在后台运行时，通知会跟踪模型的状态——已加载、生成中、然后回复就绪——并让您复制或分享回复。您还可以在 设置 \u2192 声音与触感 中开启简短的完成提示音。模型下载会显示带有速度和预计剩余时间的专属进度通知。</string>
     <string name="faq_q15">语音输入会把我的声音发送到别处吗？</string>
     <string name="faq_a15">不会。在聊天输入框中点按麦克风说话——语音识别模型会在你说话的同时，直接在手机上把你的话转成文字，支持 35 种语言。音频从不保存，也不会发送到任何地方，因此语音输入完全离线可用。模型（718 MB）只需下载一次，在你首次使用麦克风时下载。</string>
+    <string name="faq_q16">什么是 HTML 实时预览？</string>
+    <string name="faq_a16">当模型以 HTML 代码块编写网页时，回复会将其显示为卡片。点按播放图标即可直接在聊天中运行页面，也可以使用卡片上的按钮复制、另存为 .html 文件、在浏览器中打开或全屏查看。除非您在“设置 \u2192 工具”中开启“预览中的互联网访问”，否则预览均离线运行。</string>
     <string name="models">模型</string>
     <string name="change_folder">更改文件夹</string>
     <string name="delete_model">删除</string>
@@ -309,6 +312,20 @@
     <string name="tool_web_fetch_title">抓取网页</string>
     <string name="tool_web_fetch_desc">打开链接并以文本形式读取其主要内容，让模型能够总结或引用页面。</string>
     <string name="tool_web_fetch_example">\"总结此链接中的文章。\"</string>
+    <string name="html_artifact_reload">重新加载</string>
+    <string name="html_artifact_full_screen">全屏</string>
+    <string name="html_artifact_live_preview">实时预览</string>
+    <string name="html_artifact_code">代码</string>
+    <string name="html_artifact_writing">正在编写…</string>
+    <string name="html_artifact_default_title">网页</string>
+    <string name="html_artifact_download">下载</string>
+    <string name="html_artifact_saved">HTML 文件已保存</string>
+    <string name="html_artifact_save_failed">无法保存文件</string>
+    <string name="html_artifact_open_in_browser">在浏览器中打开</string>
+    <string name="html_artifact_no_browser">找不到可打开此页面的应用</string>
+    <string name="tools_html_preview_internet_title">预览中的互联网访问</string>
+    <string name="tools_html_preview_internet_desc">允许实时预览从互联网加载库、字体、图片和数据。关闭后，预览完全离线运行。“在浏览器中打开”使用您的浏览器应用，不受此设置控制。关闭后，将删除预览下载或保存的所有内容。</string>
+    <string name="html_artifact_offline_notice">此页面尝试从互联网加载文件。预览处于离线状态；您可以在“设置 \u2192 工具”中允许互联网访问。</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">正在生成回复…</string>

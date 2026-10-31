@@ -83,6 +83,7 @@
     <string name="privacy_policy_s3_body">LM Playground, iki ama\u00E7 i\u00E7in internet izni ister: se\u00E7ti\u011Finiz model dosyalar\u0131n\u0131 indirmek ve \u2014 yaln\u0131zca a\u00E7arsan\u0131z \u2014 iste\u011Fe ba\u011Fl\u0131 web ara\u00E7lar\u0131n\u0131 \u00E7al\u0131\u015Ft\u0131rmak. Uygulamada reklam, telemetri veya kullan\u0131m analizi yoktur ve etkinli\u011Finizi bana bildirmez.</string>
     <string name="privacy_policy_s4_title">4. Ara\u00E7lar ve Web Eri\u015Fimi</string>
     <string name="privacy_policy_s4_body">Yetenekli modeller, varsay\u0131lan olarak kapal\u0131 olan iste\u011Fe ba\u011Fl\u0131 ara\u00E7lar\u0131 kullanabilir. Web ara\u00E7lar\u0131n\u0131 etkinle\u015Ftirdi\u011Finizde baz\u0131 bilgiler cihaz\u0131n\u0131zdan \u00E7\u0131kar: Web aramas\u0131 arac\u0131, modelin arama sorgusunu DuckDuckGo\'ya g\u00F6nderir ve Web sayfas\u0131 getir arac\u0131, modelin a\u00E7maya karar verdi\u011Fi sayfalar\u0131 o web sitelerinden indirir. Bu istekler, \u00FC\u00E7\u00FCnc\u00FC taraf siteler taraf\u0131ndan kendi gizlilik politikalar\u0131 kapsam\u0131nda i\u015Flenir \u2014 ben bunlar\u0131 ne al\u0131r\u0131m ne de saklar\u0131m. JavaScript \u00E7al\u0131\u015Ft\u0131r arac\u0131 ise tamamen cihaz\u0131n\u0131zda, internet eri\u015Fimi olmayan bir korumal\u0131 alanda \u00E7al\u0131\u015F\u0131r. Her \u015Feyi \u00E7evrimd\u0131\u015F\u0131 tutmak i\u00E7in ara\u00E7lar\u0131 yaln\u0131zca kapal\u0131 b\u0131rak\u0131n.</string>
+    <string name="privacy_policy_s4_html_body">Canlı HTML önizlemeler varsayılan olarak çevrimdışı çalışır. Önizlemelerde internet erişimini açarsanız (Ayarlar \u2192 Araçlar), modelin yazdığı bir web sayfası belirttiği web sitelerinden kitaplık, yazı tipi ve görsel gibi dosyalar yükleyebilir ve bu siteler istekleri alır. Tarayıcıda aç, sayfayı kendi ayarlarına uyan tarayıcı uygulamanıza aktarır.</string>
     <string name="privacy_policy_s5_title">5. Gizlilik Politikas\u0131 G\u00FCncellemeleri</string>
     <string name="privacy_policy_s5_body">LM Playground\'un geli\u015Ftiricisi olarak, bu Gizlilik Politikas\u0131n\u0131 istedi\u011Fim zaman g\u00FCncelleme hakk\u0131n\u0131 sakl\u0131 tutuyorum. Herhangi bir de\u011Fi\u015Fiklik, g\u00FCncellenen politikan\u0131n yay\u0131nlanmas\u0131yla derhal y\u00FCr\u00FCrl\u00FC\u011Fe girecektir. Kullan\u0131c\u0131lar\u0131n bu sayfay\u0131 d\u00FCzenli olarak g\u00F6zden ge\u00E7irmeleri ve gizliliklerinin nas\u0131l korundu\u011Fu hakk\u0131nda bilgi sahibi olmalar\u0131 te\u015Fvik edilmektedir.</string>
     <string name="privacy_policy_s6_title">6. Bu Politikan\u0131n Kabul\u00FC</string>
@@ -122,6 +123,8 @@
     <string name="faq_a14">Evet. Uygulama arka plandayken bir bildirim, modelin durumunu \u2014 y\u00FCklendi, \u00FCretiyor, ard\u0131ndan yan\u0131t haz\u0131r \u2014 takip eder ve yan\u0131t\u0131 kopyalaman\u0131za veya payla\u015Fman\u0131za olanak tan\u0131r. Ayr\u0131ca Ayarlar \u2192 Ses ve Titre\u015Fim b\u00F6l\u00FCm\u00FCnden k\u0131sa bir tamamlanma sesini etkinle\u015Ftirebilirsiniz. Model indirmeleri ise h\u0131z ve tahmini s\u00FCreyle kendi ilerleme bildirimini g\u00F6sterir.</string>
     <string name="faq_q15">Sesle dikte sesimi bir yere gönderir mi?</string>
     <string name="faq_a15">Hayır. Mesaj alanındaki mikrofona dokunup konuşun — bir konuşma tanıma modeli, siz konuşurken sözcüklerinizi telefonunuzda metne dönüştürür, 35 dilde. Ses asla kaydedilmez ve hiçbir yere gönderilmez; bu yüzden dikte tamamen çevrimdışı çalışır. Model (718 MB), mikrofonu ilk kez kullandığınızda bir kez indirilir.</string>
+    <string name="faq_q16">Canlı HTML önizleme nedir?</string>
+    <string name="faq_a16">Bir model web sayfasını HTML kod bloğu olarak yazdığında yanıt onu bir kart olarak gösterir. Sayfayı doğrudan sohbette çalıştırmak için oynat simgesine dokunun ya da kartın düğmeleriyle kopyalayın, .html dosyası olarak kaydedin, tarayıcıda açın veya tam ekran görüntüleyin. Ayarlar \u2192 Araçlar bölümünde Önizlemelerde internet erişimini açmadığınız sürece önizlemeler çevrimdışı çalışır.</string>
     <string name="models">Modeller</string>
     <string name="change_folder">Klas\u00F6r\u00FC De\u011Fi\u015Ftir</string>
     <string name="delete_model">Sil</string>
@@ -311,6 +314,20 @@
     <string name="tool_web_fetch_title">Web sayfas\u0131 getir</string>
     <string name="tool_web_fetch_desc">Bir ba\u011Flant\u0131y\u0131 a\u00E7ar ve ana i\u00E7eri\u011Fini metin olarak okur, b\u00F6ylece model bir sayfay\u0131 \u00F6zetleyebilir veya al\u0131nt\u0131layabilir.</string>
     <string name="tool_web_fetch_example">\"Bu ba\u011Flant\u0131daki makaleyi \u00F6zetle.\"</string>
+    <string name="html_artifact_reload">Yeniden yükle</string>
+    <string name="html_artifact_full_screen">Tam ekran</string>
+    <string name="html_artifact_live_preview">Canlı önizleme</string>
+    <string name="html_artifact_code">Kod</string>
+    <string name="html_artifact_writing">Yazılıyor…</string>
+    <string name="html_artifact_default_title">Web sayfası</string>
+    <string name="html_artifact_download">İndir</string>
+    <string name="html_artifact_saved">HTML dosyası kaydedildi</string>
+    <string name="html_artifact_save_failed">Dosya kaydedilemedi</string>
+    <string name="html_artifact_open_in_browser">Tarayıcıda aç</string>
+    <string name="html_artifact_no_browser">Bu sayfayı açacak uygulama bulunamadı</string>
+    <string name="tools_html_preview_internet_title">Önizlemelerde internet erişimi</string>
+    <string name="tools_html_preview_internet_desc">Canlı önizlemelerin internetten kitaplık, yazı tipi, görsel ve veri yüklemesine izin verir. Kapalıyken önizlemeler tamamen çevrimdışı çalışır. Tarayıcıda aç, bu ayarın denetlemediği tarayıcı uygulamanızı kullanır. Kapatıldığında önizlemelerin indirdiği veya kaydettiği her şey silinir.</string>
+    <string name="html_artifact_offline_notice">Bu sayfa internetten dosya yüklemeye çalıştı. Önizlemeler çevrimdışı; internet erişimine Ayarlar \u2192 Araçlar bölümünden izin verebilirsiniz.</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">Yan\u0131t \u00FCretiliyor…</string>
