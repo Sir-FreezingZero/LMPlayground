@@ -12,6 +12,22 @@
     <string name="menu_gallery">গ্যালারি</string>
     <string name="menu_slideshow">স্লাইডশো</string>
     <string name="conversations">কথোপকথন</string>
+    <string name="search_chats">চ্যাট খুঁজুন</string>
+    <string name="no_matching_chats">মিলে যাওয়া কোনো চ্যাট নেই</string>
+    <string name="chats">চ্যাট</string>
+    <string name="sort_chats">চ্যাট সাজান</string>
+    <string name="sort_recent">সাম্প্রতিক কার্যকলাপ</string>
+    <string name="sort_newest">নতুনগুলো আগে</string>
+    <string name="sort_oldest">পুরোনোগুলো আগে</string>
+    <string name="sort_name">নাম (A–Z)</string>
+    <string name="new_folder">নতুন ফোল্ডার</string>
+    <string name="folder_name">ফোল্ডারের নাম</string>
+    <string name="create">তৈরি করুন</string>
+    <string name="add_to_folder">ফোল্ডারে যোগ করুন</string>
+    <string name="remove_from_folder">ফোল্ডার থেকে সরান</string>
+    <string name="rename_folder">ফোল্ডারের নাম বদলান</string>
+    <string name="delete_folder">ফোল্ডার মুছুন</string>
+    <string name="folder_empty">এই ফোল্ডারে কোনো চ্যাট নেই</string>
     <string name="profile">প্রোফাইল</string>
     <string name="jumpBottom">নিচে যান</string>
     <string name="send">পাঠান</string>
@@ -180,6 +196,7 @@
 
     <!-- General UI -->
     <string name="select_model">মডেল নির্বাচন করুন</string>
+    <string name="select_model_subtitle">ব্যবহারের জন্য একটি মডেল বেছে নিন</string>
     <string name="new_conversation">নতুন কথোপকথন</string>
     <string name="close">বন্ধ করুন</string>
     <string name="pinned_label">পিন করা</string>

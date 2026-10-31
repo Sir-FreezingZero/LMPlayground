@@ -12,6 +12,22 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="conversations">Conversations</string>
+    <string name="search_chats">Search chats</string>
+    <string name="no_matching_chats">No matching chats</string>
+    <string name="chats">Chats</string>
+    <string name="sort_chats">Sort chats</string>
+    <string name="sort_recent">Recent activity</string>
+    <string name="sort_newest">Newest first</string>
+    <string name="sort_oldest">Oldest first</string>
+    <string name="sort_name">Name (A–Z)</string>
+    <string name="new_folder">New folder</string>
+    <string name="folder_name">Folder name</string>
+    <string name="create">Create</string>
+    <string name="add_to_folder">Add to folder</string>
+    <string name="remove_from_folder">Remove from folder</string>
+    <string name="rename_folder">Rename folder</string>
+    <string name="delete_folder">Delete folder</string>
+    <string name="folder_empty">No chats in this folder</string>
     <string name="profile">Profile</string>
     <string name="jumpBottom">Jump to bottom</string>
     <string name="send">Send</string>
@@ -186,6 +202,7 @@
 
     <!-- General UI -->
     <string name="select_model">Select Model</string>
+    <string name="select_model_subtitle">Choose a model to use</string>
     <string name="new_conversation">New Conversation</string>
     <string name="close">Close</string>
     <string name="pinned_label">Pinned</string>

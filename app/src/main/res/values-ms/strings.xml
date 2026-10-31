@@ -12,6 +12,22 @@
     <string name="menu_gallery">Galeri</string>
     <string name="menu_slideshow">Tayangan slaid</string>
     <string name="conversations">Perbualan</string>
+    <string name="search_chats">Cari sembang</string>
+    <string name="no_matching_chats">Tiada sembang yang sepadan</string>
+    <string name="chats">Sembang</string>
+    <string name="sort_chats">Isih sembang</string>
+    <string name="sort_recent">Aktiviti terkini</string>
+    <string name="sort_newest">Terbaharu dahulu</string>
+    <string name="sort_oldest">Terlama dahulu</string>
+    <string name="sort_name">Nama (A–Z)</string>
+    <string name="new_folder">Folder baharu</string>
+    <string name="folder_name">Nama folder</string>
+    <string name="create">Cipta</string>
+    <string name="add_to_folder">Tambah ke folder</string>
+    <string name="remove_from_folder">Alih keluar dari folder</string>
+    <string name="rename_folder">Namakan semula folder</string>
+    <string name="delete_folder">Padam folder</string>
+    <string name="folder_empty">Tiada sembang dalam folder ini</string>
     <string name="profile">Profil</string>
     <string name="jumpBottom">Lompat ke bawah</string>
     <string name="send">Hantar</string>
@@ -180,6 +196,7 @@
 
     <!-- General UI -->
     <string name="select_model">Pilih Model</string>
+    <string name="select_model_subtitle">Pilih model untuk digunakan</string>
     <string name="new_conversation">Perbualan Baharu</string>
     <string name="close">Tutup</string>
     <string name="pinned_label">Disematkan</string>

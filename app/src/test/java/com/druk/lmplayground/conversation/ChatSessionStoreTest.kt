@@ -112,6 +112,46 @@ class ChatSessionStoreTest {
     }
 
     @Test
+    fun searchMatchesTitlesAndMessageText() = runBlocking {
+        val timer = runCreateSession(firstMessage = "Set timer for 7 minutes")
+        val code = runCreateSession(firstMessage = "write some python code")
+        store.persistMessage(code, Message(author = "Assistant", content = "print(\"100% done\")"))
+        val other = runCreateSession(firstMessage = "what's your name")
+        store.persistMessage(other, Message(author = "Assistant", content = "I use snake_case names"))
+
+        assertEquals(setOf(timer), store.searchSessions("TIMER"))
+        assertEquals(setOf(code), store.searchSessions("100%"))
+        assertEquals(setOf(other), store.searchSessions("e_c"))
+        assertEquals(emptySet<String>(), store.searchSessions("nothing like this"))
+    }
+
+    private fun folderNames(): List<String> =
+        db.openHelper.readableDatabase.query("SELECT name FROM chat_folders").use { c ->
+            buildList { while (c.moveToNext()) add(c.getString(0)) }
+        }
+
+    @Test
+    fun foldersHoldChatsAndDeletingOneKeepsTheChats() = runBlocking {
+        val chat = runCreateSession(firstMessage = "recipe ideas")
+        val folder = store.createFolder("Cooking")
+
+        store.moveToFolder(chat, folder)
+        assertEquals(folder, store.getSession(chat)!!.folderId)
+
+        store.renameFolder(folder, "Kitchen")
+        assertEquals(listOf("Kitchen"), folderNames())
+
+        store.moveToFolder(chat, null)
+        assertNull(store.getSession(chat)!!.folderId)
+
+        store.moveToFolder(chat, folder)
+        store.deleteFolder(folder)
+        assertNotNull(store.getSession(chat))
+        assertNull(store.getSession(chat)!!.folderId)
+        assertEquals(emptyList<String>(), folderNames())
+    }
+
+    @Test
     fun loadDropsImageUriWhenFileIsGone() = runBlocking {
         val id = runCreateSession()
         store.persistMessage(

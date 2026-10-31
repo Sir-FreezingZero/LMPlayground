@@ -12,6 +12,22 @@
     <string name="menu_gallery">Galleria</string>
     <string name="menu_slideshow">Diaesitys</string>
     <string name="conversations">Keskustelut</string>
+    <string name="search_chats">Hae keskusteluista</string>
+    <string name="no_matching_chats">Ei osuvia keskusteluja</string>
+    <string name="chats">Keskustelut</string>
+    <string name="sort_chats">Lajittele keskustelut</string>
+    <string name="sort_recent">Viimeisin toiminta</string>
+    <string name="sort_newest">Uusimmat ensin</string>
+    <string name="sort_oldest">Vanhimmat ensin</string>
+    <string name="sort_name">Nimi (A–Ö)</string>
+    <string name="new_folder">Uusi kansio</string>
+    <string name="folder_name">Kansion nimi</string>
+    <string name="create">Luo</string>
+    <string name="add_to_folder">Lisää kansioon</string>
+    <string name="remove_from_folder">Poista kansiosta</string>
+    <string name="rename_folder">Nimeä kansio uudelleen</string>
+    <string name="delete_folder">Poista kansio</string>
+    <string name="folder_empty">Tässä kansiossa ei ole keskusteluja</string>
     <string name="profile">Profiili</string>
     <string name="jumpBottom">Siirry alaosaan</string>
     <string name="send">Lähetä</string>
@@ -181,6 +197,7 @@
 
     <!-- General UI -->
     <string name="select_model">Valitse malli</string>
+    <string name="select_model_subtitle">Valitse käytettävä malli</string>
     <string name="new_conversation">Uusi keskustelu</string>
     <string name="close">Sulje</string>
     <string name="pinned_label">Kiinnitetty</string>

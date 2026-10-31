@@ -45,14 +45,14 @@ import com.druk.lmplayground.R
 import com.druk.lmplayground.dictation.DictationEarcon
 import kotlinx.coroutines.flow.StateFlow
 
-/** The listening ring: a closed loop of hues, so the sweep has no seam. */
+/** The listening ring: a closed loop of grays, so the sweep has no seam. */
 private val RING_COLORS = listOf(
-    Color(0xFF4F8CFF),
-    Color(0xFFB36BFF),
-    Color(0xFFFF6B9A),
-    Color(0xFFFFB547),
-    Color(0xFF3DDC97),
-    Color(0xFF4F8CFF),
+    Color(0xFFFFFFFF),
+    Color(0xFFB3B3B3),
+    Color(0xFF6E6E6E),
+    Color(0xFFB3B3B3),
+    Color(0xFFE0E0E0),
+    Color(0xFFFFFFFF),
 )
 
 /**

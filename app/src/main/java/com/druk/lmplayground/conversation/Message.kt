@@ -1,5 +1,7 @@
 package com.druk.lmplayground.conversation
 
+import com.druk.lmplayground.theme.menuBorder
+import com.druk.lmplayground.theme.PopupMenuShape
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -168,6 +170,8 @@ private fun UserBubble(content: String, menuEnabled: Boolean, onEdit: (() -> Uni
             }
         }
         DropdownMenu(
+            shape = PopupMenuShape,
+            border = menuBorder,
             expanded = menuOpen,
             onDismissRequest = { menuOpen = false },
             // Clear of the bubble, rather than touching its edge.

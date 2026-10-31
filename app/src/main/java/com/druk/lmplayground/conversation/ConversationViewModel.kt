@@ -13,6 +13,7 @@ import com.druk.llamacpp.InferenceState
 import com.druk.llamacpp.LlamaCpp
 import com.druk.lmplayground.App
 import com.druk.lmplayground.inference.ModelRuntime
+import com.druk.lmplayground.data.ChatFolderEntity
 import com.druk.lmplayground.data.ChatSessionEntity
 import com.druk.lmplayground.data.ConversationMetadata
 import com.druk.lmplayground.data.SystemPromptEntity
@@ -427,6 +428,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     private val _currentSessionId = MutableLiveData<String?>(null)
     val currentSessionId: LiveData<String?> = _currentSessionId
     val sessions: LiveData<List<ChatSessionEntity>> = sessionStore.allSessions()
+    val folders: LiveData<List<ChatFolderEntity>> = sessionStore.allFolders()
     /**
      * Per-model MRU list. When the loaded model changes, switchMap swaps in
      * the corresponding query so the picker reflects "prompts I've used on
@@ -948,6 +950,8 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
             _generationParams.value ?: GenerationParams(),
             _systemPrompt.value.orEmpty(),
         )
+        newChatFolderId?.let { sessionStore.moveToFolder(id, it) }
+        newChatFolderId = null
         // Synchronous main-thread set (not postValue): a follow-up
         // ensureSessionId must observe the id as soon as the lock drops.
         withContext(Dispatchers.Main.immediate) { _currentSessionId.value = id }
@@ -990,6 +994,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
     @MainThread
     fun loadSession(sessionId: String) {
+        newChatFolderId = null
         viewModelScope.launch {
             val uiMessages = sessionStore.loadSessionMessages(sessionId) ?: return@launch
             val sessionEntity = sessionStore.getSession(sessionId)
@@ -1070,6 +1075,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
     @MainThread
     fun newConversation() {
+        newChatFolderId = null
         viewModelScope.launch {
             runtime.cancelAndJoinGeneration()
 
@@ -1191,6 +1197,46 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
             sessionStore.renameSession(sessionId, newTitle)
         }
     }
+
+    /** Create a folder; when [moveSessionId] is given, put that chat in it. */
+    @MainThread
+    fun createFolder(name: String, moveSessionId: String? = null) {
+        viewModelScope.launch {
+            val folderId = sessionStore.createFolder(name)
+            if (moveSessionId != null) sessionStore.moveToFolder(moveSessionId, folderId)
+        }
+    }
+
+    @MainThread
+    fun renameFolder(folderId: String, name: String) {
+        viewModelScope.launch { sessionStore.renameFolder(folderId, name) }
+    }
+
+    @MainThread
+    fun deleteFolder(folderId: String) {
+        viewModelScope.launch { sessionStore.deleteFolder(folderId) }
+    }
+
+    /**
+     * Folder for the chat that is about to be saved, set by a folder's
+     * new-chat button. A chat is saved on its first message; opening
+     * another chat or starting a plain new one clears it.
+     */
+    @Volatile
+    private var newChatFolderId: String? = null
+
+    /** Call right after [newConversation]: the new chat goes into [folderId]. */
+    fun newChatInFolder(folderId: String) {
+        newChatFolderId = folderId
+    }
+
+    @MainThread
+    fun moveToFolder(sessionId: String, folderId: String?) {
+        viewModelScope.launch { sessionStore.moveToFolder(sessionId, folderId) }
+    }
+
+    /** Ids of the chats whose title or messages contain [query]. */
+    suspend fun searchSessions(query: String): Set<String> = sessionStore.searchSessions(query)
 
     @MainThread
     fun pinSession(sessionId: String, pinned: Boolean) {

@@ -26,5 +26,7 @@ data class ChatSessionEntity(
      * the web_search link map; future features can add keys without a schema
      * change. See [ConversationMetadata].
      */
-    val metadata: String = "{}"
+    val metadata: String = "{}",
+    /** The chat-list folder this chat is in ([ChatFolderEntity.id]), or null. */
+    val folderId: String? = null
 )

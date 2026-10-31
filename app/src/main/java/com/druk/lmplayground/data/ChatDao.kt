@@ -59,6 +59,38 @@ interface ChatDao {
     @Query("SELECT metadata FROM chat_sessions WHERE metadata LIKE :pattern")
     suspend fun getMetadataLike(pattern: String): List<String>
 
+    /**
+     * Ids of sessions whose title or any message matches [pattern] (LIKE,
+     * with '!' as the escape character).
+     */
+    @Query(
+        """SELECT id FROM chat_sessions WHERE title LIKE :pattern ESCAPE '!'
+            OR id IN (SELECT sessionId FROM chat_messages WHERE content LIKE :pattern ESCAPE '!')"""
+    )
+    suspend fun searchSessionIds(pattern: String): List<String>
+
+    // ── Folders ────────────────────────────────────────────────────────
+
+    @Query("SELECT * FROM chat_folders ORDER BY name COLLATE NOCASE, createdAt")
+    fun getAllFolders(): LiveData<List<ChatFolderEntity>>
+
+    @Insert
+    suspend fun insertFolder(folder: ChatFolderEntity)
+
+    @Query("UPDATE chat_folders SET name = :name WHERE id = :folderId")
+    suspend fun updateFolderName(folderId: String, name: String)
+
+    @Query("DELETE FROM chat_folders WHERE id = :folderId")
+    suspend fun deleteFolder(folderId: String)
+
+    /** Put a chat in a folder, or take it out with null. */
+    @Query("UPDATE chat_sessions SET folderId = :folderId WHERE id = :sessionId")
+    suspend fun updateSessionFolder(sessionId: String, folderId: String?)
+
+    /** Move every chat out of [folderId] (before the folder is deleted). */
+    @Query("UPDATE chat_sessions SET folderId = NULL WHERE folderId = :folderId")
+    suspend fun clearFolder(folderId: String)
+
     @Query("SELECT * FROM chat_sessions WHERE id = :sessionId")
     suspend fun getSession(sessionId: String): ChatSessionEntity?
 

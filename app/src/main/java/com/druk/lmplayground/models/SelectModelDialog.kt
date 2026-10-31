@@ -1,12 +1,16 @@
 package com.druk.lmplayground.models
 
+import com.druk.lmplayground.theme.menuBorder
+import com.druk.lmplayground.theme.MenuCardShape
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,18 +25,19 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Eject
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -46,6 +51,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -57,7 +63,8 @@ import dev.chrisbanes.haze.hazeEffect
 @Composable
 fun SelectModelDialog(
     models: List<ModelWithStatus>,
-    isModelLoaded: Boolean = false,
+    /** Filename of the loaded model, shown as selected; null when none is loaded. */
+    loadedModelFilename: String? = null,
     /**
      * When > 0, the dialog Card is centered inside the chat pane rather than
      * the full window — used on tablet so the picker doesn't appear to cover
@@ -69,7 +76,6 @@ fun SelectModelDialog(
     hazeStyle: HazeStyle = HazeStyle.Unspecified,
     onLoadModel: (ModelInfo) -> Unit,
     onUnloadModel: () -> Unit = {},
-    onGenerationParams: () -> Unit = {},
     onBrowseModels: () -> Unit,
     onDismissRequest: () -> Unit
 ) {
@@ -117,7 +123,8 @@ fun SelectModelDialog(
                     indication = null,
                     onClick = {}
                 ),
-            shape = RoundedCornerShape(16.dp),
+            shape = MenuCardShape,
+            border = menuBorder,
             color = if (frosted) Color.Transparent else MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface,
             tonalElevation = if (frosted) 0.dp else 6.dp,
@@ -129,6 +136,32 @@ fun SelectModelDialog(
                 } else Modifier
             ) {
             LazyColumn {
+                // Header: title and a close button, underlined.
+                item {
+                    Row(
+                        modifier = Modifier.padding(start = 24.dp, end = 12.dp, top = 8.dp, bottom = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = stringResource(R.string.select_model),
+                                style = MaterialTheme.typography.titleLarge
+                            )
+                            Text(
+                                text = stringResource(R.string.select_model_subtitle),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        IconButton(onClick = onDismissRequest) {
+                            Icon(
+                                imageVector = Icons.Outlined.Close,
+                                contentDescription = stringResource(R.string.close)
+                            )
+                        }
+                    }
+                    HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
+                }
                 if (downloadedModels.isEmpty()) {
                     item {
                         Text(
@@ -149,6 +182,7 @@ fun SelectModelDialog(
                             // actually present, so the picker reflects whether
                             // vision will really work once this model is loaded.
                             vision = modelWithStatus.isMmprojDownloaded,
+                            selected = modelWithStatus.model.filename == loadedModelFilename,
                         ) {
                             onDismissRequest()
                             onLoadModel(modelWithStatus.model)
@@ -157,16 +191,19 @@ fun SelectModelDialog(
                 }
 
                 item {
-                    HorizontalDivider(modifier = Modifier.padding(horizontal = 8.dp))
-                    Spacer(modifier = Modifier.height(8.dp))
-                    TextButton(
+                    HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
+                    FilledTonalButton(
+                        colors = ButtonDefaults.filledTonalButtonColors(
+                            contentColor = MaterialTheme.colorScheme.primary
+                        ),
                         onClick = {
                             onDismissRequest()
                             onBrowseModels()
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                            .padding(horizontal = 16.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Search,
@@ -175,31 +212,18 @@ fun SelectModelDialog(
                         )
                         Text(stringResource(R.string.browse_more_models))
                     }
-                    if (isModelLoaded) {
-                        TextButton(
-                            onClick = {
-                                onDismissRequest()
-                                onGenerationParams()
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp, vertical = 4.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Tune,
-                                contentDescription = null,
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(stringResource(R.string.generation_parameters))
-                        }
-                        TextButton(
+                    if (loadedModelFilename != null) {
+                        OutlinedButton(
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            ),
                             onClick = {
                                 onDismissRequest()
                                 onUnloadModel()
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 8.dp, vertical = 4.dp)
+                                .padding(horizontal = 16.dp)
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.Eject,
@@ -209,7 +233,7 @@ fun SelectModelDialog(
                             Text(stringResource(R.string.unload_model))
                         }
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
                 }
             }
         }
@@ -221,12 +245,19 @@ fun SelectModelDialog(
 fun Model(
     model: ModelInfo,
     vision: Boolean = model.isVision,
+    /** The loaded model: outlined and tinted. */
+    selected: Boolean = false,
     onClick: () -> Unit
 ) {
+    val primary = MaterialTheme.colorScheme.primary
     Button(
         onClick = onClick,
+        modifier = Modifier.padding(horizontal = 12.dp, vertical = 1.dp),
+        shape = RoundedCornerShape(16.dp),
+        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+        border = if (selected) BorderStroke(1.dp, primary) else null,
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent
+            containerColor = if (selected) primary.copy(alpha = 0.12f) else Color.Transparent
         )
     ) {
         Row(
@@ -252,34 +283,24 @@ fun Model(
                     textAlign = TextAlign.Start,
                     maxLines = 1
                 )
+                // Description and release date on one line.
                 Text(
-                    text = model.description,
+                    text = listOfNotNull(
+                        model.description,
+                        model.releaseDate?.let { model.releaseDateLabel() }
+                    ).joinToString(" \u00B7 "),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Start,
-                    maxLines = 1
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
-                if (model.releaseDate != null) {
-                    Text(
-                        text = model.releaseDateLabel(),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Start,
-                        maxLines = 1
-                    )
-                }
             }
         }
         ModelCapabilityIcons(
             model = model,
             vision = vision,
             modifier = Modifier.padding(end = 4.dp)
-        )
-        Icon(
-            imageVector = Icons.Outlined.AutoAwesome,
-            modifier = Modifier.padding(4.dp),
-            tint = MaterialTheme.colorScheme.onSurface,
-            contentDescription = null
         )
     }
 }

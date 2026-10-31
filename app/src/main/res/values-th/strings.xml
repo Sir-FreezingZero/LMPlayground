@@ -13,6 +13,22 @@
     <string name="menu_gallery">คลังภาพ</string>
     <string name="menu_slideshow">สไลด์โชว์</string>
     <string name="conversations">บทสนทนา</string>
+    <string name="search_chats">ค้นหาแชท</string>
+    <string name="no_matching_chats">ไม่มีแชทที่ตรงกัน</string>
+    <string name="chats">แชท</string>
+    <string name="sort_chats">เรียงแชท</string>
+    <string name="sort_recent">กิจกรรมล่าสุด</string>
+    <string name="sort_newest">ใหม่สุดก่อน</string>
+    <string name="sort_oldest">เก่าสุดก่อน</string>
+    <string name="sort_name">ชื่อ (ก–ฮ)</string>
+    <string name="new_folder">โฟลเดอร์ใหม่</string>
+    <string name="folder_name">ชื่อโฟลเดอร์</string>
+    <string name="create">สร้าง</string>
+    <string name="add_to_folder">เพิ่มลงในโฟลเดอร์</string>
+    <string name="remove_from_folder">นำออกจากโฟลเดอร์</string>
+    <string name="rename_folder">เปลี่ยนชื่อโฟลเดอร์</string>
+    <string name="delete_folder">ลบโฟลเดอร์</string>
+    <string name="folder_empty">ไม่มีแชทในโฟลเดอร์นี้</string>
     <string name="profile">โปรไฟล์</string>
     <string name="jumpBottom">ไปที่ด้านล่าง</string>
     <string name="send">ส่ง</string>
@@ -181,6 +197,7 @@
 
     <!-- General UI -->
     <string name="select_model">เลือกโมเดล</string>
+    <string name="select_model_subtitle">เลือกโมเดลที่จะใช้</string>
     <string name="new_conversation">บทสนทนาใหม่</string>
     <string name="close">ปิด</string>
     <string name="pinned_label">ปักหมุดแล้ว</string>

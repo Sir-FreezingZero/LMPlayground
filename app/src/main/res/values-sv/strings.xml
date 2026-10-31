@@ -12,6 +12,22 @@
     <string name="menu_gallery">Galleri</string>
     <string name="menu_slideshow">Bildspel</string>
     <string name="conversations">Konversationer</string>
+    <string name="search_chats">Sök i chattar</string>
+    <string name="no_matching_chats">Inga matchande chattar</string>
+    <string name="chats">Chattar</string>
+    <string name="sort_chats">Sortera chattar</string>
+    <string name="sort_recent">Senaste aktivitet</string>
+    <string name="sort_newest">Nyaste först</string>
+    <string name="sort_oldest">Äldsta först</string>
+    <string name="sort_name">Namn (A–Ö)</string>
+    <string name="new_folder">Ny mapp</string>
+    <string name="folder_name">Mappnamn</string>
+    <string name="create">Skapa</string>
+    <string name="add_to_folder">Lägg till i mapp</string>
+    <string name="remove_from_folder">Ta bort från mapp</string>
+    <string name="rename_folder">Byt namn på mapp</string>
+    <string name="delete_folder">Radera mapp</string>
+    <string name="folder_empty">Inga chattar i den här mappen</string>
     <string name="profile">Profil</string>
     <string name="jumpBottom">Hoppa till botten</string>
     <string name="send">Skicka</string>
@@ -181,6 +197,7 @@
 
     <!-- General UI -->
     <string name="select_model">Välj modell</string>
+    <string name="select_model_subtitle">Välj en modell att använda</string>
     <string name="new_conversation">Ny konversation</string>
     <string name="close">Stäng</string>
     <string name="pinned_label">Fäst</string>

@@ -1,5 +1,7 @@
 package com.druk.lmplayground.conversation
 
+import androidx.compose.ui.Modifier
+import com.druk.lmplayground.theme.menuOutline
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -11,6 +13,7 @@ import com.druk.lmplayground.R
 @Composable
 fun FunctionalityNotAvailablePopup(onDismiss: () -> Unit) {
     AlertDialog(
+        modifier = Modifier.menuOutline(),
         onDismissRequest = onDismiss,
         text = {
             Text(

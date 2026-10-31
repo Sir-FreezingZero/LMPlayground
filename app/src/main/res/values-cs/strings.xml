@@ -13,6 +13,22 @@
     <string name="menu_gallery">Galerie</string>
     <string name="menu_slideshow">Prezentace</string>
     <string name="conversations">Konverzace</string>
+    <string name="search_chats">Hledat v chatech</string>
+    <string name="no_matching_chats">Žádné odpovídající chaty</string>
+    <string name="chats">Chaty</string>
+    <string name="sort_chats">Seřadit chaty</string>
+    <string name="sort_recent">Nedávná aktivita</string>
+    <string name="sort_newest">Nejnovější první</string>
+    <string name="sort_oldest">Nejstarší první</string>
+    <string name="sort_name">Název (A–Z)</string>
+    <string name="new_folder">Nová složka</string>
+    <string name="folder_name">Název složky</string>
+    <string name="create">Vytvořit</string>
+    <string name="add_to_folder">Přidat do složky</string>
+    <string name="remove_from_folder">Odebrat ze složky</string>
+    <string name="rename_folder">Přejmenovat složku</string>
+    <string name="delete_folder">Smazat složku</string>
+    <string name="folder_empty">V této složce nejsou žádné chaty</string>
     <string name="profile">Profil</string>
     <string name="jumpBottom">Přejít dolů</string>
     <string name="send">Odeslat</string>
@@ -182,6 +198,7 @@
 
     <!-- General UI -->
     <string name="select_model">Vybrat model</string>
+    <string name="select_model_subtitle">Vyberte model, který chcete použít</string>
     <string name="new_conversation">Nová konverzace</string>
     <string name="close">Zavřít</string>
     <string name="pinned_label">Připnuto</string>

@@ -2,6 +2,8 @@
 
 package com.druk.lmplayground.conversation
 
+import com.druk.lmplayground.theme.menuBorder
+import com.druk.lmplayground.theme.PopupMenuShape
 import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,7 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDropDown
-import androidx.compose.material.icons.outlined.EditNote
+import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -54,7 +58,8 @@ fun ConversationBar(
     compact: Boolean = false,
     onModelNamePressed: () -> Unit = { },
     onNavIconPressed: () -> Unit = { },
-    onNewSessionPressed: () -> Unit = { }
+    /** Opens the generation parameters; the ⋮ menu shows only when set (a model is loaded). */
+    onGenerationParamsPressed: (() -> Unit)? = null,
 ) {
     AppBar(
         modifier = modifier.testTag(ConversationBarTestTag),
@@ -151,12 +156,24 @@ fun ConversationBar(
             }
         },
         actions = {
-            IconButton(onClick = onNewSessionPressed) {
-                Icon(
-                    imageVector = Icons.Outlined.EditNote,
-                    contentDescription = stringResource(R.string.new_conversation),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            if (onGenerationParamsPressed != null) {
+                var showMenu by remember { mutableStateOf(false) }
+                IconButton(onClick = { showMenu = true }) {
+                    Icon(
+                        imageVector = Icons.Outlined.MoreVert,
+                        contentDescription = stringResource(R.string.more_options),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                DropdownMenu(shape = PopupMenuShape, border = menuBorder, expanded = showMenu, onDismissRequest = { showMenu = false }) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.generation_parameters)) },
+                        onClick = {
+                            showMenu = false
+                            onGenerationParamsPressed()
+                        }
+                    )
+                }
             }
         }
     )

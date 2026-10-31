@@ -46,6 +46,23 @@ class ChatRepository(private val dao: ChatDao) {
     suspend fun getMetadataLike(pattern: String): List<String> =
         dao.getMetadataLike(pattern)
 
+    suspend fun searchSessionIds(pattern: String): List<String> =
+        dao.searchSessionIds(pattern)
+
+    fun getAllFolders(): LiveData<List<ChatFolderEntity>> = dao.getAllFolders()
+
+    suspend fun insertFolder(folder: ChatFolderEntity) = dao.insertFolder(folder)
+
+    suspend fun updateFolderName(folderId: String, name: String) = dao.updateFolderName(folderId, name)
+
+    suspend fun deleteFolder(folderId: String) {
+        dao.clearFolder(folderId)
+        dao.deleteFolder(folderId)
+    }
+
+    suspend fun updateSessionFolder(sessionId: String, folderId: String?) =
+        dao.updateSessionFolder(sessionId, folderId)
+
     suspend fun getSession(sessionId: String): ChatSessionEntity? =
         dao.getSession(sessionId)
 

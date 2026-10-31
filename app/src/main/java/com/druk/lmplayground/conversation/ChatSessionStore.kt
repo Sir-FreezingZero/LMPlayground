@@ -2,6 +2,7 @@ package com.druk.lmplayground.conversation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.druk.lmplayground.data.ChatFolderEntity
 import com.druk.lmplayground.data.ChatMessageEntity
 import com.druk.lmplayground.data.ChatRepository
 import com.druk.lmplayground.data.ChatSessionEntity
@@ -27,6 +28,30 @@ class ChatSessionStore(
 
     fun allSessions(): LiveData<List<ChatSessionEntity>> =
         chatRepository?.getAllSessions() ?: MutableLiveData(emptyList())
+
+    fun allFolders(): LiveData<List<ChatFolderEntity>> =
+        chatRepository?.getAllFolders() ?: MutableLiveData(emptyList())
+
+    /** Create a chat-list folder and return its id. */
+    suspend fun createFolder(name: String): String {
+        val id = UUID.randomUUID().toString()
+        chatRepository?.insertFolder(ChatFolderEntity(id, name, System.currentTimeMillis()))
+        return id
+    }
+
+    suspend fun renameFolder(folderId: String, name: String) {
+        chatRepository?.updateFolderName(folderId, name)
+    }
+
+    /** Delete a folder; its chats go back to the main list. */
+    suspend fun deleteFolder(folderId: String) {
+        chatRepository?.deleteFolder(folderId)
+    }
+
+    /** Put a chat in [folderId], or take it out of its folder with null. */
+    suspend fun moveToFolder(sessionId: String, folderId: String?) {
+        chatRepository?.updateSessionFolder(sessionId, folderId)
+    }
 
     /** Per-model MRU system prompts, most recently used first. */
     fun recentSystemPromptsForModel(modelFilename: String?): LiveData<List<SystemPromptEntity>> {
@@ -286,6 +311,15 @@ class ChatSessionStore(
 
     suspend fun renameSession(sessionId: String, newTitle: String) {
         chatRepository?.updateSessionTitle(sessionId, newTitle)
+    }
+
+    /**
+     * Ids of the sessions whose title or message text contains [query]
+     * (case-insensitive for Latin letters, like SQLite LIKE).
+     */
+    suspend fun searchSessions(query: String): Set<String> {
+        val escaped = query.replace("!", "!!").replace("%", "!%").replace("_", "!_")
+        return chatRepository?.searchSessionIds("%$escaped%")?.toSet() ?: emptySet()
     }
 
     suspend fun pinSession(sessionId: String, pinned: Boolean) {

@@ -2,6 +2,7 @@
 
 package com.druk.lmplayground.storage
 
+import com.druk.lmplayground.theme.menuOutline
 import android.content.Context
 import android.text.format.Formatter
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
@@ -389,19 +391,23 @@ fun ModelsContent(
                         )
                     }
 
-                    items(supportedModels, key = { "avail_" + it.model.filename }) { modelWithStatus ->
-                        val moduleOnly = modelWithStatus.needsVisionModule
-                        val progressKey = if (moduleOnly)
-                            modelWithStatus.model.name + " (vision)"
-                        else
-                            modelWithStatus.model.name
-                        AvailableModelItem(
-                            modelWithStatus = modelWithStatus,
-                            moduleOnly = moduleOnly,
-                            downloadProgress = downloadingModels[progressKey],
-                            onDownloadClick = { onAvailableDownload(modelWithStatus) },
-                            onCancelClick = { onCancelDownload(modelWithStatus.model) }
-                        )
+                    // Grouped by model family: the leading letters of the name.
+                    supportedModels.groupBy { modelFamily(it.model.name) }.forEach { (family, models) ->
+                        familyHeader(family, key = "family_supportedModels_" + family)
+                        items(models, key = { "avail_" + it.model.filename }) { modelWithStatus ->
+                            val moduleOnly = modelWithStatus.needsVisionModule
+                            val progressKey = if (moduleOnly)
+                                modelWithStatus.model.name + " (vision)"
+                            else
+                                modelWithStatus.model.name
+                            AvailableModelItem(
+                                modelWithStatus = modelWithStatus,
+                                moduleOnly = moduleOnly,
+                                downloadProgress = downloadingModels[progressKey],
+                                onDownloadClick = { onAvailableDownload(modelWithStatus) },
+                                onCancelClick = { onCancelDownload(modelWithStatus.model) }
+                            )
+                        }
                     }
                 }
 
@@ -415,19 +421,23 @@ fun ModelsContent(
                         )
                     }
 
-                    items(otherModels, key = { "avail_" + it.model.filename }) { modelWithStatus ->
-                        val moduleOnly = modelWithStatus.needsVisionModule
-                        val progressKey = if (moduleOnly)
-                            modelWithStatus.model.name + " (vision)"
-                        else
-                            modelWithStatus.model.name
-                        AvailableModelItem(
-                            modelWithStatus = modelWithStatus,
-                            moduleOnly = moduleOnly,
-                            downloadProgress = downloadingModels[progressKey],
-                            onDownloadClick = { onAvailableDownload(modelWithStatus) },
-                            onCancelClick = { onCancelDownload(modelWithStatus.model) }
-                        )
+                    // Grouped by model family: the leading letters of the name.
+                    otherModels.groupBy { modelFamily(it.model.name) }.forEach { (family, models) ->
+                        familyHeader(family, key = "family_otherModels_" + family)
+                        items(models, key = { "avail_" + it.model.filename }) { modelWithStatus ->
+                            val moduleOnly = modelWithStatus.needsVisionModule
+                            val progressKey = if (moduleOnly)
+                                modelWithStatus.model.name + " (vision)"
+                            else
+                                modelWithStatus.model.name
+                            AvailableModelItem(
+                                modelWithStatus = modelWithStatus,
+                                moduleOnly = moduleOnly,
+                                downloadProgress = downloadingModels[progressKey],
+                                onDownloadClick = { onAvailableDownload(modelWithStatus) },
+                                onCancelClick = { onCancelDownload(modelWithStatus.model) }
+                            )
+                        }
                     }
                 }
             }
@@ -439,6 +449,7 @@ fun ModelsContent(
     // Delete confirmation dialog
     modelToDelete?.let { model ->
         AlertDialog(
+            modifier = Modifier.menuOutline(),
             onDismissRequest = { modelToDelete = null },
             title = { Text(stringResource(R.string.delete_model_confirm, model.name)) },
             text = { Text(stringResource(R.string.delete_model_message)) },
@@ -463,6 +474,7 @@ fun ModelsContent(
     // Vision download choice: bundle the image module or get the text-only model.
     downloadChoiceModel?.let { model ->
         AlertDialog(
+            modifier = Modifier.menuOutline(),
             onDismissRequest = { downloadChoiceModel = null },
             title = { Text(stringResource(R.string.download_with_vision_title)) },
             text = { Text(stringResource(R.string.download_with_vision_message, model.name)) },
@@ -501,6 +513,7 @@ fun ModelsContent(
         val sizeFormatted = Formatter.formatFileSize(context, totalSize)
         
         AlertDialog(
+            modifier = Modifier.menuOutline(),
             onDismissRequest = onCancelMigration,
             title = { Text(stringResource(R.string.migrate_models_title)) },
             text = {
@@ -551,6 +564,7 @@ fun ModelsContent(
     // Migration progress dialog
     migrationProgress?.let { progress ->
         AlertDialog(
+            modifier = Modifier.menuOutline(),
             onDismissRequest = { /* Cannot dismiss while migrating */ },
             title = { Text(stringResource(R.string.migrating_models)) },
             text = {
@@ -918,3 +932,22 @@ private fun ModelsScreenPreview() {
         )
     }
 }
+
+/** A family heading ("Qwen", "Gemma", ...) across the whole grid, above that family's models. */
+private fun LazyGridScope.familyHeader(family: String, key: String) =
+    item(span = { GridItemSpan(maxLineSpan) }, key = key) {
+        Text(
+            text = family,
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 4.dp)
+        )
+    }
+
+/**
+ * Model family for the Browse sections: the leading letters of the name, so
+ * "Qwen 3.5 2B" and "Qwen2.5 1.5B" -> "Qwen", "Phi-4 mini" -> "Phi",
+ * "LFM2.5 1.2B" -> "LFM".
+ */
+private fun modelFamily(name: String): String =
+    name.takeWhile { it.isLetter() }.ifEmpty { name }

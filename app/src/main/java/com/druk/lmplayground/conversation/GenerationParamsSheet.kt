@@ -1,5 +1,9 @@
 package com.druk.lmplayground.conversation
 
+import androidx.compose.material3.Surface
+import androidx.compose.material3.BottomSheetDefaults
+import com.druk.lmplayground.theme.MenuCardShape
+import com.druk.lmplayground.theme.menuBorder
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -118,13 +122,25 @@ fun GenerationParamsSheet(
             }
             onDismiss()
         },
-        sheetState = sheetState
+        sheetState = sheetState,
+        // Floating card like the chat menu. The sheet itself is invisible and
+        // the card (with its outline) is drawn inside it, so the outline moves
+        // with the sheet as it slides and is dragged.
+        containerColor = Color.Transparent,
+        tonalElevation = 0.dp,
+        shape = MenuCardShape,
+        dragHandle = null,
     ) {
-        Column(
+        Surface(
             modifier = Modifier
-                .fillMaxWidth()
                 .navigationBarsPadding()
+                .padding(start = 6.dp, end = 6.dp, bottom = 6.dp),
+            shape = MenuCardShape,
+            color = BottomSheetDefaults.ContainerColor,
+            border = menuBorder,
         ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            BottomSheetDefaults.DragHandle(modifier = Modifier.align(Alignment.CenterHorizontally))
             // Transparent so the sheet's (lighter) container colour shows
             // through the tab row instead of the tab row painting its own
             // darker surface — keeps the tabs and content the same tone as
@@ -181,6 +197,7 @@ fun GenerationParamsSheet(
                     maxHeight = maxTabHeight
                 )
             }
+        }
         }
     }
 

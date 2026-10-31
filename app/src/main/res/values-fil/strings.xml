@@ -12,6 +12,22 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="conversations">Mga usapan</string>
+    <string name="search_chats">Maghanap ng chat</string>
+    <string name="no_matching_chats">Walang tugmang chat</string>
+    <string name="chats">Mga chat</string>
+    <string name="sort_chats">Ayusin ang mga chat</string>
+    <string name="sort_recent">Kamakailang aktibidad</string>
+    <string name="sort_newest">Pinakabago muna</string>
+    <string name="sort_oldest">Pinakaluma muna</string>
+    <string name="sort_name">Pangalan (A–Z)</string>
+    <string name="new_folder">Bagong folder</string>
+    <string name="folder_name">Pangalan ng folder</string>
+    <string name="create">Gumawa</string>
+    <string name="add_to_folder">Idagdag sa folder</string>
+    <string name="remove_from_folder">Alisin sa folder</string>
+    <string name="rename_folder">Palitan ang pangalan ng folder</string>
+    <string name="delete_folder">Burahin ang folder</string>
+    <string name="folder_empty">Walang chat sa folder na ito</string>
     <string name="profile">Profile</string>
     <string name="jumpBottom">Bumaba sa ibaba</string>
     <string name="send">Ipadala</string>
@@ -180,6 +196,7 @@
 
     <!-- General UI -->
     <string name="select_model">Pumili ng Modelo</string>
+    <string name="select_model_subtitle">Pumili ng model na gagamitin</string>
     <string name="new_conversation">Bagong Usapan</string>
     <string name="close">Isara</string>
     <string name="pinned_label">Naka-pin</string>

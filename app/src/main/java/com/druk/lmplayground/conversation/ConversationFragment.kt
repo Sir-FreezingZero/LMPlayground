@@ -1,5 +1,6 @@
 package com.druk.lmplayground.conversation
 
+import com.druk.lmplayground.theme.menuOutline
 import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.pm.PackageManager
@@ -290,6 +291,16 @@ class ConversationFragment : Fragment() {
             val isModelReady by viewModel.isModelReady.observeAsState(false)
             val models by viewModel.models.observeAsState(emptyList())
             val sessions by viewModel.sessions.observeAsState(emptyList())
+            val folders by viewModel.folders.observeAsState(emptyList())
+            val folderActions = remember {
+                ChatFolderActions(
+                    onCreateFolder = { name, moveSessionId -> viewModel.createFolder(name, moveSessionId) },
+                    onRenameFolder = { folderId, name -> viewModel.renameFolder(folderId, name) },
+                    onDeleteFolder = { folderId -> viewModel.deleteFolder(folderId) },
+                    onMoveToFolder = { sessionId, folderId -> viewModel.moveToFolder(sessionId, folderId) },
+                    onNewChatInFolder = { folderId -> viewModel.newChatInFolder(folderId) },
+                )
+            }
             val currentSessionId by viewModel.currentSessionId.observeAsState()
             val generationParams by viewModel.generationParams.observeAsState(GenerationParams())
             val maxContextSize by viewModel.maxContextSize.observeAsState(4096)
@@ -474,6 +485,7 @@ class ConversationFragment : Fragment() {
                 // Storage Setup Dialog
                 if (showStorageSetupDialog && !isStorageConfigured && pendingMigration == null) {
                     AlertDialog(
+                        modifier = Modifier.menuOutline(),
                         onDismissRequest = { /* Cannot dismiss - must choose folder */ },
                         title = { Text(stringResource(R.string.choose_storage_folder)) },
                         text = {
@@ -502,6 +514,7 @@ class ConversationFragment : Fragment() {
                     val sizeFormatted = android.text.format.Formatter.formatFileSize(context, totalSize)
 
                     AlertDialog(
+                        modifier = Modifier.menuOutline(),
                         onDismissRequest = { storageViewModel.cancelMigration() },
                         title = { Text(stringResource(R.string.migrate_models_title)) },
                         text = {
@@ -531,6 +544,7 @@ class ConversationFragment : Fragment() {
                 // Migration progress dialog
                 migrationProgress?.let { progress ->
                     AlertDialog(
+                        modifier = Modifier.menuOutline(),
                         onDismissRequest = { /* Cannot dismiss while migrating */ },
                         title = { Text(stringResource(R.string.migrating_models)) },
                         text = {
@@ -558,6 +572,7 @@ class ConversationFragment : Fragment() {
                 embeddingModelPrompt?.let {
                     val embeddingModel = ModelInfoProvider.embeddingModel
                     AlertDialog(
+                        modifier = Modifier.menuOutline(),
                         onDismissRequest = { viewModel.dismissEmbeddingModelPrompt() },
                         title = { Text(stringResource(R.string.embedding_model_dialog_title)) },
                         text = {
@@ -587,6 +602,7 @@ class ConversationFragment : Fragment() {
                 if (showDictationDownloadPrompt) {
                     val dictationModel = viewModel.dictation.modelInfo
                     AlertDialog(
+                        modifier = Modifier.menuOutline(),
                         onDismissRequest = { showDictationDownloadPrompt = false },
                         title = { Text(stringResource(R.string.dictation_model_dialog_title)) },
                         text = {
@@ -621,6 +637,7 @@ class ConversationFragment : Fragment() {
 
                 documentPendingRemoval?.let { doc ->
                     AlertDialog(
+                        modifier = Modifier.menuOutline(),
                         onDismissRequest = { documentPendingRemoval = null },
                         title = { Text(stringResource(R.string.remove_document_title)) },
                         text = {
@@ -646,6 +663,7 @@ class ConversationFragment : Fragment() {
 
                 pendingRamWarning?.let { warning ->
                     AlertDialog(
+                        modifier = Modifier.menuOutline(),
                         onDismissRequest = { viewModel.dismissRamWarning() },
                         title = { Text(stringResource(R.string.low_ram_warning_title)) },
                         text = {
@@ -672,6 +690,7 @@ class ConversationFragment : Fragment() {
 
                 modelLoadError?.let { message ->
                     AlertDialog(
+                        modifier = Modifier.menuOutline(),
                         onDismissRequest = { viewModel.consumeModelLoadError() },
                         title = { Text(stringResource(R.string.model_load_failed_title)) },
                         text = { Text(message) },
@@ -809,9 +828,9 @@ class ConversationFragment : Fragment() {
                             onModelNamePressed = {
                                 viewModel.loadModelList()
                             },
-                            onNewSessionPressed = {
-                                viewModel.newConversation()
-                            },
+                            onGenerationParamsPressed = if (modelInfo != null) {
+                                { showParamsSheet = true }
+                            } else null,
                             modifier = Modifier
                                 .align(Alignment.TopCenter)
                                 .onSizeChanged { topBarHeightPx = it.height }
@@ -820,6 +839,14 @@ class ConversationFragment : Fragment() {
                                 .hazeEffect(hazeState, hazeStyle) { alpha = topBarFrost }
                                 .drawWithContent {
                                     drawContent()
+                                    // Full-width line under the bar.
+                                    val lineWidth = 1.dp.toPx()
+                                    drawLine(
+                                        colorScheme.outlineVariant,
+                                        start = Offset(0f, size.height - lineWidth / 2f),
+                                        end = Offset(size.width, size.height - lineWidth / 2f),
+                                        strokeWidth = lineWidth
+                                    )
                                     // Model-loading progress hairline along the
                                     // bar's bottom edge.
                                     val strokeWidth = 2.dp.toPx()
@@ -873,9 +900,24 @@ class ConversationFragment : Fragment() {
                             }
                             UserInput(
                                 integrateWithSurface = showPermanent,
+                                // The full-width line drawn below replaces the
+                                // tablet's inset divider.
+                                showTopDivider = false,
                                 hazeState = hazeState,
                                 hazeStyle = hazeStyle,
                                 modifier = Modifier
+                                    // Full-width line above the input, like the
+                                    // one under the top bar.
+                                    .drawWithContent {
+                                        drawContent()
+                                        val lineWidth = 1.dp.toPx()
+                                        drawLine(
+                                            colorScheme.outlineVariant,
+                                            start = Offset(0f, lineWidth / 2f),
+                                            end = Offset(size.width, lineWidth / 2f),
+                                            strokeWidth = lineWidth
+                                        )
+                                    }
                                     .navigationBarsPadding()
                                     .imePadding(),
                                 focusRequester = inputFocusRequester,
@@ -989,8 +1031,8 @@ class ConversationFragment : Fragment() {
                                 piningBottom = true
                             },
                             modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .padding(bottom = bottomBarHeight),
+                                .align(Alignment.BottomEnd)
+                                .padding(end = JUMP_TO_BOTTOM_MARGIN, bottom = bottomBarHeight),
                             hazeState = hazeState,
                             hazeStyle = hazeStyle
                         )
@@ -1003,7 +1045,7 @@ class ConversationFragment : Fragment() {
                         if (models.isNotEmpty() && models.any { it.isDownloaded }) {
                             SelectModelDialog(
                                 models = models,
-                                isModelLoaded = modelInfo != null,
+                                loadedModelFilename = modelInfo?.filename,
                                 hazeState = hazeState,
                                 hazeStyle = hazeStyle,
                                 onLoadModel = { model ->
@@ -1011,9 +1053,6 @@ class ConversationFragment : Fragment() {
                                 },
                                 onUnloadModel = {
                                     viewModel.unloadModel()
-                                },
-                                onGenerationParams = {
-                                    showParamsSheet = true
                                 },
                                 onBrowseModels = {
                                     // Guard against NavController throwing IllegalArgumentException
@@ -1047,24 +1086,9 @@ class ConversationFragment : Fragment() {
                             }
                         }
                     } else if (modelReport != null) {
-                        AlertDialog(
-                            onDismissRequest = {
-                                modelReport = null
-                            },
-                            title = {
-                                Text(text = stringResource(R.string.session_info))
-                            },
-                            text = {
-                                Text(
-                                    text = modelReport!!,
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            },
-                            confirmButton = {
-                                TextButton(onClick = { modelReport = null }) {
-                                    Text(text = stringResource(R.string.close))
-                                }
-                            }
+                        SessionInfoDialog(
+                            report = modelReport!!,
+                            onDismiss = { modelReport = null }
                         )
                     }
                 }
@@ -1088,6 +1112,10 @@ class ConversationFragment : Fragment() {
                                 onPinSession = { sessionId, pinned ->
                                     viewModel.pinSession(sessionId, pinned)
                                 },
+                                onNewChat = { viewModel.newConversation() },
+                                onSearch = { query -> viewModel.searchSessions(query) },
+                                folders = folders,
+                                folderActions = folderActions,
                                 onSettingsClicked = {
                                     if (findNavController().currentDestination?.id == R.id.nav_home) {
                                         findNavController().navigate(R.id.action_home_to_settings)
@@ -1116,6 +1144,13 @@ class ConversationFragment : Fragment() {
                                 onPinSession = { sessionId, pinned ->
                                     viewModel.pinSession(sessionId, pinned)
                                 },
+                                onNewChat = {
+                                    viewModel.newConversation()
+                                    scope.launch { drawerState.close() }
+                                },
+                                onSearch = { query -> viewModel.searchSessions(query) },
+                                folders = folders,
+                                folderActions = folderActions,
                                 onSettingsClicked = {
                                     scope.launch {
                                         drawerState.close()

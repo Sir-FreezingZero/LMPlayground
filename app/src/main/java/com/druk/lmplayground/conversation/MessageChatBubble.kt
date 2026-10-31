@@ -1,5 +1,7 @@
 package com.druk.lmplayground.conversation
 
+import com.druk.lmplayground.theme.menuBorder
+import com.druk.lmplayground.theme.PopupMenuShape
 import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
@@ -195,7 +197,7 @@ fun ChatItemBubble(
                         }
                         context.startActivity(Intent.createChooser(sendIntent, shareLabel))
                     },
-                    modifier = Modifier.size(38.dp)
+                    modifier = Modifier.size(30.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Share,
@@ -208,7 +210,7 @@ fun ChatItemBubble(
                     onClick = {
                         clipboardManager.setText(AnnotatedString(stripThinkTags(message.content)))
                     },
-                    modifier = Modifier.size(38.dp)
+                    modifier = Modifier.size(30.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.ContentCopy,
@@ -219,7 +221,7 @@ fun ChatItemBubble(
                 }
                 IconButton(
                     onClick = { /* upvote - no-op */ },
-                    modifier = Modifier.size(38.dp)
+                    modifier = Modifier.size(30.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.ThumbUp,
@@ -230,7 +232,7 @@ fun ChatItemBubble(
                 }
                 IconButton(
                     onClick = { showRatingSheet = true },
-                    modifier = Modifier.size(38.dp)
+                    modifier = Modifier.size(30.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.ThumbDown,
@@ -242,7 +244,7 @@ fun ChatItemBubble(
                 if (onRegenerate != null || onBranch != null) {
                     var menuOpen by remember { mutableStateOf(false) }
                     Box {
-                        IconButton(onClick = { menuOpen = true }, modifier = Modifier.size(38.dp)) {
+                        IconButton(onClick = { menuOpen = true }, modifier = Modifier.size(30.dp)) {
                             Icon(
                                 imageVector = Icons.Outlined.MoreVert,
                                 contentDescription = stringResource(id = R.string.more_options),
@@ -250,7 +252,7 @@ fun ChatItemBubble(
                                 tint = MaterialTheme.colorScheme.secondary
                             )
                         }
-                        DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
+                        DropdownMenu(shape = PopupMenuShape, border = menuBorder, expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
                             if (onRegenerate != null) {
                                 DropdownMenuItem(
                                     text = { Text(stringResource(id = R.string.regenerate)) },
