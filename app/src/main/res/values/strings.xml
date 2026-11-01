@@ -474,6 +474,9 @@
     <string name="tool_device_info_title" tools:ignore="MissingTranslation">Device info</string>
     <string name="tool_device_info_desc" tools:ignore="MissingTranslation">Lets the model read this device\'s specs: model, Android version, chipset, RAM, storage, and battery. No location or personal data.</string>
     <string name="tool_device_info_example" tools:ignore="MissingTranslation">\"How much free RAM does my phone have?\"</string>
+    <string name="tool_wikipedia_title" tools:ignore="MissingTranslation">Wikipedia</string>
+    <string name="tool_wikipedia_desc" tools:ignore="MissingTranslation">Looks up a topic on Wikipedia and returns a short summary, so the model can answer factual questions reliably.</string>
+    <string name="tool_wikipedia_example" tools:ignore="MissingTranslation">\"Give me a summary of the Adreno GPU from Wikipedia.\"</string>
     <string name="system_prompt_none" tools:ignore="MissingTranslation">No system prompt</string>
     <string name="default_system_prompt" tools:ignore="MissingTranslation">Default system prompt</string>
     <string name="chat_system_prompt" tools:ignore="MissingTranslation">This chat\'s system prompt</string>

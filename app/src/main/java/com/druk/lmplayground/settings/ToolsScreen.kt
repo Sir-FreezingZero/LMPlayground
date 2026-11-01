@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.Code
@@ -91,6 +92,12 @@ private val TOOL_UI: Map<String, ToolUiInfo> = mapOf(
         R.string.tool_device_info_desc,
         R.string.tool_device_info_example,
         Icons.Outlined.Smartphone,
+    ),
+    "wikipedia" to ToolUiInfo(
+        R.string.tool_wikipedia_title,
+        R.string.tool_wikipedia_desc,
+        R.string.tool_wikipedia_example,
+        Icons.AutoMirrored.Outlined.MenuBook,
     ),
 )
 
