@@ -481,15 +481,30 @@
     <string name="tool_location_title" tools:ignore="MissingTranslation">Location</string>
     <string name="tool_location_desc" tools:ignore="MissingTranslation">Shares your device\'s approximate location (city level) with the model when it asks. Requires the location permission, which is requested when you turn this on.</string>
     <string name="tool_location_example" tools:ignore="MissingTranslation">\"What city am I in right now?\"</string>
+    <string name="tool_memory_title" tools:ignore="MissingTranslation">Memory</string>
+    <string name="tool_memory_desc" tools:ignore="MissingTranslation">Lets the model save short notes and recall them in later chats, and adds the saved notes to the chat. Notes are stored only on this device; see and edit them in Settings → Memory.</string>
+    <string name="tool_memory_example" tools:ignore="MissingTranslation">\"Remember that my favorite language is Italian.\"</string>
     <string name="date_in_prompt_title" tools:ignore="MissingTranslation">Today\'s date</string>
     <string name="date_in_prompt_desc" tools:ignore="MissingTranslation">Add today\'s date to the system prompt so the model knows what day it is.</string>
     <string name="system_prompt_date" tools:ignore="MissingTranslation">Today\'s date: %1$s</string>
+    <string name="memory" tools:ignore="MissingTranslation">Memory</string>
+    <string name="memory_subtitle" tools:ignore="MissingTranslation">Notes the model remembers across chats</string>
+    <string name="memory_empty" tools:ignore="MissingTranslation">No memories yet. Add one, or let the model save notes as you chat.</string>
+    <string name="memory_new" tools:ignore="MissingTranslation">New memory</string>
+    <string name="memory_edit" tools:ignore="MissingTranslation">Edit memory</string>
+    <string name="memory_hint" tools:ignore="MissingTranslation">Something to remember</string>
+    <string name="memory_clear_all" tools:ignore="MissingTranslation">Clear all</string>
+    <string name="memory_clear_all_confirm" tools:ignore="MissingTranslation">Delete all saved memories? This cannot be undone.</string>
     <string name="system_prompt_none" tools:ignore="MissingTranslation">No system prompt</string>
     <string name="default_system_prompt" tools:ignore="MissingTranslation">Default system prompt</string>
     <string name="chat_system_prompt" tools:ignore="MissingTranslation">This chat\'s system prompt</string>
     <string name="system_prompt_uses_default" tools:ignore="MissingTranslation">Empty: uses the default system prompt</string>
     <string name="system_prompt" tools:ignore="MissingTranslation">System Prompt</string>
     <string name="default_tools" tools:ignore="MissingTranslation">Default tools</string>
+    <string name="default_memory" tools:ignore="MissingTranslation">Default memory</string>
+    <string name="memory_default_title" tools:ignore="MissingTranslation">Memory in new chats</string>
+    <string name="memory_default_desc" tools:ignore="MissingTranslation">New chats start with the memory tool on: the model can save and recall notes, and the saved notes are added to the chat. Change it for one chat in its ⋮ menu. Same as Memory under Settings → Tools.</string>
+    <string name="saved_memories" tools:ignore="MissingTranslation">Saved memories</string>
     <string name="chat_tools" tools:ignore="MissingTranslation">This chat\'s tools</string>
     <string name="general" tools:ignore="MissingTranslation">General</string>
     <string name="general_subtitle" tools:ignore="MissingTranslation">App settings no model controls</string>

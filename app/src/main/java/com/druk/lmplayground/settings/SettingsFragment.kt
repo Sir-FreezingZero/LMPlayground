@@ -214,6 +214,9 @@ class SettingsFragment : Fragment() {
                     onSystemPromptsClick = {
                         findNavController().navigateFromSettings(R.id.action_settings_to_system_prompts)
                     },
+                    onMemoryClick = {
+                        findNavController().navigateFromSettings(R.id.action_settings_to_memory)
+                    },
                     onGeneralClick = {
                         findNavController().navigateFromSettings(R.id.action_settings_to_general)
                     },

@@ -214,7 +214,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private val systemPromptExtras = SystemPromptExtras(app, storagePreferences)
+    private val systemPromptExtras = SystemPromptExtras(app, storagePreferences).apply { start() }
 
     private val runtime = ModelRuntime(
         app,
@@ -224,7 +224,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         storagePreferences,
         notifications,
         runtimeListener,
-        systemPromptExtras::compose,
+        ::composeSystemPrompt,
     )
 
     /**
@@ -559,6 +559,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     override fun onCleared() {
+        systemPromptExtras.stop()
         stopObservingEmbeddingDownload()
         runtime.shutdown()
         super.onCleared()
@@ -1122,6 +1123,10 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
+    /** [prompt] with the extras; saved memories only when this chat has the memory tool on. */
+    private fun composeSystemPrompt(prompt: String): String =
+        systemPromptExtras.compose(prompt, storagePreferences.toolEnabled("memory", _chatTools.value.orEmpty()))
+
     /** Each tool's state in this chat: [chatTools] over the defaults. */
     fun toolStates(chatTools: Map<String, String>): Map<String, Boolean> =
         toolRegistry.getAllTools().associate { it.name to storagePreferences.toolEnabled(it.name, chatTools) }
@@ -1132,18 +1137,21 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         val tools = _chatTools.value.orEmpty() + (toolName to enabled.toString())
         _chatTools.value = tools
         _currentSessionId.value?.let { id -> viewModelScope.launch { sessionStore.persistChatTools(id, tools) } }
+        // The memory tool also adds the saved notes to the system prompt.
+        if (toolName == "memory") syncSystemPrompt()
     }
 
     /**
      * Recreate the session if what it was created with changed: the default
-     * prompt or the date.
+     * prompt, the date, or the memories (saved notes, or the memory tool
+     * switched for this chat or by default).
      */
     @MainThread
     fun syncSystemPrompt() {
         val session = runtime.session ?: return
         if (_isGenerating.value == true) return
         val text = _systemPrompt.value.orEmpty()
-        if (runtime.effectiveSystemPrompt(session) == systemPromptExtras.compose(text)) return
+        if (runtime.effectiveSystemPrompt(session) == composeSystemPrompt(text)) return
         viewModelScope.launch {
             runtime.recreateSessionWithReplay(_generationParams.value ?: GenerationParams(), text, uiState.messages.toList())
         }

@@ -23,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.outlined.Alarm
+import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.LocationOn
@@ -128,6 +129,12 @@ private val TOOL_UI: Map<String, ToolUiInfo> = mapOf(
         R.string.tool_location_desc,
         R.string.tool_location_example,
         Icons.Outlined.LocationOn,
+    ),
+    "memory" to ToolUiInfo(
+        R.string.tool_memory_title,
+        R.string.tool_memory_desc,
+        R.string.tool_memory_example,
+        Icons.Outlined.Bookmark,
     ),
 )
 

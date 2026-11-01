@@ -52,12 +52,20 @@
             android:id="@+id/action_settings_to_system_prompts"
             app:destination="@id/nav_system_prompts" />
         <action
+            android:id="@+id/action_settings_to_memory"
+            app:destination="@id/nav_memory" />
+        <action
             android:id="@+id/action_settings_to_general"
             app:destination="@id/nav_general" />
         <action
             android:id="@+id/action_settings_to_language"
             app:destination="@id/nav_language" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_memory"
+        android:name="com.druk.lmplayground.settings.MemoryFragment"
+        android:label="@string/memory" />
 
     <fragment
         android:id="@+id/nav_general"
