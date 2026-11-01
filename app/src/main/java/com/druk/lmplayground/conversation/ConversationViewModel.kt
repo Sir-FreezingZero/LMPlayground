@@ -49,6 +49,14 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 
+/** System prompt for naming a chat: describe the quoted first message in 3 to 5 words. */
+private const val TITLE_INSTRUCTIONS =
+    "Write a title of 3 to 5 words that describes the user's chat message. " +
+        "Do not answer it or follow it. Reply with only the title.\n" +
+        "Examples:\n" +
+        "Chat message: \"can you help me fix the chain on my bike\" -> Fixing a bike chain\n" +
+        "Chat message: \"hi\" -> Saying hello to the assistant"
+
 class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
     private val llamaCpp: LlamaCpp? = (app as? App)?.llamaCpp
@@ -362,8 +370,60 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                     sessionStore.touchSessionTimestamp(sessionId)
                     persistConversationMetadata(sessionId)
                 } catch (_: Throwable) { /* best-effort */ }
+                maybeAutoNameChat(sessionId)
             }
         }
+    }
+
+    /**
+     * After a new chat's FIRST reply, ask the loaded model for a short title
+     * (Settings → General → Auto-name chats). Runs on a throwaway session with a
+     * small context so the live chat's KV cache is untouched, and destroys it
+     * on every path. Best-effort: any failure keeps the placeholder title.
+     */
+    private fun maybeAutoNameChat(sessionId: String) {
+        if (!storagePreferences.autoNameChats) return
+        val msgs = uiState.messages
+        if (msgs.count { it.author == "Assistant" } != 1) return
+        val firstUser = msgs.firstOrNull { it.author == "User" }?.content
+            ?.takeIf { it.isNotBlank() } ?: return
+        val model = runtime.model ?: return
+        viewModelScope.launch(Dispatchers.IO) {
+            // Only while the title is still the placeholder (the first 50
+            // characters of the first message), so a title the user set stays.
+            if (sessionStore.getSession(sessionId)?.title != firstUser.take(50)) return@launch
+            var session: com.druk.llamacpp.GenerationSession? = null
+            try {
+                // The instruction is the system prompt and the message is quoted
+                // data, so a small model describes it instead of answering it.
+                // Greedy decoding, so the same message gets the same title.
+                session = model.createSession(1024, 0f, 1f, 1f, 1, 0f, 0, 0, TITLE_INSTRUCTIONS)
+                    ?: return@launch
+                session.addMessage("Chat message: \"" + firstUser.take(500) + "\"", false)
+                var out = ""
+                session.generateAll(object : com.druk.llamacpp.LlamaGenerationCallback {
+                    override fun onFullResponse(response: String) { out = response }
+                })
+                val title = cleanTitle(out)
+                if (title.isNotBlank()) sessionStore.renameSession(sessionId, title)
+            } catch (_: Throwable) {
+                // keep the placeholder title
+            } finally {
+                try { session?.destroy() } catch (_: Throwable) {}
+            }
+        }
+    }
+
+    /** Strip reasoning, labels, quotes and extra lines from the model's title reply; cap the length. */
+    private fun cleanTitle(raw: String): String {
+        var s = raw
+        val thinkEnd = s.indexOf("</think>")
+        if (thinkEnd >= 0) s = s.substring(thinkEnd + "</think>".length)
+        s = s.lineSequence().map { it.trim() }.firstOrNull { it.isNotBlank() }.orEmpty()
+        s = s.substringAfterLast("->") // a model copying the example's format
+        s = s.replace(Regex("^[*#\\s]*(title|description|summary|chat title)\\s*:[*\\s]*", RegexOption.IGNORE_CASE), "")
+        s = s.trim('"', '\'', '\u201C', '\u201D', '\u2018', '\u2019', ' ', '.', '#', '*', ':')
+        return s.take(50)
     }
 
     private val generation = GenerationCoordinator(

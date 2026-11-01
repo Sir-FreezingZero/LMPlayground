@@ -32,6 +32,11 @@ class StoragePreferences(context: Context) {
         get() = prefs.getBoolean("include_date_in_prompt", true)
         set(value) = prefs.edit { putBoolean("include_date_in_prompt", value) }
 
+    /** Ask the loaded model for a short chat title after a new chat's first reply. */
+    var autoNameChats: Boolean
+        get() = prefs.getBoolean("auto_name_chats", true)
+        set(value) = prefs.edit { putBoolean("auto_name_chats", value) }
+
     /**
      * Whether live HTML previews may load anything from the internet (CDN
      * libraries, fonts, images, APIs). Off by default, so previews keep the

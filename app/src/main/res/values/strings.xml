@@ -495,6 +495,8 @@
     <string name="memory_hint" tools:ignore="MissingTranslation">Something to remember</string>
     <string name="memory_clear_all" tools:ignore="MissingTranslation">Clear all</string>
     <string name="memory_clear_all_confirm" tools:ignore="MissingTranslation">Delete all saved memories? This cannot be undone.</string>
+    <string name="auto_name_chats_title" tools:ignore="MissingTranslation">Auto-name chats</string>
+    <string name="auto_name_chats_desc" tools:ignore="MissingTranslation">Let the loaded model give each new chat a short title after the first reply.</string>
     <string name="system_prompt_none" tools:ignore="MissingTranslation">No system prompt</string>
     <string name="default_system_prompt" tools:ignore="MissingTranslation">Default system prompt</string>
     <string name="chat_system_prompt" tools:ignore="MissingTranslation">This chat\'s system prompt</string>

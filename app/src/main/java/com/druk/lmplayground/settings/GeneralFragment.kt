@@ -15,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Web
@@ -90,6 +91,14 @@ private fun GeneralScreen(onBackClick: () -> Unit) {
                     description = stringResource(R.string.date_in_prompt_desc),
                     checked = includeDate,
                     onToggle = { includeDate = it; prefs.includeDateInPrompt = it },
+                )
+                var autoName by remember { mutableStateOf(prefs.autoNameChats) }
+                CompactRow(
+                    icon = Icons.Outlined.Edit,
+                    title = stringResource(R.string.auto_name_chats_title),
+                    description = stringResource(R.string.auto_name_chats_desc),
+                    checked = autoName,
+                    onToggle = { autoName = it; prefs.autoNameChats = it },
                 )
             }
             SettingsSection(R.string.general_previews) {
