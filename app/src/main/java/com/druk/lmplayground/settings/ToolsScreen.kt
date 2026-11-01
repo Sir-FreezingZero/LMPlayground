@@ -16,6 +16,7 @@ import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -77,6 +78,12 @@ private val TOOL_UI: Map<String, ToolUiInfo> = mapOf(
         R.string.tool_calculator_desc,
         R.string.tool_calculator_example,
         Icons.Outlined.Calculate,
+    ),
+    "convert_units" to ToolUiInfo(
+        R.string.tool_convert_units_title,
+        R.string.tool_convert_units_desc,
+        R.string.tool_convert_units_example,
+        Icons.Outlined.SwapHoriz,
     ),
 )
 
