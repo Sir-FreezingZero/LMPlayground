@@ -23,4 +23,5 @@ fun ToolRegistry.Companion.createDefault(context: Context): ToolRegistry =
         register(SetAlarmTool(context))
         register(CalculatorTool())
         register(UnitConverterTool())
+        register(HardwareInfoTool(context))
     }

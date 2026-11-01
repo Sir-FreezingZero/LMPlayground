@@ -378,6 +378,7 @@ private fun toolDisplayName(name: String): String = when (name) {
     "set_alarm" -> stringResource(R.string.tool_set_alarm_title)
     "calculator" -> stringResource(R.string.tool_calculator_title)
     "convert_units" -> stringResource(R.string.tool_convert_units_title)
+    "device_info" -> stringResource(R.string.tool_device_info_title)
     else -> name
 }
 
