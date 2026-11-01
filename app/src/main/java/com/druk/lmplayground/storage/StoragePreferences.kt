@@ -27,6 +27,11 @@ class StoragePreferences(context: Context) {
         get() = prefs.getBoolean("haptic_on_generation", true)
         set(value) = prefs.edit { putBoolean("haptic_on_generation", value) }
 
+    /** Add today's date to the system prompt, so the model knows what day it is. */
+    var includeDateInPrompt: Boolean
+        get() = prefs.getBoolean("include_date_in_prompt", true)
+        set(value) = prefs.edit { putBoolean("include_date_in_prompt", value) }
+
     /**
      * Whether live HTML previews may load anything from the internet (CDN
      * libraries, fonts, images, APIs). Off by default, so previews keep the

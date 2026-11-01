@@ -214,7 +214,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private val systemPromptExtras = SystemPromptExtras(storagePreferences)
+    private val systemPromptExtras = SystemPromptExtras(app, storagePreferences)
 
     private val runtime = ModelRuntime(
         app,
@@ -1136,7 +1136,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
     /**
      * Recreate the session if what it was created with changed: the default
-     * prompt.
+     * prompt or the date.
      */
     @MainThread
     fun syncSystemPrompt() {

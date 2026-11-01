@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Web
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -81,6 +82,16 @@ private fun GeneralScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
+            SettingsSection(R.string.general_chats) {
+                var includeDate by remember { mutableStateOf(prefs.includeDateInPrompt) }
+                CompactRow(
+                    icon = Icons.Outlined.Schedule,
+                    title = stringResource(R.string.date_in_prompt_title),
+                    description = stringResource(R.string.date_in_prompt_desc),
+                    checked = includeDate,
+                    onToggle = { includeDate = it; prefs.includeDateInPrompt = it },
+                )
+            }
             SettingsSection(R.string.general_previews) {
                 var previews by remember { mutableStateOf(prefs.livePreviews) }
                 CompactRow(

@@ -481,6 +481,9 @@
     <string name="tool_location_title" tools:ignore="MissingTranslation">Location</string>
     <string name="tool_location_desc" tools:ignore="MissingTranslation">Shares your device\'s approximate location (city level) with the model when it asks. Requires the location permission, which is requested when you turn this on.</string>
     <string name="tool_location_example" tools:ignore="MissingTranslation">\"What city am I in right now?\"</string>
+    <string name="date_in_prompt_title" tools:ignore="MissingTranslation">Today\'s date</string>
+    <string name="date_in_prompt_desc" tools:ignore="MissingTranslation">Add today\'s date to the system prompt so the model knows what day it is.</string>
+    <string name="system_prompt_date" tools:ignore="MissingTranslation">Today\'s date: %1$s</string>
     <string name="system_prompt_none" tools:ignore="MissingTranslation">No system prompt</string>
     <string name="default_system_prompt" tools:ignore="MissingTranslation">Default system prompt</string>
     <string name="chat_system_prompt" tools:ignore="MissingTranslation">This chat\'s system prompt</string>
@@ -490,6 +493,7 @@
     <string name="chat_tools" tools:ignore="MissingTranslation">This chat\'s tools</string>
     <string name="general" tools:ignore="MissingTranslation">General</string>
     <string name="general_subtitle" tools:ignore="MissingTranslation">App settings no model controls</string>
+    <string name="general_chats" tools:ignore="MissingTranslation">Chats</string>
     <string name="general_previews" tools:ignore="MissingTranslation">Live previews</string>
     <string name="live_previews_title" tools:ignore="MissingTranslation">Live previews</string>
     <string name="live_previews_desc" tools:ignore="MissingTranslation">Show web pages the model writes as a card you can preview, download or open full screen. Off: they stay plain code in the reply.</string>
