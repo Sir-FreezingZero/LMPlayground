@@ -380,6 +380,7 @@ private fun toolDisplayName(name: String): String = when (name) {
     "convert_units" -> stringResource(R.string.tool_convert_units_title)
     "device_info" -> stringResource(R.string.tool_device_info_title)
     "wikipedia" -> stringResource(R.string.tool_wikipedia_title)
+    "location" -> stringResource(R.string.tool_location_title)
     else -> name
 }
 

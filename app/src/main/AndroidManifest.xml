@@ -15,6 +15,8 @@
          (AlarmClock.ACTION_SET_ALARM). A normal install-time permission;
          the app can't read the user's alarms. -->
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <!-- Location tool: approximate (city-level) location, asked for when the tool is turned on. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!-- Large-screen / Chromebook posture: app works without touch input and
          supports freeform window management. Keeping these as required="false"
