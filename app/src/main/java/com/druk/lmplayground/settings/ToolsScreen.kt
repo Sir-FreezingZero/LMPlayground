@@ -11,8 +11,11 @@ import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -31,6 +34,7 @@ import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -41,10 +45,12 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.druk.lmplayground.R
@@ -225,7 +231,7 @@ fun ToolsContent(
 }
 
 /**
- * One row per tool with [states]. Location needs a runtime
+ * "Enable all" and one row per tool with [states]. Location needs a runtime
  * permission: turning it on asks for ACCESS_COARSE_LOCATION, and it only
  * switches on if the user grants it.
  */
@@ -244,6 +250,26 @@ internal fun ToolSwitches(
         } else {
             onChange(name, on)
         }
+    }
+    // "Enable all" leaves Location alone until its permission is granted,
+    // so it never pops a permission dialog; switching off touches every tool.
+    val bulkTools = tools.filter { it.name != LOCATION_TOOL || locationGranted }
+    val allOn = bulkTools.isNotEmpty() && bulkTools.all { states[it.name] == true }
+    val setAll: (Boolean) -> Unit = { on -> (if (on) bulkTools else tools).forEach { onChange(it.name, on) } }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { setAll(!allOn) }
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = stringResource(R.string.tools_enable_all),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.weight(1f),
+        )
+        CompactSwitch(checked = allOn, onCheckedChange = setAll)
     }
     tools.forEach { tool ->
         ToolRow(
