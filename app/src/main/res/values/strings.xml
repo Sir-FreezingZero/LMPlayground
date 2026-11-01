@@ -465,6 +465,9 @@
     <string name="branch_title_numbered">%1$s (branch %2$d)</string>
     <string name="branch_created">Continuing in a new chat</string>
     <!-- Tools ported from Leo00703/Local-LLM; English only for now, other languages fall back to it. -->
+    <string name="tool_calculator_title" tools:ignore="MissingTranslation">Calculator</string>
+    <string name="tool_calculator_desc" tools:ignore="MissingTranslation">Evaluates math expressions exactly, so the model does not make arithmetic mistakes. Supports functions and constants.</string>
+    <string name="tool_calculator_example" tools:ignore="MissingTranslation">\"What is (1234 × 5678) ÷ 3?\"</string>
     <string name="system_prompt_none" tools:ignore="MissingTranslation">No system prompt</string>
     <string name="default_system_prompt" tools:ignore="MissingTranslation">Default system prompt</string>
     <string name="chat_system_prompt" tools:ignore="MissingTranslation">This chat\'s system prompt</string>

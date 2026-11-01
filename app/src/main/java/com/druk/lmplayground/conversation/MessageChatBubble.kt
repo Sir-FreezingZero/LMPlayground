@@ -376,6 +376,7 @@ private fun toolDisplayName(name: String): String = when (name) {
     "web_search" -> stringResource(R.string.tool_web_search_title)
     "web_fetch" -> stringResource(R.string.tool_web_fetch_title)
     "set_alarm" -> stringResource(R.string.tool_set_alarm_title)
+    "calculator" -> stringResource(R.string.tool_calculator_title)
     else -> name
 }
 

@@ -11,6 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Alarm
+import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Schedule
@@ -70,6 +71,12 @@ private val TOOL_UI: Map<String, ToolUiInfo> = mapOf(
         R.string.tool_set_alarm_desc,
         R.string.tool_set_alarm_example,
         Icons.Outlined.Alarm,
+    ),
+    "calculator" to ToolUiInfo(
+        R.string.tool_calculator_title,
+        R.string.tool_calculator_desc,
+        R.string.tool_calculator_example,
+        Icons.Outlined.Calculate,
     ),
 )
 
