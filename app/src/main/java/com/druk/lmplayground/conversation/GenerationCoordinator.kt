@@ -276,7 +276,7 @@ class GenerationCoordinator(
                 tools = object : ToolCallLoop.ToolExecutor {
                     override fun executeToolCalls(toolCallsJson: String): String {
                         Log.d(TAG, "Tool calls: $toolCallsJson")
-                        return toolRegistry.executeToolCalls(toolCallsJson)
+                        return toolRegistry.executeToolCalls(toolCallsJson, enforceEnabled = true)
                     }
                     override fun cancelInFlight() = toolRegistry.cancelInFlight()
                 },

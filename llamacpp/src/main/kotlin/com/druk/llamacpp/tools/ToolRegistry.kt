@@ -56,7 +56,15 @@ class ToolRegistry {
         return arr.toString()
     }
 
-    fun executeToolCalls(toolCallsJson: String): String {
+    /**
+     * Run the calls the model made and return `[{id,name,content}]`.
+     *
+     * With [enforceEnabled] a tool that is registered but switched off is
+     * refused. The model is only shown the enabled tools, but nothing else
+     * stops it naming one that was left out, e.g. a fetched page telling it
+     * to call `location`.
+     */
+    fun executeToolCalls(toolCallsJson: String, enforceEnabled: Boolean = false): String {
         val calls = JSONArray(toolCallsJson)
         val results = JSONArray()
         for (i in 0 until calls.length()) {
@@ -66,7 +74,11 @@ class ToolRegistry {
             val id = call.getString("id")
 
             val tool = getTool(name)
-            val content = tool?.execute(arguments) ?: """{"error":"Unknown tool: $name"}"""
+            val content = when {
+                tool == null -> """{"error":"Unknown tool: $name"}"""
+                enforceEnabled && !isToolEnabled(name) -> """{"error":"The $name tool is not enabled."}"""
+                else -> tool.execute(arguments)
+            }
 
             val result = JSONObject()
             result.put("id", id)
