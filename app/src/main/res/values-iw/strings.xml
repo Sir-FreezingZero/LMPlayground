@@ -184,13 +184,7 @@
     <!-- System prompts -->
     <string name="system_prompts">פרומפטים של מערכת</string>
     <string name="system_prompts_subtitle">הוראות לשימוש חוזר לכל מודל</string>
-    <string name="system_prompts_empty">אין עדיין פרומפטים של מערכת. הקש על + כדי להוסיף.</string>
-    <string name="system_prompt_new">פרומפט מערכת חדש</string>
-    <string name="system_prompt_edit">ערוך פרומפט מערכת</string>
-    <string name="system_prompt_hint">לדוגמה, אתה עוזר תמציתי. ענה תמיד בעברית.</string>
     <string name="system_prompt_current">פרומפט מערכת נוכחי</string>
-    <string name="system_prompt_current_empty">אין פרומפט מערכת — הקש להוספה</string>
-    <string name="system_prompt_update">עדכן</string>
     <string name="save">שמור</string>
     <string name="add">הוסף</string>
     <string name="clear">נקה</string>
@@ -409,7 +403,6 @@
     <string name="tab_params">פרמטרים</string>
     <string name="tab_prompt">הנחיה</string>
     <string name="take_photo">צילום תמונה</string>
-    <string name="tools_unsupported">המודל הזה אינו תומך בכלים</string>
     <string name="vision_module_available">הוספת תמיכה בתמונות · הורדה</string>
     <string name="vision_module_downloading">מוריד תמיכה בתמונות — יהיה מוכן בפעם הבאה שתטען את המודל</string>
     <string name="whats_new_documents">מסמכים — שאל שאלות על הקבצים שלך</string>

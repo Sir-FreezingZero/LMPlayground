@@ -184,13 +184,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Systemledetekster</string>
     <string name="system_prompts_subtitle">Gjenbrukbare instruksjoner for enhver modell</string>
-    <string name="system_prompts_empty">Ingen systemledetekster ennå. Trykk + for å legge til en.</string>
-    <string name="system_prompt_new">Ny systemledetekst</string>
-    <string name="system_prompt_edit">Rediger systemledetekst</string>
-    <string name="system_prompt_hint">f.eks. Du er en konsis assistent. Svar alltid på fransk.</string>
     <string name="system_prompt_current">Gjeldende systemledetekst</string>
-    <string name="system_prompt_current_empty">Ingen systemledetekst — trykk for å legge til</string>
-    <string name="system_prompt_update">Oppdater</string>
     <string name="save">Lagre</string>
     <string name="add">Legg til</string>
     <string name="clear">Tøm</string>
@@ -406,7 +400,6 @@
     <string name="tab_params">Parametere</string>
     <string name="tab_prompt">Prompt</string>
     <string name="take_photo">Ta bilde</string>
-    <string name="tools_unsupported">Denne modellen støtter ikke verktøy</string>
     <string name="vision_module_available">Legg til bildestøtte · Last ned</string>
     <string name="vision_module_downloading">Laster ned bildestøtte – klar neste gang du laster inn denne modellen</string>
     <string name="whats_new_documents">Dokumenter – still spørsmål om filene dine</string>

@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,13 +24,10 @@ class SystemPromptsFragment : Fragment() {
         layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
         setContent {
             PlaygroundTheme {
-                val prompts by viewModel.prompts.observeAsState(emptyList())
                 SystemPromptsScreen(
-                    prompts = prompts,
+                    defaultPrompt = viewModel.defaultPrompt,
+                    onDefaultPromptChange = { viewModel.defaultPrompt = it },
                     onBackClick = { findNavController().popBackStack() },
-                    onAdd = viewModel::addPrompt,
-                    onUpdate = viewModel::updatePrompt,
-                    onDelete = viewModel::deletePrompt
                 )
             }
         }

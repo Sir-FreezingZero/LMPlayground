@@ -60,6 +60,8 @@ class ModelRuntime(
     private val storagePreferences: StoragePreferences,
     private val notifications: InferenceNotificationUpdater,
     private val listener: Listener,
+    /** Turns the user's system prompt into the one the engine gets; see [SystemPromptExtras]. */
+    private val composeSystemPrompt: (String) -> String = { it },
 ) {
 
     interface Listener {
@@ -359,6 +361,17 @@ class ModelRuntime(
         }
     }
 
+    /** The exact system prompt each live session was created with. */
+    private val effectivePrompts = java.util.WeakHashMap<LlamaGenerationSession, String>()
+
+    /**
+     * The system prompt [session] was really created with (the user's prompt
+     * plus [SystemPromptExtras]), so the preamble cache is keyed on what the
+     * engine holds rather than on what the user picked.
+     */
+    fun effectiveSystemPrompt(session: LlamaGenerationSession): String? =
+        synchronized(effectivePrompts) { effectivePrompts[session] }
+
     /**
      * Create a session on [model] with [params], converting a dead-service
      * AIDL failure into a user-visible error instead of an app crash.
@@ -368,6 +381,7 @@ class ModelRuntime(
         params: GenerationParams,
         systemPrompt: String,
     ): LlamaGenerationSession? {
+        val effectivePrompt = composeSystemPrompt(systemPrompt)
         return try {
             model.createSession(
                 params.contextSize,
@@ -378,8 +392,8 @@ class ModelRuntime(
                 params.minP,
                 params.seed,
                 params.thinkingBudget,
-                systemPrompt
-            )
+                effectivePrompt
+            )?.also { synchronized(effectivePrompts) { effectivePrompts[it] = effectivePrompt } }
         } catch (e: InferenceUnavailableException) {
             // The :llama service died (or hasn't bound yet). Surface a
             // recoverable error to the UI rather than letting the AIDL

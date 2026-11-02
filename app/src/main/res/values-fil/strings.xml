@@ -183,13 +183,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Mga System Prompt</string>
     <string name="system_prompts_subtitle">Magagamit muli na mga tagubilin para sa anumang modelo</string>
-    <string name="system_prompts_empty">Wala pang system prompt. I-tap ang + para magdagdag.</string>
-    <string name="system_prompt_new">Bagong system prompt</string>
-    <string name="system_prompt_edit">I-edit ang system prompt</string>
-    <string name="system_prompt_hint">hal.: Ikaw ay isang maikling assistant. Laging sumagot sa Pranses.</string>
     <string name="system_prompt_current">Kasalukuyang system prompt</string>
-    <string name="system_prompt_current_empty">Walang system prompt — i-tap para magdagdag</string>
-    <string name="system_prompt_update">I-update</string>
     <string name="save">I-save</string>
     <string name="add">Idagdag</string>
     <string name="clear">I-clear</string>
@@ -398,7 +392,6 @@
     <string name="tab_params">Mga parameter</string>
     <string name="tab_prompt">Prompt</string>
     <string name="take_photo">Kumuha ng larawan</string>
-    <string name="tools_unsupported">Hindi sinusuportahan ng modelong ito ang mga tool</string>
     <string name="vision_module_available">Magdagdag ng suporta sa larawan · I-download</string>
     <string name="vision_module_downloading">Dina-download ang suporta sa larawan — handa na sa susunod mong pag-load ng modelong ito</string>
     <string name="whats_new_documents">Mga Dokumento — magtanong tungkol sa iyong mga file</string>

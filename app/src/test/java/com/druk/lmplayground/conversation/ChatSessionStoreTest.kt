@@ -6,7 +6,6 @@ import androidx.test.core.app.ApplicationProvider
 import com.druk.lmplayground.data.AppDatabase
 import com.druk.lmplayground.data.ChatRepository
 import com.druk.lmplayground.data.ConversationMetadata
-import com.druk.lmplayground.data.SystemPromptRepository
 import com.druk.lmplayground.models.ModelInfo
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -37,7 +36,6 @@ class ChatSessionStoreTest {
             .build()
         store = ChatSessionStore(
             ChatRepository(db.chatDao()),
-            SystemPromptRepository(db.systemPromptDao()),
             // Robolectric has no FileProvider registered; plain file URIs
             // stand in for the content URIs.
             object : ChatImageStore(app) {
@@ -193,27 +191,10 @@ class ChatSessionStoreTest {
     }
 
     @Test
-    fun systemPromptCreateFindUpdate() = runBlocking {
-        val created = store.createSystemPrompt("You are terse.")
-        assertNotNull(created)
-
-        assertEquals(created!!.id, store.findSystemPromptByText("You are terse.")?.id)
-
-        assertTrue(store.updateSystemPromptText(created.id, "You are verbose."))
-        assertEquals("You are verbose.", store.findSystemPromptByText("You are verbose.")?.text)
-        assertNull(store.findSystemPromptByText("You are terse."))
-
-        // Unknown id: no-op, reports false.
-        assertFalse(store.updateSystemPromptText("missing-id", "whatever"))
-    }
-
-    @Test
     fun nullRepositoriesDegradeGracefully() = runBlocking {
-        val nullStore = ChatSessionStore(null, null, ChatImageStore(app))
+        val nullStore = ChatSessionStore(null, ChatImageStore(app))
         assertNull(nullStore.loadSessionMessages("any"))
         assertNull(nullStore.getSession("any"))
-        assertFalse(nullStore.systemPromptsAvailable)
-        assertNull(nullStore.createSystemPrompt("text"))
         // Mutations are silent no-ops.
         nullStore.persistMessage("any", Message(author = "User", content = "q"))
         nullStore.deleteSession("any")

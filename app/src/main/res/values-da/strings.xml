@@ -184,13 +184,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Systemprompter</string>
     <string name="system_prompts_subtitle">Genbrugelige instruktioner til enhver model</string>
-    <string name="system_prompts_empty">Ingen systemprompter endnu. Tryk på + for at tilføje en.</string>
-    <string name="system_prompt_new">Ny systemprompt</string>
-    <string name="system_prompt_edit">Rediger systemprompt</string>
-    <string name="system_prompt_hint">f.eks. Du er en kortfattet assistent. Svar altid på fransk.</string>
     <string name="system_prompt_current">Aktuel systemprompt</string>
-    <string name="system_prompt_current_empty">Ingen systemprompt — tryk for at tilføje</string>
-    <string name="system_prompt_update">Opdater</string>
     <string name="save">Gem</string>
     <string name="add">Tilføj</string>
     <string name="clear">Ryd</string>
@@ -406,7 +400,6 @@
     <string name="tab_params">Parametre</string>
     <string name="tab_prompt">Prompt</string>
     <string name="take_photo">Tag foto</string>
-    <string name="tools_unsupported">Denne model understøtter ikke værktøjer</string>
     <string name="vision_module_available">Tilføj billedunderstøttelse · Download</string>
     <string name="vision_module_downloading">Downloader billedunderstøttelse – klar næste gang du indlæser denne model</string>
     <string name="whats_new_documents">Dokumenter – stil spørgsmål om dine filer</string>

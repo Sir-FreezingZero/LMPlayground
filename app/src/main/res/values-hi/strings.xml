@@ -205,13 +205,7 @@
     <!-- System prompts -->
     <string name="system_prompts">\u0938\u093F\u0938\u094D\u091F\u092E \u092A\u094D\u0930\u0949\u092E\u094D\u092A\u094D\u091F</string>
     <string name="system_prompts_subtitle">\u0915\u093F\u0938\u0940 \u092D\u0940 \u092E\u0949\u0921\u0932 \u0915\u0947 \u0932\u093F\u090F \u092A\u0941\u0928: \u0909\u092A\u092F\u094B\u0917 \u092F\u094B\u0917\u094D\u092F \u0928\u093F\u0930\u094D\u0926\u0947\u0936</string>
-    <string name="system_prompts_empty">\u0905\u092D\u0940 \u0915\u094B\u0908 \u0938\u093F\u0938\u094D\u091F\u092E \u092A\u094D\u0930\u0949\u092E\u094D\u092A\u094D\u091F \u0928\u0939\u0940\u0902\u0964 \u091C\u094B\u0921\u093C\u0928\u0947 \u0915\u0947 \u0932\u093F\u090F + \u092A\u0930 \u091F\u0948\u092A \u0915\u0930\u0947\u0902\u0964</string>
-    <string name="system_prompt_new">\u0928\u092F\u093E \u0938\u093F\u0938\u094D\u091F\u092E \u092A\u094D\u0930\u0949\u092E\u094D\u092A\u094D\u091F</string>
-    <string name="system_prompt_edit">\u0938\u093F\u0938\u094D\u091F\u092E \u092A\u094D\u0930\u0949\u092E\u094D\u092A\u094D\u091F \u0938\u0902\u092A\u093E\u0926\u093F\u0924 \u0915\u0930\u0947\u0902</string>
-    <string name="system_prompt_hint">\u091C\u0948\u0938\u0947: \u0906\u092A \u090F\u0915 \u0938\u0902\u0915\u094D\u0937\u093F\u092A\u094D\u0924 \u0938\u0939\u093E\u092F\u0915 \u0939\u0948\u0902\u0964 \u0939\u092E\u0947\u0936\u093E \u0939\u093F\u0902\u0926\u0940 \u092E\u0947\u0902 \u0909\u0924\u094D\u0924\u0930 \u0926\u0947\u0902\u0964</string>
     <string name="system_prompt_current">\u0935\u0930\u094D\u0924\u092E\u093E\u0928 \u0938\u093F\u0938\u094D\u091F\u092E \u092A\u094D\u0930\u0949\u092E\u094D\u092A\u094D\u091F</string>
-    <string name="system_prompt_current_empty">\u0915\u094B\u0908 \u0938\u093F\u0938\u094D\u091F\u092E \u092A\u094D\u0930\u0949\u092E\u094D\u092A\u094D\u091F \u0928\u0939\u0940\u0902 \u2014 \u091C\u094B\u0921\u093C\u0928\u0947 \u0915\u0947 \u0932\u093F\u090F \u091F\u0948\u092A \u0915\u0930\u0947\u0902</string>
-    <string name="system_prompt_update">\u0905\u092A\u0921\u0947\u091F \u0915\u0930\u0947\u0902</string>
     <string name="save">\u0938\u0939\u0947\u091C\u0947\u0902</string>
     <string name="add">\u091C\u094B\u0921\u093C\u0947\u0902</string>
     <string name="clear">\u0938\u093E\u092B\u093C \u0915\u0930\u0947\u0902</string>
@@ -367,7 +361,6 @@
     <string name="tab_params">पैरामीटर</string>
     <string name="tab_prompt">प्रॉम्प्ट</string>
     <string name="take_photo">फ़ोटो लें</string>
-    <string name="tools_unsupported">यह मॉडल टूल का समर्थन नहीं करता</string>
     <string name="vision_module_available">इमेज सपोर्ट जोड़ें · डाउनलोड</string>
     <string name="vision_module_downloading">इमेज सपोर्ट डाउनलोड हो रहा है — अगली बार इस मॉडल को लोड करने पर तैयार</string>
     <string name="whats_new_documents">दस्तावेज़ — अपनी फ़ाइलों के बारे में सवाल पूछें</string>

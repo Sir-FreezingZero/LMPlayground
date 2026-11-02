@@ -205,13 +205,7 @@
     <!-- System prompts -->
     <string name="system_prompts">시스템 프롬프트</string>
     <string name="system_prompts_subtitle">모든 모델에서 재사용 가능한 지침</string>
-    <string name="system_prompts_empty">아직 시스템 프롬프트가 없습니다. +를 탭하여 추가하세요.</string>
-    <string name="system_prompt_new">새 시스템 프롬프트</string>
-    <string name="system_prompt_edit">시스템 프롬프트 편집</string>
-    <string name="system_prompt_hint">예: 당신은 간결한 도우미입니다. 항상 한국어로 답하세요.</string>
     <string name="system_prompt_current">현재 시스템 프롬프트</string>
-    <string name="system_prompt_current_empty">시스템 프롬프트 없음 — 탭하여 추가</string>
-    <string name="system_prompt_update">업데이트</string>
     <string name="save">저장</string>
     <string name="add">추가</string>
     <string name="clear">지우기</string>
@@ -362,7 +356,6 @@
     <string name="tab_params">매개변수</string>
     <string name="tab_prompt">프롬프트</string>
     <string name="take_photo">사진 촬영</string>
-    <string name="tools_unsupported">이 모델은 도구를 지원하지 않습니다</string>
     <string name="vision_module_available">이미지 지원 추가 · 다운로드</string>
     <string name="vision_module_downloading">이미지 지원 다운로드 중 — 다음에 이 모델을 불러올 때 사용할 수 있습니다</string>
     <string name="whats_new_documents">문서 — 내 파일에 대해 질문하기</string>

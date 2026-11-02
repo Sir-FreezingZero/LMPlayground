@@ -48,6 +48,9 @@ class ConversationMetadata private constructor(private val obj: JSONObject) {
         /** Key for the web_search reference -> URL map. */
         const val KEY_WEB_LINKS = "webLinks"
 
+        /** The chat's own tool settings (its ⋮ menu): tool name -> "true"/"false". */
+        const val KEY_TOOLS = "tools"
+
         /** Id of the conversation this one was branched from. */
         const val KEY_BRANCHED_FROM = "branchedFrom"
 

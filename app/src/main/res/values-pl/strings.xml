@@ -205,13 +205,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Prompty systemowe</string>
     <string name="system_prompts_subtitle">Instrukcje wielokrotnego użytku dla dowolnego modelu</string>
-    <string name="system_prompts_empty">Brak promptów systemowych. Dotknij +, aby dodać.</string>
-    <string name="system_prompt_new">Nowy prompt systemowy</string>
-    <string name="system_prompt_edit">Edytuj prompt systemowy</string>
-    <string name="system_prompt_hint">np. Jesteś zwięzłym asystentem. Zawsze odpowiadaj po polsku.</string>
     <string name="system_prompt_current">Bieżący prompt systemowy</string>
-    <string name="system_prompt_current_empty">Brak promptu systemowego \u2014 dotknij, aby dodać</string>
-    <string name="system_prompt_update">Aktualizuj</string>
     <string name="save">Zapisz</string>
     <string name="add">Dodaj</string>
     <string name="clear">Wyczyść</string>
@@ -358,7 +352,6 @@
     <string name="tab_params">Parametry</string>
     <string name="tab_prompt">Prompt</string>
     <string name="take_photo">Zrób zdjęcie</string>
-    <string name="tools_unsupported">Ten model nie obsługuje narzędzi</string>
     <string name="vision_module_available">Dodaj obsługę obrazów · Pobierz</string>
     <string name="vision_module_downloading">Pobieranie obsługi obrazów — gotowe przy następnym wczytaniu tego modelu</string>
     <string name="whats_new_documents">Dokumenty — zadawaj pytania o swoje pliki</string>

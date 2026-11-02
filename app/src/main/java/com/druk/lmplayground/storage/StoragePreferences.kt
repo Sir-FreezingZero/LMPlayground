@@ -71,11 +71,11 @@ class StoragePreferences(context: Context) {
         prefs.edit { putString("gen_params_$filename", encoded) }
     }
 
-    // --- Tool enablement (two-level: global default + per-model override) ---
+    // --- Tool enablement (two-level: default + per-chat setting) ---
     //
-    // The global default (set in Settings → Tools) applies to every model; a
-    // per-model override (set in a model's generation-params sheet) wins for
-    // that model only. Tools are OFF by default.
+    // The default (Settings → Tools, "Default tools") applies to every chat; a
+    // chat's own setting ("Chat-specific tools", kept in the chat's metadata)
+    // wins for that chat only. Tools are OFF by default.
 
     fun isToolEnabledDefault(toolName: String): Boolean {
         return prefs.getBoolean("tool_enabled_$toolName", false)
@@ -85,22 +85,14 @@ class StoragePreferences(context: Context) {
         prefs.edit { putBoolean("tool_enabled_$toolName", enabled) }
     }
 
-    fun hasToolOverride(filename: String, toolName: String): Boolean {
-        return prefs.contains("tool_override_${filename}_$toolName")
-    }
+    /** A tool's state in a chat: its own setting in [chatTools] (from the chat's metadata), else the default. */
+    fun toolEnabled(toolName: String, chatTools: Map<String, String>): Boolean =
+        chatTools[toolName]?.toBooleanStrictOrNull() ?: isToolEnabledDefault(toolName)
 
-    fun setToolOverride(filename: String, toolName: String, enabled: Boolean) {
-        prefs.edit { putBoolean("tool_override_${filename}_$toolName", enabled) }
-    }
-
-    /** Resolved enablement for a tool on a specific model: override if set, else global default. */
-    fun effectiveToolEnabled(filename: String, toolName: String): Boolean {
-        return if (hasToolOverride(filename, toolName)) {
-            prefs.getBoolean("tool_override_${filename}_$toolName", false)
-        } else {
-            isToolEnabledDefault(toolName)
-        }
-    }
+    /** Used by every chat that has no system prompt of its own; "" for none. */
+    var defaultSystemPrompt: String
+        get() = prefs.getString("default_system_prompt", "").orEmpty()
+        set(value) = prefs.edit { putString("default_system_prompt", value) }
 
     // --- Detected model capabilities cache ---
     //

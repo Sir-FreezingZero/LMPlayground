@@ -205,13 +205,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Prompts de sistema</string>
     <string name="system_prompts_subtitle">Instrucciones reutilizables para cualquier modelo</string>
-    <string name="system_prompts_empty">A\u00FAn no hay prompts de sistema. Toca + para a\u00F1adir uno.</string>
-    <string name="system_prompt_new">Nuevo prompt de sistema</string>
-    <string name="system_prompt_edit">Editar prompt de sistema</string>
-    <string name="system_prompt_hint">p.\u00A0ej. Eres un asistente conciso. Responde siempre en espa\u00F1ol.</string>
     <string name="system_prompt_current">Prompt de sistema actual</string>
-    <string name="system_prompt_current_empty">Sin prompt de sistema \u2014 toca para a\u00F1adir</string>
-    <string name="system_prompt_update">Actualizar</string>
     <string name="save">Guardar</string>
     <string name="add">A\u00F1adir</string>
     <string name="clear">Borrar</string>
@@ -364,7 +358,6 @@
     <string name="tab_params">Parámetros</string>
     <string name="tab_prompt">Prompt</string>
     <string name="take_photo">Hacer foto</string>
-    <string name="tools_unsupported">Este modelo no admite herramientas</string>
     <string name="vision_module_available">Añadir compatibilidad con imágenes · Descargar</string>
     <string name="vision_module_downloading">Descargando compatibilidad con imágenes: lista la próxima vez que cargues este modelo</string>
     <string name="whats_new_documents">Documentos: haz preguntas sobre tus archivos</string>

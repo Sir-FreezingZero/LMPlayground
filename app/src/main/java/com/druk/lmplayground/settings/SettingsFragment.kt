@@ -21,9 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
@@ -400,34 +398,14 @@ class SettingsFragment : Fragment() {
     }
 
     /**
-     * Embedded System Prompts pane — list/grid + bottom-sheet editor.
+     * Embedded System Prompts pane — the default prompt box.
      */
     @androidx.compose.runtime.Composable
     private fun PromptsDetailPane() {
-        val prompts by systemPromptsViewModel.prompts.observeAsState(emptyList())
-        var editorTarget by remember { mutableStateOf<EditorTarget?>(null) }
-
         SystemPromptsContent(
-            prompts = prompts,
-            onSelect = { editorTarget = EditorTarget.Edit(it) },
-            onNewPrompt = { editorTarget = EditorTarget.New },
-        )
-
-        EditorBottomSheet(
-            target = editorTarget,
-            onAdd = { text ->
-                systemPromptsViewModel.addPrompt(text)
-                editorTarget = null
-            },
-            onUpdate = { id, text ->
-                systemPromptsViewModel.updatePrompt(id, text)
-                editorTarget = null
-            },
-            onDelete = { id ->
-                systemPromptsViewModel.deletePrompt(id)
-                editorTarget = null
-            },
-            onDismiss = { editorTarget = null },
+            defaultPrompt = systemPromptsViewModel.defaultPrompt,
+            onDefaultPromptChange = { systemPromptsViewModel.defaultPrompt = it },
         )
     }
+
 }

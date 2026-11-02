@@ -60,6 +60,9 @@ fun ConversationBar(
     onNavIconPressed: () -> Unit = { },
     /** Opens the generation parameters; the ⋮ menu shows only when set (a model is loaded). */
     onGenerationParamsPressed: (() -> Unit)? = null,
+    /** Open the same sheet on its System Prompt and Tools tabs. */
+    onSystemPromptPressed: () -> Unit = {},
+    onToolsPressed: () -> Unit = {},
 ) {
     AppBar(
         modifier = modifier.testTag(ConversationBarTestTag),
@@ -171,6 +174,20 @@ fun ConversationBar(
                         onClick = {
                             showMenu = false
                             onGenerationParamsPressed()
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.system_prompt)) },
+                        onClick = {
+                            showMenu = false
+                            onSystemPromptPressed()
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.tools)) },
+                        onClick = {
+                            showMenu = false
+                            onToolsPressed()
                         }
                     )
                 }

@@ -185,13 +185,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Systeemprompts</string>
     <string name="system_prompts_subtitle">Herbruikbare instructies voor elk model</string>
-    <string name="system_prompts_empty">Nog geen systeemprompts. Tik op + om er een toe te voegen.</string>
-    <string name="system_prompt_new">Nieuwe systeemprompt</string>
-    <string name="system_prompt_edit">Systeemprompt bewerken</string>
-    <string name="system_prompt_hint">bijv. Je bent een bondige assistent. Antwoord altijd in het Nederlands.</string>
     <string name="system_prompt_current">Huidige systeemprompt</string>
-    <string name="system_prompt_current_empty">Geen systeemprompt — tik om toe te voegen</string>
-    <string name="system_prompt_update">Bijwerken</string>
     <string name="save">Opslaan</string>
     <string name="add">Toevoegen</string>
     <string name="clear">Wissen</string>
@@ -407,7 +401,6 @@
     <string name="tab_params">Parameters</string>
     <string name="tab_prompt">Prompt</string>
     <string name="take_photo">Foto maken</string>
-    <string name="tools_unsupported">Dit model ondersteunt geen tools</string>
     <string name="vision_module_available">Beeldondersteuning toevoegen · Downloaden</string>
     <string name="vision_module_downloading">Beeldondersteuning wordt gedownload — klaar bij het volgende laden van dit model</string>
     <string name="whats_new_documents">Documenten — stel vragen over je bestanden</string>

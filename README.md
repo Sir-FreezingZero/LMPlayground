@@ -16,8 +16,8 @@ LM Playground is an Android application for running Large Language Models locall
 - **Vision/image input** - attach a photo from your gallery or camera and ask vision-capable models about it (Gemma 4, Gemma 3, Qwen 3.5, Ministral 3)
 - **Rich markdown** in chat responses - headers, code blocks, lists, and more
 - **Reasoning model support** - thinking steps from models like GPT-OSS, DeepSeek R1, and Nemotron are displayed in a styled section
-- **Tools** - capable models can search the web, fetch a page, and run JavaScript mid-reply; each tool is off by default and enabled per model
-- **Reusable system prompts** - save a persona, tone, or output format once and apply it to any model
+- **Tools** - capable models can search the web, fetch a page, and run JavaScript mid-reply; each tool is off by default and can be turned on for all chats or just one
+- **System prompts** - set a default persona, tone, or output format for every chat, or give one chat its own
 - **Edit, regenerate & branch** - long-press a message to edit and resend it, regenerate a reply, or continue from any reply in a new chat; the model's KV cache is rolled back to that point instead of re-reading the conversation
 - **Voice dictation** - tap the mic and speak; on-device speech recognition in 35 languages, fully offline
 - **Chat history** - conversations are saved and organized; pin, rename, delete, and resume sessions from the sidebar

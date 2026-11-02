@@ -205,13 +205,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Invites syst\u00E8me</string>
     <string name="system_prompts_subtitle">Instructions r\u00E9utilisables pour tout mod\u00E8le</string>
-    <string name="system_prompts_empty">Aucune invite syst\u00E8me pour le moment. Appuyez sur + pour en ajouter une.</string>
-    <string name="system_prompt_new">Nouvelle invite syst\u00E8me</string>
-    <string name="system_prompt_edit">Modifier l\'invite syst\u00E8me</string>
-    <string name="system_prompt_hint">par ex. Tu es un assistant concis. R\u00E9ponds toujours en fran\u00E7ais.</string>
     <string name="system_prompt_current">Invite syst\u00E8me actuelle</string>
-    <string name="system_prompt_current_empty">Aucune invite syst\u00E8me \u2014 appuyez pour en ajouter</string>
-    <string name="system_prompt_update">Mettre \u00E0 jour</string>
     <string name="save">Enregistrer</string>
     <string name="add">Ajouter</string>
     <string name="clear">Effacer</string>
@@ -364,7 +358,6 @@
     <string name="tab_params">Paramètres</string>
     <string name="tab_prompt">Prompt</string>
     <string name="take_photo">Prendre une photo</string>
-    <string name="tools_unsupported">Ce modèle ne prend pas en charge les outils</string>
     <string name="vision_module_available">Ajouter la prise en charge des images · Télécharger</string>
     <string name="vision_module_downloading">Téléchargement de la prise en charge des images — prête au prochain chargement de ce modèle</string>
     <string name="whats_new_documents">Documents — posez des questions sur vos fichiers</string>

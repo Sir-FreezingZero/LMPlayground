@@ -183,13 +183,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Gesaan Sistem</string>
     <string name="system_prompts_subtitle">Arahan boleh guna semula untuk mana-mana model</string>
-    <string name="system_prompts_empty">Belum ada gesaan sistem. Ketik + untuk menambah.</string>
-    <string name="system_prompt_new">Gesaan sistem baharu</string>
-    <string name="system_prompt_edit">Edit gesaan sistem</string>
-    <string name="system_prompt_hint">cth: Anda adalah pembantu yang ringkas. Jawab sentiasa dalam bahasa Perancis.</string>
     <string name="system_prompt_current">Gesaan sistem semasa</string>
-    <string name="system_prompt_current_empty">Tiada gesaan sistem — ketik untuk menambah</string>
-    <string name="system_prompt_update">Kemas kini</string>
     <string name="save">Simpan</string>
     <string name="add">Tambah</string>
     <string name="clear">Kosongkan</string>
@@ -397,7 +391,6 @@
     <string name="tab_params">Parameter</string>
     <string name="tab_prompt">Gesaan</string>
     <string name="take_photo">Ambil foto</string>
-    <string name="tools_unsupported">Model ini tidak menyokong alat</string>
     <string name="vision_module_available">Tambah sokongan imej · Muat turun</string>
     <string name="vision_module_downloading">Memuat turun sokongan imej — sedia pada kali seterusnya anda memuatkan model ini</string>
     <string name="whats_new_documents">Dokumen — tanya soalan tentang fail anda</string>

@@ -184,13 +184,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Systemprompter</string>
     <string name="system_prompts_subtitle">Återanvändbara instruktioner för valfri modell</string>
-    <string name="system_prompts_empty">Inga systemprompter än. Tryck på + för att lägga till en.</string>
-    <string name="system_prompt_new">Ny systemprompt</string>
-    <string name="system_prompt_edit">Redigera systemprompt</string>
-    <string name="system_prompt_hint">t.ex. Du är en koncis assistent. Svara alltid på franska.</string>
     <string name="system_prompt_current">Nuvarande systemprompt</string>
-    <string name="system_prompt_current_empty">Ingen systemprompt — tryck för att lägga till</string>
-    <string name="system_prompt_update">Uppdatera</string>
     <string name="save">Spara</string>
     <string name="add">Lägg till</string>
     <string name="clear">Rensa</string>
@@ -406,7 +400,6 @@
     <string name="tab_params">Parametrar</string>
     <string name="tab_prompt">Prompt</string>
     <string name="take_photo">Ta foto</string>
-    <string name="tools_unsupported">Den här modellen har inte stöd för verktyg</string>
     <string name="vision_module_available">Lägg till bildstöd · Ladda ner</string>
     <string name="vision_module_downloading">Laddar ner bildstöd – klart nästa gång du läser in modellen</string>
     <string name="whats_new_documents">Dokument – ställ frågor om dina filer</string>

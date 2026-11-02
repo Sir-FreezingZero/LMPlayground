@@ -10,10 +10,9 @@ import com.druk.llamacpp.tools.ToolRegistry
 import com.druk.lmplayground.tools.createDefault
 
 /**
- * Backs the Settings → Tools screen. Reads and writes the *global default*
- * enablement for each tool (Settings → Tools). A per-model override, set from a
- * model's generation-params sheet, takes precedence at load time — see
- * [StoragePreferences.effectiveToolEnabled].
+ * Backs the Settings → Tools screen: the default enablement for each tool. A
+ * chat's own settings (its ⋮ menu) win for that chat — see
+ * [StoragePreferences.toolEnabled].
  */
 class ToolsViewModel(app: Application) : AndroidViewModel(app) {
 

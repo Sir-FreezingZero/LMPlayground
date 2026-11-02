@@ -7,22 +7,19 @@ import com.druk.lmplayground.data.ChatMessageEntity
 import com.druk.lmplayground.data.ChatRepository
 import com.druk.lmplayground.data.ChatSessionEntity
 import com.druk.lmplayground.data.ConversationMetadata
-import com.druk.lmplayground.data.SystemPromptEntity
-import com.druk.lmplayground.data.SystemPromptRepository
 import com.druk.lmplayground.models.ModelInfo
 import java.io.File
 import java.util.UUID
 
 /**
- * Persistence facade for chat sessions: wraps [ChatRepository] and
- * [SystemPromptRepository] and owns the entity ↔ UI-model mapping.
- * Holds no UI state — the ViewModel keeps the current-session id and
- * passes it in. Both repositories are nullable because the `:llama`
- * process runs the same Application class without Room initialized.
+ * Persistence facade for chat sessions: wraps [ChatRepository] and owns
+ * the entity ↔ UI-model mapping. Holds no UI state — the ViewModel keeps
+ * the current-session id and passes it in. The repository is nullable
+ * because the `:llama` process runs the same Application class without
+ * Room initialized.
  */
 class ChatSessionStore(
     private val chatRepository: ChatRepository?,
-    private val systemPromptRepository: SystemPromptRepository?,
     private val imageStore: ChatImageStore,
 ) {
 
@@ -51,16 +48,6 @@ class ChatSessionStore(
     /** Put a chat in [folderId], or take it out of its folder with null. */
     suspend fun moveToFolder(sessionId: String, folderId: String?) {
         chatRepository?.updateSessionFolder(sessionId, folderId)
-    }
-
-    /** Per-model MRU system prompts, most recently used first. */
-    fun recentSystemPromptsForModel(modelFilename: String?): LiveData<List<SystemPromptEntity>> {
-        val repo = systemPromptRepository
-        return if (repo == null || modelFilename.isNullOrEmpty()) {
-            MutableLiveData(emptyList())
-        } else {
-            repo.getRecentForModelLive(modelFilename)
-        }
     }
 
     /**
@@ -266,47 +253,17 @@ class ChatSessionStore(
         )
     }
 
+    /** Save the chat's own tool settings, tool name to "true"/"false", in its metadata. */
+    suspend fun persistChatTools(sessionId: String, tools: Map<String, String>) {
+        val repo = chatRepository ?: return
+        val updated = ConversationMetadata.parse(repo.getSession(sessionId)?.metadata)
+            .putStringMap(ConversationMetadata.KEY_TOOLS, tools)
+            .toJson()
+        repo.updateSessionMetadata(sessionId, updated)
+    }
+
     suspend fun updateSessionSystemPrompt(sessionId: String, text: String) {
         chatRepository?.updateSessionSystemPrompt(sessionId, text)
-    }
-
-    suspend fun findSystemPromptByText(text: String): SystemPromptEntity? =
-        systemPromptRepository?.findByText(text)
-
-    suspend fun touchSystemPromptUsage(promptId: String, modelFilename: String) {
-        systemPromptRepository?.touchUsage(promptId, modelFilename)
-    }
-
-    /** True when the system-prompt library is available in this process. */
-    val systemPromptsAvailable: Boolean
-        get() = systemPromptRepository != null
-
-    /**
-     * Overwrite the text of an existing library entry. Returns false when
-     * the library is unavailable or the entry no longer exists.
-     */
-    suspend fun updateSystemPromptText(promptId: String, text: String): Boolean {
-        val repo = systemPromptRepository ?: return false
-        val existing = repo.getById(promptId) ?: return false
-        repo.update(existing.copy(text = text))
-        return true
-    }
-
-    /**
-     * Persist a brand-new system prompt to the library. Returns null when
-     * the library is unavailable in this process.
-     */
-    suspend fun createSystemPrompt(text: String): SystemPromptEntity? {
-        val repo = systemPromptRepository ?: return null
-        val now = System.currentTimeMillis()
-        val entity = SystemPromptEntity(
-            id = UUID.randomUUID().toString(),
-            text = text,
-            createdAt = now,
-            updatedAt = now
-        )
-        repo.insert(entity)
-        return entity
     }
 
     suspend fun renameSession(sessionId: String, newTitle: String) {

@@ -184,13 +184,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Järjestelmäkehotteet</string>
     <string name="system_prompts_subtitle">Uudelleenkäytettävät ohjeet mille tahansa mallille</string>
-    <string name="system_prompts_empty">Ei vielä järjestelmäkehotteita. Napauta + lisätäksesi yhden.</string>
-    <string name="system_prompt_new">Uusi järjestelmäkehote</string>
-    <string name="system_prompt_edit">Muokkaa järjestelmäkehotetta</string>
-    <string name="system_prompt_hint">esim. Olet tiivis avustaja. Vastaa aina ranskaksi.</string>
     <string name="system_prompt_current">Nykyinen järjestelmäkehote</string>
-    <string name="system_prompt_current_empty">Ei järjestelmäkehotetta — napauta lisätäksesi</string>
-    <string name="system_prompt_update">Päivitä</string>
     <string name="save">Tallenna</string>
     <string name="add">Lisää</string>
     <string name="clear">Tyhjennä</string>
@@ -395,7 +389,6 @@
     <string name="tab_params">Parametrit</string>
     <string name="tab_prompt">Kehote</string>
     <string name="take_photo">Ota kuva</string>
-    <string name="tools_unsupported">Tämä malli ei tue työkaluja</string>
     <string name="vision_module_available">Lisää kuvatuki · Lataa</string>
     <string name="vision_module_downloading">Ladataan kuvatukea – valmis, kun lataat tämän mallin seuraavan kerran</string>
     <string name="whats_new_documents">Asiakirjat – kysy kysymyksiä tiedostoistasi</string>

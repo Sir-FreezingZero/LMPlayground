@@ -11,20 +11,16 @@ import androidx.sqlite.db.SupportSQLiteDatabase
     entities = [
         ChatSessionEntity::class,
         ChatMessageEntity::class,
-        SystemPromptEntity::class,
-        PromptUsage::class,
         RagDocumentEntity::class,
         RagChunkEntity::class,
         ChatFolderEntity::class
     ],
-    version = 9,
+    version = 10,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun chatDao(): ChatDao
-
-    abstract fun systemPromptDao(): SystemPromptDao
 
     abstract fun ragDao(): RagDao
 
@@ -181,6 +177,14 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        /** Saved system prompts were replaced by a default prompt and each chat's own. */
+        private val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("DROP TABLE IF EXISTS `prompt_usage`")
+                db.execSQL("DROP TABLE IF EXISTS `system_prompts`")
+            }
+        }
+
         fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: Room.databaseBuilder(
@@ -196,7 +200,8 @@ abstract class AppDatabase : RoomDatabase() {
                         MIGRATION_5_6,
                         MIGRATION_6_7,
                         MIGRATION_7_8,
-                        MIGRATION_8_9
+                        MIGRATION_8_9,
+                        MIGRATION_9_10
                     )
                     .build().also { INSTANCE = it }
             }

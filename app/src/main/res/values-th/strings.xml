@@ -184,13 +184,7 @@
     <!-- System prompts -->
     <string name="system_prompts">พรอมต์ระบบ</string>
     <string name="system_prompts_subtitle">คำสั่งที่ใช้ซ้ำได้สำหรับทุกโมเดล</string>
-    <string name="system_prompts_empty">ยังไม่มีพรอมต์ระบบ แตะ + เพื่อเพิ่ม</string>
-    <string name="system_prompt_new">พรอมต์ระบบใหม่</string>
-    <string name="system_prompt_edit">แก้ไขพรอมต์ระบบ</string>
-    <string name="system_prompt_hint">เช่น คุณเป็นผู้ช่วยที่กระชับ ตอบเป็นภาษาไทยเสมอ</string>
     <string name="system_prompt_current">พรอมต์ระบบปัจจุบัน</string>
-    <string name="system_prompt_current_empty">ยังไม่มีพรอมต์ระบบ — แตะเพื่อเพิ่ม</string>
-    <string name="system_prompt_update">อัปเดต</string>
     <string name="save">บันทึก</string>
     <string name="add">เพิ่ม</string>
     <string name="clear">ล้าง</string>
@@ -396,7 +390,6 @@
     <string name="tab_params">พารามิเตอร์</string>
     <string name="tab_prompt">พรอมป์</string>
     <string name="take_photo">ถ่ายรูป</string>
-    <string name="tools_unsupported">โมเดลนี้ไม่รองรับเครื่องมือ</string>
     <string name="vision_module_available">เพิ่มการรองรับรูปภาพ · ดาวน์โหลด</string>
     <string name="vision_module_downloading">กำลังดาวน์โหลดการรองรับรูปภาพ — พร้อมใช้ครั้งถัดไปที่โหลดโมเดลนี้</string>
     <string name="whats_new_documents">เอกสาร — ถามคำถามเกี่ยวกับไฟล์ของคุณ</string>

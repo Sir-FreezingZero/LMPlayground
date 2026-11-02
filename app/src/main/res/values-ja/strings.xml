@@ -205,13 +205,7 @@
     <!-- System prompts -->
     <string name="system_prompts">システムプロンプト</string>
     <string name="system_prompts_subtitle">どのモデルでも再利用できる指示</string>
-    <string name="system_prompts_empty">システムプロンプトはまだありません。＋をタップして追加してください。</string>
-    <string name="system_prompt_new">新しいシステムプロンプト</string>
-    <string name="system_prompt_edit">システムプロンプトを編集</string>
-    <string name="system_prompt_hint">例：あなたは簡潔なアシスタントです。常に日本語で答えてください。</string>
     <string name="system_prompt_current">現在のシステムプロンプト</string>
-    <string name="system_prompt_current_empty">システムプロンプトなし — タップして追加</string>
-    <string name="system_prompt_update">更新</string>
     <string name="save">保存</string>
     <string name="add">追加</string>
     <string name="clear">クリア</string>
@@ -362,7 +356,6 @@
     <string name="tab_params">パラメータ</string>
     <string name="tab_prompt">プロンプト</string>
     <string name="take_photo">写真を撮る</string>
-    <string name="tools_unsupported">このモデルはツールに対応していません</string>
     <string name="vision_module_available">画像サポートを追加 · ダウンロード</string>
     <string name="vision_module_downloading">画像サポートをダウンロード中 — 次回このモデルを読み込むときに使えます</string>
     <string name="whats_new_documents">ドキュメント — ファイルについて質問</string>

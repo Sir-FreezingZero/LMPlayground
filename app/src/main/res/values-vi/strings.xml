@@ -202,13 +202,7 @@
     <!-- System prompts -->
     <string name="system_prompts">L\u1EDDi nh\u1EAFc h\u1EC7 th\u1ED1ng</string>
     <string name="system_prompts_subtitle">H\u01B0\u1EDBng d\u1EABn t\u00E1i s\u1EED d\u1EE5ng cho m\u1ECDi m\u00F4 h\u00ECnh</string>
-    <string name="system_prompts_empty">Ch\u01B0a c\u00F3 l\u1EDDi nh\u1EAFc h\u1EC7 th\u1ED1ng. Nh\u1EA5n + \u0111\u1EC3 th\u00EAm.</string>
-    <string name="system_prompt_new">L\u1EDDi nh\u1EAFc h\u1EC7 th\u1ED1ng m\u1EDBi</string>
-    <string name="system_prompt_edit">Ch\u1EC9nh s\u1EEDa l\u1EDDi nh\u1EAFc h\u1EC7 th\u1ED1ng</string>
-    <string name="system_prompt_hint">v\u00ED d\u1EE5: B\u1EA1n l\u00E0 m\u1ED9t tr\u1EE3 l\u00FD s\u00FAc t\u00EDch. Lu\u00F4n tr\u1EA3 l\u1EDDi b\u1EB1ng ti\u1EBFng Vi\u1EC7t.</string>
     <string name="system_prompt_current">L\u1EDDi nh\u1EAFc h\u1EC7 th\u1ED1ng hi\u1EC7n t\u1EA1i</string>
-    <string name="system_prompt_current_empty">Kh\u00F4ng c\u00F3 l\u1EDDi nh\u1EAFc h\u1EC7 th\u1ED1ng \u2014 nh\u1EA5n \u0111\u1EC3 th\u00EAm</string>
-    <string name="system_prompt_update">C\u1EADp nh\u1EADt</string>
     <string name="save">L\u01B0u</string>
     <string name="add">Th\u00EAm</string>
     <string name="clear">X\u00F3a</string>
@@ -358,7 +352,6 @@
     <string name="tab_params">Tham số</string>
     <string name="tab_prompt">Lời nhắc</string>
     <string name="take_photo">Chụp ảnh</string>
-    <string name="tools_unsupported">Mô hình này không hỗ trợ công cụ</string>
     <string name="vision_module_available">Thêm hỗ trợ hình ảnh · Tải xuống</string>
     <string name="vision_module_downloading">Đang tải hỗ trợ hình ảnh — sẵn sàng vào lần tải mô hình này tiếp theo</string>
     <string name="whats_new_documents">Tài liệu — đặt câu hỏi về tệp của bạn</string>

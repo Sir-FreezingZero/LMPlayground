@@ -247,9 +247,8 @@ class ConversationFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // After returning from the Tools screen (which marks the flag), hide the
-        // "Set up tools" button — re-checking here instead of on tap avoids the
-        // button visibly disappearing under the user's finger.
+        // A default prompt changed in Settings → System prompts applies now.
+        viewModel.syncSystemPrompt()
     }
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3WindowSizeClassApi::class)
@@ -283,8 +282,6 @@ class ConversationFragment : Fragment() {
             // always reason, since "off" would be ignored. The params sheet still
             // uses supportsThinking, because the thinking budget applies to them.
             val thinkingToggleable by viewModel.thinkingToggleable.observeAsState(false)
-            val supportsToolCalling by viewModel.supportsToolCalling.observeAsState(false)
-            val toolEnabledStates by viewModel.toolEnabledStates.observeAsState(emptyMap())
             val thinkingEnabled by viewModel.thinkingEnabled.observeAsState(false)
             val supportsVision by viewModel.supportsVision.observeAsState(false)
             val currentImageUri by attachedImageUri
@@ -306,9 +303,6 @@ class ConversationFragment : Fragment() {
             val maxContextSize by viewModel.maxContextSize.observeAsState(4096)
             val sessionModelHint by viewModel.sessionModelHint.observeAsState()
             val visionModuleHint by viewModel.visionModuleHint.observeAsState()
-            val systemPrompt by viewModel.systemPrompt.observeAsState("")
-            val systemPromptId by viewModel.systemPromptId.observeAsState()
-            val recentSystemPrompts by viewModel.recentSystemPrompts.observeAsState(emptyList())
             val userError by viewModel.userError.observeAsState()
             val notice by viewModel.notice.observeAsState()
             val pendingRamWarning by viewModel.pendingRamWarning.observeAsState()
@@ -319,6 +313,9 @@ class ConversationFragment : Fragment() {
                 mutableStateOf<com.druk.lmplayground.data.RagDocumentEntity?>(null)
             }
             var showParamsSheet by remember { mutableStateOf(false) }
+            var paramsSheetTab by remember { mutableIntStateOf(0) }
+            val systemPrompt by viewModel.systemPrompt.observeAsState("")
+            val chatTools by viewModel.chatTools.observeAsState(emptyMap())
 
             val dictationState by viewModel.dictation.state.observeAsState(DictationState.Idle)
             val micOn by viewModel.dictation.micOn.observeAsState(false)
@@ -707,34 +704,18 @@ class ConversationFragment : Fragment() {
                         params = generationParams,
                         maxContextSize = maxContextSize,
                         supportsThinking = supportsThinking,
-                        supportsToolCalling = supportsToolCalling,
-                        tools = viewModel.toolRegistry.getAllTools(),
-                        toolEnabledStates = toolEnabledStates,
-                        onToolEnabledChanged = { name, enabled -> viewModel.setToolEnabled(name, enabled) },
-                        systemPrompt = systemPrompt,
-                        systemPromptId = systemPromptId,
-                        recentSystemPrompts = recentSystemPrompts,
-                        canUpdateLinkedPrompt = systemPromptId != null,
                         onParamsChanged = { viewModel.updateGenerationParams(it) },
-                        onUpdateLinkedPrompt = { viewModel.updateLinkedSystemPrompt(it) },
-                        onSaveAsNewPrompt = { viewModel.createAndApplySystemPrompt(it) },
-                        onClearSystemPrompt = { viewModel.clearSystemPrompt() },
-                        onApplyPrompt = { viewModel.applySystemPrompt(it.id, it.text) },
+                        systemPrompt = systemPrompt,
+                        onSystemPromptChanged = { viewModel.applySystemPrompt(it) },
+                        tools = viewModel.toolRegistry.getAllTools(),
+                        toolStates = viewModel.toolStates(chatTools),
+                        onToolChanged = { name, on -> viewModel.setChatTool(name, on) },
+                        initialTab = paramsSheetTab,
                         onDismiss = { showParamsSheet = false }
                     )
                 }
 
                 val mainContent: @Composable () -> Unit = {
-                    // Picker sits just above the composer. Visible only when:
-                    //   - model is ready
-                    //   - chat is empty
-                    //   - library has entries
-                    //   - the session has no prompt selected yet
-                    val pickerVisible = isModelReady &&
-                        messages.isEmpty() &&
-                        recentSystemPrompts.isNotEmpty() &&
-                        systemPrompt.isEmpty()
-
                     // Surface restores what the old Scaffold provided: it paints
                     // the chat background AND propagates the correct content
                     // color (onBackground) to descendants. A bare Box leaves text
@@ -829,8 +810,10 @@ class ConversationFragment : Fragment() {
                                 viewModel.loadModelList()
                             },
                             onGenerationParamsPressed = if (modelInfo != null) {
-                                { showParamsSheet = true }
+                                { paramsSheetTab = 0; showParamsSheet = true }
                             } else null,
+                            onSystemPromptPressed = { paramsSheetTab = 1; showParamsSheet = true },
+                            onToolsPressed = { paramsSheetTab = 2; showParamsSheet = true },
                             modifier = Modifier
                                 .align(Alignment.TopCenter)
                                 .onSizeChanged { topBarHeightPx = it.height }
@@ -860,34 +843,12 @@ class ConversationFragment : Fragment() {
                                 }
                         )
 
-                        // ---- Bottom dock (picker + frosted input) ----
+                        // ---- Bottom dock (document chips + frosted input) ----
                         Column(
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
                                 .onSizeChanged { bottomBarHeightPx = it.height }
                         ) {
-                            // On pick: the picker row handles its own flight
-                            // animation per-card, then fires onPick — which flips
-                            // the visibility gate. Exit uses ExitTransition.None
-                            // so the row disappears immediately after the card
-                            // finishes flying (no double-animation).
-                            androidx.compose.animation.AnimatedVisibility(
-                                visible = pickerVisible,
-                                enter = androidx.compose.animation.fadeIn(
-                                    animationSpec = androidx.compose.animation.core.tween(220)
-                                ) + androidx.compose.animation.slideInVertically(
-                                    animationSpec = androidx.compose.animation.core.tween(220),
-                                    initialOffsetY = { it / 2 }
-                                ),
-                                exit = androidx.compose.animation.ExitTransition.None
-                            ) {
-                                SystemPromptPickerRow(
-                                    prompts = recentSystemPrompts,
-                                    selectedText = systemPrompt,
-                                    onPick = { viewModel.applySystemPrompt(it.id, it.text) },
-                                    modifier = Modifier.padding(bottom = 8.dp)
-                                )
-                            }
                             if (sessionDocuments.isNotEmpty()) {
                                 DocumentChipsRow(
                                     documents = sessionDocuments,
@@ -957,7 +918,7 @@ class ConversationFragment : Fragment() {
                                     clearPendingCapture()
                                 },
                                 onSwipeUp = {
-                                    if (isModelReady) showParamsSheet = true
+                                    if (isModelReady) { paramsSheetTab = 0; showParamsSheet = true }
                                 },
                                 dictationState = dictationState,
                                 dictationDownloadProgress = dictationDownload,

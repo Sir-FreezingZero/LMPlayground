@@ -205,13 +205,7 @@
     <!-- System prompts -->
     <string name="system_prompts">\u0645\u0637\u0627\u0644\u0628\u0627\u062A \u0627\u0644\u0646\u0638\u0627\u0645</string>
     <string name="system_prompts_subtitle">\u062A\u0639\u0644\u064A\u0645\u0627\u062A \u0642\u0627\u0628\u0644\u0629 \u0644\u0625\u0639\u0627\u062F\u0629 \u0627\u0644\u0627\u0633\u062A\u062E\u062F\u0627\u0645 \u0644\u0623\u064A \u0646\u0645\u0648\u0630\u062C</string>
-    <string name="system_prompts_empty">\u0644\u0627 \u062A\u0648\u062C\u062F \u0645\u0637\u0627\u0644\u0628\u0627\u062A \u0646\u0638\u0627\u0645 \u0628\u0639\u062F. \u0627\u0646\u0642\u0631 \u0639\u0644\u0649 + \u0644\u0625\u0636\u0627\u0641\u0629 \u0648\u0627\u062D\u062F\u0629.</string>
-    <string name="system_prompt_new">\u0645\u0637\u0627\u0644\u0628\u0629 \u0646\u0638\u0627\u0645 \u062C\u062F\u064A\u062F\u0629</string>
-    <string name="system_prompt_edit">\u062A\u062D\u0631\u064A\u0631 \u0645\u0637\u0627\u0644\u0628\u0629 \u0627\u0644\u0646\u0638\u0627\u0645</string>
-    <string name="system_prompt_hint">\u0645\u062B\u0627\u0644: \u0623\u0646\u062A \u0645\u0633\u0627\u0639\u062F \u0645\u062E\u062A\u0635\u0631. \u0623\u062C\u0628 \u062F\u0627\u0626\u0645\u0627\u064B \u0628\u0627\u0644\u0639\u0631\u0628\u064A\u0629.</string>
     <string name="system_prompt_current">\u0645\u0637\u0627\u0644\u0628\u0629 \u0627\u0644\u0646\u0638\u0627\u0645 \u0627\u0644\u062D\u0627\u0644\u064A\u0629</string>
-    <string name="system_prompt_current_empty">\u0644\u0627 \u062A\u0648\u062C\u062F \u0645\u0637\u0627\u0644\u0628\u0629 \u0646\u0638\u0627\u0645 \u2014 \u0627\u0646\u0642\u0631 \u0644\u0644\u0625\u0636\u0627\u0641\u0629</string>
-    <string name="system_prompt_update">\u062A\u062D\u062F\u064A\u062B</string>
     <string name="save">\u062D\u0641\u0638</string>
     <string name="add">\u0625\u0636\u0627\u0641\u0629</string>
     <string name="clear">\u0645\u0633\u062D</string>
@@ -371,7 +365,6 @@
     <string name="tab_params">المعلمات</string>
     <string name="tab_prompt">المطالبة</string>
     <string name="take_photo">التقاط صورة</string>
-    <string name="tools_unsupported">هذا النموذج لا يدعم الأدوات</string>
     <string name="vision_module_available">إضافة دعم الصور · تنزيل</string>
     <string name="vision_module_downloading">جارٍ تنزيل دعم الصور — سيكون جاهزًا في المرة التالية التي تحمّل فيها هذا النموذج</string>
     <string name="whats_new_documents">المستندات — اطرح أسئلة حول ملفاتك</string>

@@ -205,13 +205,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Системні промпти</string>
     <string name="system_prompts_subtitle">Багаторазові інструкції для будь-якої моделі</string>
-    <string name="system_prompts_empty">Ще немає системних промптів. Натисніть +, щоб додати.</string>
-    <string name="system_prompt_new">Новий системний промпт</string>
-    <string name="system_prompt_edit">Редагувати системний промпт</string>
-    <string name="system_prompt_hint">напр. Ти лаконічний асистент. Завжди відповідай українською.</string>
     <string name="system_prompt_current">Поточний системний промпт</string>
-    <string name="system_prompt_current_empty">Немає системного промпта \u2014 натисніть, щоб додати</string>
-    <string name="system_prompt_update">Оновити</string>
     <string name="save">Зберегти</string>
     <string name="add">Додати</string>
     <string name="clear">Очистити</string>
@@ -358,7 +352,6 @@
     <string name="tab_params">Параметри</string>
     <string name="tab_prompt">Промпт</string>
     <string name="take_photo">Зробити фото</string>
-    <string name="tools_unsupported">Ця модель не підтримує інструменти</string>
     <string name="vision_module_available">Додати підтримку зображень · Завантажити</string>
     <string name="vision_module_downloading">Завантаження підтримки зображень — буде готово під час наступного завантаження цієї моделі</string>
     <string name="whats_new_documents">Документи — ставте запитання про свої файли</string>

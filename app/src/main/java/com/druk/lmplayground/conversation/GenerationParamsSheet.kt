@@ -5,12 +5,9 @@ import androidx.compose.material3.BottomSheetDefaults
 import com.druk.lmplayground.theme.MenuCardShape
 import com.druk.lmplayground.theme.menuBorder
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,60 +16,54 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.PrimaryTabRow
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Tab
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.druk.lmplayground.R
-import com.druk.lmplayground.data.SystemPromptEntity
-import com.druk.lmplayground.settings.SystemPromptEditorSheet
-import com.druk.lmplayground.settings.ToolsContent
+import com.druk.lmplayground.settings.PromptField
+import com.druk.lmplayground.settings.PromptSection
+import com.druk.lmplayground.settings.SettingsSection
+import com.druk.lmplayground.settings.ToolSwitches
 import com.druk.llamacpp.tools.Tool
 import kotlin.math.roundToInt
 
 /**
- * Bottom sheet for per-session generation settings, organised into three tabs:
+ * Bottom sheet for this chat's settings, in three tabs:
  *   - Params: generation parameters (context size, sampling, advanced).
- *   - Prompt: the current system prompt plus the per-model MRU list of saved
- *     prompts, tap-to-apply.
- *   - Tools: the tool toggles (or a note when the model can't call tools).
+ *   - Prompt: the chat's own system prompt (empty: the default from
+ *     Settings).
+ *   - Tools: the chat's own tool switches, over the defaults from Settings.
  *
- * Edited params accumulate in [editedParams] across tab switches and commit
- * once when the sheet is dismissed.
+ * Edited params and the prompt accumulate across tab switches and commit
+ * once when the sheet is dismissed; tool switches apply right away.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -80,28 +71,22 @@ fun GenerationParamsSheet(
     params: GenerationParams,
     maxContextSize: Int,
     supportsThinking: Boolean = false,
-    supportsToolCalling: Boolean = false,
-    tools: List<Tool> = emptyList(),
-    toolEnabledStates: Map<String, Boolean> = emptyMap(),
-    onToolEnabledChanged: (String, Boolean) -> Unit = { _, _ -> },
-    systemPrompt: String = "",
-    systemPromptId: String? = null,
-    recentSystemPrompts: List<SystemPromptEntity> = emptyList(),
-    canUpdateLinkedPrompt: Boolean = false,
     onParamsChanged: (GenerationParams) -> Unit,
-    onUpdateLinkedPrompt: (String) -> Unit = {},
-    onSaveAsNewPrompt: (String) -> Unit = {},
-    onClearSystemPrompt: () -> Unit = {},
-    onApplyPrompt: (SystemPromptEntity) -> Unit = {},
+    systemPrompt: String = "",
+    onSystemPromptChanged: (String) -> Unit = {},
+    tools: List<Tool> = emptyList(),
+    toolStates: Map<String, Boolean> = emptyMap(),
+    onToolChanged: (String, Boolean) -> Unit = { _, _ -> },
+    initialTab: Int = 0,
     onDismiss: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var editedParams by remember(params) { mutableStateOf(params) }
+    var editedPrompt by remember(systemPrompt) { mutableStateOf(systemPrompt) }
     // Hoisted so the expanded state survives a tab round-trip (the tab body is
     // disposed when another tab is selected).
     var showAdvanced by rememberSaveable { mutableStateOf(false) }
-    var showPromptReviser by remember { mutableStateOf(false) }
-    var selectedTab by rememberSaveable { mutableStateOf(0) }
+    var selectedTab by rememberSaveable { mutableIntStateOf(initialTab) }
 
     // The sheet wraps its content and grows naturally — e.g. expanding the
     // Advanced params pushes the sheet up like a default bottom sheet.
@@ -109,16 +94,14 @@ fun GenerationParamsSheet(
     // clipping (rare — small screens / large fonts).
     val screenHeightDp = LocalConfiguration.current.screenHeightDp
     val maxTabHeight = (screenHeightDp * 0.82f).dp
-    // Params is the default tab and the tallest at rest; measure its content
-    // height and use it as the floor for the shorter Prompt/Tools tabs so all
-    // three open at the same height (adapts to the model — e.g. Params is
-    // shorter without a Thinking Budget slider).
-    var paramsContentHeight by remember { mutableStateOf(0.dp) }
 
     ModalBottomSheet(
         onDismissRequest = {
             if (editedParams != params) {
                 onParamsChanged(editedParams)
+            }
+            if (editedPrompt != systemPrompt) {
+                onSystemPromptChanged(editedPrompt)
             }
             onDismiss()
         },
@@ -143,29 +126,23 @@ fun GenerationParamsSheet(
             BottomSheetDefaults.DragHandle(modifier = Modifier.align(Alignment.CenterHorizontally))
             // Transparent so the sheet's (lighter) container colour shows
             // through the tab row instead of the tab row painting its own
-            // darker surface — keeps the tabs and content the same tone as
-            // the sheet header/drag handle.
+            // darker surface.
             PrimaryTabRow(
                 selectedTabIndex = selectedTab,
                 containerColor = Color.Transparent
             ) {
-                Tab(
-                    selected = selectedTab == 0,
-                    onClick = { selectedTab = 0 },
-                    text = { Text(stringResource(R.string.tab_params)) }
-                )
-                Tab(
-                    selected = selectedTab == 1,
-                    onClick = { selectedTab = 1 },
-                    text = { Text(stringResource(R.string.tab_prompt)) }
-                )
-                Tab(
-                    selected = selectedTab == 2,
-                    onClick = { selectedTab = 2 },
-                    text = { Text(stringResource(R.string.tools)) }
-                )
+                listOf(R.string.tab_params, R.string.tab_prompt, R.string.tools).forEachIndexed { i, label ->
+                    Tab(
+                        selected = selectedTab == i,
+                        onClick = { selectedTab = i },
+                        text = { Text(stringResource(label)) }
+                    )
+                }
             }
-
+            val tabModifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = maxTabHeight)
+                .verticalScroll(rememberScrollState())
             when (selectedTab) {
                 0 -> ParamsTab(
                     params = editedParams,
@@ -175,52 +152,21 @@ fun GenerationParamsSheet(
                     showAdvanced = showAdvanced,
                     onShowAdvancedChange = { showAdvanced = it },
                     onParamsChange = { editedParams = it },
-                    maxHeight = maxTabHeight,
-                    onHeightChange = { paramsContentHeight = it }
-                )
-                1 -> PromptTab(
-                    systemPrompt = systemPrompt,
-                    systemPromptId = systemPromptId,
-                    recentSystemPrompts = recentSystemPrompts,
-                    onEditCurrent = { showPromptReviser = true },
-                    onClearSystemPrompt = onClearSystemPrompt,
-                    onApplyPrompt = onApplyPrompt,
-                    minHeight = paramsContentHeight,
                     maxHeight = maxTabHeight
                 )
-                2 -> ToolsTab(
-                    supportsToolCalling = supportsToolCalling,
-                    tools = tools,
-                    toolEnabledStates = toolEnabledStates,
-                    onToolEnabledChanged = onToolEnabledChanged,
-                    minHeight = paramsContentHeight,
-                    maxHeight = maxTabHeight
-                )
+                1 -> Column(tabModifier) {
+                    PromptSection(R.string.chat_system_prompt) {
+                        PromptField(editedPrompt, stringResource(R.string.system_prompt_uses_default)) { editedPrompt = it }
+                    }
+                }
+                else -> Column(tabModifier) {
+                    SettingsSection(R.string.chat_tools) {
+                        ToolSwitches(tools, toolStates, onToolChanged)
+                    }
+                }
             }
         }
         }
-    }
-
-    if (showPromptReviser) {
-        SystemPromptEditorSheet(
-            initialText = systemPrompt,
-            title = stringResource(
-                if (systemPrompt.isEmpty()) R.string.system_prompt_new
-                else R.string.system_prompt_edit
-            ),
-            primaryLabel = stringResource(R.string.system_prompt_update),
-            onPrimary = { text ->
-                // If the current session prompt is backed by a library entry,
-                // update that entry in place; otherwise create a new library
-                // entry and link it to the session.
-                if (canUpdateLinkedPrompt && systemPrompt.isNotEmpty()) {
-                    onUpdateLinkedPrompt(text)
-                } else {
-                    onSaveAsNewPrompt(text)
-                }
-            },
-            onDismiss = { showPromptReviser = false }
-        )
     }
 }
 
@@ -233,19 +179,16 @@ private fun ParamsTab(
     showAdvanced: Boolean,
     onShowAdvancedChange: (Boolean) -> Unit,
     onParamsChange: (GenerationParams) -> Unit,
-    maxHeight: Dp,
-    onHeightChange: (Dp) -> Unit
+    maxHeight: Dp
 ) {
     val contextMin = 512
     val contextMax = maxContextSize.coerceAtLeast(512)
     val contextStep = 512
-    val density = LocalDensity.current
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(max = maxHeight)
-            .onSizeChanged { onHeightChange(with(density) { it.height.toDp() }) }
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp)
     ) {
@@ -426,161 +369,6 @@ private fun ParamsTab(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-    }
-}
-
-@Composable
-private fun PromptTab(
-    systemPrompt: String,
-    systemPromptId: String?,
-    recentSystemPrompts: List<SystemPromptEntity>,
-    onEditCurrent: () -> Unit,
-    onClearSystemPrompt: () -> Unit,
-    onApplyPrompt: (SystemPromptEntity) -> Unit,
-    minHeight: Dp,
-    maxHeight: Dp
-) {
-    val hasPrompt = systemPrompt.isNotEmpty()
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = minHeight, max = maxHeight)
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp)
-    ) {
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Current system prompt — tap the card to author or edit it for this
-        // session. The Clear button is always rendered (alpha-hidden when no
-        // prompt) so the header height stays stable.
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(R.string.system_prompt_current),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            TextButton(
-                onClick = onClearSystemPrompt,
-                enabled = hasPrompt,
-                modifier = Modifier.alpha(if (hasPrompt) 1f else 0f),
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
-            ) {
-                Text(stringResource(R.string.clear))
-            }
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        OutlinedCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { onEditCurrent() },
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            Text(
-                text = if (hasPrompt) systemPrompt
-                       else stringResource(R.string.system_prompt_current_empty),
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
-                style = MaterialTheme.typography.bodySmall,
-                color = if (hasPrompt) MaterialTheme.colorScheme.onSurface
-                        else MaterialTheme.colorScheme.onSurfaceVariant,
-                minLines = 3,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-
-        // Saved prompts, per-model MRU order. Tapping one applies it without
-        // closing the sheet; the current card and the selection highlight
-        // update live, and the list re-orders on the next open.
-        if (recentSystemPrompts.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(R.string.saved_prompts),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            for (prompt in recentSystemPrompts) {
-                SavedPromptCard(
-                    prompt = prompt,
-                    selected = prompt.id == systemPromptId,
-                    onClick = { onApplyPrompt(prompt) }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-    }
-}
-
-@Composable
-private fun SavedPromptCard(
-    prompt: SystemPromptEntity,
-    selected: Boolean,
-    onClick: () -> Unit
-) {
-    val border: BorderStroke = if (selected) {
-        BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
-    } else {
-        CardDefaults.outlinedCardBorder()
-    }
-    OutlinedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        border = border,
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Text(
-            text = prompt.text,
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
-            style = MaterialTheme.typography.bodySmall,
-            minLines = 2,
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-}
-
-@Composable
-private fun ToolsTab(
-    supportsToolCalling: Boolean,
-    tools: List<Tool>,
-    toolEnabledStates: Map<String, Boolean>,
-    onToolEnabledChanged: (String, Boolean) -> Unit,
-    minHeight: Dp,
-    maxHeight: Dp
-) {
-    if (supportsToolCalling && tools.isNotEmpty()) {
-        // Reuse the Settings → Tools rows (icon, title, description, example,
-        // Switch). ToolsContent scrolls internally, so it gets a bounded
-        // modifier and must not be wrapped in another verticalScroll.
-        ToolsContent(
-            tools = tools,
-            enabledStates = toolEnabledStates,
-            onToolEnabledChanged = onToolEnabledChanged,
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = minHeight, max = maxHeight)
-        )
-    } else {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = minHeight, max = maxHeight),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.tools_unsupported),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 24.dp)
-            )
-        }
     }
 }
 

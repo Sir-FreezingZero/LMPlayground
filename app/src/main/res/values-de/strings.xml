@@ -205,13 +205,7 @@
     <!-- System prompts -->
     <string name="system_prompts">System-Prompts</string>
     <string name="system_prompts_subtitle">Wiederverwendbare Anweisungen für jedes Modell</string>
-    <string name="system_prompts_empty">Noch keine System-Prompts. Tippe auf +, um einen hinzuzufügen.</string>
-    <string name="system_prompt_new">Neuer System-Prompt</string>
-    <string name="system_prompt_edit">System-Prompt bearbeiten</string>
-    <string name="system_prompt_hint">z.\u00A0B. Du bist ein präziser Assistent. Antworte immer auf Deutsch.</string>
     <string name="system_prompt_current">Aktueller System-Prompt</string>
-    <string name="system_prompt_current_empty">Kein System-Prompt – zum Hinzufügen tippen</string>
-    <string name="system_prompt_update">Aktualisieren</string>
     <string name="save">Speichern</string>
     <string name="add">Hinzufügen</string>
     <string name="clear">Löschen</string>
@@ -366,7 +360,6 @@
     <string name="tab_params">Parameter</string>
     <string name="tab_prompt">Prompt</string>
     <string name="take_photo">Foto aufnehmen</string>
-    <string name="tools_unsupported">Dieses Modell unterstützt keine Tools</string>
     <string name="vision_module_available">Bildunterstützung hinzufügen · Herunterladen</string>
     <string name="vision_module_downloading">Bildunterstützung wird heruntergeladen – bereit beim nächsten Laden dieses Modells</string>
     <string name="whats_new_documents">Dokumente – stelle Fragen zu deinen Dateien</string>

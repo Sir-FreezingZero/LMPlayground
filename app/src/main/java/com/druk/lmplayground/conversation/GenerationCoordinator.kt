@@ -106,6 +106,8 @@ class GenerationCoordinator(
         messageId: Long,
         sessionId: String,
         ourJob: Job?,
+        /** The chat's own tool settings ([ConversationViewModel.chatTools]). */
+        chatTools: Map<String, String> = emptyMap(),
     ) = withContext(Dispatchers.Default) {
         val llamaSession = runtime.session ?: return@withContext
 
@@ -131,21 +133,18 @@ class GenerationCoordinator(
             null
         }
 
-        // Re-hydrate per-tool enablement from prefs before every turn so
-        // a tool toggled in Settings -> Tools (global default) or a
-        // model's params sheet (per-model override) takes effect on the
-        // next message — without this, enabling a tool after the model
-        // was loaded had no effect (the registry was only hydrated at
-        // load time), so the model never saw any tools.
-        modelFilename?.let { filename ->
-            val states = mutableMapOf<String, Boolean>()
-            for (tool in toolRegistry.getAllTools()) {
-                val enabled = storagePreferences.effectiveToolEnabled(filename, tool.name)
-                toolRegistry.setToolEnabled(tool.name, enabled)
-                states[tool.name] = enabled
-            }
-            listener.onToolStatesHydrated(states)
+        // Re-hydrate per-tool enablement before every turn so a tool
+        // toggled in Settings -> Tools (by default) or the chat's ⋮ menu takes
+        // effect on the next message — without this, enabling a tool after
+        // the model was loaded had no effect (the registry was only hydrated
+        // at load time), so the model never saw any tools.
+        val states = mutableMapOf<String, Boolean>()
+        for (tool in toolRegistry.getAllTools()) {
+            val enabled = storagePreferences.toolEnabled(tool.name, chatTools)
+            toolRegistry.setToolEnabled(tool.name, enabled)
+            states[tool.name] = enabled
         }
+        listener.onToolStatesHydrated(states)
 
         // Tools are active when model supports it and user has tools enabled
         val toolsActive = supportsToolCalling && toolRegistry.hasEnabledTools()
@@ -159,7 +158,10 @@ class GenerationCoordinator(
             // info is unavailable. Pruning the cache directory is
             // best-effort; failures don't block generation.
             val modelSize = try { runtime.model?.getModelSize() ?: 0L } catch (_: Throwable) { 0L }
-            preambleCache.apply(llamaSession, modelFilename, modelSize, systemPrompt, toolsJson)
+            preambleCache.apply(
+                llamaSession, modelFilename, modelSize,
+                runtime.effectiveSystemPrompt(llamaSession) ?: systemPrompt, toolsJson,
+            )
             // Hand the encoded image to the native layer before
             // addMessage so the multimodal preprocessor can fold it
             // into the prompt for this turn.

@@ -202,13 +202,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Prompt Sistem</string>
     <string name="system_prompts_subtitle">Instruksi yang dapat digunakan ulang untuk model apa pun</string>
-    <string name="system_prompts_empty">Belum ada prompt sistem. Ketuk + untuk menambahkan.</string>
-    <string name="system_prompt_new">Prompt sistem baru</string>
-    <string name="system_prompt_edit">Edit prompt sistem</string>
-    <string name="system_prompt_hint">mis. Kamu adalah asisten yang ringkas. Selalu jawab dalam bahasa Indonesia.</string>
     <string name="system_prompt_current">Prompt sistem saat ini</string>
-    <string name="system_prompt_current_empty">Tidak ada prompt sistem \u2014 ketuk untuk menambahkan</string>
-    <string name="system_prompt_update">Perbarui</string>
     <string name="save">Simpan</string>
     <string name="add">Tambah</string>
     <string name="clear">Hapus</string>
@@ -358,7 +352,6 @@
     <string name="tab_params">Parameter</string>
     <string name="tab_prompt">Prompt</string>
     <string name="take_photo">Ambil foto</string>
-    <string name="tools_unsupported">Model ini tidak mendukung alat</string>
     <string name="vision_module_available">Tambahkan dukungan gambar · Unduh</string>
     <string name="vision_module_downloading">Mengunduh dukungan gambar — siap saat Anda memuat model ini berikutnya</string>
     <string name="whats_new_documents">Dokumen — ajukan pertanyaan tentang file Anda</string>

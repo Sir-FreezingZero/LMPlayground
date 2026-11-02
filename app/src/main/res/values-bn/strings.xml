@@ -183,13 +183,7 @@
     <!-- System prompts -->
     <string name="system_prompts">সিস্টেম প্রম্পট</string>
     <string name="system_prompts_subtitle">যেকোনো মডেলের জন্য পুনরায় ব্যবহারযোগ্য নির্দেশাবলী</string>
-    <string name="system_prompts_empty">এখনো কোনো সিস্টেম প্রম্পট নেই। যোগ করতে + ট্যাপ করুন।</string>
-    <string name="system_prompt_new">নতুন সিস্টেম প্রম্পট</string>
-    <string name="system_prompt_edit">সিস্টেম প্রম্পট সম্পাদনা করুন</string>
-    <string name="system_prompt_hint">যেমন: আপনি একজন সংক্ষিপ্ত সহকারী। সর্বদা ফরাসি ভাষায় উত্তর দিন।</string>
     <string name="system_prompt_current">বর্তমান সিস্টেম প্রম্পট</string>
-    <string name="system_prompt_current_empty">কোনো সিস্টেম প্রম্পট নেই — যোগ করতে ট্যাপ করুন</string>
-    <string name="system_prompt_update">আপডেট করুন</string>
     <string name="save">সংরক্ষণ</string>
     <string name="add">যোগ করুন</string>
     <string name="clear">মুছুন</string>
@@ -406,7 +400,6 @@
     <string name="tab_params">প্যারামিটার</string>
     <string name="tab_prompt">প্রম্পট</string>
     <string name="take_photo">ছবি তুলুন</string>
-    <string name="tools_unsupported">এই মডেল টুল সমর্থন করে না</string>
     <string name="vision_module_available">ছবি সমর্থন যোগ করুন · ডাউনলোড</string>
     <string name="vision_module_downloading">ছবি সমর্থন ডাউনলোড হচ্ছে — পরের বার এই মডেল লোড করলে প্রস্তুত থাকবে</string>
     <string name="whats_new_documents">নথি — আপনার ফাইল সম্পর্কে প্রশ্ন করুন</string>

@@ -3,15 +3,9 @@
 package com.druk.lmplayground.settings
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -20,21 +14,15 @@ import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.unit.dp
 import com.druk.lmplayground.R
 import com.druk.llamacpp.tools.Tool
 
@@ -104,6 +92,10 @@ fun ToolsScreen(
     }
 }
 
+/**
+ * "Default tools": [enabledStates], used by every chat without its own
+ * setting from the chat's ⋮ menu.
+ */
 @Composable
 fun ToolsContent(
     tools: List<Tool>,
@@ -112,65 +104,42 @@ fun ToolsContent(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-        tools.forEach { tool ->
-            ToolRow(
-                tool = tool,
-                enabled = enabledStates[tool.name] ?: false,
-                onToggle = { onToolEnabledChanged(tool.name, it) },
-            )
-            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+        SettingsSection(R.string.default_tools) {
+            ToolSwitches(tools, enabledStates, onToolEnabledChanged)
         }
     }
 }
 
+/** One row per tool with [states]. */
+@Composable
+internal fun ToolSwitches(
+    tools: List<Tool>,
+    states: Map<String, Boolean>,
+    onChange: (String, Boolean) -> Unit,
+) {
+    tools.forEach { tool ->
+        ToolRow(
+            tool = tool,
+            checked = states[tool.name] ?: false,
+            onToggle = { onChange(tool.name, it) },
+        )
+    }
+}
+
+/** A tool's icon, name and switch; tapping the row shows what it does. */
 @Composable
 private fun ToolRow(
     tool: Tool,
-    enabled: Boolean,
+    checked: Boolean,
     onToggle: (Boolean) -> Unit,
 ) {
     val ui = TOOL_UI[tool.name]
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onToggle(!enabled) }
-            .padding(16.dp),
-        verticalAlignment = Alignment.Top,
-    ) {
-        if (ui != null) {
-            Icon(
-                imageVector = ui.icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Spacer(Modifier.width(16.dp))
-        }
-        Column(Modifier.weight(1f)) {
-            Text(
-                text = if (ui != null) stringResource(ui.titleRes) else tool.name,
-                style = MaterialTheme.typography.titleMedium,
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text = if (ui != null) stringResource(ui.descRes) else tool.description,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            if (ui != null) {
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    text = stringResource(R.string.tools_example_label, stringResource(ui.exampleRes)),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontStyle = FontStyle.Italic,
-                )
-            }
-        }
-        Spacer(Modifier.width(8.dp))
-        Switch(
-            checked = enabled,
-            onCheckedChange = onToggle,
-            modifier = Modifier.align(Alignment.CenterVertically),
-        )
-    }
+    CompactRow(
+        icon = ui?.icon,
+        title = if (ui != null) stringResource(ui.titleRes) else tool.name,
+        description = if (ui != null) stringResource(ui.descRes) else tool.description,
+        example = ui?.let { stringResource(R.string.tools_example_label, stringResource(it.exampleRes)) },
+        checked = checked,
+        onToggle = onToggle,
+    )
 }

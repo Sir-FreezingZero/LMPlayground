@@ -202,13 +202,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Sistem \u0130stemleri</string>
     <string name="system_prompts_subtitle">Herhangi bir model i\u00E7in yeniden kullan\u0131labilir talimatlar</string>
-    <string name="system_prompts_empty">Hen\u00FCz sistem istemi yok. Eklemek i\u00E7in + simgesine dokunun.</string>
-    <string name="system_prompt_new">Yeni sistem istemi</string>
-    <string name="system_prompt_edit">Sistem istemini d\u00FCzenle</string>
-    <string name="system_prompt_hint">\u00F6rn. \u00D6z bir asistans\u0131n. Her zaman T\u00FCrk\u00E7e yan\u0131t ver.</string>
     <string name="system_prompt_current">G\u00FCncel sistem istemi</string>
-    <string name="system_prompt_current_empty">Sistem istemi yok \u2014 eklemek i\u00E7in dokunun</string>
-    <string name="system_prompt_update">G\u00FCncelle</string>
     <string name="save">Kaydet</string>
     <string name="add">Ekle</string>
     <string name="clear">Temizle</string>
@@ -365,7 +359,6 @@
     <string name="tab_params">Parametreler</string>
     <string name="tab_prompt">İstem</string>
     <string name="take_photo">Fotoğraf çek</string>
-    <string name="tools_unsupported">Bu model araçları desteklemiyor</string>
     <string name="vision_module_available">Görüntü desteği ekle · İndir</string>
     <string name="vision_module_downloading">Görüntü desteği indiriliyor — bu modeli bir sonraki yüklemenizde hazır olacak</string>
     <string name="whats_new_documents">Belgeler — dosyalarınız hakkında soru sorun</string>

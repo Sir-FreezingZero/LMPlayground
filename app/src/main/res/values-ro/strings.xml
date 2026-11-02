@@ -205,13 +205,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Prompturi de sistem</string>
     <string name="system_prompts_subtitle">Instruc\u021Biuni reutilizabile pentru orice model</string>
-    <string name="system_prompts_empty">\u00CEnc\u0103 niciun prompt de sistem. Atinge + pentru a ad\u0103uga unul.</string>
-    <string name="system_prompt_new">Prompt de sistem nou</string>
-    <string name="system_prompt_edit">Editeaz\u0103 promptul de sistem</string>
-    <string name="system_prompt_hint">ex. E\u0219ti un asistent concis. R\u0103spunde mereu \u00EEn rom\u00E2n\u0103.</string>
     <string name="system_prompt_current">Prompt de sistem curent</string>
-    <string name="system_prompt_current_empty">Niciun prompt de sistem \u2014 atinge pentru a ad\u0103uga</string>
-    <string name="system_prompt_update">Actualizeaz\u0103</string>
     <string name="save">Salveaz\u0103</string>
     <string name="add">Adaug\u0103</string>
     <string name="clear">\u0218terge</string>
@@ -365,7 +359,6 @@
     <string name="tab_params">Parametri</string>
     <string name="tab_prompt">Prompt</string>
     <string name="take_photo">Fă o fotografie</string>
-    <string name="tools_unsupported">Acest model nu acceptă instrumente</string>
     <string name="vision_module_available">Adaugă suport pentru imagini · Descarcă</string>
     <string name="vision_module_downloading">Se descarcă suportul pentru imagini — gata data viitoare când încarci acest model</string>
     <string name="whats_new_documents">Documente — pune întrebări despre fișierele tale</string>

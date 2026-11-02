@@ -185,13 +185,7 @@
     <!-- System prompts -->
     <string name="system_prompts">Systémové pokyny</string>
     <string name="system_prompts_subtitle">Opakovaně použitelné pokyny pro jakýkoli model</string>
-    <string name="system_prompts_empty">Zatím žádné systémové pokyny. Klepnutím na + přidejte.</string>
-    <string name="system_prompt_new">Nový systémový pokyn</string>
-    <string name="system_prompt_edit">Upravit systémový pokyn</string>
-    <string name="system_prompt_hint">např. Jste stručný asistent. Vždy odpovídejte česky.</string>
     <string name="system_prompt_current">Aktuální systémový pokyn</string>
-    <string name="system_prompt_current_empty">Žádný systémový pokyn — klepnutím přidáte</string>
-    <string name="system_prompt_update">Aktualizovat</string>
     <string name="save">Uložit</string>
     <string name="add">Přidat</string>
     <string name="clear">Vymazat</string>
@@ -398,7 +392,6 @@
     <string name="tab_params">Parametry</string>
     <string name="tab_prompt">Prompt</string>
     <string name="take_photo">Vyfotit</string>
-    <string name="tools_unsupported">Tento model nepodporuje nástroje</string>
     <string name="vision_module_available">Přidat podporu obrázků · Stáhnout</string>
     <string name="vision_module_downloading">Stahování podpory obrázků – připraveno při příštím načtení tohoto modelu</string>
     <string name="whats_new_documents">Dokumenty – ptejte se na své soubory</string>

@@ -8,7 +8,6 @@ import com.druk.llamacpp.InferenceClient
 import com.druk.llamacpp.LlamaCpp
 import com.druk.lmplayground.data.AppDatabase
 import com.druk.lmplayground.data.ChatRepository
-import com.druk.lmplayground.data.SystemPromptRepository
 import com.druk.lmplayground.download.DownloadNotificationManager
 import com.druk.lmplayground.inference.LlamaService
 import com.druk.lmplayground.inference.ProcessUtils
@@ -30,8 +29,6 @@ class App : Application() {
     lateinit var llamaCpp: LlamaCpp
         private set
     lateinit var chatRepository: ChatRepository
-        private set
-    lateinit var systemPromptRepository: SystemPromptRepository
         private set
     lateinit var ragRepository: RagRepository
         private set
@@ -103,7 +100,6 @@ class App : Application() {
 
         val database = AppDatabase.getInstance(this)
         chatRepository = ChatRepository(database.chatDao())
-        systemPromptRepository = SystemPromptRepository(database.systemPromptDao())
 
         val embeddingModelManager = EmbeddingModelManager(
             llamaCpp = llamaCpp,

@@ -16,7 +16,6 @@ import com.druk.lmplayground.inference.ModelRuntime
 import com.druk.lmplayground.data.ChatFolderEntity
 import com.druk.lmplayground.data.ChatSessionEntity
 import com.druk.lmplayground.data.ConversationMetadata
-import com.druk.lmplayground.data.SystemPromptEntity
 import com.druk.lmplayground.models.DeviceCapability
 import com.druk.lmplayground.models.ModelInfo
 import com.druk.lmplayground.models.ThinkingMode
@@ -82,7 +81,9 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     val toolRegistry = ToolRegistry.createDefault(app)
     val toolEnabledStates: LiveData<Map<String, Boolean>> = _toolEnabledStates
     private val _systemPrompt = MutableLiveData("")
-    private val _systemPromptId = MutableLiveData<String?>(null)
+    private val _chatTools = MutableLiveData<Map<String, String>>(emptyMap())
+    /** This chat's own tool settings (tool name to "true"/"false"), over the defaults. */
+    val chatTools: LiveData<Map<String, String>> = _chatTools
     /**
      * One-shot user-facing error messages (e.g. "message too long").
      * The UI shows a Toast and resets to null via [consumeUserError].
@@ -149,7 +150,6 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
         override fun onSystemPromptReset() {
             _systemPrompt.postValue("")
-            _systemPromptId.postValue(null)
         }
 
         override fun onCapabilities(
@@ -177,10 +177,8 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
             if (toolCalling) {
                 val states = mutableMapOf<String, Boolean>()
                 for (tool in toolRegistry.getAllTools()) {
-                    // Per-model override wins, else the global default.
-                    val enabled = storagePreferences.effectiveToolEnabled(
-                        model.filename, tool.name
-                    )
+                    // The defaults; a chat's own settings apply per turn.
+                    val enabled = storagePreferences.isToolEnabledDefault(tool.name)
                     toolRegistry.setToolEnabled(tool.name, enabled)
                     states[tool.name] = enabled
                 }
@@ -216,6 +214,8 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
+    private val systemPromptExtras = SystemPromptExtras(storagePreferences)
+
     private val runtime = ModelRuntime(
         app,
         llamaCpp,
@@ -224,6 +224,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         storagePreferences,
         notifications,
         runtimeListener,
+        systemPromptExtras::compose,
     )
 
     /**
@@ -393,7 +394,6 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     val supportsVision: LiveData<Boolean> = _supportsVision
     val supportsToolCalling: LiveData<Boolean> = _supportsToolCalling
     val systemPrompt: LiveData<String> = _systemPrompt
-    val systemPromptId: LiveData<String?> = _systemPromptId
     val userError: LiveData<String?> = _userError
     val pendingRamWarning: LiveData<RamWarning?> = _pendingRamWarning
     val modelLoadError: LiveData<String?> = _modelLoadError
@@ -422,22 +422,12 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     // Session persistence
     private val sessionStore = ChatSessionStore(
         (app as? App)?.chatRepository,
-        (app as? App)?.systemPromptRepository,
         imageStore,
     )
     private val _currentSessionId = MutableLiveData<String?>(null)
     val currentSessionId: LiveData<String?> = _currentSessionId
     val sessions: LiveData<List<ChatSessionEntity>> = sessionStore.allSessions()
     val folders: LiveData<List<ChatFolderEntity>> = sessionStore.allFolders()
-    /**
-     * Per-model MRU list. When the loaded model changes, switchMap swaps in
-     * the corresponding query so the picker reflects "prompts I've used on
-     * *this* model" with the most-recently-used one first.
-     */
-    val recentSystemPrompts: LiveData<List<SystemPromptEntity>> =
-        _loadedModel.switchMap { model ->
-            sessionStore.recentSystemPromptsForModel(model?.filename)
-        }
 
     // ── Document (RAG) attachments ───────────────────────────────────────
     private val ragRepository: RagRepository? = (app as? App)?.ragRepository
@@ -825,6 +815,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                 messageId = ourMessageId,
                 sessionId = sessionId,
                 ourJob = ourJob,
+                chatTools = _chatTools.value.orEmpty(),
             )
         }
     }
@@ -952,6 +943,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         )
         newChatFolderId?.let { sessionStore.moveToFolder(id, it) }
         newChatFolderId = null
+        _chatTools.value?.takeIf { it.isNotEmpty() }?.let { sessionStore.persistChatTools(id, it) }
         // Synchronous main-thread set (not postValue): a follow-up
         // ensureSessionId must observe the id as soon as the lock drops.
         withContext(Dispatchers.Main.immediate) { _currentSessionId.value = id }
@@ -1031,16 +1023,8 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                 )
                 _generationParams.value = params
                 _systemPrompt.value = sessionEntity.systemPrompt
-                // Try to rehydrate the library id from the stored text so that
-                // "Update prompt" in the Generation Params sheet can target the
-                // same library entry when it still matches.
-                val stored = sessionEntity.systemPrompt
-                if (stored.isEmpty()) {
-                    _systemPromptId.value = null
-                } else {
-                    val entity = sessionStore.findSystemPromptByText(stored)
-                    _systemPromptId.value = entity?.id
-                }
+                _chatTools.value = ConversationMetadata.parse(sessionEntity.metadata)
+                    .getStringMap(ConversationMetadata.KEY_TOOLS)
 
                 // Restore web_search link references saved with this conversation
                 // so the model can still web_fetch a previously-returned ref.
@@ -1082,6 +1066,9 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
             _currentSessionId.value = null
             _sessionModelHint.value = null
             uiState.resetMessages()
+            // A new chat has no prompt of its own, so the default one applies.
+            _systemPrompt.value = ""
+            _chatTools.value = emptyMap()
             // Fresh conversation starts with no web_search references.
             toolRegistry.webLinkStore.clear()
 
@@ -1095,17 +1082,12 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
     /**
      * Apply a system prompt to the current session. Recreates the native session
-     * so the new prompt takes effect, replays any existing messages, and bumps
-     * the library entry's `lastUsedAt` when [promptId] is non-null.
-     *
-     * The intended caller is the picker row on an empty conversation, but the
-     * method also supports mid-chat swaps (history replay handles it).
+     * so the new prompt takes effect and replays any existing messages
+     * (history replay handles mid-chat swaps).
      */
     @MainThread
-    fun applySystemPrompt(promptId: String?, text: String) {
-        val current = _systemPrompt.value.orEmpty()
-        val currentId = _systemPromptId.value
-        if (current == text && currentId == promptId) return
+    fun applySystemPrompt(text: String) {
+        if (_systemPrompt.value.orEmpty() == text) return
 
         // Pre-validate BEFORE mutating any state. Without this, an
         // oversized prompt would set _systemPrompt (UI shows the new
@@ -1118,23 +1100,12 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         if (!validateReplaySize(text, messages)) return
 
         _systemPrompt.value = text
-        _systemPromptId.value = promptId
 
         // Persist on the active session row if one exists.
         val sessionId = _currentSessionId.value
         if (sessionId != null) {
             viewModelScope.launch {
                 sessionStore.updateSessionSystemPrompt(sessionId, text)
-            }
-        }
-
-        // Bump per-model MRU for library-sourced picks.
-        if (promptId != null) {
-            val modelFilename = _loadedModel.value?.filename
-            if (!modelFilename.isNullOrEmpty()) {
-                viewModelScope.launch {
-                    sessionStore.touchSystemPromptUsage(promptId, modelFilename)
-                }
             }
         }
 
@@ -1151,43 +1122,30 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
-    @MainThread
-    fun clearSystemPrompt() = applySystemPrompt(null, "")
+    /** Each tool's state in this chat: [chatTools] over the defaults. */
+    fun toolStates(chatTools: Map<String, String>): Map<String, Boolean> =
+        toolRegistry.getAllTools().associate { it.name to storagePreferences.toolEnabled(it.name, chatTools) }
 
-    /**
-     * Overwrite the text of the library entry currently backing this session
-     * (if any) and apply the new text to the session. Used by the
-     * Generation Params "Update prompt" button.
-     */
+    /** Turn [toolName] on or off for this chat only; it applies from the next message. */
     @MainThread
-    fun updateLinkedSystemPrompt(text: String) {
-        val trimmed = text.trim()
-        val id = _systemPromptId.value
-        if (id == null || !sessionStore.systemPromptsAvailable) {
-            applySystemPrompt(null, trimmed)
-            return
-        }
-        viewModelScope.launch {
-            if (!sessionStore.updateSystemPromptText(id, trimmed)) return@launch
-            applySystemPrompt(id, trimmed)
-        }
+    fun setChatTool(toolName: String, enabled: Boolean) {
+        val tools = _chatTools.value.orEmpty() + (toolName to enabled.toString())
+        _chatTools.value = tools
+        _currentSessionId.value?.let { id -> viewModelScope.launch { sessionStore.persistChatTools(id, tools) } }
     }
 
     /**
-     * Persist a brand-new system prompt to the library and apply it to the
-     * current session.
+     * Recreate the session if what it was created with changed: the default
+     * prompt.
      */
     @MainThread
-    fun createAndApplySystemPrompt(text: String) {
-        val trimmed = text.trim()
-        if (trimmed.isEmpty()) return
-        if (!sessionStore.systemPromptsAvailable) {
-            applySystemPrompt(null, trimmed)
-            return
-        }
+    fun syncSystemPrompt() {
+        val session = runtime.session ?: return
+        if (_isGenerating.value == true) return
+        val text = _systemPrompt.value.orEmpty()
+        if (runtime.effectiveSystemPrompt(session) == systemPromptExtras.compose(text)) return
         viewModelScope.launch {
-            val entity = sessionStore.createSystemPrompt(trimmed) ?: return@launch
-            applySystemPrompt(entity.id, entity.text)
+            runtime.recreateSessionWithReplay(_generationParams.value ?: GenerationParams(), text, uiState.messages.toList())
         }
     }
 
@@ -1432,16 +1390,13 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     /**
-     * Toggle a tool for the currently loaded model. This records a per-model
-     * override (which takes precedence over the global default set in
-     * Settings → Tools) so changing a tool here only affects this model.
+     * Turn a tool on or off by default (Settings → Tools, "Default tools");
+     * a chat's own setting still wins for that chat.
      */
     @MainThread
     fun setToolEnabled(toolName: String, enabled: Boolean) {
         toolRegistry.setToolEnabled(toolName, enabled)
-        _loadedModel.value?.filename?.let { filename ->
-            storagePreferences.setToolOverride(filename, toolName, enabled)
-        }
+        storagePreferences.setToolEnabledDefault(toolName, enabled)
         val states = _toolEnabledStates.value.orEmpty().toMutableMap()
         states[toolName] = enabled
         _toolEnabledStates.value = states
