@@ -303,6 +303,7 @@ class ConversationFragment : Fragment() {
             val maxContextSize by viewModel.maxContextSize.observeAsState(4096)
             val sessionModelHint by viewModel.sessionModelHint.observeAsState()
             val visionModuleHint by viewModel.visionModuleHint.observeAsState()
+            val contextUsage by viewModel.contextUsage.observeAsState()
             val userError by viewModel.userError.observeAsState()
             val notice by viewModel.notice.observeAsState()
             val pendingRamWarning by viewModel.pendingRamWarning.observeAsState()
@@ -814,6 +815,7 @@ class ConversationFragment : Fragment() {
                             } else null,
                             onSystemPromptPressed = { paramsSheetTab = 1; showParamsSheet = true },
                             onToolsPressed = { paramsSheetTab = 2; showParamsSheet = true },
+                            contextUsage = contextUsage,
                             modifier = Modifier
                                 .align(Alignment.TopCenter)
                                 .onSizeChanged { topBarHeightPx = it.height }

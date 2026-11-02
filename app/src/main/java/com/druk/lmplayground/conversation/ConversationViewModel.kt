@@ -92,6 +92,9 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     private val _chatTools = MutableLiveData<Map<String, String>>(emptyMap())
     /** This chat's own tool settings (tool name to "true"/"false"), over the defaults. */
     val chatTools: LiveData<Map<String, String>> = _chatTools
+    private val _contextUsage = MutableLiveData<Pair<Int, Int>?>(null)
+    /** Tokens used and the context size of the current session, for the usage wheel. */
+    val contextUsage: LiveData<Pair<Int, Int>?> = _contextUsage
     /**
      * One-shot user-facing error messages (e.g. "message too long").
      * The UI shows a Toast and resets to null via [consumeUserError].
@@ -199,6 +202,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
         override fun onModelReady(model: ModelInfo) {
             _isModelReady.postValue(true)
+            viewModelScope.launch { refreshContextUsage() }
             // Update session model info if we have an active session
             val sessionId = _currentSessionId.value
             if (sessionId != null) {
@@ -330,6 +334,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                 uiState.finalizeLastMessage()
             }
             _isGenerating.postValue(false)
+            refreshContextUsage()
             // Generation (or cancellation) is done — freeze the
             // silent notification on "Response ready" with the
             // final token count, and attach Copy/Share actions
@@ -785,6 +790,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
             val messages = uiState.messages.toList()
             viewModelScope.launch {
                 runtime.recreateSessionWithReplay(params, systemPrompt, messages)
+                refreshContextUsage()
             }
         }
     }
@@ -1114,6 +1120,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                 val systemPrompt = _systemPrompt.value.orEmpty()
                 val params = _generationParams.value ?: GenerationParams()
                 runtime.recreateSessionWithReplay(params, systemPrompt, uiMessages)
+                refreshContextUsage()
             }
         }
     }
@@ -1138,6 +1145,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                 _generationParams.value ?: GenerationParams(),
                 _systemPrompt.value.orEmpty(),
             )
+            refreshContextUsage()
         }
     }
 
@@ -1180,6 +1188,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                 params, text, messages,
                 catchPayloadTooLargeOnCreate = true,
             )
+            refreshContextUsage()
         }
     }
 
@@ -1214,7 +1223,18 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         if (runtime.effectiveSystemPrompt(session) == composeSystemPrompt(text)) return
         viewModelScope.launch {
             runtime.recreateSessionWithReplay(_generationParams.value ?: GenerationParams(), text, uiState.messages.toList())
+            refreshContextUsage()
         }
+    }
+
+    /** Read "Context: used / total tokens" from the session report; null when there is no session. */
+    private suspend fun refreshContextUsage() {
+        val report = withContext(Dispatchers.IO) {
+            try { runtime.session?.getReport() } catch (_: Throwable) { null }
+        }
+        val line = report?.lineSequence()?.firstOrNull { it.contains("Context:") }
+        val numbers = line?.let { Regex("\\d+").findAll(it).map { m -> m.value.toInt() }.toList() }
+        _contextUsage.postValue(numbers?.takeIf { it.size >= 2 && it[1] > 0 }?.let { it[0] to it[1] })
     }
 
     @MainThread
