@@ -722,6 +722,9 @@ class LlamaService : Service() {
             withSession(sessionId) { it.printReport() }
         }
 
+        override fun renderSessionPreamble(sessionId: Int, enableThinking: Boolean): String =
+            withSession(sessionId) { it.renderPreambleString(enableThinking) } ?: ""
+
         override fun destroySession(sessionId: Int) {
             // Don't pre-remove — tearDownSession only removes from
             // [sessions] after the native destroy actually succeeds.

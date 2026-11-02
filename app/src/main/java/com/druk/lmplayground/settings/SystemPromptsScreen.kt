@@ -3,6 +3,7 @@
 package com.druk.lmplayground.settings
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -23,12 +25,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.druk.lmplayground.R
 
@@ -108,3 +113,33 @@ internal fun PromptField(value: String, placeholder: String, onValueChange: (Str
     minLines = 3,
 )
 
+/**
+ * The exact text the chat sends before every message (system prompt, date,
+ * memories and active tools, in the model's chat format), from [render]
+ * (null or "" when no model is loaded). Tap to expand, long-press to copy.
+ */
+@Composable
+internal fun PromptStartSection(render: suspend () -> String?) {
+    var text by remember { mutableStateOf<String?>(null) }
+    var expanded by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { text = render() ?: "" }
+    PromptSection(R.string.prompt_start_title, Modifier.clickable { expanded = !expanded }) {
+        Text(
+            text = stringResource(R.string.prompt_start_subtitle),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        SelectionContainer {
+            Text(
+                text = when {
+                    text == null -> "…"
+                    text!!.isEmpty() -> stringResource(R.string.prompt_start_no_model)
+                    else -> text!!
+                },
+                style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
+                maxLines = if (expanded) Int.MAX_VALUE else 4,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}

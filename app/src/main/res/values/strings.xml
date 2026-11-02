@@ -498,6 +498,9 @@
     <string name="auto_name_chats_title" tools:ignore="MissingTranslation">Auto-name chats</string>
     <string name="auto_name_chats_desc" tools:ignore="MissingTranslation">Let the loaded model give each new chat a short title after the first reply.</string>
     <string name="context_usage" tools:ignore="MissingTranslation">Context: %1$d / %2$d tokens</string>
+    <string name="prompt_start_title" tools:ignore="MissingTranslation">Sent at the start of every chat</string>
+    <string name="prompt_start_subtitle" tools:ignore="MissingTranslation">The exact text the model reads before your messages in the current chat: its system prompt, date, memories and the tools that are on. Tap to expand.</string>
+    <string name="prompt_start_no_model" tools:ignore="MissingTranslation">Load a model in a chat to see it.</string>
     <string name="system_prompt_none" tools:ignore="MissingTranslation">No system prompt</string>
     <string name="default_system_prompt" tools:ignore="MissingTranslation">Default system prompt</string>
     <string name="chat_system_prompt" tools:ignore="MissingTranslation">This chat\'s system prompt</string>

@@ -708,6 +708,7 @@ class ConversationFragment : Fragment() {
                         onParamsChanged = { viewModel.updateGenerationParams(it) },
                         systemPrompt = systemPrompt,
                         onSystemPromptChanged = { viewModel.applySystemPrompt(it) },
+                        renderPromptStart = viewModel::renderPromptStart,
                         tools = viewModel.toolRegistry.getAllTools(),
                         toolStates = viewModel.toolStates(chatTools),
                         onToolChanged = { name, on -> viewModel.setChatTool(name, on) },

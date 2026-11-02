@@ -1227,6 +1227,31 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
+    /**
+     * The exact text every message of the current chat follows: its system
+     * prompt (with the date and memories) and the tools that are on, rendered
+     * by the loaded model's chat format. Uses a throwaway session so the
+     * chat's own session is untouched.
+     */
+    suspend fun renderPromptStart(): String? = withContext(Dispatchers.IO) {
+        val model = runtime.model ?: return@withContext null
+        val session = runtime.createSessionWithParams(
+            model, GenerationParams(contextSize = 512), _systemPrompt.value.orEmpty()
+        ) ?: return@withContext null
+        try {
+            if (_supportsToolCalling.value == true) {
+                toolStates(_chatTools.value.orEmpty())
+                    .forEach { (name, on) -> toolRegistry.setToolEnabled(name, on) }
+                if (toolRegistry.hasEnabledTools()) session.setTools(toolRegistry.toOpenAIToolsJson())
+            }
+            session.renderPreamble(_thinkingEnabled.value == true)
+        } catch (_: Throwable) {
+            null
+        } finally {
+            try { session.destroy() } catch (_: Throwable) {}
+        }
+    }
+
     /** Read "Context: used / total tokens" from the session report; null when there is no session. */
     private suspend fun refreshContextUsage() {
         val report = withContext(Dispatchers.IO) {

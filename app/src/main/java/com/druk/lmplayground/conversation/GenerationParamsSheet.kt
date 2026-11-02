@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import com.druk.lmplayground.R
 import com.druk.lmplayground.settings.PromptField
 import com.druk.lmplayground.settings.PromptSection
+import com.druk.lmplayground.settings.PromptStartSection
 import com.druk.lmplayground.settings.SettingsSection
 import com.druk.lmplayground.settings.ToolSwitches
 import com.druk.llamacpp.tools.Tool
@@ -59,7 +60,7 @@ import kotlin.math.roundToInt
  * Bottom sheet for this chat's settings, in three tabs:
  *   - Params: generation parameters (context size, sampling, advanced).
  *   - Prompt: the chat's own system prompt (empty: the default from
- *     Settings).
+ *     Settings) and the exact text the chat starts with.
  *   - Tools: the chat's own tool switches, over the defaults from Settings.
  *
  * Edited params and the prompt accumulate across tab switches and commit
@@ -74,6 +75,7 @@ fun GenerationParamsSheet(
     onParamsChanged: (GenerationParams) -> Unit,
     systemPrompt: String = "",
     onSystemPromptChanged: (String) -> Unit = {},
+    renderPromptStart: suspend () -> String? = { null },
     tools: List<Tool> = emptyList(),
     toolStates: Map<String, Boolean> = emptyMap(),
     onToolChanged: (String, Boolean) -> Unit = { _, _ -> },
@@ -158,6 +160,7 @@ fun GenerationParamsSheet(
                     PromptSection(R.string.chat_system_prompt) {
                         PromptField(editedPrompt, stringResource(R.string.system_prompt_uses_default)) { editedPrompt = it }
                     }
+                    PromptStartSection(renderPromptStart)
                 }
                 else -> Column(tabModifier) {
                     SettingsSection(R.string.chat_tools) {

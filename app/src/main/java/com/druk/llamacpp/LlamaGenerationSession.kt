@@ -81,6 +81,9 @@ class LlamaGenerationSession internal constructor(
 
     fun getReport(): String = client.withService { it.getSessionReport(sessionId) }
 
+    fun renderPreamble(enableThinking: Boolean): String =
+        client.withService { it.renderSessionPreamble(sessionId, enableThinking) }
+
     override fun destroy() {
         try { client.withService { it.destroySession(sessionId) } } catch (_: Throwable) {}
     }

@@ -202,6 +202,8 @@ interface ILlamaService {
 
     String getSessionReport(int sessionId);
     void printSessionReport(int sessionId);
+    /** The session's system prompt and tools rendered in the model's chat format. */
+    String renderSessionPreamble(int sessionId, boolean enableThinking);
     void destroySession(int sessionId);
 
     // ── Tool / function calling ──────────────────────────────────────────
