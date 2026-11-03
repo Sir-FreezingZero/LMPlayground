@@ -357,6 +357,14 @@ private fun SettingsList(
     // available height — e.g. landscape phone, short tablet windows, or when
     // debug build adds the Crash row.
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
+        // General row (opens full screen; no detail pane)
+        SettingsRow(
+            icon = Icons.Outlined.ToggleOn,
+            title = stringResource(R.string.general),
+            subtitle = stringResource(R.string.general_subtitle),
+            onClick = onGeneralClick
+        )
+
         // Models row
         SettingsRow(
             icon = Icons.Outlined.Storage,
@@ -375,14 +383,6 @@ private fun SettingsList(
             onClick = onSystemPromptsClick
         )
 
-        // Memory row (opens full screen; no detail pane)
-        SettingsRow(
-            icon = Icons.Outlined.Psychology,
-            title = stringResource(R.string.memory),
-            subtitle = stringResource(R.string.memory_subtitle),
-            onClick = onMemoryClick
-        )
-
         // Tools row
         SettingsRow(
             icon = Icons.Outlined.Build,
@@ -392,30 +392,12 @@ private fun SettingsList(
             onClick = onToolsClick
         )
 
-        // General row (opens full screen; no detail pane)
+        // Memory row (opens full screen; no detail pane)
         SettingsRow(
-            icon = Icons.Outlined.ToggleOn,
-            title = stringResource(R.string.general),
-            subtitle = stringResource(R.string.general_subtitle),
-            onClick = onGeneralClick
-        )
-
-        // Sound and Haptic row
-        SettingsRow(
-            icon = Icons.Outlined.VolumeUp,
-            title = stringResource(R.string.sound_and_haptic),
-            subtitle = stringResource(R.string.sound_and_haptic_subtitle),
-            selected = selectedDetail == SettingsDetail.SoundHaptic,
-            onClick = onSoundHapticClick
-        )
-
-        // Advanced row
-        SettingsRow(
-            icon = Icons.Outlined.Tune,
-            title = stringResource(R.string.advanced),
-            subtitle = stringResource(R.string.advanced_subtitle),
-            selected = selectedDetail == SettingsDetail.Advanced,
-            onClick = onAdvancedClick
+            icon = Icons.Outlined.Psychology,
+            title = stringResource(R.string.memory),
+            subtitle = stringResource(R.string.memory_subtitle),
+            onClick = onMemoryClick
         )
 
         // Language row
@@ -436,12 +418,22 @@ private fun SettingsList(
             onClick = onLanguageClick
         )
 
-        // Privacy Policy row
+        // Sound and Haptic row
         SettingsRow(
-            icon = Icons.Outlined.Policy,
-            title = stringResource(R.string.privacy_policy),
-            selected = selectedDetail == SettingsDetail.PrivacyPolicy,
-            onClick = onPrivacyPolicyClick
+            icon = Icons.Outlined.VolumeUp,
+            title = stringResource(R.string.sound_and_haptic),
+            subtitle = stringResource(R.string.sound_and_haptic_subtitle),
+            selected = selectedDetail == SettingsDetail.SoundHaptic,
+            onClick = onSoundHapticClick
+        )
+
+        // Advanced row
+        SettingsRow(
+            icon = Icons.Outlined.Tune,
+            title = stringResource(R.string.advanced),
+            subtitle = stringResource(R.string.advanced_subtitle),
+            selected = selectedDetail == SettingsDetail.Advanced,
+            onClick = onAdvancedClick
         )
 
         // FAQ row
@@ -451,6 +443,14 @@ private fun SettingsList(
             subtitle = stringResource(R.string.faq_subtitle),
             selected = selectedDetail == SettingsDetail.Faq,
             onClick = onFaqClick
+        )
+
+        // Privacy Policy row
+        SettingsRow(
+            icon = Icons.Outlined.Policy,
+            title = stringResource(R.string.privacy_policy),
+            selected = selectedDetail == SettingsDetail.PrivacyPolicy,
+            onClick = onPrivacyPolicyClick
         )
 
         // Debug-only: crash the inference engine to verify isolation.
