@@ -13,18 +13,20 @@ import com.druk.llamacpp.tools.ToolRegistry
  */
 fun ToolRegistry.Companion.createDefault(context: Context): ToolRegistry =
     ToolRegistry().apply {
+        // The order every tool list shows: grouped by what the tools do (the
+        // web, math and code, the phone, then memory).
         // Shared link store: web_search hands the model compact "ddg:N"
         // references instead of long URLs, web_fetch resolves them back at
         // call time. See WebLinkStore.
         register(WebSearchTool(webLinkStore))
-        register(GetDateTimeTool(context))
         register(WebFetchTool(webLinkStore))
-        register(JavaScriptTool(context))
-        register(SetAlarmTool(context))
+        register(WikipediaTool())
         register(CalculatorTool())
         register(UnitConverterTool())
-        register(HardwareInfoTool(context))
-        register(WikipediaTool())
+        register(JavaScriptTool(context))
+        register(GetDateTimeTool(context))
+        register(SetAlarmTool(context))
         register(LocationTool(context))
+        register(HardwareInfoTool(context))
         register(MemoryTool(context))
     }
