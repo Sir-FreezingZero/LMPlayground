@@ -496,6 +496,9 @@
     <string name="memory_clear_all" tools:ignore="MissingTranslation">Clear all</string>
     <string name="memory_clear_all_confirm" tools:ignore="MissingTranslation">Delete all saved memories? This cannot be undone.</string>
     <string name="auto_name_chats_title" tools:ignore="MissingTranslation">Auto-name chats</string>
+    <string name="quick_tools" tools:ignore="MissingTranslation">Quick select tools</string>
+    <string name="quick_tool_names_title" tools:ignore="MissingTranslation">Display full name of quick select tools</string>
+    <string name="quick_tool_names_desc" tools:ignore="MissingTranslation">Show each tool\'s name next to its icon in the quick select row above the message box (the arrow on the left). Off shows only the icons.</string>
     <string name="auto_name_chats_desc" tools:ignore="MissingTranslation">Let the loaded model give each new chat a short title after the first reply.</string>
     <string name="context_usage" tools:ignore="MissingTranslation">Context: %1$d / %2$d tokens</string>
     <string name="prompt_start_title" tools:ignore="MissingTranslation">Sent at the start of every chat</string>

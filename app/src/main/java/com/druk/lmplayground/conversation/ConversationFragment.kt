@@ -317,6 +317,7 @@ class ConversationFragment : Fragment() {
             var paramsSheetTab by remember { mutableIntStateOf(0) }
             val systemPrompt by viewModel.systemPrompt.observeAsState("")
             val chatTools by viewModel.chatTools.observeAsState(emptyMap())
+            val supportsToolCalling by viewModel.supportsToolCalling.observeAsState(false)
 
             val dictationState by viewModel.dictation.state.observeAsState(DictationState.Idle)
             val micOn by viewModel.dictation.micOn.observeAsState(false)
@@ -852,6 +853,13 @@ class ConversationFragment : Fragment() {
                                 .align(Alignment.BottomCenter)
                                 .onSizeChanged { bottomBarHeightPx = it.height }
                         ) {
+                            if (isModelReady && supportsToolCalling) {
+                                QuickTools(
+                                    tools = viewModel.toolRegistry.getAllTools(),
+                                    states = viewModel.toolStates(chatTools),
+                                    onToggle = { name, on -> viewModel.setChatTool(name, on) },
+                                )
+                            }
                             if (sessionDocuments.isNotEmpty()) {
                                 DocumentChipsRow(
                                     documents = sessionDocuments,

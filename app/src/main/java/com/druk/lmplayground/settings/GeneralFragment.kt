@@ -15,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Build
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Schedule
@@ -99,6 +100,14 @@ private fun GeneralScreen(onBackClick: () -> Unit) {
                     description = stringResource(R.string.auto_name_chats_desc),
                     checked = autoName,
                     onToggle = { autoName = it; prefs.autoNameChats = it },
+                )
+                var quickToolNames by remember { mutableStateOf(prefs.quickToolNames) }
+                CompactRow(
+                    icon = Icons.Outlined.Build,
+                    title = stringResource(R.string.quick_tool_names_title),
+                    description = stringResource(R.string.quick_tool_names_desc),
+                    checked = quickToolNames,
+                    onToggle = { quickToolNames = it; prefs.quickToolNames = it },
                 )
             }
             SettingsSection(R.string.general_previews) {

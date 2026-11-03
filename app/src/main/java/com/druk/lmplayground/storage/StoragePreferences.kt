@@ -122,6 +122,11 @@ class StoragePreferences(context: Context) {
     fun toolEnabled(toolName: String, chatTools: Map<String, String>): Boolean =
         chatTools[toolName]?.toBooleanStrictOrNull() ?: isToolEnabledDefault(toolName)
 
+    /** Show each quick select tool's name next to its icon, above the message box. */
+    var quickToolNames: Boolean
+        get() = prefs.getBoolean("quick_tool_names", false)
+        set(value) = prefs.edit { putBoolean("quick_tool_names", value) }
+
     /** Used by every chat that has no system prompt of its own; "" for none. */
     var defaultSystemPrompt: String
         get() = prefs.getString("default_system_prompt", "").orEmpty()

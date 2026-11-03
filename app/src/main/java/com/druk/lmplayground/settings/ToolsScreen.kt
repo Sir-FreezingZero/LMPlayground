@@ -24,6 +24,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.Build
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.LocationOn
@@ -172,7 +173,14 @@ fun ToolsScreen(
 }
 
 /** The tool that needs a runtime permission before it can switch on. */
-private const val LOCATION_TOOL = "location"
+internal const val LOCATION_TOOL = "location"
+
+/** A tool's user-facing name, falling back to its runtime name. */
+@Composable
+internal fun toolTitle(tool: Tool): String = TOOL_UI[tool.name]?.let { stringResource(it.titleRes) } ?: tool.name
+
+/** A tool's icon, with a generic one for a tool without its own. */
+internal fun toolIcon(tool: Tool): ImageVector = TOOL_UI[tool.name]?.icon ?: Icons.Outlined.Build
 
 /**
  * Whether the app holds the location permission, re-checked whenever the
@@ -299,7 +307,7 @@ private fun ToolRow(
     val ui = TOOL_UI[tool.name]
     CompactRow(
         icon = ui?.icon,
-        title = if (ui != null) stringResource(ui.titleRes) else tool.name,
+        title = toolTitle(tool),
         description = if (ui != null) stringResource(ui.descRes) else tool.description,
         example = ui?.let { stringResource(R.string.tools_example_label, stringResource(it.exampleRes)) },
         checked = checked,
