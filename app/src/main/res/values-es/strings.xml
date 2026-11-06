@@ -193,6 +193,7 @@
     <string name="disabled_label">desactivado</string>
     <string name="unload_model">Descargar modelo</string>
     <string name="thinking">Pensando</string>
+    <string name="processing">Procesando</string>
     <string name="collapse_thinking">Contraer razonamiento</string>
     <string name="expand_thinking">Expandir razonamiento</string>
     <string name="thoughts">Pensamientos</string>

@@ -193,6 +193,7 @@
     <string name="disabled_label">nonaktif</string>
     <string name="unload_model">Lepas Model</string>
     <string name="thinking">Berpikir</string>
+    <string name="processing">Memproses</string>
     <string name="collapse_thinking">Ciutkan pemikiran</string>
     <string name="expand_thinking">Perluas pemikiran</string>
     <string name="thoughts">Pemikiran</string>

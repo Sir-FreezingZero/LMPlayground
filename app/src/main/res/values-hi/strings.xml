@@ -193,6 +193,7 @@
     <string name="disabled_label">\u0905\u0915\u094D\u0937\u092E</string>
     <string name="unload_model">\u092E\u0949\u0921\u0932 \u0905\u0928\u0932\u094B\u0921 \u0915\u0930\u0947\u0902</string>
     <string name="thinking">\u0938\u094B\u091A \u0930\u0939\u093E \u0939\u0948</string>
+    <string name="processing">प्रोसेस हो रहा है</string>
     <string name="collapse_thinking">\u0938\u094B\u091A \u0938\u0902\u0915\u0941\u091A\u093F\u0924 \u0915\u0930\u0947\u0902</string>
     <string name="expand_thinking">\u0938\u094B\u091A \u0935\u093F\u0938\u094D\u0924\u093E\u0930 \u0915\u0930\u0947\u0902</string>
     <string name="thoughts">\u0935\u093F\u091A\u093E\u0930</string>

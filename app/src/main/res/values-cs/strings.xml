@@ -236,6 +236,7 @@
 
     <!-- Thinking -->
     <string name="thinking">Přemýšlí</string>
+    <string name="processing">Zpracovává</string>
     <string name="collapse_thinking">Sbalit přemýšlení</string>
     <string name="expand_thinking">Rozbalit přemýšlení</string>
     <string name="thoughts">Myšlenky</string>

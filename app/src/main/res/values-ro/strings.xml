@@ -193,6 +193,7 @@
     <string name="disabled_label">dezactivat</string>
     <string name="unload_model">Desc\u0103rca\u021Bi modelul</string>
     <string name="thinking">G\u00E2ndire</string>
+    <string name="processing">Procesare</string>
     <string name="collapse_thinking">Restr\u00E2nge ra\u021Bionamentul</string>
     <string name="expand_thinking">Extinde ra\u021Bionamentul</string>
     <string name="thoughts">G\u00E2nduri</string>

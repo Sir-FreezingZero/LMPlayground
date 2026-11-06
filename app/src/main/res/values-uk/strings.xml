@@ -193,6 +193,7 @@
     <string name="disabled_label">вимкнено</string>
     <string name="unload_model">Вивантажити модель</string>
     <string name="thinking">Думає</string>
+    <string name="processing">Обробка</string>
     <string name="collapse_thinking">Згорнути роздуми</string>
     <string name="expand_thinking">Розгорнути роздуми</string>
     <string name="thoughts">Роздуми</string>

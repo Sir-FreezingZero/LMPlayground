@@ -193,6 +193,7 @@
     <string name="disabled_label">d\u00E9sactiv\u00E9</string>
     <string name="unload_model">D\u00E9charger le mod\u00E8le</string>
     <string name="thinking">R\u00E9flexion</string>
+    <string name="processing">Traitement</string>
     <string name="collapse_thinking">R\u00E9duire la r\u00E9flexion</string>
     <string name="expand_thinking">D\u00E9velopper la r\u00E9flexion</string>
     <string name="thoughts">Pens\u00E9es</string>

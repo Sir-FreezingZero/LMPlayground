@@ -193,6 +193,7 @@
     <string name="disabled_label">wyłączony</string>
     <string name="unload_model">Zwolnij model</string>
     <string name="thinking">Myśli</string>
+    <string name="processing">Przetwarzanie</string>
     <string name="collapse_thinking">Zwiń myślenie</string>
     <string name="expand_thinking">Rozwiń myślenie</string>
     <string name="thoughts">Myśli</string>

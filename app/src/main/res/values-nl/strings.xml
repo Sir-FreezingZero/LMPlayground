@@ -236,6 +236,7 @@
 
     <!-- Thinking -->
     <string name="thinking">Denken</string>
+    <string name="processing">Verwerken</string>
     <string name="collapse_thinking">Denken inklappen</string>
     <string name="expand_thinking">Denken uitklappen</string>
     <string name="thoughts">Gedachten</string>

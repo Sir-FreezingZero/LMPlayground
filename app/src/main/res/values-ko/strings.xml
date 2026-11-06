@@ -193,6 +193,7 @@
     <string name="disabled_label">비활성화됨</string>
     <string name="unload_model">모델 언로드</string>
     <string name="thinking">사고 중</string>
+    <string name="processing">처리 중</string>
     <string name="collapse_thinking">사고 과정 접기</string>
     <string name="expand_thinking">사고 과정 펼치기</string>
     <string name="thoughts">사고 과정</string>

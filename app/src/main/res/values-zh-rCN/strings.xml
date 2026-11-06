@@ -193,6 +193,7 @@
     <string name="disabled_label">已禁用</string>
     <string name="unload_model">卸载模型</string>
     <string name="thinking">思考中</string>
+    <string name="processing">处理中</string>
     <string name="collapse_thinking">收起思考过程</string>
     <string name="expand_thinking">展开思考过程</string>
     <string name="thoughts">思考过程</string>

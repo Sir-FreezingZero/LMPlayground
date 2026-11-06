@@ -234,6 +234,7 @@
 
     <!-- Thinking -->
     <string name="thinking">Nag-iisip</string>
+    <string name="processing">Pinoproseso</string>
     <string name="collapse_thinking">I-collapse ang pag-iisip</string>
     <string name="expand_thinking">Palawakin ang pag-iisip</string>
     <string name="thoughts">Mga Iniisip</string>

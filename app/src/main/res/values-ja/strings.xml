@@ -193,6 +193,7 @@
     <string name="disabled_label">無効</string>
     <string name="unload_model">モデルをアンロード</string>
     <string name="thinking">思考中</string>
+    <string name="processing">処理中</string>
     <string name="collapse_thinking">思考を折りたたむ</string>
     <string name="expand_thinking">思考を展開する</string>
     <string name="thoughts">思考</string>

@@ -244,6 +244,7 @@
 
     <!-- Thinking -->
     <string name="thinking">Thinking</string>
+    <string name="processing">Processing</string>
     <string name="collapse_thinking">Collapse thinking</string>
     <string name="expand_thinking">Expand thinking</string>
     <string name="thoughts">Thoughts</string>

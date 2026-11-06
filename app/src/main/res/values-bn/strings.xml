@@ -234,6 +234,7 @@
 
     <!-- Thinking -->
     <string name="thinking">ভাবছে</string>
+    <string name="processing">প্রক্রিয়াকরণ হচ্ছে</string>
     <string name="collapse_thinking">চিন্তাভাবনা সংকুচিত করুন</string>
     <string name="expand_thinking">চিন্তাভাবনা প্রসারিত করুন</string>
     <string name="thoughts">চিন্তাভাবনা</string>

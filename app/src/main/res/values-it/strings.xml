@@ -193,6 +193,7 @@
     <string name="disabled_label">disattivato</string>
     <string name="unload_model">Scarica modello</string>
     <string name="thinking">In riflessione</string>
+    <string name="processing">Elaborazione</string>
     <string name="collapse_thinking">Comprimi ragionamento</string>
     <string name="expand_thinking">Espandi ragionamento</string>
     <string name="thoughts">Pensieri</string>

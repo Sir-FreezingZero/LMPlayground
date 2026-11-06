@@ -193,6 +193,7 @@
     <string name="disabled_label">deaktiviert</string>
     <string name="unload_model">Modell entladen</string>
     <string name="thinking">Denkt nach</string>
+    <string name="processing">Verarbeitung</string>
     <string name="collapse_thinking">Denkprozess einklappen</string>
     <string name="expand_thinking">Denkprozess ausklappen</string>
     <string name="thoughts">Gedanken</string>

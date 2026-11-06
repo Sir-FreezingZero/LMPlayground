@@ -421,9 +421,9 @@ private fun ThinkingIndicator() {
         label = "dots"
     )
     val dots = ".".repeat(dotCount.toInt().coerceIn(0, 3))
-    val thinkingText = stringResource(R.string.thinking)
+    val processingText = stringResource(R.string.processing)
     Text(
-        text = "$thinkingText$dots",
+        text = "$processingText$dots",
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.outline,
         fontStyle = FontStyle.Italic

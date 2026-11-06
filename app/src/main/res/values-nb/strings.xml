@@ -235,6 +235,7 @@
 
     <!-- Thinking -->
     <string name="thinking">Tenker</string>
+    <string name="processing">Behandler</string>
     <string name="collapse_thinking">Skjul tenkning</string>
     <string name="expand_thinking">Utvid tenkning</string>
     <string name="thoughts">Tanker</string>

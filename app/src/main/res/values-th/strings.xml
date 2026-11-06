@@ -235,6 +235,7 @@
 
     <!-- Thinking -->
     <string name="thinking">กำลังคิด</string>
+    <string name="processing">กำลังประมวลผล</string>
     <string name="collapse_thinking">ยุบการคิด</string>
     <string name="expand_thinking">ขยายการคิด</string>
     <string name="thoughts">ความคิด</string>
