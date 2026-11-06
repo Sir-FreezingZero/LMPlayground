@@ -16,7 +16,6 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import java.io.File
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -801,17 +800,14 @@ class ConversationFragment : Fragment() {
                             )
                         }
 
-                        // Status line under the top bar: gray with no model,
-                        // green when ready for input, blue while generating,
-                        // orange while tools run.
-                        val statusLineColor by animateColorAsState(
+                        // Glowing status line under the top bar (see StatusLine.kt).
+                        val statusLine = rememberStatusLine(
                             when {
-                                !isModelReady -> colorScheme.outlineVariant
-                                isRunningTools && isGenerating == true -> Color(0xFFFF9800)
-                                isGenerating == true -> Color(0xFF2196F3)
-                                else -> Color(0xFF4CAF50)
-                            },
-                            label = "statusLine",
+                                !isModelReady -> ChatStatus.NO_MODEL
+                                isRunningTools && isGenerating == true -> ChatStatus.RUNNING_TOOLS
+                                isGenerating == true -> ChatStatus.GENERATING
+                                else -> ChatStatus.READY
+                            }
                         )
 
                         // ---- Frosted top bar, floating over the content ----
@@ -841,14 +837,8 @@ class ConversationFragment : Fragment() {
                                 .hazeEffect(hazeState, hazeStyle) { alpha = topBarFrost }
                                 .drawWithContent {
                                     drawContent()
-                                    // Full-width status line under the bar.
-                                    val lineWidth = 2.dp.toPx()
-                                    drawLine(
-                                        statusLineColor,
-                                        start = Offset(0f, size.height - lineWidth / 2f),
-                                        end = Offset(size.width, size.height - lineWidth / 2f),
-                                        strokeWidth = lineWidth
-                                    )
+                                    // Status line under the bar.
+                                    drawStatusLine(statusLine)
                                     // Model-loading progress hairline along the
                                     // bar's bottom edge.
                                     val strokeWidth = 2.dp.toPx()
