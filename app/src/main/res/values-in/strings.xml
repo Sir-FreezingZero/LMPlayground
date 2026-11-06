@@ -399,4 +399,18 @@
     <string name="branch_title">%1$s (cabang)</string>
     <string name="branch_title_numbered">%1$s (cabang %2$d)</string>
     <string name="branch_created">Melanjutkan di chat baru</string>
+    <string name="appearance">Tampilan</string>
+    <string name="appearance_subtitle">Tema dan warna garis status</string>
+    <string name="appearance_theme">Tema</string>
+    <string name="appearance_theme_system">Default sistem</string>
+    <string name="appearance_theme_light">Terang</string>
+    <string name="appearance_theme_dark">Gelap</string>
+    <string name="appearance_status_line">Warna garis status</string>
+    <string name="status_no_model">Tidak ada model yang dimuat</string>
+    <string name="status_ready">Siap</string>
+    <string name="status_writing">Menulis jawaban</string>
+    <string name="status_tools">Menggunakan alat</string>
+    <string name="status_error">Kesalahan</string>
+    <string name="status_brightness">Kecerahan</string>
+    <string name="status_reset">Atur ulang warna</string>
 </resources>

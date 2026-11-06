@@ -448,4 +448,18 @@
     <string name="branch_title">%1$s (aftakking)</string>
     <string name="branch_title_numbered">%1$s (aftakking %2$d)</string>
     <string name="branch_created">Verder in een nieuwe chat</string>
+    <string name="appearance">Weergave</string>
+    <string name="appearance_subtitle">Thema en kleuren van de statuslijn</string>
+    <string name="appearance_theme">Thema</string>
+    <string name="appearance_theme_system">Systeemstandaard</string>
+    <string name="appearance_theme_light">Licht</string>
+    <string name="appearance_theme_dark">Donker</string>
+    <string name="appearance_status_line">Kleuren van de statuslijn</string>
+    <string name="status_no_model">Geen model geladen</string>
+    <string name="status_ready">Klaar</string>
+    <string name="status_writing">Antwoord schrijven</string>
+    <string name="status_tools">Tools gebruiken</string>
+    <string name="status_error">Fout</string>
+    <string name="status_brightness">Helderheid</string>
+    <string name="status_reset">Kleuren herstellen</string>
 </resources>

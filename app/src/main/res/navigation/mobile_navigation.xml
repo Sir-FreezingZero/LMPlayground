@@ -58,6 +58,9 @@
             android:id="@+id/action_settings_to_general"
             app:destination="@id/nav_general" />
         <action
+            android:id="@+id/action_settings_to_appearance"
+            app:destination="@id/nav_appearance" />
+        <action
             android:id="@+id/action_settings_to_language"
             app:destination="@id/nav_language" />
     </fragment>
@@ -71,6 +74,11 @@
         android:id="@+id/nav_general"
         android:name="com.druk.lmplayground.settings.GeneralFragment"
         android:label="@string/general" />
+
+    <fragment
+        android:id="@+id/nav_appearance"
+        android:name="com.druk.lmplayground.settings.AppearanceFragment"
+        android:label="@string/appearance" />
 
     <fragment
         android:id="@+id/nav_system_prompts"

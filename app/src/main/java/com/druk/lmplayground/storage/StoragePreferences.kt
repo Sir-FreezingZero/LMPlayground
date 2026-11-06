@@ -32,6 +32,24 @@ class StoragePreferences(context: Context) {
         get() = prefs.getBoolean("include_date_in_prompt", true)
         set(value) = prefs.edit { putBoolean("include_date_in_prompt", value) }
 
+    /** App theme: 0 = follow the system, 1 = light, 2 = dark (Settings → Appearance). */
+    var themeMode: Int
+        get() = prefs.getInt("theme_mode", 0)
+        set(value) = prefs.edit { putInt("theme_mode", value) }
+
+    /** Status line brightness, 0 (dim) to 1 (full); see StatusLineColors.brightness. */
+    var statusLineBrightness: Float
+        get() = prefs.getFloat("status_line_brightness", 0.75f)
+        set(value) = prefs.edit { putFloat("status_line_brightness", value) }
+
+    /** A custom status line color (ARGB) for the state named [key], or null for its default. */
+    fun statusLineColor(key: String): Int? =
+        if (prefs.contains("status_color_$key")) prefs.getInt("status_color_$key", 0) else null
+
+    fun setStatusLineColor(key: String, argb: Int?) = prefs.edit {
+        if (argb == null) remove("status_color_$key") else putInt("status_color_$key", argb)
+    }
+
     /** Ask the loaded model for a short chat title after a new chat's first reply. */
     var autoNameChats: Boolean
         get() = prefs.getBoolean("auto_name_chats", true)

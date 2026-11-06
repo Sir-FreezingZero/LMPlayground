@@ -436,4 +436,18 @@
     <string name="branch_title">%1$s (haara)</string>
     <string name="branch_title_numbered">%1$s (haara %2$d)</string>
     <string name="branch_created">Jatketaan uudessa keskustelussa</string>
+    <string name="appearance">Ulkoasu</string>
+    <string name="appearance_subtitle">Teema ja tilarivin värit</string>
+    <string name="appearance_theme">Teema</string>
+    <string name="appearance_theme_system">Järjestelmän oletus</string>
+    <string name="appearance_theme_light">Vaalea</string>
+    <string name="appearance_theme_dark">Tumma</string>
+    <string name="appearance_status_line">Tilarivin värit</string>
+    <string name="status_no_model">Mallia ei ladattu</string>
+    <string name="status_ready">Valmis</string>
+    <string name="status_writing">Kirjoittaa vastausta</string>
+    <string name="status_tools">Käyttää työkaluja</string>
+    <string name="status_error">Virhe</string>
+    <string name="status_brightness">Kirkkaus</string>
+    <string name="status_reset">Palauta värit</string>
 </resources>

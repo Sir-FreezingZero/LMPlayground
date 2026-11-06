@@ -57,6 +57,11 @@ class App : Application() {
         // the inference-client binding (no service to bind from there).
         if (ProcessUtils.isLlamaProcess()) return
 
+        // Settings → Appearance: the theme and the status line colors.
+        val appearancePrefs = com.druk.lmplayground.storage.StoragePreferences(this)
+        com.druk.lmplayground.settings.applyThemeMode(appearancePrefs.themeMode)
+        com.druk.lmplayground.conversation.StatusLineColors.load(appearancePrefs)
+
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityStarted(activity: Activity) {
                 startedActivityCount++

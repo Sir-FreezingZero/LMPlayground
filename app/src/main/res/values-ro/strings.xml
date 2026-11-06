@@ -406,4 +406,18 @@
     <string name="branch_title">%1$s (ramură)</string>
     <string name="branch_title_numbered">%1$s (ramură %2$d)</string>
     <string name="branch_created">Se continuă într-un chat nou</string>
+    <string name="appearance">Aspect</string>
+    <string name="appearance_subtitle">Temă și culorile liniei de stare</string>
+    <string name="appearance_theme">Temă</string>
+    <string name="appearance_theme_system">Prestabilit de sistem</string>
+    <string name="appearance_theme_light">Luminoasă</string>
+    <string name="appearance_theme_dark">Întunecată</string>
+    <string name="appearance_status_line">Culorile liniei de stare</string>
+    <string name="status_no_model">Niciun model încărcat</string>
+    <string name="status_ready">Gata</string>
+    <string name="status_writing">Scrie răspunsul</string>
+    <string name="status_tools">Folosește instrumente</string>
+    <string name="status_error">Eroare</string>
+    <string name="status_brightness">Luminozitate</string>
+    <string name="status_reset">Resetează culorile</string>
 </resources>

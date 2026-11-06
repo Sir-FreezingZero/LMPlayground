@@ -399,4 +399,18 @@
     <string name="branch_title">%1$s (гілка)</string>
     <string name="branch_title_numbered">%1$s (гілка %2$d)</string>
     <string name="branch_created">Продовження в новому чаті</string>
+    <string name="appearance">Вигляд</string>
+    <string name="appearance_subtitle">Тема й кольори рядка стану</string>
+    <string name="appearance_theme">Тема</string>
+    <string name="appearance_theme_system">Як у системі</string>
+    <string name="appearance_theme_light">Світла</string>
+    <string name="appearance_theme_dark">Темна</string>
+    <string name="appearance_status_line">Кольори рядка стану</string>
+    <string name="status_no_model">Модель не завантажено</string>
+    <string name="status_ready">Готово</string>
+    <string name="status_writing">Пише відповідь</string>
+    <string name="status_tools">Використовує інструменти</string>
+    <string name="status_error">Помилка</string>
+    <string name="status_brightness">Яскравість</string>
+    <string name="status_reset">Скинути кольори</string>
 </resources>

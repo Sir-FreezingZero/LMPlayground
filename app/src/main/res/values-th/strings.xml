@@ -437,4 +437,18 @@
     <string name="branch_title">%1$s (แขนง)</string>
     <string name="branch_title_numbered">%1$s (แขนง %2$d)</string>
     <string name="branch_created">กำลังทำต่อในแชทใหม่</string>
+    <string name="appearance">รูปลักษณ์</string>
+    <string name="appearance_subtitle">ธีมและสีของเส้นสถานะ</string>
+    <string name="appearance_theme">ธีม</string>
+    <string name="appearance_theme_system">ค่าเริ่มต้นของระบบ</string>
+    <string name="appearance_theme_light">สว่าง</string>
+    <string name="appearance_theme_dark">มืด</string>
+    <string name="appearance_status_line">สีของเส้นสถานะ</string>
+    <string name="status_no_model">ยังไม่ได้โหลดโมเดล</string>
+    <string name="status_ready">พร้อม</string>
+    <string name="status_writing">กำลังเขียนคำตอบ</string>
+    <string name="status_tools">กำลังใช้เครื่องมือ</string>
+    <string name="status_error">ข้อผิดพลาด</string>
+    <string name="status_brightness">ความสว่าง</string>
+    <string name="status_reset">รีเซ็ตสี</string>
 </resources>

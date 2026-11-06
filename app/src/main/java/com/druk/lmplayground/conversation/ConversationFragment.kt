@@ -327,10 +327,20 @@ class ConversationFragment : Fragment() {
             // as Toasts. The ViewModel can't show UI directly, so we
             // observe a one-shot LiveData and clear it after consumption.
             val toastContext = LocalContext.current
+            // Each error also turns the status line red for a few seconds.
+            var errorCount by remember { mutableIntStateOf(0) }
+            var showErrorLine by remember { mutableStateOf(false) }
             LaunchedEffect(userError) {
                 val msg = userError ?: return@LaunchedEffect
                 Toast.makeText(toastContext, msg, Toast.LENGTH_LONG).show()
                 viewModel.consumeUserError()
+                errorCount++
+            }
+            LaunchedEffect(errorCount) {
+                if (errorCount == 0) return@LaunchedEffect
+                showErrorLine = true
+                kotlinx.coroutines.delay(4000)
+                showErrorLine = false
             }
 
             LaunchedEffect(notice) {
@@ -760,24 +770,31 @@ class ConversationFragment : Fragment() {
                             )
                         }
 
-                        // Whether the reply text itself is streaming (not reading
-                        // or thinking). Derived, so this screen only recomposes
-                        // when it flips, not on every token.
-                        val writingReply by remember {
+                        // What the streaming reply is doing: thinking (inside an
+                        // open <think>), writing visible text, or neither yet
+                        // (reading). Derived, so this screen only recomposes when
+                        // it changes, not on every update.
+                        val replyPhase by remember {
                             derivedStateOf {
-                                messages.lastOrNull()?.let {
-                                    it.author == "Assistant" &&
-                                        splitThinking(it.content).responseContent.isNotBlank()
-                                } == true
+                                val text = messages.lastOrNull()
+                                    ?.takeIf { it.author == "Assistant" }?.content.orEmpty()
+                                when {
+                                    text.lastIndexOf("<think>") > text.lastIndexOf("</think>") ->
+                                        ChatStatus.THINKING
+                                    splitThinking(text).responseContent.isNotBlank() ->
+                                        ChatStatus.GENERATING
+                                    else -> ChatStatus.PROCESSING
+                                }
                             }
                         }
                         // Glowing status line under the top bar (see StatusLine.kt).
                         val drawStatusLine = rememberStatusLine(
                             when {
+                                // Red while a load error is shown, and briefly after others.
+                                modelLoadError != null || showErrorLine -> ChatStatus.ERROR
                                 !isModelReady -> ChatStatus.NO_MODEL
                                 isRunningTools && isGenerating == true -> ChatStatus.RUNNING_TOOLS
-                                isGenerating == true && writingReply -> ChatStatus.GENERATING
-                                isGenerating == true -> ChatStatus.PROCESSING
+                                isGenerating == true -> replyPhase
                                 else -> ChatStatus.READY
                             }
                         )

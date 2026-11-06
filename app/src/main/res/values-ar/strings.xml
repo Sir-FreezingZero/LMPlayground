@@ -412,4 +412,18 @@
     <string name="branch_title">%1$s (فرع)</string>
     <string name="branch_title_numbered">%1$s (فرع %2$d)</string>
     <string name="branch_created">المتابعة في محادثة جديدة</string>
+    <string name="appearance">المظهر</string>
+    <string name="appearance_subtitle">السمة وألوان خط الحالة</string>
+    <string name="appearance_theme">السمة</string>
+    <string name="appearance_theme_system">الإعداد الافتراضي للنظام</string>
+    <string name="appearance_theme_light">فاتح</string>
+    <string name="appearance_theme_dark">داكن</string>
+    <string name="appearance_status_line">ألوان خط الحالة</string>
+    <string name="status_no_model">لم يتم تحميل نموذج</string>
+    <string name="status_ready">جاهز</string>
+    <string name="status_writing">جارٍ كتابة الرد</string>
+    <string name="status_tools">جارٍ استخدام الأدوات</string>
+    <string name="status_error">خطأ</string>
+    <string name="status_brightness">السطوع</string>
+    <string name="status_reset">إعادة ضبط الألوان</string>
 </resources>

@@ -439,4 +439,18 @@
     <string name="branch_title">%1$s (větev)</string>
     <string name="branch_title_numbered">%1$s (větev %2$d)</string>
     <string name="branch_created">Pokračuje se v novém chatu</string>
+    <string name="appearance">Vzhled</string>
+    <string name="appearance_subtitle">Motiv a barvy stavové čáry</string>
+    <string name="appearance_theme">Motiv</string>
+    <string name="appearance_theme_system">Podle systému</string>
+    <string name="appearance_theme_light">Světlý</string>
+    <string name="appearance_theme_dark">Tmavý</string>
+    <string name="appearance_status_line">Barvy stavové čáry</string>
+    <string name="status_no_model">Není načten žádný model</string>
+    <string name="status_ready">Připraveno</string>
+    <string name="status_writing">Píše odpověď</string>
+    <string name="status_tools">Používá nástroje</string>
+    <string name="status_error">Chyba</string>
+    <string name="status_brightness">Jas</string>
+    <string name="status_reset">Obnovit barvy</string>
 </resources>

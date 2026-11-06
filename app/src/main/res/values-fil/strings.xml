@@ -439,4 +439,18 @@
     <string name="branch_title">%1$s (branch)</string>
     <string name="branch_title_numbered">%1$s (branch %2$d)</string>
     <string name="branch_created">Itinutuloy sa bagong chat</string>
+    <string name="appearance">Hitsura</string>
+    <string name="appearance_subtitle">Tema at mga kulay ng status line</string>
+    <string name="appearance_theme">Tema</string>
+    <string name="appearance_theme_system">Default ng system</string>
+    <string name="appearance_theme_light">Maliwanag</string>
+    <string name="appearance_theme_dark">Madilim</string>
+    <string name="appearance_status_line">Mga kulay ng status line</string>
+    <string name="status_no_model">Walang naka-load na model</string>
+    <string name="status_ready">Handa</string>
+    <string name="status_writing">Isinusulat ang sagot</string>
+    <string name="status_tools">Gumagamit ng tools</string>
+    <string name="status_error">Error</string>
+    <string name="status_brightness">Liwanag</string>
+    <string name="status_reset">I-reset ang mga kulay</string>
 </resources>

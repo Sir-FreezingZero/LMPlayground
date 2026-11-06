@@ -447,4 +447,18 @@
     <string name="branch_title">%1$s (শাখা)</string>
     <string name="branch_title_numbered">%1$s (শাখা %2$d)</string>
     <string name="branch_created">নতুন চ্যাটে চালিয়ে যাওয়া হচ্ছে</string>
+    <string name="appearance">চেহারা</string>
+    <string name="appearance_subtitle">থিম ও স্ট্যাটাস লাইনের রং</string>
+    <string name="appearance_theme">থিম</string>
+    <string name="appearance_theme_system">সিস্টেম ডিফল্ট</string>
+    <string name="appearance_theme_light">লাইট</string>
+    <string name="appearance_theme_dark">ডার্ক</string>
+    <string name="appearance_status_line">স্ট্যাটাস লাইনের রং</string>
+    <string name="status_no_model">কোনো মডেল লোড হয়নি</string>
+    <string name="status_ready">প্রস্তুত</string>
+    <string name="status_writing">উত্তর লিখছে</string>
+    <string name="status_tools">টুল ব্যবহার করছে</string>
+    <string name="status_error">ত্রুটি</string>
+    <string name="status_brightness">উজ্জ্বলতা</string>
+    <string name="status_reset">রং রিসেট করুন</string>
 </resources>

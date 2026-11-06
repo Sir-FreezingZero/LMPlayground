@@ -399,4 +399,18 @@
     <string name="branch_title">%1$s (gałąź)</string>
     <string name="branch_title_numbered">%1$s (gałąź %2$d)</string>
     <string name="branch_created">Kontynuacja w nowym czacie</string>
+    <string name="appearance">Wygląd</string>
+    <string name="appearance_subtitle">Motyw i kolory linii stanu</string>
+    <string name="appearance_theme">Motyw</string>
+    <string name="appearance_theme_system">Domyślny systemu</string>
+    <string name="appearance_theme_light">Jasny</string>
+    <string name="appearance_theme_dark">Ciemny</string>
+    <string name="appearance_status_line">Kolory linii stanu</string>
+    <string name="status_no_model">Brak wczytanego modelu</string>
+    <string name="status_ready">Gotowe</string>
+    <string name="status_writing">Pisanie odpowiedzi</string>
+    <string name="status_tools">Używanie narzędzi</string>
+    <string name="status_error">Błąd</string>
+    <string name="status_brightness">Jasność</string>
+    <string name="status_reset">Przywróć kolory</string>
 </resources>

@@ -405,4 +405,18 @@
     <string name="branch_title">%1$s (ramificação)</string>
     <string name="branch_title_numbered">%1$s (ramificação %2$d)</string>
     <string name="branch_created">Continuando em uma nova conversa</string>
+    <string name="appearance">Aparência</string>
+    <string name="appearance_subtitle">Tema e cores da linha de status</string>
+    <string name="appearance_theme">Tema</string>
+    <string name="appearance_theme_system">Padrão do sistema</string>
+    <string name="appearance_theme_light">Claro</string>
+    <string name="appearance_theme_dark">Escuro</string>
+    <string name="appearance_status_line">Cores da linha de status</string>
+    <string name="status_no_model">Nenhum modelo carregado</string>
+    <string name="status_ready">Pronto</string>
+    <string name="status_writing">Escrevendo a resposta</string>
+    <string name="status_tools">Usando ferramentas</string>
+    <string name="status_error">Erro</string>
+    <string name="status_brightness">Brilho</string>
+    <string name="status_reset">Redefinir cores</string>
 </resources>

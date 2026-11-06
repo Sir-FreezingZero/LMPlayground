@@ -399,4 +399,18 @@
     <string name="branch_title">%1$s (nhánh)</string>
     <string name="branch_title_numbered">%1$s (nhánh %2$d)</string>
     <string name="branch_created">Đang tiếp tục trong cuộc trò chuyện mới</string>
+    <string name="appearance">Giao diện</string>
+    <string name="appearance_subtitle">Chủ đề và màu thanh trạng thái</string>
+    <string name="appearance_theme">Chủ đề</string>
+    <string name="appearance_theme_system">Mặc định hệ thống</string>
+    <string name="appearance_theme_light">Sáng</string>
+    <string name="appearance_theme_dark">Tối</string>
+    <string name="appearance_status_line">Màu thanh trạng thái</string>
+    <string name="status_no_model">Chưa tải mô hình</string>
+    <string name="status_ready">Sẵn sàng</string>
+    <string name="status_writing">Đang viết câu trả lời</string>
+    <string name="status_tools">Đang dùng công cụ</string>
+    <string name="status_error">Lỗi</string>
+    <string name="status_brightness">Độ sáng</string>
+    <string name="status_reset">Đặt lại màu</string>
 </resources>

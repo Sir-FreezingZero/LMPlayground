@@ -523,4 +523,18 @@
     <string name="general_previews" tools:ignore="MissingTranslation">Live previews</string>
     <string name="live_previews_title" tools:ignore="MissingTranslation">Live previews</string>
     <string name="live_previews_desc" tools:ignore="MissingTranslation">Show web pages the model writes as a card you can preview, download or open full screen. Off: they stay plain code in the reply.</string>
+    <string name="appearance">Appearance</string>
+    <string name="appearance_subtitle">Theme and status line colors</string>
+    <string name="appearance_theme">Theme</string>
+    <string name="appearance_theme_system">System default</string>
+    <string name="appearance_theme_light">Light</string>
+    <string name="appearance_theme_dark">Dark</string>
+    <string name="appearance_status_line">Status line colors</string>
+    <string name="status_no_model">No model loaded</string>
+    <string name="status_ready">Ready</string>
+    <string name="status_writing">Writing the reply</string>
+    <string name="status_tools">Using tools</string>
+    <string name="status_error">Error</string>
+    <string name="status_brightness">Brightness</string>
+    <string name="status_reset">Reset colors</string>
 </resources>

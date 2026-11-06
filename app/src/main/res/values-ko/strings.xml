@@ -403,4 +403,18 @@
     <string name="branch_title">%1$s (분기)</string>
     <string name="branch_title_numbered">%1$s (분기 %2$d)</string>
     <string name="branch_created">새 채팅에서 계속합니다</string>
+    <string name="appearance">화면 스타일</string>
+    <string name="appearance_subtitle">테마 및 상태 표시줄 색상</string>
+    <string name="appearance_theme">테마</string>
+    <string name="appearance_theme_system">시스템 기본값</string>
+    <string name="appearance_theme_light">라이트</string>
+    <string name="appearance_theme_dark">다크</string>
+    <string name="appearance_status_line">상태 표시줄 색상</string>
+    <string name="status_no_model">로드된 모델 없음</string>
+    <string name="status_ready">준비됨</string>
+    <string name="status_writing">답변 작성 중</string>
+    <string name="status_tools">도구 사용 중</string>
+    <string name="status_error">오류</string>
+    <string name="status_brightness">밝기</string>
+    <string name="status_reset">색상 초기화</string>
 </resources>

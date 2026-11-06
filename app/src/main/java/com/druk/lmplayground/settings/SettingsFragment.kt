@@ -220,6 +220,9 @@ class SettingsFragment : Fragment() {
                     onGeneralClick = {
                         findNavController().navigateFromSettings(R.id.action_settings_to_general)
                     },
+                    onAppearanceClick = {
+                        findNavController().navigateFromSettings(R.id.action_settings_to_appearance)
+                    },
                     onLanguageClick = {
                         findNavController().navigateFromSettings(R.id.action_settings_to_language)
                     },

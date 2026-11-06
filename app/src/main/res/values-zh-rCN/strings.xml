@@ -403,4 +403,18 @@
     <string name="branch_title">%1$s（分支）</string>
     <string name="branch_title_numbered">%1$s（分支 %2$d）</string>
     <string name="branch_created">已在新对话中继续</string>
+    <string name="appearance">外观</string>
+    <string name="appearance_subtitle">主题和状态线颜色</string>
+    <string name="appearance_theme">主题</string>
+    <string name="appearance_theme_system">跟随系统</string>
+    <string name="appearance_theme_light">浅色</string>
+    <string name="appearance_theme_dark">深色</string>
+    <string name="appearance_status_line">状态线颜色</string>
+    <string name="status_no_model">未加载模型</string>
+    <string name="status_ready">就绪</string>
+    <string name="status_writing">正在写回复</string>
+    <string name="status_tools">正在使用工具</string>
+    <string name="status_error">错误</string>
+    <string name="status_brightness">亮度</string>
+    <string name="status_reset">重置颜色</string>
 </resources>

@@ -408,4 +408,18 @@
     <string name="branch_title">%1$s (शाखा)</string>
     <string name="branch_title_numbered">%1$s (शाखा %2$d)</string>
     <string name="branch_created">नई चैट में जारी है</string>
+    <string name="appearance">दिखावट</string>
+    <string name="appearance_subtitle">थीम और स्टेटस लाइन के रंग</string>
+    <string name="appearance_theme">थीम</string>
+    <string name="appearance_theme_system">सिस्टम डिफ़ॉल्ट</string>
+    <string name="appearance_theme_light">लाइट</string>
+    <string name="appearance_theme_dark">डार्क</string>
+    <string name="appearance_status_line">स्टेटस लाइन के रंग</string>
+    <string name="status_no_model">कोई मॉडल लोड नहीं है</string>
+    <string name="status_ready">तैयार</string>
+    <string name="status_writing">जवाब लिख रहा है</string>
+    <string name="status_tools">टूल इस्तेमाल कर रहा है</string>
+    <string name="status_error">त्रुटि</string>
+    <string name="status_brightness">चमक</string>
+    <string name="status_reset">रंग रीसेट करें</string>
 </resources>

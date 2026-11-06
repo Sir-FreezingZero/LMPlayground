@@ -403,4 +403,18 @@
     <string name="branch_title">%1$s（分岐）</string>
     <string name="branch_title_numbered">%1$s（分岐 %2$d）</string>
     <string name="branch_created">新しいチャットで続けています</string>
+    <string name="appearance">外観</string>
+    <string name="appearance_subtitle">テーマとステータスラインの色</string>
+    <string name="appearance_theme">テーマ</string>
+    <string name="appearance_theme_system">システムのデフォルト</string>
+    <string name="appearance_theme_light">ライト</string>
+    <string name="appearance_theme_dark">ダーク</string>
+    <string name="appearance_status_line">ステータスラインの色</string>
+    <string name="status_no_model">モデル未読み込み</string>
+    <string name="status_ready">準備完了</string>
+    <string name="status_writing">回答を作成中</string>
+    <string name="status_tools">ツールを使用中</string>
+    <string name="status_error">エラー</string>
+    <string name="status_brightness">明るさ</string>
+    <string name="status_reset">色をリセット</string>
 </resources>

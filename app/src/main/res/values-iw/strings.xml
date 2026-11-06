@@ -450,4 +450,18 @@
     <string name="branch_title">%1$s (ענף)</string>
     <string name="branch_title_numbered">%1$s (ענף %2$d)</string>
     <string name="branch_created">ממשיכים בצ׳אט חדש</string>
+    <string name="appearance">מראה</string>
+    <string name="appearance_subtitle">ערכת נושא וצבעי קו הסטטוס</string>
+    <string name="appearance_theme">ערכת נושא</string>
+    <string name="appearance_theme_system">ברירת המחדל של המערכת</string>
+    <string name="appearance_theme_light">בהיר</string>
+    <string name="appearance_theme_dark">כהה</string>
+    <string name="appearance_status_line">צבעי קו הסטטוס</string>
+    <string name="status_no_model">לא נטען מודל</string>
+    <string name="status_ready">מוכן</string>
+    <string name="status_writing">כותב את התשובה</string>
+    <string name="status_tools">משתמש בכלים</string>
+    <string name="status_error">שגיאה</string>
+    <string name="status_brightness">בהירות</string>
+    <string name="status_reset">איפוס צבעים</string>
 </resources>

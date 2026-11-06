@@ -447,4 +447,18 @@
     <string name="branch_title">%1$s (forgrening)</string>
     <string name="branch_title_numbered">%1$s (forgrening %2$d)</string>
     <string name="branch_created">Fortsetter i en ny chat</string>
+    <string name="appearance">Utseende</string>
+    <string name="appearance_subtitle">Tema og farger for statuslinjen</string>
+    <string name="appearance_theme">Tema</string>
+    <string name="appearance_theme_system">Systemstandard</string>
+    <string name="appearance_theme_light">Lyst</string>
+    <string name="appearance_theme_dark">Mørkt</string>
+    <string name="appearance_status_line">Farger for statuslinjen</string>
+    <string name="status_no_model">Ingen modell lastet inn</string>
+    <string name="status_ready">Klar</string>
+    <string name="status_writing">Skriver svaret</string>
+    <string name="status_tools">Bruker verktøy</string>
+    <string name="status_error">Feil</string>
+    <string name="status_brightness">Lysstyrke</string>
+    <string name="status_reset">Tilbakestill farger</string>
 </resources>

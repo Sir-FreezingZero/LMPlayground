@@ -405,4 +405,18 @@
     <string name="branch_title">%1$s (branche)</string>
     <string name="branch_title_numbered">%1$s (branche %2$d)</string>
     <string name="branch_created">Suite dans un nouveau chat</string>
+    <string name="appearance">Apparence</string>
+    <string name="appearance_subtitle">Thème et couleurs de la ligne d\'état</string>
+    <string name="appearance_theme">Thème</string>
+    <string name="appearance_theme_system">Paramètre du système</string>
+    <string name="appearance_theme_light">Clair</string>
+    <string name="appearance_theme_dark">Sombre</string>
+    <string name="appearance_status_line">Couleurs de la ligne d\'état</string>
+    <string name="status_no_model">Aucun modèle chargé</string>
+    <string name="status_ready">Prêt</string>
+    <string name="status_writing">Rédaction de la réponse</string>
+    <string name="status_tools">Utilisation des outils</string>
+    <string name="status_error">Erreur</string>
+    <string name="status_brightness">Luminosité</string>
+    <string name="status_reset">Réinitialiser les couleurs</string>
 </resources>

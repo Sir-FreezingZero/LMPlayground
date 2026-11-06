@@ -407,4 +407,18 @@
     <string name="branch_title">%1$s (Abzweigung)</string>
     <string name="branch_title_numbered">%1$s (Abzweigung %2$d)</string>
     <string name="branch_created">Weiter in einem neuen Chat</string>
+    <string name="appearance">Darstellung</string>
+    <string name="appearance_subtitle">Design und Farben der Statuslinie</string>
+    <string name="appearance_theme">Design</string>
+    <string name="appearance_theme_system">Systemstandard</string>
+    <string name="appearance_theme_light">Hell</string>
+    <string name="appearance_theme_dark">Dunkel</string>
+    <string name="appearance_status_line">Farben der Statuslinie</string>
+    <string name="status_no_model">Kein Modell geladen</string>
+    <string name="status_ready">Bereit</string>
+    <string name="status_writing">Antwort wird geschrieben</string>
+    <string name="status_tools">Tools werden verwendet</string>
+    <string name="status_error">Fehler</string>
+    <string name="status_brightness">Helligkeit</string>
+    <string name="status_reset">Farben zurücksetzen</string>
 </resources>

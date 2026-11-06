@@ -28,6 +28,7 @@ import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Policy
+import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.material.icons.outlined.ToggleOn
@@ -83,6 +84,8 @@ fun SettingsScreen(
     onMemoryClick: () -> Unit = {},
     /** General opens full screen too. */
     onGeneralClick: () -> Unit = {},
+    /** Appearance opens full screen too. */
+    onAppearanceClick: () -> Unit = {},
     /**
      * Tablet-only: when non-null, tapping Models in the master pane opens
      * this composable inline in the detail pane instead of navigating to
@@ -240,6 +243,7 @@ fun SettingsScreen(
                         },
                         onMemoryClick = onMemoryClick,
                         onGeneralClick = onGeneralClick,
+                        onAppearanceClick = onAppearanceClick,
                         onPrivacyPolicyClick = { detail = SettingsDetail.PrivacyPolicy },
                         onFaqClick = { detail = SettingsDetail.Faq },
                         onCrashEngineClick = onCrashEngineClick
@@ -319,6 +323,7 @@ fun SettingsScreen(
                 onAdvancedClick = onAdvancedClick,
                 onMemoryClick = onMemoryClick,
                 onGeneralClick = onGeneralClick,
+                onAppearanceClick = onAppearanceClick,
                 onPrivacyPolicyClick = onPrivacyPolicyClick,
                 onFaqClick = onFaqClick,
                 onCrashEngineClick = onCrashEngineClick,
@@ -348,6 +353,7 @@ private fun SettingsList(
     onAdvancedClick: () -> Unit,
     onMemoryClick: () -> Unit,
     onGeneralClick: () -> Unit,
+    onAppearanceClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onFaqClick: () -> Unit,
     onCrashEngineClick: (() -> Unit)?,
@@ -363,6 +369,14 @@ private fun SettingsList(
             title = stringResource(R.string.general),
             subtitle = stringResource(R.string.general_subtitle),
             onClick = onGeneralClick
+        )
+
+        // Appearance row (opens full screen; no detail pane)
+        SettingsRow(
+            icon = Icons.Outlined.Palette,
+            title = stringResource(R.string.appearance),
+            subtitle = stringResource(R.string.appearance_subtitle),
+            onClick = onAppearanceClick
         )
 
         // Models row
