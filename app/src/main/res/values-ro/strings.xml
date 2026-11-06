@@ -420,4 +420,6 @@
     <string name="status_error">Eroare</string>
     <string name="status_brightness">Luminozitate</string>
     <string name="status_reset">Resetează culorile</string>
+    <string name="tool_steps_title">Pași cu instrumente</string>
+    <string name="tool_steps_desc">Numărul maxim de folosiri ale instrumentelor într-un răspuns înainte ca modelul să răspundă</string>
 </resources>

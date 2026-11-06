@@ -417,4 +417,6 @@
     <string name="status_error">오류</string>
     <string name="status_brightness">밝기</string>
     <string name="status_reset">색상 초기화</string>
+    <string name="tool_steps_title">도구 단계</string>
+    <string name="tool_steps_desc">모델이 답변하기 전에 한 응답에서 도구를 사용할 수 있는 최대 횟수</string>
 </resources>

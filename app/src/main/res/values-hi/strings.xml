@@ -422,4 +422,6 @@
     <string name="status_error">त्रुटि</string>
     <string name="status_brightness">चमक</string>
     <string name="status_reset">रंग रीसेट करें</string>
+    <string name="tool_steps_title">टूल चरण</string>
+    <string name="tool_steps_desc">मॉडल को जवाब देने से पहले एक उत्तर में टूल के अधिकतम उपयोग</string>
 </resources>

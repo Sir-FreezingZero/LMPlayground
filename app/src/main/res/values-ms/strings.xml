@@ -452,4 +452,6 @@
     <string name="status_error">Ralat</string>
     <string name="status_brightness">Kecerahan</string>
     <string name="status_reset">Tetapkan semula warna</string>
+    <string name="tool_steps_title">Langkah alat</string>
+    <string name="tool_steps_desc">Bilangan maksimum penggunaan alat dalam satu balasan sebelum model mesti menjawab</string>
 </resources>

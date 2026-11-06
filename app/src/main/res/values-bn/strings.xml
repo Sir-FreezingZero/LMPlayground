@@ -461,4 +461,6 @@
     <string name="status_error">ত্রুটি</string>
     <string name="status_brightness">উজ্জ্বলতা</string>
     <string name="status_reset">রং রিসেট করুন</string>
+    <string name="tool_steps_title">টুল ধাপ</string>
+    <string name="tool_steps_desc">মডেলকে উত্তর দেওয়ার আগে এক উত্তরে সর্বোচ্চ কতবার টুল ব্যবহার করা যাবে</string>
 </resources>

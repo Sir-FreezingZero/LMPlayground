@@ -464,4 +464,6 @@
     <string name="status_error">שגיאה</string>
     <string name="status_brightness">בהירות</string>
     <string name="status_reset">איפוס צבעים</string>
+    <string name="tool_steps_title">שלבי כלים</string>
+    <string name="tool_steps_desc">מספר השימושים המרבי בכלים בתשובה אחת לפני שהמודל חייב לענות</string>
 </resources>

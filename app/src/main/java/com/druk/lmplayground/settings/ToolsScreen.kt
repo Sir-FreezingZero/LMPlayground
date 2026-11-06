@@ -14,9 +14,11 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -29,6 +31,7 @@ import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Public
+import androidx.compose.material.icons.outlined.Repeat
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Science
 import androidx.compose.material.icons.outlined.Search
@@ -39,6 +42,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -56,8 +60,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
-import com.druk.lmplayground.R
 import com.druk.llamacpp.tools.Tool
+import com.druk.lmplayground.R
+import com.druk.lmplayground.storage.StoragePreferences
+import kotlin.math.roundToInt
 
 /**
  * User-facing copy for a tool, keyed by [Tool.name]. The runtime
@@ -252,6 +258,47 @@ fun ToolsContent(
         SettingsSection(R.string.default_tools) {
             ToolSwitches(tools, enabledStates, onToolEnabledChanged)
         }
+        SettingsSection(R.string.tool_steps_title) {
+            ToolStepsRow()
+        }
+    }
+}
+
+/** How many tool rounds a reply may take before the model must answer, 1 to 20. */
+@Composable
+private fun ToolStepsRow() {
+    val context = LocalContext.current
+    val prefs = remember { StoragePreferences(context) }
+    var steps by remember { mutableIntStateOf(prefs.maxToolSteps) }
+    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                Icons.Outlined.Repeat,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(Modifier.width(16.dp))
+            Text(
+                text = stringResource(R.string.tool_steps_desc),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.weight(1f),
+            )
+            Spacer(Modifier.width(16.dp))
+            Text(
+                text = steps.toString(),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+        Slider(
+            value = steps.toFloat(),
+            onValueChange = { steps = it.roundToInt() },
+            onValueChangeFinished = { prefs.maxToolSteps = steps },
+            valueRange = 1f..20f,
+            steps = 18,
+            modifier = Modifier.padding(start = 40.dp),
+        )
     }
 }
 

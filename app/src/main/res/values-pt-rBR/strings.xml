@@ -419,4 +419,6 @@
     <string name="status_error">Erro</string>
     <string name="status_brightness">Brilho</string>
     <string name="status_reset">Redefinir cores</string>
+    <string name="tool_steps_title">Etapas de ferramentas</string>
+    <string name="tool_steps_desc">Máximo de usos de ferramentas em uma resposta antes que o modelo precise responder</string>
 </resources>

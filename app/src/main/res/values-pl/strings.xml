@@ -413,4 +413,6 @@
     <string name="status_error">Błąd</string>
     <string name="status_brightness">Jasność</string>
     <string name="status_reset">Przywróć kolory</string>
+    <string name="tool_steps_title">Kroki narzędzi</string>
+    <string name="tool_steps_desc">Maksymalna liczba użyć narzędzi w jednej odpowiedzi, zanim model musi odpowiedzieć</string>
 </resources>

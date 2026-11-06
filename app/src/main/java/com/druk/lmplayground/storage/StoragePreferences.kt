@@ -32,6 +32,11 @@ class StoragePreferences(context: Context) {
         get() = prefs.getBoolean("include_date_in_prompt", true)
         set(value) = prefs.edit { putBoolean("include_date_in_prompt", value) }
 
+    /** Most tool rounds per reply (Settings → Tools → Tool steps), 1 to 20. */
+    var maxToolSteps: Int
+        get() = prefs.getInt("max_tool_steps", 10).coerceIn(1, 20)
+        set(value) = prefs.edit { putInt("max_tool_steps", value.coerceIn(1, 20)) }
+
     /** App theme: 0 = follow the system, 1 = light, 2 = dark (Settings → Appearance). */
     var themeMode: Int
         get() = prefs.getInt("theme_mode", 0)

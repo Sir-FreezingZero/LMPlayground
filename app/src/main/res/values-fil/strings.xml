@@ -453,4 +453,6 @@
     <string name="status_error">Error</string>
     <string name="status_brightness">Liwanag</string>
     <string name="status_reset">I-reset ang mga kulay</string>
+    <string name="tool_steps_title">Mga hakbang ng tool</string>
+    <string name="tool_steps_desc">Pinakamaraming paggamit ng tool sa isang sagot bago kailangang sumagot ng model</string>
 </resources>

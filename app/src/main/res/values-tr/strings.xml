@@ -420,4 +420,6 @@
     <string name="status_error">Hata</string>
     <string name="status_brightness">Parlaklık</string>
     <string name="status_reset">Renkleri sıfırla</string>
+    <string name="tool_steps_title">Araç adımları</string>
+    <string name="tool_steps_desc">Modelin yanıt vermesi gerekmeden önce bir yanıtta en fazla araç kullanımı</string>
 </resources>

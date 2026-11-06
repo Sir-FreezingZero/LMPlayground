@@ -461,4 +461,6 @@
     <string name="status_error">Fel</string>
     <string name="status_brightness">Ljusstyrka</string>
     <string name="status_reset">Återställ färger</string>
+    <string name="tool_steps_title">Verktygssteg</string>
+    <string name="tool_steps_desc">Högst så många verktygsanrop i ett svar innan modellen måste svara</string>
 </resources>

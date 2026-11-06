@@ -413,4 +413,6 @@
     <string name="status_error">Помилка</string>
     <string name="status_brightness">Яскравість</string>
     <string name="status_reset">Скинути кольори</string>
+    <string name="tool_steps_title">Кроки інструментів</string>
+    <string name="tool_steps_desc">Найбільша кількість використань інструментів в одній відповіді, перш ніж модель має відповісти</string>
 </resources>

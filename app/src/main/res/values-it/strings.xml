@@ -419,4 +419,6 @@
     <string name="status_error">Errore</string>
     <string name="status_brightness">Luminosità</string>
     <string name="status_reset">Ripristina colori</string>
+    <string name="tool_steps_title">Passaggi degli strumenti</string>
+    <string name="tool_steps_desc">Numero massimo di usi degli strumenti in una risposta prima che il modello debba rispondere</string>
 </resources>

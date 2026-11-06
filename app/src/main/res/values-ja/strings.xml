@@ -417,4 +417,6 @@
     <string name="status_error">エラー</string>
     <string name="status_brightness">明るさ</string>
     <string name="status_reset">色をリセット</string>
+    <string name="tool_steps_title">ツールのステップ数</string>
+    <string name="tool_steps_desc">モデルが回答する前に1回の返信で使えるツールの最大回数</string>
 </resources>

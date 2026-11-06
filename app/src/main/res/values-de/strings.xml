@@ -421,4 +421,6 @@
     <string name="status_error">Fehler</string>
     <string name="status_brightness">Helligkeit</string>
     <string name="status_reset">Farben zurücksetzen</string>
+    <string name="tool_steps_title">Tool-Schritte</string>
+    <string name="tool_steps_desc">Höchstzahl an Tool-Aufrufen pro Antwort, bevor das Modell antworten muss</string>
 </resources>

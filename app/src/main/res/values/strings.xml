@@ -537,4 +537,6 @@
     <string name="status_error">Error</string>
     <string name="status_brightness">Brightness</string>
     <string name="status_reset">Reset colors</string>
+    <string name="tool_steps_title">Tool steps</string>
+    <string name="tool_steps_desc">Most tool uses in one reply before the model must answer</string>
 </resources>

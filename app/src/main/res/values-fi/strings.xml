@@ -450,4 +450,6 @@
     <string name="status_error">Virhe</string>
     <string name="status_brightness">Kirkkaus</string>
     <string name="status_reset">Palauta värit</string>
+    <string name="tool_steps_title">Työkaluvaiheet</string>
+    <string name="tool_steps_desc">Työkalujen käyttökertoja enintään yhdessä vastauksessa ennen kuin mallin on vastattava</string>
 </resources>

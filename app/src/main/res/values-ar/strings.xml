@@ -426,4 +426,6 @@
     <string name="status_error">خطأ</string>
     <string name="status_brightness">السطوع</string>
     <string name="status_reset">إعادة ضبط الألوان</string>
+    <string name="tool_steps_title">خطوات الأدوات</string>
+    <string name="tool_steps_desc">أقصى عدد لاستخدام الأدوات في رد واحد قبل أن يجب على النموذج الإجابة</string>
 </resources>

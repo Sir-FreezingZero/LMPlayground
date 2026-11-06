@@ -453,4 +453,6 @@
     <string name="status_error">Chyba</string>
     <string name="status_brightness">Jas</string>
     <string name="status_reset">Obnovit barvy</string>
+    <string name="tool_steps_title">Kroky nástrojů</string>
+    <string name="tool_steps_desc">Nejvyšší počet použití nástrojů v jedné odpovědi, než model musí odpovědět</string>
 </resources>

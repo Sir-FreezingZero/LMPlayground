@@ -461,4 +461,6 @@
     <string name="status_error">Feil</string>
     <string name="status_brightness">Lysstyrke</string>
     <string name="status_reset">Tilbakestill farger</string>
+    <string name="tool_steps_title">Verktøytrinn</string>
+    <string name="tool_steps_desc">Høyst så mange verktøykall i ett svar før modellen må svare</string>
 </resources>

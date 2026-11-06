@@ -315,6 +315,8 @@ class GenerationCoordinator(
                     }
                     override fun cancelInFlight() = toolRegistry.cancelInFlight()
                 },
+                // Settings → Tools → Tool steps, read once per reply.
+                maxToolRounds = storagePreferences.maxToolSteps,
                 observer = object : ToolCallLoop.Observer {
                     override fun onToolCalls(calls: List<ToolCallRecord>) {
                         // The round's last text must be on screen before the

@@ -413,4 +413,6 @@
     <string name="status_error">Lỗi</string>
     <string name="status_brightness">Độ sáng</string>
     <string name="status_reset">Đặt lại màu</string>
+    <string name="tool_steps_title">Số bước dùng công cụ</string>
+    <string name="tool_steps_desc">Số lần dùng công cụ tối đa trong một câu trả lời trước khi mô hình phải trả lời</string>
 </resources>

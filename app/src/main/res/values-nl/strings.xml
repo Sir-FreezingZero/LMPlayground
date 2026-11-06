@@ -462,4 +462,6 @@
     <string name="status_error">Fout</string>
     <string name="status_brightness">Helderheid</string>
     <string name="status_reset">Kleuren herstellen</string>
+    <string name="tool_steps_title">Toolstappen</string>
+    <string name="tool_steps_desc">Maximaal aantal keer dat het model tools gebruikt in één antwoord voordat het moet antwoorden</string>
 </resources>

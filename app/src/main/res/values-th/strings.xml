@@ -451,4 +451,6 @@
     <string name="status_error">ข้อผิดพลาด</string>
     <string name="status_brightness">ความสว่าง</string>
     <string name="status_reset">รีเซ็ตสี</string>
+    <string name="tool_steps_title">ขั้นตอนการใช้เครื่องมือ</string>
+    <string name="tool_steps_desc">จำนวนครั้งสูงสุดที่ใช้เครื่องมือในหนึ่งคำตอบก่อนที่โมเดลต้องตอบ</string>
 </resources>

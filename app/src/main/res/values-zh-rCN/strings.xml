@@ -417,4 +417,6 @@
     <string name="status_error">错误</string>
     <string name="status_brightness">亮度</string>
     <string name="status_reset">重置颜色</string>
+    <string name="tool_steps_title">工具步数</string>
+    <string name="tool_steps_desc">模型必须作答前，单次回复中最多可使用工具的次数</string>
 </resources>

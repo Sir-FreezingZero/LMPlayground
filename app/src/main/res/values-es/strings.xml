@@ -419,4 +419,6 @@
     <string name="status_error">Error</string>
     <string name="status_brightness">Brillo</string>
     <string name="status_reset">Restablecer colores</string>
+    <string name="tool_steps_title">Pasos de herramientas</string>
+    <string name="tool_steps_desc">Máximo de usos de herramientas en una respuesta antes de que el modelo deba contestar</string>
 </resources>
