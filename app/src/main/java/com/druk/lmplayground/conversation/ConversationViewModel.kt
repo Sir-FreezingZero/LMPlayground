@@ -66,6 +66,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     private val notifications = InferenceNotificationUpdater(app, llamaCpp)
 
     private val _isGenerating = MutableLiveData(false)
+    private val _isRunningTools = MutableLiveData(false)
     private val _isModelReady = MutableLiveData(false)
     private val _modelLoadingProgress = MutableLiveData(0f)
     private val _loadedModel = MutableLiveData<ModelInfo?>(null)
@@ -283,6 +284,10 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
             }
         }
 
+        override fun onToolsRunning(running: Boolean) {
+            _isRunningTools.postValue(running)
+        }
+
         override fun onThinkingRestarted() {
             Snapshot.withMutableSnapshot {
                 uiState.markThinkingStarted()
@@ -334,6 +339,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                 uiState.finalizeLastMessage()
             }
             _isGenerating.postValue(false)
+            _isRunningTools.postValue(false)
             refreshContextUsage()
             // Generation (or cancellation) is done — freeze the
             // silent notification on "Response ready" with the
@@ -444,6 +450,8 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
 
     val isGenerating: LiveData<Boolean> = _isGenerating
+    /** True while a tool round is executing (the status line turns orange). */
+    val isRunningTools: LiveData<Boolean> = _isRunningTools
     val isModelReady: LiveData<Boolean> = _isModelReady
     val modelLoadingProgress: LiveData<Float> = _modelLoadingProgress
     val loadedModel: LiveData<ModelInfo?> = _loadedModel

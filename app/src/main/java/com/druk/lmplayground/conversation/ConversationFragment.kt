@@ -16,6 +16,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import java.io.File
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -274,6 +275,7 @@ class ConversationFragment : Fragment() {
 
             val messages = viewModel.uiState.messages
             val isGenerating by viewModel.isGenerating.observeAsState()
+            val isRunningTools by viewModel.isRunningTools.observeAsState(false)
             val progress by viewModel.modelLoadingProgress.observeAsState(0f)
             val modelInfo by viewModel.loadedModel.observeAsState()
             val modelStatus by viewModel.loadedModelStatus.observeAsState()
@@ -799,6 +801,19 @@ class ConversationFragment : Fragment() {
                             )
                         }
 
+                        // Status line under the top bar: gray with no model,
+                        // green when ready for input, blue while generating,
+                        // orange while tools run.
+                        val statusLineColor by animateColorAsState(
+                            when {
+                                !isModelReady -> colorScheme.outlineVariant
+                                isRunningTools && isGenerating == true -> Color(0xFFFF9800)
+                                isGenerating == true -> Color(0xFF2196F3)
+                                else -> Color(0xFF4CAF50)
+                            },
+                            label = "statusLine",
+                        )
+
                         // ---- Frosted top bar, floating over the content ----
                         ConversationBar(
                             modelInfo = modelInfo,
@@ -826,10 +841,10 @@ class ConversationFragment : Fragment() {
                                 .hazeEffect(hazeState, hazeStyle) { alpha = topBarFrost }
                                 .drawWithContent {
                                     drawContent()
-                                    // Full-width line under the bar.
-                                    val lineWidth = 1.dp.toPx()
+                                    // Full-width status line under the bar.
+                                    val lineWidth = 2.dp.toPx()
                                     drawLine(
-                                        colorScheme.outlineVariant,
+                                        statusLineColor,
                                         start = Offset(0f, size.height - lineWidth / 2f),
                                         end = Offset(size.width, size.height - lineWidth / 2f),
                                         strokeWidth = lineWidth

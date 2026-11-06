@@ -64,6 +64,9 @@ class GenerationCoordinator(
         /** A tool round completed; attach [infos] to the assistant message. */
         fun onToolCalls(infos: List<ToolCallInfo>)
 
+        /** Tools started ([running] true) or finished running for a round. */
+        fun onToolsRunning(running: Boolean) {}
+
         /** Thinking (re)started for the post-tool response phase. */
         fun onThinkingRestarted()
 
@@ -276,7 +279,12 @@ class GenerationCoordinator(
                 tools = object : ToolCallLoop.ToolExecutor {
                     override fun executeToolCalls(toolCallsJson: String): String {
                         Log.d(TAG, "Tool calls: $toolCallsJson")
-                        return toolRegistry.executeToolCalls(toolCallsJson, enforceEnabled = true)
+                        listener.onToolsRunning(true)
+                        try {
+                            return toolRegistry.executeToolCalls(toolCallsJson, enforceEnabled = true)
+                        } finally {
+                            listener.onToolsRunning(false)
+                        }
                     }
                     override fun cancelInFlight() = toolRegistry.cancelInFlight()
                 },
