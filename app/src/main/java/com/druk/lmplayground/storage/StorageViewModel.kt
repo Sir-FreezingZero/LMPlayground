@@ -424,8 +424,6 @@ class StorageViewModel(application: Application) : AndroidViewModel(application)
         return repository.hasValidPermission()
     }
 
-    fun getRepository(): StorageRepository = repository
-
     fun downloadModel(model: ModelInfo, includeMmproj: Boolean = true) {
         if (model.remoteUri == null) return
         val storageUri = repository.getStorageUri()

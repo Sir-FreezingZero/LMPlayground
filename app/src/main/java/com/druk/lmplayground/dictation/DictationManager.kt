@@ -70,26 +70,6 @@ class DictationManager(
     }
 
     /**
-     * Transcribe one slice of live dictation. Returns null when the model is
-     * unavailable or the decode failed.
-     *
-     * Loading is serialized by [mutex], but the decode itself is not: slices
-     * arrive every few seconds and the service already runs them in order on
-     * its own ASR thread. Holding the lock across the decode would let an
-     * idle-unload check stall dictation mid-sentence.
-     */
-    suspend fun transcribeChunk(pcm: FloatArray, targetLang: String = "auto"): String? {
-        val llamaCpp = llamaCpp ?: return null
-        mutex.withLock { if (!ensureModelLoadedLocked()) return null }
-        return try {
-            llamaCpp.transcribeSamples(pcm, targetLang)
-        } catch (t: Throwable) {
-            Log.e(TAG, "Chunk transcription failed", t)
-            null
-        }
-    }
-
-    /**
      * Open a live dictation stream, loading the model first if needed. Returns
      * 0 when the model is missing or cannot stream.
      */

@@ -1350,10 +1350,6 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         _sessionModelHint.value = null
     }
 
-    fun dismissVisionModuleHint() {
-        _visionModuleHint.value = null
-    }
-
     /**
      * Start downloading the image module (mmproj) for the currently-hinted
      * vision model. Vision activates the next time this model is loaded (the

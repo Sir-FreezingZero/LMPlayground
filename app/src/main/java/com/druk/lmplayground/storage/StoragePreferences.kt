@@ -108,10 +108,6 @@ class StoragePreferences(context: Context) {
         prefs.edit { putString("custom_model_$filename", "$name|$hasChatTemplate") }
     }
 
-    fun removeCustomModelMetadata(filename: String) {
-        prefs.edit { remove("custom_model_$filename") }
-    }
-
     fun getModelGenerationParams(filename: String): Map<String, Float>? {
         val json = prefs.getString("gen_params_$filename", null) ?: return null
         return try {

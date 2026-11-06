@@ -68,7 +68,4 @@ object ChatTemplateOverrides {
             }
         }
     }
-
-    /** Filenames with an override, for diagnostics and harness cross-checks. */
-    fun overriddenFilenames(): Set<String> = OVERRIDES.keys
 }
