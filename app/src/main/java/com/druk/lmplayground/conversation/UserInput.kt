@@ -66,9 +66,6 @@ import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.hazeEffect
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.SemanticsPropertyKey
@@ -128,13 +125,12 @@ fun UserInput(
     showTopDivider: Boolean = integrateWithSurface,
     modifier: Modifier = Modifier,
     /**
-     * When supplied, the input dock blurs the chat content scrolling behind it
-     * (frosted glass) instead of painting an opaque tonal surface. The blur
-     * region spans the full dock — including the area behind the navigation bar
-     * and keyboard — since the nav/ime padding lives on the inner content.
+     * When supplied, the input dock is filled with this color instead of an
+     * opaque tonal surface. The fill spans the full dock — including the area
+     * behind the navigation bar and keyboard — since the nav/ime padding lives
+     * on the inner content.
      */
-    hazeState: HazeState? = null,
-    hazeStyle: HazeStyle = HazeStyle.Unspecified,
+    chromeColor: Color? = null,
     status: UserInputStatus = UserInputStatus.IDLE,
     focusRequester: FocusRequester = remember { FocusRequester() },
     supportsThinking: Boolean = false,
@@ -216,17 +212,17 @@ fun UserInput(
         dragAccumulator += delta
     }
 
-    val frosted = hazeState != null
+    val useChrome = chromeColor != null
     Surface(
-        // Frosted: paint nothing of our own and let hazeEffect blur the chat
-        // behind the whole dock. Otherwise keep the original tonal surface.
-        modifier = if (frosted) {
-            Modifier.fillMaxWidth().hazeEffect(hazeState!!, hazeStyle)
+        // With chromeColor: the dock is filled with the shared chrome color.
+        // Otherwise keep the original tonal surface.
+        modifier = if (useChrome) {
+            Modifier.fillMaxWidth().background(chromeColor!!)
         } else {
             Modifier
         },
-        color = if (frosted) Color.Transparent else MaterialTheme.colorScheme.surface,
-        tonalElevation = if (frosted || integrateWithSurface) 0.dp else 2.dp,
+        color = if (useChrome) Color.Transparent else MaterialTheme.colorScheme.surface,
+        tonalElevation = if (useChrome || integrateWithSurface) 0.dp else 2.dp,
         contentColor = MaterialTheme.colorScheme.secondary
     ) {
         Column(

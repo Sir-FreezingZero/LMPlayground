@@ -1,5 +1,7 @@
 package com.druk.lmplayground.conversation
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
@@ -27,9 +29,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.druk.lmplayground.R
 import com.druk.lmplayground.data.RagDocumentEntity
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.hazeEffect
 
 /**
  * One chip per document attached to the current chat, shown above the
@@ -39,9 +38,8 @@ import dev.chrisbanes.haze.hazeEffect
  * for removal via [onRemove] — confirmation lives with the caller.
  *
  * The chips float over the message list, so like the rest of the bottom
- * chrome they frost the content behind them ([hazeState]/[hazeStyle],
- * same pattern as JumpToBottom); without a haze source they fall back to
- * an opaque container.
+ * chrome they're filled with [chromeColor] (same pattern as
+ * JumpToBottom); without it they fall back to an opaque container.
  */
 @Composable
 fun DocumentChipsRow(
@@ -49,8 +47,7 @@ fun DocumentChipsRow(
     onRemove: (RagDocumentEntity) -> Unit,
     onOpen: (RagDocumentEntity) -> Unit,
     modifier: Modifier = Modifier,
-    hazeState: HazeState? = null,
-    hazeStyle: HazeStyle = HazeStyle.Unspecified,
+    chromeColor: Color? = null,
 ) {
     LazyRow(
         modifier = modifier,
@@ -58,11 +55,11 @@ fun DocumentChipsRow(
         contentPadding = PaddingValues(horizontal = 12.dp),
     ) {
         items(documents, key = { it.id }) { document ->
-            // Match InputChip's own shape so the frost fill and the chip
+            // Match InputChip's own shape so the fill and the chip
             // outline stay perfectly aligned. The min-touch-target
             // enforcement must be off for that: it inflates the chip's
             // outer bounds to 48dp while the visible surface stays 32dp,
-            // and the frost (applied to the outer bounds) would bleed
+            // and the fill (applied to the outer bounds) would bleed
             // past the border.
             val chipShape = RoundedCornerShape(8.dp)
             CompositionLocalProvider(
@@ -75,16 +72,16 @@ fun DocumentChipsRow(
                         if (document.status == RagDocumentEntity.STATUS_READY) onOpen(document)
                     },
                     shape = chipShape,
-                    modifier = if (hazeState != null) {
+                    modifier = if (chromeColor != null) {
                         Modifier
                             .clip(chipShape)
-                            .hazeEffect(hazeState, hazeStyle)
+                            .background(chromeColor!!)
                     } else {
                         Modifier
                     },
-                    colors = if (hazeState != null) {
-                        // Transparent container: the frost behind provides
-                        // the fill.
+                    colors = if (chromeColor != null) {
+                        // Transparent container: the chrome color behind
+                        // provides the fill.
                         InputChipDefaults.inputChipColors()
                     } else {
                         InputChipDefaults.inputChipColors(

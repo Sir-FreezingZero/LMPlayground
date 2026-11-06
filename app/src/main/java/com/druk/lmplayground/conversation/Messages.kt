@@ -1,5 +1,6 @@
 package com.druk.lmplayground.conversation
 
+import androidx.compose.foundation.background
 import android.net.Uri
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -33,10 +34,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.druk.lmplayground.R
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.hazeEffect
-import dev.chrisbanes.haze.hazeSource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -47,11 +44,10 @@ fun Messages(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     // How far above the bottom edge the floating buttons (jump-to-bottom and
-    // the model hint) should sit, so they clear the frosted input dock that
+    // the model hint) should sit, so they clear the input dock that
     // now overlaps the bottom of the message list.
     bottomInset: Dp = 0.dp,
-    hazeState: HazeState? = null,
-    hazeStyle: HazeStyle = HazeStyle.Unspecified,
+    chromeColor: Color? = null,
     isGenerating: Boolean = false,
     // Auto-scroll "follow the latest" flag, hoisted to the caller so the
     // jump-to-bottom button (now rendered above this list) can re-arm it.
@@ -83,12 +79,8 @@ fun Messages(
         LazyColumn(
             state = scrollState,
             contentPadding = contentPadding,
-            // The list is the blur source. Keeping hazeSource on the list (not
-            // the parent Box) means the floating buttons below are siblings of
-            // the source, so their own hazeEffect can blur the list behind them.
             modifier = Modifier
                 .fillMaxSize()
-                .then(if (hazeState != null) Modifier.hazeSource(hazeState) else Modifier)
         ) {
             itemsIndexed(
                 items = messages,
@@ -134,13 +126,13 @@ fun Messages(
 
         // The jump-to-bottom button is rendered by the caller above all chrome.
         // This list still owns the transient "previously used model" hint pill,
-        // which sits just above the input dock (frosted, like the bars).
+        // which sits just above the input dock (chrome-colored, like the bars).
         if (sessionModelHint != null) {
             LaunchedEffect(sessionModelHint) {
                 delay(3000)
                 onSessionModelHintDismiss?.invoke()
             }
-            val frosted = hazeState != null
+            val useChrome = chromeColor != null
             ExtendedFloatingActionButton(
                 icon = {
                     Icon(
@@ -154,9 +146,9 @@ fun Messages(
                 },
                 onClick = { onSessionModelHintClick?.invoke(sessionModelHint.second) },
                 shape = CircleShape,
-                containerColor = if (frosted) Color.Transparent else MaterialTheme.colorScheme.surface,
+                containerColor = if (useChrome) Color.Transparent else MaterialTheme.colorScheme.surface,
                 contentColor = MaterialTheme.colorScheme.primary,
-                elevation = if (frosted) {
+                elevation = if (useChrome) {
                     FloatingActionButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp)
                 } else {
                     FloatingActionButtonDefaults.elevation()
@@ -167,8 +159,8 @@ fun Messages(
                     .offset(x = 0.dp, y = (-32).dp)
                     .height(36.dp)
                     .then(
-                        if (hazeState != null) {
-                            Modifier.clip(CircleShape).hazeEffect(hazeState, hazeStyle)
+                        if (chromeColor != null) {
+                            Modifier.clip(CircleShape).background(chromeColor!!)
                         } else Modifier
                     )
             )
@@ -178,7 +170,7 @@ fun Messages(
         // Mirrors the model-hint pill above, but is a CTA (no auto-dismiss) and
         // only shows when the model-hint pill isn't occupying the same slot.
         if (visionModuleHint != null && sessionModelHint == null) {
-            val frosted = hazeState != null
+            val useChrome = chromeColor != null
             ExtendedFloatingActionButton(
                 icon = {
                     Icon(
@@ -192,9 +184,9 @@ fun Messages(
                 },
                 onClick = { onVisionModuleHintClick?.invoke() },
                 shape = CircleShape,
-                containerColor = if (frosted) Color.Transparent else MaterialTheme.colorScheme.surface,
+                containerColor = if (useChrome) Color.Transparent else MaterialTheme.colorScheme.surface,
                 contentColor = MaterialTheme.colorScheme.primary,
-                elevation = if (frosted) {
+                elevation = if (useChrome) {
                     FloatingActionButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp)
                 } else {
                     FloatingActionButtonDefaults.elevation()
@@ -205,8 +197,8 @@ fun Messages(
                     .offset(x = 0.dp, y = (-32).dp)
                     .height(36.dp)
                     .then(
-                        if (hazeState != null) {
-                            Modifier.clip(CircleShape).hazeEffect(hazeState, hazeStyle)
+                        if (chromeColor != null) {
+                            Modifier.clip(CircleShape).background(chromeColor!!)
                         } else Modifier
                     )
             )

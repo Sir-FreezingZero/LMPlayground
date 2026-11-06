@@ -39,7 +39,6 @@ compose-compiler = "2.3.10"
 coroutines = "1.11.0"
 google-maps = "18.2.0"
 gradle-versions = "0.54.0"
-haze = "1.7.2"
 hilt = "2.48.1"
 hiltExt = "1.1.0"
 # @pin When updating to AGP 7.4.0-alpha10 and up we can update this https://developer.android.com/studio/write/java8-support#library-desugaring-versions
@@ -135,7 +134,6 @@ core-jdk-desugaring = { module = "com.android.tools:desugar_jdk_libs", version.r
 google-android-material = { module = "com.google.android.material:material", version.ref = "material" }
 googlemaps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "maps-compose" }
 googlemaps-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "google-maps" }
-haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }

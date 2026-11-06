@@ -56,9 +56,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.druk.lmplayground.R
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.hazeEffect
 
 @Composable
 fun SelectModelDialog(
@@ -72,8 +69,7 @@ fun SelectModelDialog(
      * effective width here (e.g. `320.dp`).
      */
     chatPaneStartOffset: Dp = 0.dp,
-    hazeState: HazeState? = null,
-    hazeStyle: HazeStyle = HazeStyle.Unspecified,
+    chromeColor: Color? = null,
     onLoadModel: (ModelInfo) -> Unit,
     onUnloadModel: () -> Unit = {},
     onBrowseModels: () -> Unit,
@@ -82,11 +78,9 @@ fun SelectModelDialog(
     // Only show downloaded models
     val downloadedModels = models.filter { it.isDownloaded }
 
-    // Rendered as an in-composition overlay (not a platform Dialog) so the
-    // frosted card can blur the chat behind it — Haze can't reach across the
-    // separate window a Dialog uses. Already lives inside the chat pane, so
-    // chatPaneStartOffset is no longer needed for centering. Back press and
-    // taps on the scrim dismiss; taps on the card are consumed.
+    // Rendered as an in-composition overlay (not a platform Dialog), inside
+    // the chat pane, so chatPaneStartOffset is no longer needed for centering.
+    // Back press and taps on the scrim dismiss; taps on the card are consumed.
     BackHandler(onBack = onDismissRequest)
 
     // The overlay sits in the chat pane, not above the IME, so an open
@@ -110,7 +104,7 @@ fun SelectModelDialog(
             ),
         contentAlignment = Alignment.Center
     ) {
-        val frosted = hazeState != null
+        val useChrome = chromeColor != null
         Surface(
             // The card caps at a comfortable 560dp on wide windows while
             // expanding to fill narrow phones.
@@ -125,14 +119,14 @@ fun SelectModelDialog(
                 ),
             shape = MenuCardShape,
             border = menuBorder,
-            color = if (frosted) Color.Transparent else MaterialTheme.colorScheme.surface,
+            color = if (useChrome) Color.Transparent else MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface,
-            tonalElevation = if (frosted) 0.dp else 6.dp,
+            tonalElevation = if (useChrome) 0.dp else 6.dp,
             shadowElevation = 12.dp,
         ) {
             Box(
-                modifier = if (frosted) {
-                    Modifier.hazeEffect(hazeState!!, hazeStyle)
+                modifier = if (useChrome) {
+                    Modifier.background(chromeColor!!)
                 } else Modifier
             ) {
             LazyColumn {

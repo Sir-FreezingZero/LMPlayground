@@ -1,5 +1,6 @@
 package com.druk.lmplayground.conversation
 
+import androidx.compose.foundation.background
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.BorderStroke
@@ -23,9 +24,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.druk.lmplayground.R
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.hazeEffect
 
 /** Gap between the button and the chat's right edge, and above the input. */
 val JUMP_TO_BOTTOM_MARGIN = 12.dp
@@ -43,8 +41,7 @@ fun JumpToBottom(
     enabled: Boolean,
     onClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    hazeState: HazeState? = null,
-    hazeStyle: HazeStyle = HazeStyle.Unspecified
+    chromeColor: Color? = null
 ) {
     // Show Jump to Bottom button
     val transition = updateTransition(
@@ -60,12 +57,9 @@ fun JumpToBottom(
         }
     }
     if (bottomOffset > 0.dp) {
-        if (hazeState != null) {
-            // Frosted glass AND elevation. Surface's shadowElevation layer wraps
-            // the hazeEffect fill, so the pill blurs the chat behind it while
-            // still casting a real shadow (the shadow needs a non-transparent
-            // caster, which the frost provides). A bare transparent FAB with an
-            // outer clip would clip the shadow away — hence the Surface here.
+        if (chromeColor != null) {
+            // Chrome-colored fill with elevation. The fill is drawn inside the
+            // Surface so its shadowElevation still casts a shadow.
             Surface(
                 onClick = onClicked,
                 shape = CircleShape,
@@ -79,7 +73,7 @@ fun JumpToBottom(
             ) {
                 // Just a down arrow.
                 Box(
-                    modifier = Modifier.hazeEffect(hazeState, hazeStyle),
+                    modifier = Modifier.background(chromeColor!!),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(

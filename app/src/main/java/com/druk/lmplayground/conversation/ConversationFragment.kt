@@ -16,7 +16,6 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import java.io.File
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -58,8 +57,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.foundation.background
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
@@ -77,11 +76,6 @@ import com.druk.lmplayground.models.ModelInfoProvider
 import com.druk.lmplayground.models.SelectModelDialog
 import com.druk.lmplayground.storage.StorageViewModel
 import com.druk.lmplayground.theme.PlaygroundTheme
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.HazeTint
-import dev.chrisbanes.haze.hazeEffect
-import dev.chrisbanes.haze.hazeSource
-import dev.chrisbanes.haze.rememberHazeState
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.druk.lmplayground.dictation.DictationState
@@ -377,46 +371,13 @@ class ConversationFragment : Fragment() {
                     derivedStateOf { scrollState.canScrollForward }
                 }
 
-                // Restore the pre-frost behavior: the top bar is flush (no
-                // tint/elevation) while the list is at the very top, and only
-                // frosts once content scrolls underneath it. Drive the haze
-                // effect's alpha from this so it fades in like the old M3
-                // container-color transition.
-                val isScrolled by remember {
-                    derivedStateOf {
-                        scrollState.firstVisibleItemIndex > 0 ||
-                            scrollState.firstVisibleItemScrollOffset > 0
-                    }
-                }
-                val topBarFrost by animateFloatAsState(
-                    targetValue = if (isScrolled) 1f else 0f,
-                    label = "topBarFrost"
-                )
-
                 val colorScheme = MaterialTheme.colorScheme
 
-                // Frosted-glass chrome: the message list scrolls full-bleed
-                // behind a translucent, blurred top bar and input dock. The
-                // shared HazeState links the source (the list) to the overlays.
-                // Real blur needs API 32+; on older devices Haze draws the
-                // fallbackTint scrim instead — kept near-opaque so the bars
-                // still read as solid chrome rather than washed-out content.
-                val hazeState = rememberHazeState()
-                val hazeStyle = HazeStyle(
-                    // The color sitting behind the blurred content (the chat
-                    // background painted on the root Box), so Haze composites the
-                    // gaps between message bubbles correctly.
-                    backgroundColor = colorScheme.background,
-                    // Tint with a lighter "elevated surface" tone at fairly high
-                    // opacity. A low-alpha surface tint let the dark chat bleed
-                    // through and read darker than the old solid bars; this keeps
-                    // the chrome clearly lighter than the content (so it reads as
-                    // raised) while still showing the blur through it.
-                    tints = listOf(HazeTint(colorScheme.surfaceContainerHigh.copy(alpha = 0.78f))),
-                    blurRadius = 24.dp,
-                    noiseFactor = 0f,
-                    fallbackTint = HazeTint(colorScheme.surfaceContainerHigh.copy(alpha = 0.97f))
-                )
+                // Chrome: the input dock and floating buttons share one solid
+                // "raised surface" color over the full-bleed chat. The top bar
+                // uses the chat's own background, so it stays black.
+                // (A blur used to sit here; a solid fill saves the GPU work.)
+                val chromeColor = colorScheme.surfaceContainerHigh
 
                 // Only show the permanent sidebar when there's enough actual
                 // window width to comfortably fit master (320dp) + detail.
@@ -439,9 +400,9 @@ class ConversationFragment : Fragment() {
                     320.dp
                 }
 
-                // The bar paints no container of its own — the frosted blur
-                // behind it provides the separation, so both the resting and
-                // scrolled container colors are transparent.
+                // The bar paints no container of its own — the chrome color
+                // drawn behind it provides the separation, so both the resting
+                // and scrolled container colors are transparent.
                 val topBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color.Transparent,
                     scrolledContainerColor = Color.Transparent
@@ -725,20 +686,19 @@ class ConversationFragment : Fragment() {
                     // the chat background AND propagates the correct content
                     // color (onBackground) to descendants. A bare Box leaves text
                     // at the default LocalContentColor (black). It's also the base
-                    // the frosted bars blur over.
+                    // the chrome sits over.
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = colorScheme.background
                     ) {
                     Box(modifier = Modifier.fillMaxSize()) {
-                        // ---- Background (haze source): full-bleed content the
-                        // frosted bars blur. Content padding keeps the first and
-                        // last messages clear of the floating chrome.
+                        // ---- Background: full-bleed content under the chrome.
+                        // Content padding keeps the first and last messages
+                        // clear of the floating chrome.
                         if (modelInfo == null && messages.isEmpty()) {
                             Box(
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .hazeSource(hazeState)
                                     .padding(top = topBarHeight, bottom = bottomBarHeight),
                                 contentAlignment = Alignment.Center
                             ) {
@@ -754,8 +714,7 @@ class ConversationFragment : Fragment() {
                                     bottom = bottomBarHeight
                                 ),
                                 bottomInset = bottomBarHeight,
-                                hazeState = hazeState,
-                                hazeStyle = hazeStyle,
+                                chromeColor = chromeColor,
                                 isGenerating = isGenerating == true,
                                 piningBottom = piningBottom,
                                 onPiningBottomChange = { piningBottom = it },
@@ -823,7 +782,7 @@ class ConversationFragment : Fragment() {
                             }
                         )
 
-                        // ---- Frosted top bar, floating over the content ----
+                        // ---- Top bar, floating over the content ----
                         ConversationBar(
                             modelInfo = modelInfo,
                             modelStatus = modelStatus,
@@ -845,12 +804,9 @@ class ConversationFragment : Fragment() {
                             modifier = Modifier
                                 .align(Alignment.TopCenter)
                                 .onSizeChanged { topBarHeightPx = it.height }
-                                // Fade the frost in as content scrolls under the
-                                // bar; flush (no tint/elevation) at the top.
-                                .hazeEffect(hazeState, hazeStyle) { alpha = topBarFrost }
-                                // Own layer, so the status line's animation
-                                // redraws only this, not the blur under it.
-                                .graphicsLayer()
+                                // Same color as the chat, so it stays black
+                                // (white in light mode) when scrolled.
+                                .background(colorScheme.background)
                                 .drawWithContent {
                                     drawContent()
                                     // Status line under the bar.
@@ -868,7 +824,7 @@ class ConversationFragment : Fragment() {
                                 }
                         )
 
-                        // ---- Bottom dock (document chips + frosted input) ----
+                        // ---- Bottom dock (document chips + input) ----
                         Column(
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
@@ -887,8 +843,7 @@ class ConversationFragment : Fragment() {
                                     onRemove = { documentPendingRemoval = it },
                                     onOpen = { doc -> openAttachedDocument(doc) },
                                     modifier = Modifier.padding(bottom = 4.dp),
-                                    hazeState = hazeState,
-                                    hazeStyle = hazeStyle
+                                    chromeColor = chromeColor
                                 )
                             }
                             UserInput(
@@ -896,8 +851,7 @@ class ConversationFragment : Fragment() {
                                 // The full-width line drawn below replaces the
                                 // tablet's inset divider.
                                 showTopDivider = false,
-                                hazeState = hazeState,
-                                hazeStyle = hazeStyle,
+                                chromeColor = chromeColor,
                                 modifier = Modifier
                                     // Full-width line above the input, like the
                                     // one under the top bar.
@@ -997,7 +951,7 @@ class ConversationFragment : Fragment() {
                                     viewModel.cancelGeneration()
                                 },
                                 // let this element handle the padding so that the
-                                // frost extends behind the navigation bar
+                                // fill extends behind the navigation bar
                                 resetScroll = {
                                     scope.launch {
                                         val lastIndex = scrollState.layoutInfo.totalItemsCount - 1
@@ -1010,7 +964,7 @@ class ConversationFragment : Fragment() {
                         }
 
                         // Jump-to-bottom: rendered last so it sits above all the
-                        // chrome with both a frosted background and a real
+                        // chrome with both a chrome-colored fill and a real
                         // elevation shadow. Hidden while the model hint is up.
                         JumpToBottom(
                             enabled = jumpEnabled &&
@@ -1026,21 +980,17 @@ class ConversationFragment : Fragment() {
                             modifier = Modifier
                                 .align(Alignment.BottomEnd)
                                 .padding(end = JUMP_TO_BOTTOM_MARGIN, bottom = bottomBarHeight),
-                            hazeState = hazeState,
-                            hazeStyle = hazeStyle
+                            chromeColor = chromeColor
                         )
 
-                        // Frosted model picker — kept inside the chat Box (and
-                        // drawn last) so its glass blurs the message list behind
-                        // it. A separate Dialog window couldn't be blurred by
-                        // Haze. The overlay already fills the chat pane, so no
+                        // Model picker — kept inside the chat Box (and drawn
+                        // last) as an overlay over the chat pane, so no
                         // chatPaneStartOffset is needed.
                         if (models.isNotEmpty() && models.any { it.isDownloaded }) {
                             SelectModelDialog(
                                 models = models,
                                 loadedModelFilename = modelInfo?.filename,
-                                hazeState = hazeState,
-                                hazeStyle = hazeStyle,
+                                chromeColor = chromeColor,
                                 onLoadModel = { model ->
                                     viewModel.loadModel(model)
                                 },
@@ -1065,7 +1015,7 @@ class ConversationFragment : Fragment() {
                     }
 
                     // Models exist but none are downloaded → jump straight to the
-                    // Models screen. (When some are downloaded, the frosted picker
+                    // Models screen. (When some are downloaded, the picker
                     // overlay inside the chat Box above handles it.) The
                     // session-info dialog stays a plain platform dialog.
                     if (models.isNotEmpty()) {
