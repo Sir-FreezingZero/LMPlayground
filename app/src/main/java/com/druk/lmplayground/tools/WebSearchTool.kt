@@ -3,26 +3,18 @@ package com.druk.lmplayground.tools
 import com.druk.llamacpp.tools.Tool
 import com.druk.llamacpp.tools.WebLinkStore
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
 import org.json.JSONObject
 import org.jsoup.Jsoup
-import java.util.concurrent.TimeUnit
 
 class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
     override val name = "web_search"
     override val description = "Search the web and return results with titles, snippets, and a compact reference for each result. Pass a result's \"ref\" to web_fetch to read that page."
     override val parametersSchema = """{"type":"object","properties":{"query":{"type":"string","description":"The search query"},"max_results":{"type":"integer","description":"Maximum number of results to return (default 5, max 10)"}},"required":["query"]}"""
 
-    private val client = OkHttpClient.Builder()
-        .connectTimeout(8, TimeUnit.SECONDS)
-        .readTimeout(8, TimeUnit.SECONDS)
-        .followRedirects(true)
-        .build()
-
     override fun cancelInFlight() {
-        client.dispatcher.cancelAll()
+        WebHttp.client.dispatcher.cancelAll()
     }
 
     override fun execute(arguments: String): String {
@@ -39,12 +31,19 @@ class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
 
             val request = Request.Builder()
                 .url(url)
-                .header("User-Agent", USER_AGENT)
+                .header("User-Agent", WebHttp.USER_AGENT)
                 .get()
                 .build()
 
-            val response = client.newCall(request).execute()
-            val html = response.body?.string() ?: return errorJson("Empty response")
+            val (code, html) = WebHttp.client.newCall(request).execute().use { response ->
+                response.code to String(WebHttp.readCapped(response).first, Charsets.UTF_8)
+            }
+            // DuckDuckGo answers a burst of searches with HTTP 202 and a
+            // "are you a bot" page that has no results. Say so, rather than
+            // telling the model nothing was found.
+            val looksBlocked = code == 202 || "anomaly-modal" in html || "challenge-form" in html
+            if (code !in 200..299) return WebHttp.errorJson("Search failed: HTTP $code")
+            if (html.isEmpty()) return WebHttp.errorJson("Empty response")
 
             val doc = Jsoup.parse(html)
             val results = JSONArray()
@@ -74,16 +73,16 @@ class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
                 results.put(obj)
             }
 
-            if (results.length() == 0) {
-                """{"results":[],"query":"$query","message":"No results found"}"""
-            } else {
-                val wrapper = JSONObject()
-                wrapper.put("results", results)
-                wrapper.put("query", query)
-                wrapper.toString()
+            if (results.length() == 0 && looksBlocked) {
+                return WebHttp.errorJson("DuckDuckGo is temporarily blocking searches from this device (too many in a short time). Try again in a minute.")
             }
+            val wrapper = JSONObject()
+            wrapper.put("results", results)
+            wrapper.put("query", query)
+            if (results.length() == 0) wrapper.put("message", "No results found")
+            wrapper.toString()
         } catch (e: Exception) {
-            errorJson(e.message ?: "Search failed")
+            WebHttp.errorJson(e.message ?: "Search failed")
         }
     }
 
@@ -97,13 +96,5 @@ class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
         if (href.startsWith("http")) return href
         if (href.startsWith("//")) return "https:$href"
         return href
-    }
-
-    private fun errorJson(message: String): String {
-        return """{"error":"${message.replace("\"", "'")}"}"""
-    }
-
-    companion object {
-        private const val USER_AGENT = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36"
     }
 }

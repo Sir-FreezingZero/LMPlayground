@@ -2,25 +2,19 @@ package com.druk.lmplayground.tools
 
 import com.druk.llamacpp.tools.Tool
 import com.druk.llamacpp.tools.WebLinkStore
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
 import org.jsoup.Jsoup
-import java.util.concurrent.TimeUnit
+import java.io.ByteArrayInputStream
+import java.nio.charset.Charset
 
 class WebFetchTool(private val linkStore: WebLinkStore? = null) : Tool {
     override val name = "web_fetch"
     override val description = "Fetch a web page and return its main content as markdown. Headings, lists, links and code blocks are preserved so you can read the page structure."
     override val parametersSchema = """{"type":"object","properties":{"url":{"type":"string","description":"The URL to fetch, or a reference from web_search results such as \"ddg:3\""},"max_length":{"type":"integer","description":"Maximum content length in characters (default 5000)"}},"required":["url"]}"""
 
-    private val client = OkHttpClient.Builder()
-        .connectTimeout(8, TimeUnit.SECONDS)
-        .readTimeout(8, TimeUnit.SECONDS)
-        .followRedirects(true)
-        .build()
-
     override fun cancelInFlight() {
-        client.dispatcher.cancelAll()
+        WebHttp.client.dispatcher.cancelAll()
     }
 
     override fun execute(arguments: String): String {
@@ -33,7 +27,7 @@ class WebFetchTool(private val linkStore: WebLinkStore? = null) : Tool {
             // a bogus host.
             val resolved = linkStore?.resolve(rawUrl)
             if (resolved == null && linkStore?.isReference(rawUrl) == true) {
-                return errorJson("Unknown search reference '$rawUrl'. Call web_search first, then fetch a returned ref.")
+                return WebHttp.errorJson("Unknown search reference '$rawUrl'. Call web_search first, then fetch a returned ref.")
             }
             val target = resolved ?: rawUrl
             val url = if (!target.startsWith("http")) "https://$target" else target
@@ -41,52 +35,59 @@ class WebFetchTool(private val linkStore: WebLinkStore? = null) : Tool {
 
             val request = Request.Builder()
                 .url(url)
-                .header("User-Agent", USER_AGENT)
+                .header("User-Agent", WebHttp.USER_AGENT)
                 .get()
                 .build()
 
-            val response = client.newCall(request).execute()
-            val contentType = response.header("Content-Type") ?: ""
-            val body = response.body?.string() ?: return errorJson("Empty response")
-
-            val result = JSONObject()
-            result.put("url", url)
-
-            if (contentType.contains("text/html") || contentType.contains("application/xhtml")) {
-                // Pass `url` as baseUri so Jsoup resolves relative
-                // <a href> / <img src> to absolute URLs in markdown.
-                val doc = Jsoup.parse(body, url)
-                val title = doc.title()
-                val markdown = HtmlToMarkdown.convert(doc)
-                val truncated = if (markdown.length > maxLength) {
-                    markdown.substring(0, maxLength) + "..."
-                } else {
-                    markdown
+            WebHttp.client.newCall(request).execute().use { response ->
+                // An error page (404, 403, ...) isn't the page the model asked for.
+                if (!response.isSuccessful) {
+                    return WebHttp.errorJson("HTTP ${response.code} ${response.message} from $url".trim())
+                }
+                val contentType = response.header("Content-Type").orEmpty().lowercase()
+                val isHtml = "text/html" in contentType || "application/xhtml" in contentType
+                // PDFs, images, audio and other binary files would come back as
+                // garbage characters, so refuse them by name.
+                if (!isHtml && !isReadableText(contentType)) {
+                    val kind = contentType.substringBefore(';').ifBlank { "unknown" }
+                    return WebHttp.errorJson("This link is not a web page or text file ($kind), so it can't be read.")
                 }
 
-                result.put("title", title)
-                result.put("content", truncated)
-                result.put("length", truncated.length)
-            } else {
-                // Non-HTML content — return raw text truncated. No
-                // markdown conversion makes sense here.
-                val truncated = if (body.length > maxLength) body.substring(0, maxLength) + "..." else body
-                result.put("title", "")
-                result.put("content", truncated)
-                result.put("length", truncated.length)
-            }
+                // Read at most WebHttp.MAX_BODY_BYTES, so a huge page can't
+                // fill a low-memory phone's RAM before being cut down anyway.
+                val (bytes, cut) = WebHttp.readCapped(response)
+                if (bytes.isEmpty()) return WebHttp.errorJson("Empty response")
+                val headerCharset = response.body?.contentType()?.charset()
 
-            result.toString()
+                val result = JSONObject()
+                result.put("url", url)
+                val text = if (isHtml) {
+                    // A null charset lets Jsoup use the page's own <meta charset>
+                    // when the server doesn't name one, so those pages don't come
+                    // out garbled. `url` as baseUri makes relative links absolute.
+                    val doc = Jsoup.parse(ByteArrayInputStream(bytes), headerCharset?.name(), url)
+                    result.put("title", doc.title())
+                    HtmlToMarkdown.convert(doc)
+                } else {
+                    result.put("title", "")
+                    String(bytes, headerCharset ?: Charset.forName("UTF-8"))
+                }
+                val truncated = if (text.length > maxLength) text.substring(0, maxLength) + "..." else text
+                result.put("content", truncated)
+                result.put("length", truncated.length)
+                if (cut) result.put("note", "Only the first 2 MB of this page was read.")
+                result.toString()
+            }
         } catch (e: Exception) {
-            errorJson(e.message ?: "Fetch failed")
+            WebHttp.errorJson(e.message ?: "Fetch failed")
         }
     }
 
-    private fun errorJson(message: String): String {
-        return """{"error":"${message.replace("\"", "'")}"}"""
-    }
-
-    companion object {
-        private const val USER_AGENT = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36"
-    }
+    /** Plain text, JSON, XML, CSV and the like; or no type at all, read as text. */
+    private fun isReadableText(contentType: String): Boolean =
+        contentType.isBlank() ||
+            contentType.startsWith("text/") ||
+            "json" in contentType ||
+            "xml" in contentType ||
+            "javascript" in contentType
 }
