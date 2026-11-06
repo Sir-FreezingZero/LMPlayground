@@ -198,6 +198,27 @@ class GenerationCoordinator(
             // Throttle the per-token haptic tick so fast streams feel
             // like rapid typing instead of one continuous buzz.
             var lastHapticMs = 0L
+            // The screen is updated about every UI_UPDATE_INTERVAL_MS rather
+            // than per token, since each update re-formats the whole reply.
+            // The latest text waits here; flush() sends it.
+            var lastUiUpdateMs = 0L
+            var pendingText: String? = null
+            var pendingThinkingTokens = 0
+            var pendingResponseTokens = 0
+            var pendingThinkingStart = false
+
+            fun flush() = synchronized(this) {
+                val text = pendingText ?: return@synchronized
+                pendingText = null
+                listener.onAssistantDelta(
+                    text,
+                    thinkingTokens = pendingThinkingTokens,
+                    responseTokens = pendingResponseTokens,
+                    thinkingJustStarted = pendingThinkingStart,
+                )
+                pendingThinkingStart = false
+            }
+
             override fun onToolCallStarted() = listener.onToolsRunning(true)
             override fun onFullResponse(response: String) {
                 totalTokens++
@@ -241,12 +262,17 @@ class GenerationCoordinator(
                     GenerationHaptics.tick(app)
                 }
 
-                listener.onAssistantDelta(
-                    string,
-                    thinkingTokens = currentThinkingTokens,
-                    responseTokens = totalTokens - currentThinkingTokens,
-                    thinkingJustStarted = thinkingJustStarted,
-                )
+                synchronized(this) {
+                    pendingText = string
+                    pendingThinkingTokens = currentThinkingTokens
+                    pendingResponseTokens = totalTokens - currentThinkingTokens
+                    pendingThinkingStart = pendingThinkingStart || thinkingJustStarted
+                }
+                // Send at once when thinking starts, so its timer is exact.
+                if (thinkingJustStarted || nowMs - lastUiUpdateMs >= UI_UPDATE_INTERVAL_MS) {
+                    lastUiUpdateMs = nowMs
+                    flush()
+                }
             }
         }
         // Drive the generation loop, draining tool calls between
@@ -291,6 +317,9 @@ class GenerationCoordinator(
                 },
                 observer = object : ToolCallLoop.Observer {
                     override fun onToolCalls(calls: List<ToolCallRecord>) {
+                        // The round's last text must be on screen before the
+                        // tool call takes it as the round's preceding text.
+                        callback.flush()
                         listener.onToolCalls(
                             calls.map {
                                 ToolCallInfo(
@@ -349,6 +378,8 @@ class GenerationCoordinator(
             // re-throwing CancellationException mid-cleanup.
             withContext(NonCancellable) {
                 try { llamaSession.printReport() } catch (_: Throwable) {}
+                // Finished, stopped or failed: show the last held text.
+                callback.flush()
                 listener.onTurnFinished(ourJob, messageId, sessionId, callback.totalTokens)
             }
         }
@@ -356,5 +387,7 @@ class GenerationCoordinator(
 
     private companion object {
         private const val TAG = "GenerationCoordinator"
+        /** About 14 screen updates a second while a reply streams. */
+        private const val UI_UPDATE_INTERVAL_MS = 70L
     }
 }
