@@ -69,14 +69,6 @@
     <string name="stop">Ihinto</string>
 
     <string name="copy">Kopyahin</string>
-    <string name="upvote">I-upvote</string>
-    <string name="downvote">I-downvote</string>
-    <string name="rating_question">Bakit mo pinili ang rating na ito?</string>
-    <string name="offensive_unsafe">Nakakasakit/Hindi ligtas</string>
-    <string name="not_correct">Hindi tama</string>
-    <string name="didnt_follow_instructions">Hindi sinunod ang mga tagubilin</string>
-    <string name="wrong_language">Maling wika</string>
-    <string name="other">Iba pa</string>
 
     <!-- Settings -->
     <string name="settings">Mga setting</string>

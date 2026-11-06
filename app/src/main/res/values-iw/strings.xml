@@ -70,14 +70,6 @@
     <string name="stop">עצור</string>
 
     <string name="copy">העתק</string>
-    <string name="upvote">הצבעה חיובית</string>
-    <string name="downvote">הצבעה שלילית</string>
-    <string name="rating_question">מדוע בחרת בדירוג זה?</string>
-    <string name="offensive_unsafe">פוגעני/לא בטוח</string>
-    <string name="not_correct">לא נכון</string>
-    <string name="didnt_follow_instructions">לא עקב אחר ההוראות</string>
-    <string name="wrong_language">שפה שגויה</string>
-    <string name="other">אחר</string>
 
     <!-- Settings -->
     <string name="settings">הגדרות</string>

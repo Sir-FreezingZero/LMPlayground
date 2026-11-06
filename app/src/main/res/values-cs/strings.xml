@@ -71,14 +71,6 @@
 
     <string name="share">Sdílet</string>
     <string name="copy">Kopírovat</string>
-    <string name="upvote">Hlasovat pro</string>
-    <string name="downvote">Hlasovat proti</string>
-    <string name="rating_question">Proč jste zvolili toto hodnocení?</string>
-    <string name="offensive_unsafe">Urážlivé/Nebezpečné</string>
-    <string name="not_correct">Není správné</string>
-    <string name="didnt_follow_instructions">Nedodrželo pokyny</string>
-    <string name="wrong_language">Špatný jazyk</string>
-    <string name="other">Jiné</string>
 
     <!-- Settings -->
     <string name="settings">Nastavení</string>

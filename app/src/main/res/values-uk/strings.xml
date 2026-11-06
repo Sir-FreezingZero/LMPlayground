@@ -60,14 +60,6 @@
     <string name="stop">Зупинити</string>
     <string name="share">Поділитися</string>
     <string name="copy">Копіювати</string>
-    <string name="upvote">Вподобати</string>
-    <string name="downvote">Не вподобати</string>
-    <string name="rating_question">Чому ви обрали цю оцінку?</string>
-    <string name="offensive_unsafe">Образливе/Небезпечне</string>
-    <string name="not_correct">Некоректне</string>
-    <string name="didnt_follow_instructions">Не дотримано інструкцій</string>
-    <string name="wrong_language">Неправильна мова</string>
-    <string name="other">Інше</string>
     <string name="settings">Налаштування</string>
     <string name="back">Назад</string>
     <string name="version">Версія %s</string>

@@ -73,14 +73,6 @@
 
     <string name="share">Share</string>
     <string name="copy">Copy</string>
-    <string name="upvote">Upvote</string>
-    <string name="downvote">Downvote</string>
-    <string name="rating_question">Why did you choose this rating?</string>
-    <string name="offensive_unsafe">Offensive/Unsafe</string>
-    <string name="not_correct">Not correct</string>
-    <string name="didnt_follow_instructions">Didn\'t follow instructions</string>
-    <string name="wrong_language">Wrong language</string>
-    <string name="other">Other</string>
 
     <!-- Settings -->
     <string name="settings">Settings</string>

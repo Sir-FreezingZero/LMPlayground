@@ -69,14 +69,6 @@
     <string name="stop">Stoppa</string>
 
     <string name="copy">Kopiera</string>
-    <string name="upvote">Rösta upp</string>
-    <string name="downvote">Rösta ned</string>
-    <string name="rating_question">Varför valde du detta betyg?</string>
-    <string name="offensive_unsafe">Stötande/Osäkert</string>
-    <string name="not_correct">Inte korrekt</string>
-    <string name="didnt_follow_instructions">Följde inte instruktionerna</string>
-    <string name="wrong_language">Fel språk</string>
-    <string name="other">Övrigt</string>
 
     <!-- Settings -->
     <string name="settings">Inställningar</string>

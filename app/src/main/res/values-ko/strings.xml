@@ -60,14 +60,6 @@
     <string name="stop">중지</string>
     <string name="share">공유</string>
     <string name="copy">복사</string>
-    <string name="upvote">추천</string>
-    <string name="downvote">비추천</string>
-    <string name="rating_question">이 평가를 선택한 이유는 무엇인가요?</string>
-    <string name="offensive_unsafe">불쾌함/안전하지 않음</string>
-    <string name="not_correct">정확하지 않음</string>
-    <string name="didnt_follow_instructions">지시를 따르지 않음</string>
-    <string name="wrong_language">잘못된 언어</string>
-    <string name="other">기타</string>
     <string name="settings">설정</string>
     <string name="back">뒤로</string>
     <string name="version">버전 %s</string>

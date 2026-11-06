@@ -60,14 +60,6 @@
     <string name="stop">停止</string>
     <string name="share">分享</string>
     <string name="copy">复制</string>
-    <string name="upvote">赞</string>
-    <string name="downvote">踩</string>
-    <string name="rating_question">您为什么选择此评分？</string>
-    <string name="offensive_unsafe">冒犯性/不安全</string>
-    <string name="not_correct">不正确</string>
-    <string name="didnt_follow_instructions">未遵循指令</string>
-    <string name="wrong_language">语言错误</string>
-    <string name="other">其他</string>
     <string name="settings">设置</string>
     <string name="back">返回</string>
     <string name="version">版本 %s</string>

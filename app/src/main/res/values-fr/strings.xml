@@ -60,14 +60,6 @@
     <string name="stop">Arr\u00EAter</string>
     <string name="share">Partager</string>
     <string name="copy">Copier</string>
-    <string name="upvote">Voter pour</string>
-    <string name="downvote">Voter contre</string>
-    <string name="rating_question">Pourquoi avez-vous choisi cette note ?</string>
-    <string name="offensive_unsafe">Offensant/Dangereux</string>
-    <string name="not_correct">Incorrect</string>
-    <string name="didnt_follow_instructions">N\'a pas suivi les instructions</string>
-    <string name="wrong_language">Mauvaise langue</string>
-    <string name="other">Autre</string>
     <string name="settings">Param\u00E8tres</string>
     <string name="back">Retour</string>
     <string name="version">Version %s</string>

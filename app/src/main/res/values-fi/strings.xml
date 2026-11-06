@@ -70,14 +70,6 @@
 
     <string name="share">Jaa</string>
     <string name="copy">Kopioi</string>
-    <string name="upvote">Äänestä ylös</string>
-    <string name="downvote">Äänestä alas</string>
-    <string name="rating_question">Miksi valitsit tämän arvion?</string>
-    <string name="offensive_unsafe">Loukkaava/turvaton</string>
-    <string name="not_correct">Ei oikein</string>
-    <string name="didnt_follow_instructions">Ei noudattanut ohjeita</string>
-    <string name="wrong_language">Väärä kieli</string>
-    <string name="other">Muu</string>
 
     <!-- Settings -->
     <string name="settings">Asetukset</string>

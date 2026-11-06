@@ -60,14 +60,6 @@
     <string name="stop">Zatrzymaj</string>
     <string name="share">Udostępnij</string>
     <string name="copy">Kopiuj</string>
-    <string name="upvote">Oceń pozytywnie</string>
-    <string name="downvote">Oceń negatywnie</string>
-    <string name="rating_question">Dlaczego wybrałeś tę ocenę?</string>
-    <string name="offensive_unsafe">Obraźliwe/Niebezpieczne</string>
-    <string name="not_correct">Nieprawidłowe</string>
-    <string name="didnt_follow_instructions">Nie zastosowano się do instrukcji</string>
-    <string name="wrong_language">Nieprawidłowy język</string>
-    <string name="other">Inne</string>
     <string name="settings">Ustawienia</string>
     <string name="back">Wstecz</string>
     <string name="version">Wersja %s</string>

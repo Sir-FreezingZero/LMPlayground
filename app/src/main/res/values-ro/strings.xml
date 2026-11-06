@@ -60,14 +60,6 @@
     <string name="stop">Opre\u015Fte</string>
     <string name="share">Distribuie</string>
     <string name="copy">Copiaz\u0103</string>
-    <string name="upvote">Vot pozitiv</string>
-    <string name="downvote">Vot negativ</string>
-    <string name="rating_question">De ce ai ales aceast\u0103 evaluare?</string>
-    <string name="offensive_unsafe">Ofensator/Nesigur</string>
-    <string name="not_correct">Incorect</string>
-    <string name="didnt_follow_instructions">Nu a urmat instruc\u021Biunile</string>
-    <string name="wrong_language">Limb\u0103 gre\u015Fit\u0103</string>
-    <string name="other">Altele</string>
     <string name="settings">Set\u0103ri</string>
     <string name="back">\u00CEnapoi</string>
     <string name="version">Versiunea %s</string>

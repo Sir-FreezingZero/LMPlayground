@@ -60,14 +60,6 @@
     <string name="stop">D\u1EEBng</string>
     <string name="share">Chia sẻ</string>
     <string name="copy">Sao ch\u00E9p</string>
-    <string name="upvote">Th\u00EDch</string>
-    <string name="downvote">Kh\u00F4ng th\u00EDch</string>
-    <string name="rating_question">T\u1EA1i sao b\u1EA1n ch\u1ECDn \u0111\u00E1nh gi\u00E1 n\u00E0y?</string>
-    <string name="offensive_unsafe">X\u00FAc ph\u1EA1m/Kh\u00F4ng an to\u00E0n</string>
-    <string name="not_correct">Kh\u00F4ng ch\u00EDnh x\u00E1c</string>
-    <string name="didnt_follow_instructions">Kh\u00F4ng tu\u00E2n theo h\u01B0\u1EDBng d\u1EABn</string>
-    <string name="wrong_language">Sai ng\u00F4n ng\u1EEF</string>
-    <string name="other">Kh\u00E1c</string>
     <string name="settings">C\u00E0i \u0111\u1EB7t</string>
     <string name="back">Quay l\u1EA1i</string>
     <string name="version">Phi\u00EAn b\u1EA3n %s</string>

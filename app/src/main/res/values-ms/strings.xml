@@ -69,14 +69,6 @@
     <string name="stop">Berhenti</string>
 
     <string name="copy">Salin</string>
-    <string name="upvote">Undi naik</string>
-    <string name="downvote">Undi turun</string>
-    <string name="rating_question">Kenapa anda memilih penilaian ini?</string>
-    <string name="offensive_unsafe">Menyinggung/Tidak selamat</string>
-    <string name="not_correct">Tidak betul</string>
-    <string name="didnt_follow_instructions">Tidak mengikut arahan</string>
-    <string name="wrong_language">Bahasa yang salah</string>
-    <string name="other">Lain-lain</string>
 
     <!-- Settings -->
     <string name="settings">Tetapan</string>

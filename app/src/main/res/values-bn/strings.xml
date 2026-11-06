@@ -69,14 +69,6 @@
     <string name="stop">বন্ধ করুন</string>
 
     <string name="copy">কপি করুন</string>
-    <string name="upvote">আপভোট</string>
-    <string name="downvote">ডাউনভোট</string>
-    <string name="rating_question">আপনি কেন এই রেটিং বেছে নিয়েছেন?</string>
-    <string name="offensive_unsafe">আপত্তিকর/অনিরাপদ</string>
-    <string name="not_correct">সঠিক নয়</string>
-    <string name="didnt_follow_instructions">নির্দেশাবলী অনুসরণ করেনি</string>
-    <string name="wrong_language">ভুল ভাষা</string>
-    <string name="other">অন্যান্য</string>
 
     <!-- Settings -->
     <string name="settings">সেটিংস</string>

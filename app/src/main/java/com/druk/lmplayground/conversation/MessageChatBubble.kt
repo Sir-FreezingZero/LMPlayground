@@ -31,8 +31,6 @@ import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material.icons.outlined.ThumbDown
-import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
@@ -64,7 +62,6 @@ fun ChatItemBubble(
     onRegenerate: (() -> Unit)? = null,
     onBranch: (() -> Unit)? = null,
 ) {
-    var showRatingSheet by remember { mutableStateOf(false) }
     val clipboardManager = LocalClipboardManager.current
     val context = LocalContext.current
 
@@ -225,28 +222,6 @@ fun ChatItemBubble(
                         tint = MaterialTheme.colorScheme.secondary
                     )
                 }
-                IconButton(
-                    onClick = { /* upvote - no-op */ },
-                    modifier = Modifier.size(30.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.ThumbUp,
-                        contentDescription = stringResource(id = R.string.upvote),
-                        modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.secondary
-                    )
-                }
-                IconButton(
-                    onClick = { showRatingSheet = true },
-                    modifier = Modifier.size(30.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.ThumbDown,
-                        contentDescription = stringResource(id = R.string.downvote),
-                        modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.secondary
-                    )
-                }
                 if (onRegenerate != null || onBranch != null) {
                     var menuOpen by remember { mutableStateOf(false) }
                     Box {
@@ -302,10 +277,6 @@ fun ChatItemBubble(
                 }
             }
         }
-    }
-
-    if (showRatingSheet) {
-        RatingBottomSheet(onDismiss = { showRatingSheet = false })
     }
 }
 

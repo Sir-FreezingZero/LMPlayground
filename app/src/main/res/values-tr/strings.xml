@@ -60,14 +60,6 @@
     <string name="stop">Durdur</string>
     <string name="share">Paylaş</string>
     <string name="copy">Kopyala</string>
-    <string name="upvote">Be\u011Fen</string>
-    <string name="downvote">Be\u011Fenme</string>
-    <string name="rating_question">Bu de\u011Ferlendirmeyi neden se\u00E7tiniz?</string>
-    <string name="offensive_unsafe">Sald\u0131rgan/G\u00FCvensiz</string>
-    <string name="not_correct">Do\u011Fru de\u011Fil</string>
-    <string name="didnt_follow_instructions">Talimatlara uymad\u0131</string>
-    <string name="wrong_language">Yanl\u0131\u015F dil</string>
-    <string name="other">Di\u011Fer</string>
     <string name="settings">Ayarlar</string>
     <string name="back">Geri</string>
     <string name="version">S\u00FCr\u00FCm %s</string>

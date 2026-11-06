@@ -69,14 +69,6 @@
     <string name="stop">Stop</string>
 
     <string name="copy">Kopier</string>
-    <string name="upvote">Stem op</string>
-    <string name="downvote">Stem ned</string>
-    <string name="rating_question">Hvorfor valgte du denne bedømmelse?</string>
-    <string name="offensive_unsafe">Stødende/utrygt</string>
-    <string name="not_correct">Ikke korrekt</string>
-    <string name="didnt_follow_instructions">Fulgte ikke instruktionerne</string>
-    <string name="wrong_language">Forkert sprog</string>
-    <string name="other">Andet</string>
 
     <!-- Settings -->
     <string name="settings">Indstillinger</string>

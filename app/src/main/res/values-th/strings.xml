@@ -70,14 +70,6 @@
     <string name="stop">หยุด</string>
 
     <string name="copy">คัดลอก</string>
-    <string name="upvote">โหวตขึ้น</string>
-    <string name="downvote">โหวตลง</string>
-    <string name="rating_question">ทำไมคุณจึงเลือกคะแนนนี้?</string>
-    <string name="offensive_unsafe">ไม่เหมาะสม/ไม่ปลอดภัย</string>
-    <string name="not_correct">ไม่ถูกต้อง</string>
-    <string name="didnt_follow_instructions">ไม่ทำตามคำแนะนำ</string>
-    <string name="wrong_language">ภาษาไม่ถูกต้อง</string>
-    <string name="other">อื่นๆ</string>
 
     <!-- Settings -->
     <string name="settings">การตั้งค่า</string>

@@ -60,14 +60,6 @@
     <string name="stop">Berhenti</string>
     <string name="share">Bagikan</string>
     <string name="copy">Salin</string>
-    <string name="upvote">Suka</string>
-    <string name="downvote">Tidak suka</string>
-    <string name="rating_question">Mengapa Anda memilih penilaian ini?</string>
-    <string name="offensive_unsafe">Menyinggung/Tidak aman</string>
-    <string name="not_correct">Tidak benar</string>
-    <string name="didnt_follow_instructions">Tidak mengikuti instruksi</string>
-    <string name="wrong_language">Bahasa salah</string>
-    <string name="other">Lainnya</string>
     <string name="settings">Pengaturan</string>
     <string name="back">Kembali</string>
     <string name="version">Versi %s</string>

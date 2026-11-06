@@ -60,14 +60,6 @@
     <string name="stop">\u0930\u094B\u0915\u0947\u0902</string>
     <string name="share">साझा करें</string>
     <string name="copy">\u0915\u0949\u092A\u0940 \u0915\u0930\u0947\u0902</string>
-    <string name="upvote">\u092A\u0938\u0902\u0926</string>
-    <string name="downvote">\u0928\u093E\u092A\u0938\u0902\u0926</string>
-    <string name="rating_question">\u0906\u092A\u0928\u0947 \u092F\u0939 \u0930\u0947\u091F\u093F\u0902\u0917 \u0915\u094D\u092F\u094B\u0902 \u091A\u0941\u0928\u0940?</string>
-    <string name="offensive_unsafe">\u0906\u092A\u0924\u094D\u0924\u093F\u091C\u0928\u0915/\u0905\u0938\u0941\u0930\u0915\u094D\u0937\u093F\u0924</string>
-    <string name="not_correct">\u0938\u0939\u0940 \u0928\u0939\u0940\u0902</string>
-    <string name="didnt_follow_instructions">\u0928\u093F\u0930\u094D\u0926\u0947\u0936\u094B\u0902 \u0915\u093E \u092A\u093E\u0932\u0928 \u0928\u0939\u0940\u0902 \u0915\u093F\u092F\u093E</string>
-    <string name="wrong_language">\u0917\u0932\u0924 \u092D\u093E\u0937\u093E</string>
-    <string name="other">\u0905\u0928\u094D\u092F</string>
     <string name="settings">\u0938\u0947\u091F\u093F\u0902\u0917\u094D\u0938</string>
     <string name="back">\u0935\u093E\u092A\u0938</string>
     <string name="version">\u0938\u0902\u0938\u094D\u0915\u0930\u0923 %s</string>

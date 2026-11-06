@@ -70,14 +70,6 @@
     <string name="stop">Stoppen</string>
 
     <string name="copy">Kopiëren</string>
-    <string name="upvote">Omhoog stemmen</string>
-    <string name="downvote">Omlaag stemmen</string>
-    <string name="rating_question">Waarom koos je deze beoordeling?</string>
-    <string name="offensive_unsafe">Beledigend/Onveilig</string>
-    <string name="not_correct">Niet correct</string>
-    <string name="didnt_follow_instructions">Volgde instructies niet</string>
-    <string name="wrong_language">Verkeerde taal</string>
-    <string name="other">Anders</string>
 
     <!-- Settings -->
     <string name="settings">Instellingen</string>
