@@ -82,7 +82,7 @@ object RemoteServers {
     }
 
     fun modelInfo(server: RemoteServer, id: String) = ModelInfo(
-        name = id.substringAfterLast('/'),
+        name = id.substringAfterLast('/').removeSuffix("-GGUF").removeSuffix("-gguf"),
         filename = "$PREFIX${server.url}|$id",
         description = server.label,
     )
