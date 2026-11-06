@@ -452,4 +452,20 @@
     <string name="status_reset">Palauta värit</string>
     <string name="tool_steps_title">Työkaluvaiheet</string>
     <string name="tool_steps_desc">Työkalujen käyttökertoja enintään yhdessä vastauksessa ennen kuin mallin on vastattava</string>
+    <string name="remote_servers">Etäpalvelimet</string>
+    <string name="remote_servers_subtitle">Malleja verkkosi tietokoneella</string>
+    <string name="remote_help">Käytä malleja, jotka toimivat LM Studiossa, Ollamassa tai llama-serverissä toisella tietokoneella. Salli siinä tietokoneessa yhteydet lähiverkosta.</string>
+    <string name="remote_saved">Palvelimet</string>
+    <string name="remote_add">Lisää palvelin</string>
+    <string name="remote_address">Osoite</string>
+    <string name="remote_api_key">API-avain (valinnainen)</string>
+    <string name="remote_add_button">Lisää</string>
+    <string name="remote_scan">Etsi Wi-Fistä</string>
+    <string name="remote_scanning">Etsitään…</string>
+    <string name="remote_scan_none">Tästä Wi-Fistä ei löytynyt uusia palvelimia.</string>
+    <string name="remote_found">Löytyi Wi-Fistä</string>
+    <string name="remote_offline">Ei vastaa</string>
+    <string name="remote_models">Mallit: %1$d</string>
+    <string name="remote_connecting">Yhdistetään…</string>
+    <string name="remote_unreachable">Palvelimeen %1$s ei saatu yhteyttä. Tarkista, että palvelin on käynnissä ja puhelin on samassa verkossa.</string>
 </resources>

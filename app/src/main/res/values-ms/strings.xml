@@ -454,4 +454,20 @@
     <string name="status_reset">Tetapkan semula warna</string>
     <string name="tool_steps_title">Langkah alat</string>
     <string name="tool_steps_desc">Bilangan maksimum penggunaan alat dalam satu balasan sebelum model mesti menjawab</string>
+    <string name="remote_servers">Pelayan jauh</string>
+    <string name="remote_servers_subtitle">Model pada komputer dalam rangkaian anda</string>
+    <string name="remote_help">Gunakan model yang berjalan dalam LM Studio, Ollama atau llama-server pada komputer lain. Pada komputer itu, benarkan sambungan daripada rangkaian setempat.</string>
+    <string name="remote_saved">Pelayan</string>
+    <string name="remote_add">Tambah pelayan</string>
+    <string name="remote_address">Alamat</string>
+    <string name="remote_api_key">Kunci API (pilihan)</string>
+    <string name="remote_add_button">Tambah</string>
+    <string name="remote_scan">Imbas Wi-Fi</string>
+    <string name="remote_scanning">Mengimbas…</string>
+    <string name="remote_scan_none">Tiada pelayan baharu ditemui pada Wi-Fi ini.</string>
+    <string name="remote_found">Ditemui pada Wi-Fi</string>
+    <string name="remote_offline">Tidak menjawab</string>
+    <string name="remote_models">Model: %1$d</string>
+    <string name="remote_connecting">Menyambung…</string>
+    <string name="remote_unreachable">Tidak dapat mencapai %1$s. Pastikan pelayan sedang berjalan dan telefon ini dalam rangkaian yang sama.</string>
 </resources>

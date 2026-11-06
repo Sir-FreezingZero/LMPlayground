@@ -464,4 +464,20 @@
     <string name="status_reset">Kleuren herstellen</string>
     <string name="tool_steps_title">Toolstappen</string>
     <string name="tool_steps_desc">Maximaal aantal keer dat het model tools gebruikt in één antwoord voordat het moet antwoorden</string>
+    <string name="remote_servers">Externe servers</string>
+    <string name="remote_servers_subtitle">Modellen op een computer in je netwerk</string>
+    <string name="remote_help">Gebruik modellen die in LM Studio, Ollama of llama-server op een andere computer draaien. Sta op die computer verbindingen vanaf het lokale netwerk toe.</string>
+    <string name="remote_saved">Servers</string>
+    <string name="remote_add">Server toevoegen</string>
+    <string name="remote_address">Adres</string>
+    <string name="remote_api_key">API-sleutel (optioneel)</string>
+    <string name="remote_add_button">Toevoegen</string>
+    <string name="remote_scan">Wifi scannen</string>
+    <string name="remote_scanning">Scannen…</string>
+    <string name="remote_scan_none">Geen nieuwe servers gevonden op deze wifi.</string>
+    <string name="remote_found">Gevonden op wifi</string>
+    <string name="remote_offline">Reageert niet</string>
+    <string name="remote_models">Modellen: %1$d</string>
+    <string name="remote_connecting">Verbinden…</string>
+    <string name="remote_unreachable">Kan %1$s niet bereiken. Controleer of de server draait en deze telefoon op hetzelfde netwerk zit.</string>
 </resources>

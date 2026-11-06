@@ -419,4 +419,20 @@
     <string name="status_reset">色をリセット</string>
     <string name="tool_steps_title">ツールのステップ数</string>
     <string name="tool_steps_desc">モデルが回答する前に1回の返信で使えるツールの最大回数</string>
+    <string name="remote_servers">リモートサーバー</string>
+    <string name="remote_servers_subtitle">ネットワーク上のコンピューターのモデル</string>
+    <string name="remote_help">別のコンピューターの LM Studio、Ollama、llama-server で動くモデルを使います。そのコンピューターでローカルネットワークからの接続を許可してください。</string>
+    <string name="remote_saved">サーバー</string>
+    <string name="remote_add">サーバーを追加</string>
+    <string name="remote_address">アドレス</string>
+    <string name="remote_api_key">API キー（任意）</string>
+    <string name="remote_add_button">追加</string>
+    <string name="remote_scan">Wi-Fi をスキャン</string>
+    <string name="remote_scanning">スキャン中…</string>
+    <string name="remote_scan_none">この Wi-Fi で新しいサーバーは見つかりませんでした。</string>
+    <string name="remote_found">Wi-Fi で見つかりました</string>
+    <string name="remote_offline">応答なし</string>
+    <string name="remote_models">モデル: %1$d</string>
+    <string name="remote_connecting">接続中…</string>
+    <string name="remote_unreachable">%1$s に接続できません。サーバーが動いていて、この端末が同じネットワークにあるか確認してください。</string>
 </resources>

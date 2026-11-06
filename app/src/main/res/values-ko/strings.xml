@@ -419,4 +419,20 @@
     <string name="status_reset">색상 초기화</string>
     <string name="tool_steps_title">도구 단계</string>
     <string name="tool_steps_desc">모델이 답변하기 전에 한 응답에서 도구를 사용할 수 있는 최대 횟수</string>
+    <string name="remote_servers">원격 서버</string>
+    <string name="remote_servers_subtitle">네트워크에 있는 컴퓨터의 모델</string>
+    <string name="remote_help">다른 컴퓨터의 LM Studio, Ollama 또는 llama-server에서 실행 중인 모델을 사용합니다. 그 컴퓨터에서 로컬 네트워크 연결을 허용하세요.</string>
+    <string name="remote_saved">서버</string>
+    <string name="remote_add">서버 추가</string>
+    <string name="remote_address">주소</string>
+    <string name="remote_api_key">API 키(선택)</string>
+    <string name="remote_add_button">추가</string>
+    <string name="remote_scan">Wi-Fi 검색</string>
+    <string name="remote_scanning">검색 중…</string>
+    <string name="remote_scan_none">이 Wi-Fi에서 새 서버를 찾지 못했습니다.</string>
+    <string name="remote_found">Wi-Fi에서 찾음</string>
+    <string name="remote_offline">응답 없음</string>
+    <string name="remote_models">모델: %1$d</string>
+    <string name="remote_connecting">연결 중…</string>
+    <string name="remote_unreachable">%1$s에 연결할 수 없습니다. 서버가 실행 중이고 이 휴대폰이 같은 네트워크에 있는지 확인하세요.</string>
 </resources>

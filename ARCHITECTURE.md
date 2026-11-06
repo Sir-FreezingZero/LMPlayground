@@ -121,6 +121,27 @@ renders an assistant reply (`MessageChatBubble` → `AssistantReplyContent`).
 - Nothing is persisted beyond the message text itself, so cards and
   previews come back when a chat is reopened.
 
+## Remote servers
+
+A model can also run on a computer on the same network, in LM Studio, Ollama
+or llama-server (Settings → Remote servers). The phone's engine isn't used.
+
+- `remote/RemoteServers` — saved servers, the HTTP calls (model list,
+  capabilities from Ollama's `/api/show`, llama-server's `/props` or LM
+  Studio's `/api/v0/models`, freeing memory) and the Wi-Fi scan (each
+  address of the phone's /24 on ports 1234, 11434 and 8080).
+- `remote/RemoteSession` — a `GenerationSession` over the OpenAI-style
+  `/v1/chat/completions` stream. The server keeps no state, so the chat lives
+  here and is re-sent each time; reasoning fields become `<think>`, tool-call
+  pieces are joined, and a Stop or a failed request is closed off before the
+  next message so the roles still alternate. `ToolCallLoop` runs unchanged.
+- A remote model is a `ModelInfo` named `remote:<url>|<model id>`, so chats,
+  per-model settings and the picker treat it like a file. `ModelRuntime`
+  holds it in `remote` instead of `model`; switching away or Unload asks the
+  server to free the model's memory.
+- Plain `http://` is allowed (`usesCleartextTraffic`), since home servers
+  don't use https.
+
 ## KV-cache reuse and rewind
 
 A generation session keeps its KV cache between turns and feeds only

@@ -415,4 +415,20 @@
     <string name="status_reset">Przywróć kolory</string>
     <string name="tool_steps_title">Kroki narzędzi</string>
     <string name="tool_steps_desc">Maksymalna liczba użyć narzędzi w jednej odpowiedzi, zanim model musi odpowiedzieć</string>
+    <string name="remote_servers">Serwery zdalne</string>
+    <string name="remote_servers_subtitle">Modele na komputerze w Twojej sieci</string>
+    <string name="remote_help">Korzystaj z modeli działających w LM Studio, Ollamie lub llama-serverze na innym komputerze. Na tym komputerze zezwól na połączenia z sieci lokalnej.</string>
+    <string name="remote_saved">Serwery</string>
+    <string name="remote_add">Dodaj serwer</string>
+    <string name="remote_address">Adres</string>
+    <string name="remote_api_key">Klucz API (opcjonalny)</string>
+    <string name="remote_add_button">Dodaj</string>
+    <string name="remote_scan">Skanuj Wi-Fi</string>
+    <string name="remote_scanning">Skanowanie…</string>
+    <string name="remote_scan_none">Nie znaleziono nowych serwerów w tej sieci Wi-Fi.</string>
+    <string name="remote_found">Znaleziono w Wi-Fi</string>
+    <string name="remote_offline">Nie odpowiada</string>
+    <string name="remote_models">Modele: %1$d</string>
+    <string name="remote_connecting">Łączenie…</string>
+    <string name="remote_unreachable">Nie można połączyć się z %1$s. Sprawdź, czy serwer działa, a telefon jest w tej samej sieci.</string>
 </resources>

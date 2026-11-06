@@ -7,6 +7,7 @@ import android.app.Application
 import android.util.Log
 import com.druk.llamacpp.InferenceUnavailableException
 import com.druk.llamacpp.LlamaGenerationCallback
+import com.druk.llamacpp.LlamaGenerationSession
 import com.druk.lmplayground.App
 import com.druk.lmplayground.R
 import com.druk.lmplayground.inference.ModelRuntime
@@ -160,11 +161,14 @@ class GenerationCoordinator(
             // addMessage of the session). It's a no-op if the model
             // info is unavailable. Pruning the cache directory is
             // best-effort; failures don't block generation.
-            val modelSize = try { runtime.model?.getModelSize() ?: 0L } catch (_: Throwable) { 0L }
-            preambleCache.apply(
-                llamaSession, modelFilename, modelSize,
-                runtime.effectiveSystemPrompt(llamaSession) ?: systemPrompt, toolsJson,
-            )
+            // Server models have no cache on the phone.
+            if (llamaSession is LlamaGenerationSession) {
+                val modelSize = try { runtime.model?.getModelSize() ?: 0L } catch (_: Throwable) { 0L }
+                preambleCache.apply(
+                    llamaSession, modelFilename, modelSize,
+                    runtime.effectiveSystemPrompt(llamaSession) ?: systemPrompt, toolsJson,
+                )
+            }
             // Hand the encoded image to the native layer before
             // addMessage so the multimodal preprocessor can fold it
             // into the prompt for this turn.

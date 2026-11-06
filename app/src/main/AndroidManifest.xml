@@ -44,6 +44,7 @@
         android:localeConfig="@xml/locales_config"
         android:resizeableActivity="true"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.App.NoActionBar">
 
         <activity

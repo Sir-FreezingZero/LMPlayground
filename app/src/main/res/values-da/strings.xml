@@ -463,4 +463,20 @@
     <string name="status_reset">Nulstil farver</string>
     <string name="tool_steps_title">Værktøjstrin</string>
     <string name="tool_steps_desc">Højst så mange værktøjskald i ét svar, før modellen skal svare</string>
+    <string name="remote_servers">Fjernservere</string>
+    <string name="remote_servers_subtitle">Modeller på en computer på dit netværk</string>
+    <string name="remote_help">Brug modeller, der kører i LM Studio, Ollama eller llama-server på en anden computer. Tillad forbindelser fra det lokale netværk på den computer.</string>
+    <string name="remote_saved">Servere</string>
+    <string name="remote_add">Tilføj en server</string>
+    <string name="remote_address">Adresse</string>
+    <string name="remote_api_key">API-nøgle (valgfri)</string>
+    <string name="remote_add_button">Tilføj</string>
+    <string name="remote_scan">Scan Wi-Fi</string>
+    <string name="remote_scanning">Scanner…</string>
+    <string name="remote_scan_none">Ingen nye servere fundet på dette Wi-Fi.</string>
+    <string name="remote_found">Fundet på Wi-Fi</string>
+    <string name="remote_offline">Svarer ikke</string>
+    <string name="remote_models">Modeller: %1$d</string>
+    <string name="remote_connecting">Opretter forbindelse…</string>
+    <string name="remote_unreachable">Kunne ikke nå %1$s. Tjek, at serveren kører, og at telefonen er på samme netværk.</string>
 </resources>

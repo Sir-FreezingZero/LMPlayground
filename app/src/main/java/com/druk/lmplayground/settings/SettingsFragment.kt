@@ -223,6 +223,9 @@ class SettingsFragment : Fragment() {
                     onAppearanceClick = {
                         findNavController().navigateFromSettings(R.id.action_settings_to_appearance)
                     },
+                    onRemoteServersClick = {
+                        findNavController().navigateFromSettings(R.id.action_settings_to_remote_servers)
+                    },
                     onLanguageClick = {
                         findNavController().navigateFromSettings(R.id.action_settings_to_language)
                     },

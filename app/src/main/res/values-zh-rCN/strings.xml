@@ -419,4 +419,20 @@
     <string name="status_reset">重置颜色</string>
     <string name="tool_steps_title">工具步数</string>
     <string name="tool_steps_desc">模型必须作答前，单次回复中最多可使用工具的次数</string>
+    <string name="remote_servers">远程服务器</string>
+    <string name="remote_servers_subtitle">你网络中某台电脑上的模型</string>
+    <string name="remote_help">使用另一台电脑上 LM Studio、Ollama 或 llama-server 中运行的模型。请在那台电脑上允许来自局域网的连接。</string>
+    <string name="remote_saved">服务器</string>
+    <string name="remote_add">添加服务器</string>
+    <string name="remote_address">地址</string>
+    <string name="remote_api_key">API 密钥（可选）</string>
+    <string name="remote_add_button">添加</string>
+    <string name="remote_scan">扫描 Wi-Fi</string>
+    <string name="remote_scanning">正在扫描…</string>
+    <string name="remote_scan_none">在此 Wi-Fi 中未找到新的服务器。</string>
+    <string name="remote_found">在 Wi-Fi 中找到</string>
+    <string name="remote_offline">无响应</string>
+    <string name="remote_models">模型：%1$d</string>
+    <string name="remote_connecting">正在连接…</string>
+    <string name="remote_unreachable">无法连接到 %1$s。请检查服务器是否在运行，以及此手机是否在同一网络中。</string>
 </resources>

@@ -424,4 +424,20 @@
     <string name="status_reset">रंग रीसेट करें</string>
     <string name="tool_steps_title">टूल चरण</string>
     <string name="tool_steps_desc">मॉडल को जवाब देने से पहले एक उत्तर में टूल के अधिकतम उपयोग</string>
+    <string name="remote_servers">रिमोट सर्वर</string>
+    <string name="remote_servers_subtitle">आपके नेटवर्क के किसी कंप्यूटर पर मॉडल</string>
+    <string name="remote_help">किसी दूसरे कंप्यूटर पर LM Studio, Ollama या llama-server में चल रहे मॉडल इस्तेमाल करें। उस कंप्यूटर पर लोकल नेटवर्क से कनेक्शन की अनुमति दें।</string>
+    <string name="remote_saved">सर्वर</string>
+    <string name="remote_add">सर्वर जोड़ें</string>
+    <string name="remote_address">पता</string>
+    <string name="remote_api_key">API कुंजी (वैकल्पिक)</string>
+    <string name="remote_add_button">जोड़ें</string>
+    <string name="remote_scan">Wi-Fi स्कैन करें</string>
+    <string name="remote_scanning">स्कैन हो रहा है…</string>
+    <string name="remote_scan_none">इस Wi-Fi पर कोई नया सर्वर नहीं मिला।</string>
+    <string name="remote_found">Wi-Fi पर मिला</string>
+    <string name="remote_offline">जवाब नहीं दे रहा</string>
+    <string name="remote_models">मॉडल: %1$d</string>
+    <string name="remote_connecting">कनेक्ट हो रहा है…</string>
+    <string name="remote_unreachable">%1$s तक नहीं पहुँच सके। देखें कि सर्वर चल रहा है और यह फ़ोन उसी नेटवर्क पर है।</string>
 </resources>

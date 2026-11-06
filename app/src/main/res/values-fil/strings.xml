@@ -455,4 +455,20 @@
     <string name="status_reset">I-reset ang mga kulay</string>
     <string name="tool_steps_title">Mga hakbang ng tool</string>
     <string name="tool_steps_desc">Pinakamaraming paggamit ng tool sa isang sagot bago kailangang sumagot ng model</string>
+    <string name="remote_servers">Mga remote server</string>
+    <string name="remote_servers_subtitle">Mga model sa isang computer sa iyong network</string>
+    <string name="remote_help">Gumamit ng mga model na tumatakbo sa LM Studio, Ollama o llama-server sa ibang computer. Sa computer na iyon, payagan ang mga koneksyon mula sa lokal na network.</string>
+    <string name="remote_saved">Mga server</string>
+    <string name="remote_add">Magdagdag ng server</string>
+    <string name="remote_address">Address</string>
+    <string name="remote_api_key">API key (opsyonal)</string>
+    <string name="remote_add_button">Idagdag</string>
+    <string name="remote_scan">I-scan ang Wi-Fi</string>
+    <string name="remote_scanning">Nag-i-scan…</string>
+    <string name="remote_scan_none">Walang bagong server na nakita sa Wi-Fi na ito.</string>
+    <string name="remote_found">Nakita sa Wi-Fi</string>
+    <string name="remote_offline">Hindi sumasagot</string>
+    <string name="remote_models">Mga model: %1$d</string>
+    <string name="remote_connecting">Kumokonekta…</string>
+    <string name="remote_unreachable">Hindi maabot ang %1$s. Tiyaking tumatakbo ang server at nasa parehong network ang teleponong ito.</string>
 </resources>

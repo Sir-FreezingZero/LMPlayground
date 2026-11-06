@@ -3,6 +3,7 @@ package com.druk.lmplayground.inference
 import android.app.Application
 import android.text.format.Formatter
 import android.util.Log
+import com.druk.llamacpp.GenerationSession
 import com.druk.llamacpp.InferenceClient
 import com.druk.llamacpp.InferenceState
 import com.druk.llamacpp.InferenceUnavailableException
@@ -18,6 +19,10 @@ import com.druk.lmplayground.conversation.InferenceNotificationUpdater
 import com.druk.lmplayground.conversation.Message
 import com.druk.lmplayground.models.ChatTemplateOverrides
 import com.druk.lmplayground.models.ModelInfo
+import com.druk.lmplayground.remote.RemoteModelCaps
+import com.druk.lmplayground.remote.RemoteServer
+import com.druk.lmplayground.remote.RemoteServers
+import com.druk.lmplayground.remote.RemoteSession
 import com.druk.lmplayground.storage.StoragePreferences
 import com.druk.lmplayground.storage.StorageRepository
 import kotlinx.coroutines.CancellationException
@@ -99,7 +104,7 @@ class ModelRuntime(
 
     /** Handles that were live at the moment a `:llama` crash was observed. */
     class CrashSnapshot internal constructor(
-        internal val session: LlamaGenerationSession?,
+        internal val session: GenerationSession?,
         internal val model: LlamaModel?,
         internal val handle: StorageRepository.ModelFileHandle?,
         internal val job: Job?,
@@ -107,8 +112,16 @@ class ModelRuntime(
 
     var model: LlamaModel? = null
         private set
-    var session: LlamaGenerationSession? = null
+    var session: GenerationSession? = null
         private set
+
+    /** A model on a computer on the network, used instead of [model]. */
+    class Remote(val server: RemoteServer, val id: String, val caps: RemoteModelCaps)
+    var remote: Remote? = null
+        private set
+
+    /** True when a model, on the phone or on a server, is ready for sessions. */
+    val isLoaded: Boolean get() = model != null || remote != null
 
     /**
      * The in-flight generation coroutine. Owned here so every lifecycle
@@ -169,16 +182,24 @@ class ModelRuntime(
         val prevSession = session
         val prevModel = this.model
         val prevHandle = modelFileHandle
+        val prevRemote = remote
         session = null
         this.model = null
         modelFileHandle = null
+        remote = null
 
         withContext(Dispatchers.Default) {
             prevSession?.destroy()
             prevModel?.unloadModel()
         }
+        // Switching away from a server model frees the computer's memory too.
+        if (prevRemote != null && RemoteServers.parse(model.filename, storagePreferences)
+                ?.let { it.first.url == prevRemote.server.url && it.second == prevRemote.id } != true
+        ) freeRemote(prevRemote)
 
         prevHandle?.close()
+
+        if (RemoteServers.isRemote(model.filename)) return loadRemote(model, messagesToReplay)
 
         withContext(Dispatchers.Default) {
             listener.onLoadProgress(0f)
@@ -361,15 +382,62 @@ class ModelRuntime(
         }
     }
 
+    /**
+     * Connect to a server model: check the server has it, read what it can
+     * do, then start a session and replay the chat, as [loadModel] does.
+     */
+    private suspend fun loadRemote(model: ModelInfo, messagesToReplay: () -> List<Message>) =
+        withContext(Dispatchers.IO) {
+            listener.onLoadProgress(0f)
+            listener.onModelResolved(model)
+            listener.onLoadStatus(app.getString(R.string.remote_connecting))
+            val (server, id) = RemoteServers.parse(model.filename, storagePreferences) ?: return@withContext
+            if (RemoteServers.models(server)?.contains(id) != true) {
+                listener.onLoadStatus(app.getString(R.string.model_load_failed_status))
+                listener.onUserError(app.getString(R.string.remote_unreachable, server.label))
+                return@withContext
+            }
+            val caps = RemoteServers.caps(server, id)
+            remote = Remote(server, id, caps)
+            notifications.modelLine = "${model.name} - ${server.label}"
+            notifications.modelName = model.name
+            notifications.update(R.string.inference_notification_loaded_title)
+            listener.onMaxContextSize(caps.contextSize)
+            val params = storagePreferences.getModelGenerationParams(model.filename)
+                ?.let { GenerationParams.fromMap(it) } ?: GenerationParams()
+            listener.onGenerationParams(params)
+            listener.onSystemPromptReset()
+            val newSession = newSession(params, "") ?: return@withContext
+            session = newSession
+            storagePreferences.setDetectedCaps(model.filename, caps.tools, caps.thinking)
+            listener.onCapabilities(model, caps.thinking, caps.vision, caps.tools)
+            listener.onLoadStatus(server.label)
+            HistoryReplay.replayToSession(newSession, messagesToReplay())
+            listener.onModelReady(model)
+        }
+
+    /** Ask the server to drop [r]'s model from memory, without waiting. */
+    private fun freeRemote(r: Remote) {
+        CoroutineScope(Dispatchers.IO).launch { RemoteServers.freeMemory(r.server, r.id) }
+    }
+
+    /** A session on the loaded model, on the phone or on a server; null when none is loaded. */
+    private fun newSession(params: GenerationParams, systemPrompt: String): GenerationSession? {
+        val r = remote ?: return model?.let { createSessionWithParams(it, params, systemPrompt) }
+        val effectivePrompt = composeSystemPrompt(systemPrompt)
+        return RemoteSession(r.server, r.id, effectivePrompt, params, r.caps.contextSize)
+            .also { synchronized(effectivePrompts) { effectivePrompts[it] = effectivePrompt } }
+    }
+
     /** The exact system prompt each live session was created with. */
-    private val effectivePrompts = java.util.WeakHashMap<LlamaGenerationSession, String>()
+    private val effectivePrompts = java.util.WeakHashMap<GenerationSession, String>()
 
     /**
      * The system prompt [session] was really created with (the user's prompt
      * plus [SystemPromptExtras]), so the preamble cache is keyed on what the
      * engine holds rather than on what the user picked.
      */
-    fun effectiveSystemPrompt(session: LlamaGenerationSession): String? =
+    fun effectiveSystemPrompt(session: GenerationSession): String? =
         synchronized(effectivePrompts) { effectivePrompts[session] }
 
     /**
@@ -426,8 +494,8 @@ class ModelRuntime(
      * Returns true if the swap happened, false if the caller should abort.
      */
     private fun swapInSessionWithReplay(
-        newSession: LlamaGenerationSession,
-        prevSession: LlamaGenerationSession?,
+        newSession: GenerationSession,
+        prevSession: GenerationSession?,
         messages: List<Message>,
     ): Boolean {
         try {
@@ -469,7 +537,7 @@ class ModelRuntime(
         messages: List<Message>,
         catchPayloadTooLargeOnCreate: Boolean = false,
     ) {
-        val model = this.model ?: return
+        if (!isLoaded) return
         cancelAndJoinGeneration()
 
         val prevSession = session
@@ -481,7 +549,7 @@ class ModelRuntime(
             // usable instead of stranding the UI session-less.
             val newSession = if (catchPayloadTooLargeOnCreate) {
                 try {
-                    createSessionWithParams(model, params, systemPrompt)
+                    newSession(params, systemPrompt)
                 } catch (e: PayloadTooLargeException) {
                     listener.onUserError(
                         app.getString(
@@ -493,7 +561,7 @@ class ModelRuntime(
                     null
                 }
             } else {
-                createSessionWithParams(model, params, systemPrompt)
+                newSession(params, systemPrompt)
             } ?: return@withContext
             swapInSessionWithReplay(newSession, prevSession, messages)
         }
@@ -514,7 +582,7 @@ class ModelRuntime(
         systemPrompt: String,
         keptMessages: List<Message>,
     ): Boolean {
-        if (model == null) return false
+        if (!isLoaded) return false
         cancelAndJoinGeneration()
         val live = session
         val kept = if (live == null) -1 else withContext(Dispatchers.Default) {
@@ -544,13 +612,13 @@ class ModelRuntime(
      * unusable with the new params).
      */
     suspend fun resetSessionForContextChange(params: GenerationParams, systemPrompt: String) {
-        val model = this.model ?: return
+        if (!isLoaded) return
         cancelAndJoinGeneration()
 
         val prevSession = session
 
         withContext(Dispatchers.Default) {
-            val newSession = createSessionWithParams(model, params, systemPrompt)
+            val newSession = newSession(params, systemPrompt)
             if (newSession != null) {
                 session = newSession
                 prevSession?.destroy()
@@ -568,15 +636,14 @@ class ModelRuntime(
      * loaded.
      */
     suspend fun resetSessionDestroyFirst(params: GenerationParams, systemPrompt: String) {
-        val model = this.model ?: return
+        if (!isLoaded) return
         cancelAndJoinGeneration()
 
         val prevSession = session
         session = null
         withContext(Dispatchers.Default) {
             prevSession?.destroy()
-            val newSession = createSessionWithParams(model, params, systemPrompt) ?: return@withContext
-            session = newSession
+            session = newSession(params, systemPrompt) ?: return@withContext
         }
     }
 
@@ -629,7 +696,7 @@ class ModelRuntime(
     }
 
     /** True when a model (or at least its file handle) is loaded. */
-    fun hasNativeHandles(): Boolean = modelFileHandle != null || model != null
+    fun hasNativeHandles(): Boolean = modelFileHandle != null || isLoaded
 
     /**
      * Tear down the native handles (generation, session, model, file
@@ -645,6 +712,8 @@ class ModelRuntime(
         session = null
         model = null
         modelFileHandle = null
+        remote?.let { freeRemote(it) }
+        remote = null
 
         withContext(Dispatchers.Default) {
             prevSession?.destroy()
@@ -668,6 +737,7 @@ class ModelRuntime(
         this.session = null
         this.model = null
         modelFileHandle = null
+        remote = null
 
         CoroutineScope(Dispatchers.Default).launch {
             job?.cancel()
@@ -684,6 +754,7 @@ class ModelRuntime(
         // if the :llama service crashed or hasn't bound — there's nothing to
         // report in that case, so swallow it instead of crashing the app
         // (seen on Google Play as withService / requireConnected IUE).
+        remote?.let { return "${it.server.label} · ${it.id}\n" + (session?.getReport() ?: "") }
         return try {
             val modelReport = model?.getModelReport() ?: return null
             val sessionReport = session?.getReport() ?: return null

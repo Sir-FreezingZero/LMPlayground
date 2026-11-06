@@ -43,7 +43,7 @@ class LlamaGenerationSession internal constructor(
      * is its own transaction. Per-message validation still applies
      * (each individual message must fit inside [InferenceLimits.MAX_PAYLOAD_BYTES]).
      */
-    fun replayHistory(userMessages: Array<String>, assistantMessages: Array<String>) {
+    override fun replayHistory(userMessages: Array<String>, assistantMessages: Array<String>) {
         require(userMessages.size == assistantMessages.size) {
             "userMessages and assistantMessages must have the same length " +
                 "(got ${userMessages.size} vs ${assistantMessages.size})"
@@ -75,11 +75,11 @@ class LlamaGenerationSession internal constructor(
         return client.withService { it.rewindToTurn(sessionId, turnIndex, expectedText) }
     }
 
-    fun printReport() {
+    override fun printReport() {
         client.withService { it.printSessionReport(sessionId) }
     }
 
-    fun getReport(): String = client.withService { it.getSessionReport(sessionId) }
+    override fun getReport(): String = client.withService { it.getSessionReport(sessionId) }
 
     fun renderPreamble(enableThinking: Boolean): String =
         client.withService { it.renderSessionPreamble(sessionId, enableThinking) }

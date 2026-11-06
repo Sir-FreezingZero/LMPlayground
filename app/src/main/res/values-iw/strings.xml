@@ -466,4 +466,20 @@
     <string name="status_reset">איפוס צבעים</string>
     <string name="tool_steps_title">שלבי כלים</string>
     <string name="tool_steps_desc">מספר השימושים המרבי בכלים בתשובה אחת לפני שהמודל חייב לענות</string>
+    <string name="remote_servers">שרתים מרוחקים</string>
+    <string name="remote_servers_subtitle">מודלים במחשב ברשת שלך</string>
+    <string name="remote_help">השתמשו במודלים שרצים ב-LM Studio, ‏Ollama או llama-server במחשב אחר. במחשב הזה, אפשרו חיבורים מהרשת המקומית.</string>
+    <string name="remote_saved">שרתים</string>
+    <string name="remote_add">הוספת שרת</string>
+    <string name="remote_address">כתובת</string>
+    <string name="remote_api_key">מפתח API (אופציונלי)</string>
+    <string name="remote_add_button">הוספה</string>
+    <string name="remote_scan">סריקת Wi-Fi</string>
+    <string name="remote_scanning">סורק…</string>
+    <string name="remote_scan_none">לא נמצאו שרתים חדשים ברשת ה-Wi-Fi הזו.</string>
+    <string name="remote_found">נמצא ב-Wi-Fi</string>
+    <string name="remote_offline">לא מגיב</string>
+    <string name="remote_models">מודלים: %1$d</string>
+    <string name="remote_connecting">מתחבר…</string>
+    <string name="remote_unreachable">אין גישה ל-%1$s. ודאו שהשרת פועל ושהטלפון באותה רשת.</string>
 </resources>

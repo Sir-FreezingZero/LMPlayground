@@ -28,6 +28,7 @@ import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Policy
+import androidx.compose.material.icons.outlined.Computer
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Storage
@@ -86,6 +87,8 @@ fun SettingsScreen(
     onGeneralClick: () -> Unit = {},
     /** Appearance opens full screen too. */
     onAppearanceClick: () -> Unit = {},
+    /** Remote servers opens full screen too. */
+    onRemoteServersClick: () -> Unit = {},
     /**
      * Tablet-only: when non-null, tapping Models in the master pane opens
      * this composable inline in the detail pane instead of navigating to
@@ -244,6 +247,7 @@ fun SettingsScreen(
                         onMemoryClick = onMemoryClick,
                         onGeneralClick = onGeneralClick,
                         onAppearanceClick = onAppearanceClick,
+                        onRemoteServersClick = onRemoteServersClick,
                         onPrivacyPolicyClick = { detail = SettingsDetail.PrivacyPolicy },
                         onFaqClick = { detail = SettingsDetail.Faq },
                         onCrashEngineClick = onCrashEngineClick
@@ -324,6 +328,7 @@ fun SettingsScreen(
                 onMemoryClick = onMemoryClick,
                 onGeneralClick = onGeneralClick,
                 onAppearanceClick = onAppearanceClick,
+                onRemoteServersClick = onRemoteServersClick,
                 onPrivacyPolicyClick = onPrivacyPolicyClick,
                 onFaqClick = onFaqClick,
                 onCrashEngineClick = onCrashEngineClick,
@@ -354,6 +359,7 @@ private fun SettingsList(
     onMemoryClick: () -> Unit,
     onGeneralClick: () -> Unit,
     onAppearanceClick: () -> Unit,
+    onRemoteServersClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onFaqClick: () -> Unit,
     onCrashEngineClick: (() -> Unit)?,
@@ -386,6 +392,14 @@ private fun SettingsList(
             subtitle = stringResource(R.string.models_subtitle),
             selected = selectedDetail == SettingsDetail.Models,
             onClick = onModelsClick
+        )
+
+        // Remote servers row (opens full screen; no detail pane)
+        SettingsRow(
+            icon = Icons.Outlined.Computer,
+            title = stringResource(R.string.remote_servers),
+            subtitle = stringResource(R.string.remote_servers_subtitle),
+            onClick = onRemoteServersClick
         )
 
         // System Prompts row

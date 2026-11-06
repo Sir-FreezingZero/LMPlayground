@@ -422,4 +422,20 @@
     <string name="status_reset">Renkleri sıfırla</string>
     <string name="tool_steps_title">Araç adımları</string>
     <string name="tool_steps_desc">Modelin yanıt vermesi gerekmeden önce bir yanıtta en fazla araç kullanımı</string>
+    <string name="remote_servers">Uzak sunucular</string>
+    <string name="remote_servers_subtitle">Ağınızdaki bir bilgisayardaki modeller</string>
+    <string name="remote_help">Başka bir bilgisayarda LM Studio, Ollama veya llama-server içinde çalışan modelleri kullanın. O bilgisayarda yerel ağdan gelen bağlantılara izin verin.</string>
+    <string name="remote_saved">Sunucular</string>
+    <string name="remote_add">Sunucu ekle</string>
+    <string name="remote_address">Adres</string>
+    <string name="remote_api_key">API anahtarı (isteğe bağlı)</string>
+    <string name="remote_add_button">Ekle</string>
+    <string name="remote_scan">Wi-Fi\'ı tara</string>
+    <string name="remote_scanning">Taranıyor…</string>
+    <string name="remote_scan_none">Bu Wi-Fi\'da yeni sunucu bulunamadı.</string>
+    <string name="remote_found">Wi-Fi\'da bulundu</string>
+    <string name="remote_offline">Yanıt vermiyor</string>
+    <string name="remote_models">Modeller: %1$d</string>
+    <string name="remote_connecting">Bağlanıyor…</string>
+    <string name="remote_unreachable">%1$s adresine ulaşılamadı. Sunucunun çalıştığını ve bu telefonun aynı ağda olduğunu kontrol edin.</string>
 </resources>

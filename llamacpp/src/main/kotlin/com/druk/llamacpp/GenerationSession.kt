@@ -47,6 +47,15 @@ interface GenerationSession {
      */
     fun rewindToTurn(turnIndex: Int, expectedText: String): Int
 
+    /** Load earlier (user, assistant) turns, e.g. when a chat is reopened. */
+    fun replayHistory(userMessages: Array<String>, assistantMessages: Array<String>)
+
+    /** Human-readable stats; its "Context: used / total" line drives the context ring. */
+    fun getReport(): String = ""
+
+    /** Log [getReport]'s stats. */
+    fun printReport() {}
+
     fun requestAbort()
 
     fun destroy()

@@ -415,4 +415,20 @@
     <string name="status_reset">Скинути кольори</string>
     <string name="tool_steps_title">Кроки інструментів</string>
     <string name="tool_steps_desc">Найбільша кількість використань інструментів в одній відповіді, перш ніж модель має відповісти</string>
+    <string name="remote_servers">Віддалені сервери</string>
+    <string name="remote_servers_subtitle">Моделі на комп’ютері у вашій мережі</string>
+    <string name="remote_help">Використовуйте моделі, що працюють у LM Studio, Ollama або llama-server на іншому комп’ютері. На тому комп’ютері дозвольте з’єднання з локальної мережі.</string>
+    <string name="remote_saved">Сервери</string>
+    <string name="remote_add">Додати сервер</string>
+    <string name="remote_address">Адреса</string>
+    <string name="remote_api_key">Ключ API (необов’язково)</string>
+    <string name="remote_add_button">Додати</string>
+    <string name="remote_scan">Сканувати Wi-Fi</string>
+    <string name="remote_scanning">Сканування…</string>
+    <string name="remote_scan_none">У цій мережі Wi-Fi нових серверів не знайдено.</string>
+    <string name="remote_found">Знайдено у Wi-Fi</string>
+    <string name="remote_offline">Не відповідає</string>
+    <string name="remote_models">Моделі: %1$d</string>
+    <string name="remote_connecting">Підключення…</string>
+    <string name="remote_unreachable">Не вдалося з’єднатися з %1$s. Перевірте, що сервер працює, а телефон у тій самій мережі.</string>
 </resources>

@@ -1,12 +1,12 @@
 package com.druk.lmplayground.conversation
 
 import com.druk.llamacpp.InferenceLimits
-import com.druk.llamacpp.LlamaGenerationSession
+import com.druk.llamacpp.GenerationSession
 
 /**
  * Pure history-replay helpers: pre-flight validation of persisted payloads
  * against the AIDL transaction cap, and pairing of persisted messages into
- * (user, assistant) turns for [LlamaGenerationSession.replayHistory].
+ * (user, assistant) turns for [GenerationSession.replayHistory].
  */
 object HistoryReplay {
 
@@ -67,7 +67,7 @@ object HistoryReplay {
     }
 
     /** Replay the paired turns of [messages] into [session]. */
-    fun replayToSession(session: LlamaGenerationSession, messages: List<Message>) {
+    fun replayToSession(session: GenerationSession, messages: List<Message>) {
         val (userMessages, assistantMessages) = pairTurns(messages)
         if (userMessages.isNotEmpty()) {
             session.replayHistory(

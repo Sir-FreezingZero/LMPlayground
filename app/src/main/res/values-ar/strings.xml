@@ -428,4 +428,20 @@
     <string name="status_reset">إعادة ضبط الألوان</string>
     <string name="tool_steps_title">خطوات الأدوات</string>
     <string name="tool_steps_desc">أقصى عدد لاستخدام الأدوات في رد واحد قبل أن يجب على النموذج الإجابة</string>
+    <string name="remote_servers">الخوادم البعيدة</string>
+    <string name="remote_servers_subtitle">نماذج على حاسوب في شبكتك</string>
+    <string name="remote_help">استخدم نماذج تعمل في LM Studio أو Ollama أو llama-server على حاسوب آخر. على ذلك الحاسوب، اسمح بالاتصالات من الشبكة المحلية.</string>
+    <string name="remote_saved">الخوادم</string>
+    <string name="remote_add">إضافة خادم</string>
+    <string name="remote_address">العنوان</string>
+    <string name="remote_api_key">مفتاح API (اختياري)</string>
+    <string name="remote_add_button">إضافة</string>
+    <string name="remote_scan">فحص Wi-Fi</string>
+    <string name="remote_scanning">جارٍ الفحص…</string>
+    <string name="remote_scan_none">لم يُعثر على خوادم جديدة على شبكة Wi-Fi هذه.</string>
+    <string name="remote_found">موجود على Wi-Fi</string>
+    <string name="remote_offline">لا يستجيب</string>
+    <string name="remote_models">النماذج: %1$d</string>
+    <string name="remote_connecting">جارٍ الاتصال…</string>
+    <string name="remote_unreachable">تعذّر الوصول إلى %1$s. تأكد من أن الخادم يعمل وأن هذا الهاتف على الشبكة نفسها.</string>
 </resources>

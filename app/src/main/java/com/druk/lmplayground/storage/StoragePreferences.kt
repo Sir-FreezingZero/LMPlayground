@@ -33,6 +33,11 @@ class StoragePreferences(context: Context) {
         set(value) = prefs.edit { putBoolean("include_date_in_prompt", value) }
 
     /** Most tool rounds per reply (Settings → Tools → Tool steps), 1 to 20. */
+    /** Saved remote servers, as JSON; see [com.druk.lmplayground.remote.RemoteServers]. */
+    var remoteServersJson: String
+        get() = prefs.getString("remote_servers", null) ?: "[]"
+        set(value) = prefs.edit { putString("remote_servers", value) }
+
     var maxToolSteps: Int
         get() = prefs.getInt("max_tool_steps", 10).coerceIn(1, 20)
         set(value) = prefs.edit { putInt("max_tool_steps", value.coerceIn(1, 20)) }

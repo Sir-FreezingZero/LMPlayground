@@ -463,4 +463,20 @@
     <string name="status_reset">রং রিসেট করুন</string>
     <string name="tool_steps_title">টুল ধাপ</string>
     <string name="tool_steps_desc">মডেলকে উত্তর দেওয়ার আগে এক উত্তরে সর্বোচ্চ কতবার টুল ব্যবহার করা যাবে</string>
+    <string name="remote_servers">রিমোট সার্ভার</string>
+    <string name="remote_servers_subtitle">আপনার নেটওয়ার্কের কম্পিউটারে থাকা মডেল</string>
+    <string name="remote_help">অন্য কম্পিউটারে LM Studio, Ollama বা llama-server-এ চলা মডেল ব্যবহার করুন। সেই কম্পিউটারে লোকাল নেটওয়ার্ক থেকে সংযোগের অনুমতি দিন।</string>
+    <string name="remote_saved">সার্ভার</string>
+    <string name="remote_add">সার্ভার যোগ করুন</string>
+    <string name="remote_address">ঠিকানা</string>
+    <string name="remote_api_key">API কী (ঐচ্ছিক)</string>
+    <string name="remote_add_button">যোগ করুন</string>
+    <string name="remote_scan">Wi-Fi স্ক্যান করুন</string>
+    <string name="remote_scanning">স্ক্যান হচ্ছে…</string>
+    <string name="remote_scan_none">এই Wi-Fi-তে নতুন কোনো সার্ভার পাওয়া যায়নি।</string>
+    <string name="remote_found">Wi-Fi-তে পাওয়া গেছে</string>
+    <string name="remote_offline">সাড়া দিচ্ছে না</string>
+    <string name="remote_models">মডেল: %1$d</string>
+    <string name="remote_connecting">সংযোগ হচ্ছে…</string>
+    <string name="remote_unreachable">%1$s-এ পৌঁছানো যায়নি। সার্ভার চলছে কি না এবং এই ফোন একই নেটওয়ার্কে আছে কি না দেখুন।</string>
 </resources>

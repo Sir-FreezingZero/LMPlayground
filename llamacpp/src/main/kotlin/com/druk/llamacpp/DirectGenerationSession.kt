@@ -80,6 +80,9 @@ class DirectGenerationSession(
     override fun rewindToTurn(turnIndex: Int, expectedText: String): Int =
         native.rewindToTurn(turnIndex, expectedText)
 
+    override fun replayHistory(userMessages: Array<String>, assistantMessages: Array<String>) =
+        native.replayHistory(userMessages, assistantMessages)
+
     override fun requestAbort() {
         abortRequested = true
         native.requestAbort()

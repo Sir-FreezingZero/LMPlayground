@@ -22,6 +22,7 @@ import com.druk.lmplayground.models.ThinkingMode
 import com.druk.lmplayground.models.ModelInfoProvider
 import com.druk.lmplayground.models.ModelWithStatus
 import com.druk.lmplayground.models.resolveCapabilities
+import com.druk.lmplayground.remote.RemoteServers
 import com.druk.lmplayground.data.RagDocumentEntity
 import com.druk.lmplayground.dictation.DictationController
 import com.druk.lmplayground.dictation.DictationManager
@@ -40,6 +41,8 @@ import androidx.work.WorkInfo
 import android.content.Intent
 import android.provider.OpenableColumns
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.Job
 import android.net.Uri
 import kotlinx.coroutines.launch
@@ -398,7 +401,9 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         if (msgs.count { it.author == "Assistant" } != 1) return
         val firstUser = msgs.firstOrNull { it.author == "User" }?.content
             ?.takeIf { it.isNotBlank() } ?: return
-        val model = runtime.model ?: return
+        val model = runtime.model
+        val remote = runtime.remote
+        if (model == null && remote == null) return
         viewModelScope.launch(Dispatchers.IO) {
             // Only while the title is still the placeholder (the first 50
             // characters of the first message), so a title the user set stays.
@@ -408,13 +413,19 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                 // The instruction is the system prompt and the message is quoted
                 // data, so a small model describes it instead of answering it.
                 // Greedy decoding, so the same message gets the same title.
-                session = model.createSession(1024, 0f, 1f, 1f, 1, 0f, 0, 0, TITLE_INSTRUCTIONS)
+                session = remote?.let {
+                    com.druk.lmplayground.remote.RemoteSession(
+                        it.server, it.id, TITLE_INSTRUCTIONS,
+                        GenerationParams(temperature = 0f, topK = 1, seed = 0), it.caps.contextSize,
+                    )
+                } ?: model?.createSession(1024, 0f, 1f, 1f, 1, 0f, 0, 0, TITLE_INSTRUCTIONS)
                     ?: return@launch
                 session.addMessage("Chat message: \"" + firstUser.take(500) + "\"", false)
                 var out = ""
-                session.generateAll(object : com.druk.llamacpp.LlamaGenerationCallback {
-                    override fun onFullResponse(response: String) { out = response }
-                })
+                // A failed reply (a server error) must not become the title.
+                if (session.generateAll(object : com.druk.llamacpp.LlamaGenerationCallback {
+                        override fun onFullResponse(response: String) { out = response }
+                    }) != 0) return@launch
                 val title = cleanTitle(out)
                 if (title.isNotBlank()) sessionStore.renameSession(sessionId, title)
             } catch (_: Throwable) {
@@ -652,10 +663,17 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                         if (!cached.second) return@mapNotNull null
                         ModelInfoProvider.createCustomModelInfo(file.name, cached.first, file.sizeBytes)
                     }
-                _models.postValue(
-                    ModelInfoProvider.getModelsWithStatus(downloadedFilenames, customModels)
-                        .map { it.copy(model = it.model.resolveCapabilities(storagePreferences)) }
-                )
+                val local = ModelInfoProvider.getModelsWithStatus(downloadedFilenames, customModels)
+                    .map { it.copy(model = it.model.resolveCapabilities(storagePreferences)) }
+                _models.postValue(local)
+                // Then the models of saved servers that answer, under the phone's own.
+                val servers = RemoteServers.saved(storagePreferences)
+                if (servers.isEmpty()) return@withContext
+                val remote = servers.map { server -> async { server to RemoteServers.models(server) } }
+                    .awaitAll()
+                    .flatMap { (server, ids) -> ids.orEmpty().map { RemoteServers.modelInfo(server, it) } }
+                    .map { ModelWithStatus(it.resolveCapabilities(storagePreferences), isDownloaded = true) }
+                if (remote.isNotEmpty()) _models.postValue(local + remote)
             }
         }
     }
@@ -762,7 +780,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         } else {
             uiState.messages.toList()
         }
-        if (runtime.model != null && !validateReplaySize(systemPrompt, messagesToReplay)) return
+        if (runtime.isLoaded && !validateReplaySize(systemPrompt, messagesToReplay)) return
 
         _generationParams.value = params
 
@@ -782,7 +800,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
         // If context size changed, must recreate session (resets conversation)
         if (oldParams.contextSize != params.contextSize) {
-            if (runtime.model == null) return
+            if (!runtime.isLoaded) return
             viewModelScope.launch {
                 runtime.cancelAndJoinGeneration()
 
@@ -794,7 +812,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         } else {
             // Other params: recreate session but replay history. We
             // already pre-validated at the top, so no validation here.
-            if (runtime.model == null) return
+            if (!runtime.isLoaded) return
             val messages = uiState.messages.toList()
             viewModelScope.launch {
                 runtime.recreateSessionWithReplay(params, systemPrompt, messages)
@@ -924,7 +942,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     private fun rewindAndResend(plan: ChatRewind.Plan) {
         val rewind = plan.rewind ?: return
         val resend = plan.resend ?: return
-        if (_isGenerating.value == true || runtime.model == null) return
+        if (_isGenerating.value == true || !runtime.isLoaded) return
         val sizeBytes = resend.content.length * 2
         if (sizeBytes > InferenceLimits.MAX_PAYLOAD_BYTES) {
             _userError.postValue(
@@ -985,7 +1003,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                     }
                 } ?: return@launch
                 val rewind = plan.rewind
-                if (rewind != null && runtime.model != null) {
+                if (rewind != null && runtime.isLoaded) {
                     runtime.rewindSession(rewind.turnIndex, rewind.anchorText, params, systemPrompt, kept)
                 }
                 _currentSessionId.value = branchId
@@ -1124,7 +1142,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
             // Recreate native session with restored params and replay history.
             // Pre-validation already happened at the top of this function
             // (before any UI state mutation).
-            if (runtime.model != null) {
+            if (runtime.isLoaded) {
                 val systemPrompt = _systemPrompt.value.orEmpty()
                 val params = _generationParams.value ?: GenerationParams()
                 runtime.recreateSessionWithReplay(params, systemPrompt, uiMessages)
@@ -1189,7 +1207,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         // Recreate the native session so the prompt lands as message[0].
         // Create-then-destroy with a defense-in-depth catch around create
         // (on top of the validateReplaySize pre-check).
-        if (runtime.model == null) return
+        if (!runtime.isLoaded) return
         val params = _generationParams.value ?: GenerationParams()
         viewModelScope.launch {
             runtime.recreateSessionWithReplay(
@@ -1484,6 +1502,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     fun loadModelByFilename(filename: String) {
         _sessionModelHint.value = null
         val modelInfo = ModelInfoProvider.getByFilename(filename)
+            ?: RemoteServers.parse(filename, storagePreferences)?.let { RemoteServers.modelInfo(it.first, it.second) }
             ?: ModelInfoProvider.createCustomModelInfo(filename, filename.removeSuffix(".gguf"), 0)
         loadModel(modelInfo)
     }

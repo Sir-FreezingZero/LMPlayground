@@ -422,4 +422,20 @@
     <string name="status_reset">Resetează culorile</string>
     <string name="tool_steps_title">Pași cu instrumente</string>
     <string name="tool_steps_desc">Numărul maxim de folosiri ale instrumentelor într-un răspuns înainte ca modelul să răspundă</string>
+    <string name="remote_servers">Servere la distanță</string>
+    <string name="remote_servers_subtitle">Modele pe un computer din rețeaua ta</string>
+    <string name="remote_help">Folosește modele care rulează în LM Studio, Ollama sau llama-server pe alt computer. Pe acel computer, permite conexiunile din rețeaua locală.</string>
+    <string name="remote_saved">Servere</string>
+    <string name="remote_add">Adaugă un server</string>
+    <string name="remote_address">Adresă</string>
+    <string name="remote_api_key">Cheie API (opțională)</string>
+    <string name="remote_add_button">Adaugă</string>
+    <string name="remote_scan">Scanează Wi-Fi</string>
+    <string name="remote_scanning">Se scanează…</string>
+    <string name="remote_scan_none">Nu s-au găsit servere noi în această rețea Wi-Fi.</string>
+    <string name="remote_found">Găsit în Wi-Fi</string>
+    <string name="remote_offline">Nu răspunde</string>
+    <string name="remote_models">Modele: %1$d</string>
+    <string name="remote_connecting">Se conectează…</string>
+    <string name="remote_unreachable">Nu se poate ajunge la %1$s. Verifică dacă serverul rulează și dacă telefonul e în aceeași rețea.</string>
 </resources>

@@ -455,4 +455,20 @@
     <string name="status_reset">Obnovit barvy</string>
     <string name="tool_steps_title">Kroky nástrojů</string>
     <string name="tool_steps_desc">Nejvyšší počet použití nástrojů v jedné odpovědi, než model musí odpovědět</string>
+    <string name="remote_servers">Vzdálené servery</string>
+    <string name="remote_servers_subtitle">Modely na počítači ve vaší síti</string>
+    <string name="remote_help">Používejte modely běžící v LM Studiu, Ollamě nebo llama-serveru na jiném počítači. Na tom počítači povolte připojení z místní sítě.</string>
+    <string name="remote_saved">Servery</string>
+    <string name="remote_add">Přidat server</string>
+    <string name="remote_address">Adresa</string>
+    <string name="remote_api_key">Klíč API (volitelný)</string>
+    <string name="remote_add_button">Přidat</string>
+    <string name="remote_scan">Prohledat Wi-Fi</string>
+    <string name="remote_scanning">Hledání…</string>
+    <string name="remote_scan_none">V této síti Wi-Fi nebyly nalezeny žádné nové servery.</string>
+    <string name="remote_found">Nalezeno na Wi-Fi</string>
+    <string name="remote_offline">Neodpovídá</string>
+    <string name="remote_models">Modely: %1$d</string>
+    <string name="remote_connecting">Připojování…</string>
+    <string name="remote_unreachable">Nelze se spojit s %1$s. Zkontrolujte, že server běží a tento telefon je ve stejné síti.</string>
 </resources>

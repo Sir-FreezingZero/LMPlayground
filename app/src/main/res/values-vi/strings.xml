@@ -415,4 +415,20 @@
     <string name="status_reset">Đặt lại màu</string>
     <string name="tool_steps_title">Số bước dùng công cụ</string>
     <string name="tool_steps_desc">Số lần dùng công cụ tối đa trong một câu trả lời trước khi mô hình phải trả lời</string>
+    <string name="remote_servers">Máy chủ từ xa</string>
+    <string name="remote_servers_subtitle">Mô hình trên máy tính trong mạng của bạn</string>
+    <string name="remote_help">Dùng mô hình chạy trong LM Studio, Ollama hoặc llama-server trên máy tính khác. Trên máy tính đó, hãy cho phép kết nối từ mạng cục bộ.</string>
+    <string name="remote_saved">Máy chủ</string>
+    <string name="remote_add">Thêm máy chủ</string>
+    <string name="remote_address">Địa chỉ</string>
+    <string name="remote_api_key">Khóa API (không bắt buộc)</string>
+    <string name="remote_add_button">Thêm</string>
+    <string name="remote_scan">Quét Wi-Fi</string>
+    <string name="remote_scanning">Đang quét…</string>
+    <string name="remote_scan_none">Không tìm thấy máy chủ mới trên Wi-Fi này.</string>
+    <string name="remote_found">Tìm thấy trên Wi-Fi</string>
+    <string name="remote_offline">Không phản hồi</string>
+    <string name="remote_models">Mô hình: %1$d</string>
+    <string name="remote_connecting">Đang kết nối…</string>
+    <string name="remote_unreachable">Không kết nối được %1$s. Hãy kiểm tra máy chủ đang chạy và điện thoại này ở cùng mạng.</string>
 </resources>
