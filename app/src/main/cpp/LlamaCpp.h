@@ -145,6 +145,8 @@ public:
 
 private:
     void finalizeResponse();
+    // Records a turn that ended early before the next user message; see the .cpp.
+    void closeOpenTurn();
     common_chat_params renderTemplate(bool enableThinking, bool addGenerationPrompt = true);
 
     // First-message-only: try to load a saved preamble KV state from

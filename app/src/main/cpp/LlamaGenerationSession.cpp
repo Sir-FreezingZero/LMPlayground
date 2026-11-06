@@ -581,6 +581,9 @@ int LlamaGenerationSession::addMessage(const char *string, bool enableThinking) 
     abort_requested.store(false);
     batch = {};
 
+    // A previous turn stopped part-way leaves the history without a reply.
+    closeOpenTurn();
+
     // Lazy preamble KV-cache: on the first addMessage of a session, try
     // to load (or just-save) the static system+tools prefix so the user
     // delta can re-use the prefix-match fast path. Subsequent calls skip
@@ -1040,6 +1043,52 @@ int LlamaGenerationSession::processImageTurn(std::vector<unsigned char> &image_d
     // After mtmd eval, logits are ready — skip first decode in generate()
     skip_first_decode = true;
     return 0;
+}
+
+// A turn can end without the history getting a final reply: Stop between
+// tokens just stops calling generate(), and Stop during a tool or the tool
+// round limit leaves the model's tool call with no result. The next user
+// message would then follow another user message or an unanswered call.
+// Strict templates (Mistral's) reject that order outright, and every model
+// would see a reply it can't remember or a question nobody answered. So
+// before a new user message, record what was said and close the turn.
+void LlamaGenerationSession::closeOpenTurn() {
+    if (messages.empty()) return;
+
+    // Stopped mid-reply: keep the reply so far (it was shown to the user).
+    const std::string last_role = messages.back().role;
+    if (last_role == "user" || last_role == "tool") {
+        if (writing_tool_call && parser_initialized) {
+            // Drop a half-written tool call; keep the text before it.
+            try {
+                response = common_chat_parse(common_chat_input(response), /*is_partial=*/true, parser_params).content;
+            } catch (...) {
+                response.clear();
+            }
+        }
+        LOGi("closeOpenTurn: recording a stopped reply (%zu chars)", response.size());
+        finalizeResponse();
+    }
+
+    // Tool calls that never ran: answer them, then close with an empty reply.
+    if (messages.back().role == "assistant" && !messages.back().tool_calls.empty()) {
+        const auto calls = messages.back().tool_calls;
+        for (const auto &tc : calls) {
+            common_chat_msg tool_msg;
+            tool_msg.role = "tool";
+            tool_msg.content = R"({"error":"Not run: the reply ended before this tool ran."})";
+            tool_msg.tool_call_id = tc.id;
+            tool_msg.tool_name = tc.name;
+            messages.push_back(tool_msg);
+        }
+        common_chat_msg closing;
+        closing.role = "assistant";
+        messages.push_back(closing);
+        LOGi("closeOpenTurn: closed %zu unanswered tool call(s)", calls.size());
+    }
+    pending_tool_calls.clear();
+    response.clear();
+    writing_tool_call = false;
 }
 
 void LlamaGenerationSession::finalizeResponse() {

@@ -6,6 +6,8 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import org.json.JSONObject
 
 /**
  * One generation turn, including any tool rounds.
@@ -72,10 +74,24 @@ class ToolCallLoop(
         var rc: Int
         var hitLimit = false
 
+        // See the forced-thinking note further down.
+        val responseThinking = enableThinking || (supportsThinking && forceThinkingAfterTools)
+
         while (true) {
             rc = session.generateAll(callback)
             if (rc != RC_TOOL_CALLS || !isActive()) break
-            if (toolRounds >= maxToolRounds) { hitLimit = true; break }
+            if (toolRounds >= maxToolRounds) {
+                // Asked for tools again after being told to stop: end here.
+                // The engine closes the unanswered call before the next message.
+                if (hitLimit) break
+                // Out of rounds: don't run these calls. Tell the model so and
+                // give it one more pass to answer with what it already has,
+                // rather than ending the reply on an unanswered tool call.
+                hitLimit = true
+                session.submitToolResults(limitReachedResults(session.getToolCallsJson()), responseThinking)
+                observer.onRoundStarted(toolRounds, responseThinking)
+                continue
+            }
             toolRounds++
 
             val toolCallsJson = session.getToolCallsJson()
@@ -107,7 +123,6 @@ class ToolCallLoop(
             // extraction in the parser. A no-op for models without a
             // thinking mode (the flag is ignored).
             // Otherwise thinking follows the user toggle, as in round one.
-            val responseThinking = enableThinking || (supportsThinking && forceThinkingAfterTools)
             session.submitToolResults(toolResults, responseThinking)
             observer.onRoundStarted(toolRounds, responseThinking)
         }
@@ -115,7 +130,25 @@ class ToolCallLoop(
         return Result(rc = rc, toolRounds = toolRounds, hitRoundLimit = hitLimit, records = allRecords)
     }
 
+    /** A result for each of [toolCallsJson]'s calls saying the round limit stopped it. */
+    private fun limitReachedResults(toolCallsJson: String): String {
+        val calls = JSONArray(toolCallsJson)
+        val results = JSONArray()
+        for (i in 0 until calls.length()) {
+            val call = calls.getJSONObject(i)
+            results.put(
+                JSONObject()
+                    .put("id", call.getString("id"))
+                    .put("name", call.getString("name"))
+                    .put("content", JSONObject().put("error", LIMIT_MESSAGE).toString())
+            )
+        }
+        return results.toString()
+    }
+
     companion object {
+        private const val LIMIT_MESSAGE =
+            "Not run: the tool limit for this reply has been reached. Answer now with what you already have."
         const val RC_TOOL_CALLS = 2
         const val DEFAULT_MAX_TOOL_ROUNDS = 10
     }

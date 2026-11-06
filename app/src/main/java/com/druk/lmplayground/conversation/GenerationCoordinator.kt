@@ -333,6 +333,9 @@ class GenerationCoordinator(
                     }
 
                     override fun onRoundStarted(round: Int, responseThinking: Boolean) {
+                        // Calls skipped at the round limit never run, so clear the
+                        // "tools" status here too, not only after a tool runs.
+                        listener.onToolsRunning(false)
                         // Reset the streaming callback's per-round counters so
                         // the next generateAll() reports a fresh
                         // thinking-vs-response token split. The callback tracks
