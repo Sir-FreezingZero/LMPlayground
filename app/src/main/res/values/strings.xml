@@ -487,6 +487,7 @@
     <string name="date_in_prompt_title" tools:ignore="MissingTranslation">Today\'s date</string>
     <string name="date_in_prompt_desc" tools:ignore="MissingTranslation">Add today\'s date to the system prompt so the model knows what day it is.</string>
     <string name="system_prompt_date" tools:ignore="MissingTranslation">Today\'s date: %1$s</string>
+    <string name="system_prompt_tool_hint" tools:ignore="MissingTranslation">Before each tool call, briefly tell the user what you are about to do.</string>
     <string name="memory" tools:ignore="MissingTranslation">Memory</string>
     <string name="memory_subtitle" tools:ignore="MissingTranslation">Notes the model remembers across chats</string>
     <string name="memory_empty" tools:ignore="MissingTranslation">No memories yet. Add one, or let the model save notes as you chat.</string>

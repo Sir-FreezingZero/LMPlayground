@@ -57,12 +57,15 @@ class ToolCallLoop(
      * @param enableThinking the user toggle for this turn.
      * @param isActive lets the caller abandon the loop between rounds
      *        (the app passes its coroutine's isActive).
+     * @param forceThinkingAfterTools turn thinking on after tool results even
+     *        when [enableThinking] is off, for models that need it (below).
      */
     suspend fun run(
         callback: LlamaGenerationCallback,
         supportsThinking: Boolean,
         enableThinking: Boolean,
         isActive: () -> Boolean = { true },
+        forceThinkingAfterTools: Boolean = true,
     ): Result {
         var toolRounds = 0
         val allRecords = mutableListOf<ToolCallRecord>()
@@ -95,15 +98,16 @@ class ToolCallLoop(
             allRecords += records
             observer.onToolCalls(records)
 
-            // Force thinking on for the response phase when the model has a
-            // thinking mode, regardless of the user toggle: Gemma 4 and
+            // When asked, force thinking on for the response phase if the model
+            // has a thinking mode, regardless of the user toggle: Gemma 4 and
             // harmony-style models emit an empty content channel after tool
             // calls when thinking is off, which would show a blank assistant
             // bubble after every tool call. Reasoning still routes to the
             // collapsed thinking section via the always-on DEEPSEEK
             // extraction in the parser. A no-op for models without a
             // thinking mode (the flag is ignored).
-            val responseThinking = supportsThinking || enableThinking
+            // Otherwise thinking follows the user toggle, as in round one.
+            val responseThinking = enableThinking || (supportsThinking && forceThinkingAfterTools)
             session.submitToolResults(toolResults, responseThinking)
             observer.onRoundStarted(toolRounds, responseThinking)
         }
@@ -113,6 +117,6 @@ class ToolCallLoop(
 
     companion object {
         const val RC_TOOL_CALLS = 2
-        const val DEFAULT_MAX_TOOL_ROUNDS = 5
+        const val DEFAULT_MAX_TOOL_ROUNDS = 10
     }
 }

@@ -47,7 +47,8 @@ class SystemPromptExtras(
     @MainThread
     fun stop() = memoryNotes.removeObserver(memoryObserver)
 
-    fun compose(userPrompt: String, withMemory: Boolean): String {
+    /** [withToolHint]: some tool is on, so ask the model to say what it's doing before each call. */
+    fun compose(userPrompt: String, withMemory: Boolean, withToolHint: Boolean = false): String {
         val parts = mutableListOf<String>()
         if (prefs.includeDateInPrompt) {
             val today = DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault()).format(Date())
@@ -55,6 +56,7 @@ class SystemPromptExtras(
         }
         if (withMemory) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
         userPrompt.ifBlank { prefs.defaultSystemPrompt }.takeIf { it.isNotBlank() }?.let { parts.add(it) }
+        if (withToolHint) parts.add(app.getString(R.string.system_prompt_tool_hint))
         return parts.joinToString("\n\n")
     }
 

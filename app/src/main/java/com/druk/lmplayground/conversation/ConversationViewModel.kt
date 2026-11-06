@@ -1200,9 +1200,14 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
-    /** [prompt] with the extras; saved memories only when this chat has the memory tool on. */
-    private fun composeSystemPrompt(prompt: String): String =
-        systemPromptExtras.compose(prompt, storagePreferences.toolEnabled("memory", _chatTools.value.orEmpty()))
+    /**
+     * [prompt] with the extras; saved memories only when this chat has the memory
+     * tool on, and the tool hint when any tool is on.
+     */
+    private fun composeSystemPrompt(prompt: String): String {
+        val tools = toolStates(_chatTools.value.orEmpty())
+        return systemPromptExtras.compose(prompt, tools["memory"] == true, tools.values.any { it })
+    }
 
     /** Each tool's state in this chat: [chatTools] over the defaults. */
     fun toolStates(chatTools: Map<String, String>): Map<String, Boolean> =
@@ -1214,8 +1219,9 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         val tools = _chatTools.value.orEmpty() + (toolName to enabled.toString())
         _chatTools.value = tools
         _currentSessionId.value?.let { id -> viewModelScope.launch { sessionStore.persistChatTools(id, tools) } }
-        // The memory tool also adds the saved notes to the system prompt.
-        if (toolName == "memory") syncSystemPrompt()
+        // Tools change the system prompt: the memory tool adds the saved
+        // notes, and any tool adds the tool hint.
+        syncSystemPrompt()
     }
 
     /**

@@ -332,6 +332,10 @@ class GenerationCoordinator(
                 supportsThinking = supportsThinking,
                 enableThinking = enableThinking,
                 isActive = { this.isActive },
+                // Only Gemma and gpt-oss (harmony) give blank replies after a
+                // tool call with thinking off; other models follow the switch.
+                forceThinkingAfterTools = modelFilename.orEmpty().lowercase()
+                    .let { "gemma" in it || "gpt-oss" in it },
             )
         } catch (e: InferenceUnavailableException) {
             Log.w(TAG, "generateAll failed: service unavailable", e)

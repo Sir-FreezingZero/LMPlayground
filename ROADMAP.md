@@ -2,21 +2,16 @@
 
 Planned changes that aren't built yet.
 
-## Show what the model says before each tool call
+## Copy and Share with the in-between text
 
-**Problem.** A model can write visible text before calling a tool, for example "I'll search for that now." While it streams, the text shows in the chat. When the tool call happens, `ConversationUiState.addToolCallsToLastMessage` moves that round's text into the tool call's `precedingThinking`. `MessageChatBubble` then shows only its thinking part, in the collapsible "Thinking" section above the tool. The visible part is dropped from the screen.
+Replies now show the text the model writes between tool calls, but Copy and Share on a reply still only take the final answer (`message.content`). Decide whether they should include each round's text too.
 
-The text isn't lost: it's saved with the tool call, and the native session keeps it in the history (`assistant_msg.content`), so the model remembers saying it. Only the display is missing it. Today you only see narration from the final step, after the last tool.
+## How tool calling works now (for reference)
 
-**Fix.** In `MessageChatBubble`, also render `splitThinking(toolCall.precedingThinking).responseContent` as normal reply text, between that round's thinking section and its tool call. A turn would then read in order: thinking → "I'll look this up" → tool → thinking → more text → tool → final answer.
-
-- Display only. No changes to the engine, the saved data or the tool loop.
-- Old chats show the missing text too, since it's already saved.
-- Check that Copy and Share on a reply still behave as intended. They may need to include the in-between text too.
-
-## Related tool-calling behavior (for reference, not planned changes)
-
-- **The model decides when to call tools.** Tool choice is "auto" (`LlamaGenerationSession::renderTemplate`), so no call is forced at the start of a reply.
-- **Five tool rounds at most** per turn (`ToolCallLoop.DEFAULT_MAX_TOOL_ROUNDS`).
-- **Thinking is forced on after each tool result** for models with a thinking mode, even with the thinking switch off. This works around Gemma-style models giving blank replies after a tool call.
+- **The model decides when to call tools.** Tool choice is "auto" (`LlamaGenerationSession::renderTemplate`), so a reply can be any mix of messages, tool calls and thinking, in the order the model chooses.
+- **Each step is shown in order**: that round's thinking, what the model said, then its tool call (`MessageChatBubble`).
+- **Within one step the order is fixed** by the model's chat format: thinking, then text, then the tool call. Models can think again after each tool result.
+- **Ten tool rounds at most** per reply (`ToolCallLoop.DEFAULT_MAX_TOOL_ROUNDS`).
+- **Thinking after tool results follows the thinking switch**, except for Gemma and gpt-oss, which give blank replies after a tool call without it, so it's forced on for them (`GenerationCoordinator`, `forceThinkingAfterTools`).
+- **The system prompt asks the model to say what it's about to do** before each tool call, whenever any tool is on (`system_prompt_tool_hint`).
 - **Probably one tool per round.** The app doesn't turn on llama.cpp's parallel tool calls, which are off by default. Not confirmed against the llama.cpp source.

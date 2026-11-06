@@ -103,6 +103,15 @@ fun ChatItemBubble(
                             )
                             Spacer(modifier = Modifier.height(6.dp))
                         }
+                        // What the model said before calling the tool.
+                        if (pre.responseContent.isNotBlank()) {
+                            AssistantReplyContent(
+                                text = pre.responseContent,
+                                isGenerating = false,
+                                textStyle = MaterialTheme.typography.bodyLarge.copy(color = LocalContentColor.current),
+                            )
+                            Spacer(modifier = Modifier.height(6.dp))
+                        }
                     }
                     val durationSec = (toolCall.durationMs / 1000).toInt().coerceAtLeast(
                         if (toolCall.durationMs > 0) 1 else 0
