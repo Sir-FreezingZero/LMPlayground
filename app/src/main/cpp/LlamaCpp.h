@@ -123,6 +123,7 @@ public:
     // Number of user turns in the conversation, including ones dropped by
     // context compaction. The next addMessage becomes turn getTurnCount().
     int getTurnCount() const;
+    bool isWritingToolCall() const { return writing_tool_call; }
 
     // Tool calling
     void setTools(const char *toolsJson);
@@ -325,6 +326,8 @@ private:
     std::vector<common_chat_tool> tools;
     bool tools_enabled = false;
     std::vector<common_chat_tool_call> pending_tool_calls;
+    // True while the streamed reply contains a tool call being written.
+    bool writing_tool_call = false;
     int tool_call_counter = 0;
 
     // Persistent preamble cache. Set by setPreambleCachePath(). Consulted

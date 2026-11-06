@@ -12,4 +12,7 @@ interface LlamaGenerationCallback {
      * @param response The full response string so far.
      */
     fun onFullResponse(response: String)
+
+    /** The model started writing a tool call (before it runs). */
+    fun onToolCallStarted() {}
 }

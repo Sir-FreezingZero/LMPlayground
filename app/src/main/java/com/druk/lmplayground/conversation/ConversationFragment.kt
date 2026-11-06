@@ -59,6 +59,7 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
@@ -274,6 +275,7 @@ class ConversationFragment : Fragment() {
 
             val messages = viewModel.uiState.messages
             val isGenerating by viewModel.isGenerating.observeAsState()
+            val isRunningTools by viewModel.isRunningTools.observeAsState(false)
             val progress by viewModel.modelLoadingProgress.observeAsState(0f)
             val modelInfo by viewModel.loadedModel.observeAsState()
             val modelStatus by viewModel.loadedModelStatus.observeAsState()
@@ -799,6 +801,28 @@ class ConversationFragment : Fragment() {
                             )
                         }
 
+                        // Whether the reply text itself is streaming (not reading
+                        // or thinking). Derived, so this screen only recomposes
+                        // when it flips, not on every token.
+                        val writingReply by remember {
+                            derivedStateOf {
+                                messages.lastOrNull()?.let {
+                                    it.author == "Assistant" &&
+                                        splitThinking(it.content).responseContent.isNotBlank()
+                                } == true
+                            }
+                        }
+                        // Glowing status line under the top bar (see StatusLine.kt).
+                        val drawStatusLine = rememberStatusLine(
+                            when {
+                                !isModelReady -> ChatStatus.NO_MODEL
+                                isRunningTools && isGenerating == true -> ChatStatus.RUNNING_TOOLS
+                                isGenerating == true && writingReply -> ChatStatus.GENERATING
+                                isGenerating == true -> ChatStatus.PROCESSING
+                                else -> ChatStatus.READY
+                            }
+                        )
+
                         // ---- Frosted top bar, floating over the content ----
                         ConversationBar(
                             modelInfo = modelInfo,
@@ -824,16 +848,13 @@ class ConversationFragment : Fragment() {
                                 // Fade the frost in as content scrolls under the
                                 // bar; flush (no tint/elevation) at the top.
                                 .hazeEffect(hazeState, hazeStyle) { alpha = topBarFrost }
+                                // Own layer, so the status line's animation
+                                // redraws only this, not the blur under it.
+                                .graphicsLayer()
                                 .drawWithContent {
                                     drawContent()
-                                    // Full-width line under the bar.
-                                    val lineWidth = 1.dp.toPx()
-                                    drawLine(
-                                        colorScheme.outlineVariant,
-                                        start = Offset(0f, size.height - lineWidth / 2f),
-                                        end = Offset(size.width, size.height - lineWidth / 2f),
-                                        strokeWidth = lineWidth
-                                    )
+                                    // Status line under the bar.
+                                    drawStatusLine()
                                     // Model-loading progress hairline along the
                                     // bar's bottom edge.
                                     val strokeWidth = 2.dp.toPx()

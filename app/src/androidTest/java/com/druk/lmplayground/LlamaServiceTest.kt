@@ -203,6 +203,7 @@ class LlamaServiceTest {
                 val statusCode = AtomicInteger(Int.MIN_VALUE)
 
                 val cb = object : ILlamaGenerationCallback.Stub() {
+                    override fun onToolCallStarted() {}
                     override fun onResponseDelta(delta: String) {
                         deltaCount.incrementAndGet()
                         synchronized(accumulated) { accumulated.append(delta) }
@@ -290,6 +291,7 @@ class LlamaServiceTest {
         service!!.addMessage(sessionId, "Tell me a long story about a dragon.", false)
 
         val cb = object : ILlamaGenerationCallback.Stub() {
+            override fun onToolCallStarted() {}
             override fun onResponseDelta(delta: String) {}
             override fun onGenerationFinished(sc: Int) {}
         }
@@ -326,6 +328,7 @@ class LlamaServiceTest {
         service!!.addMessage(sessionId, "Tell me a long story about a dragon.", false)
 
         val cb = object : ILlamaGenerationCallback.Stub() {
+            override fun onToolCallStarted() {}
             override fun onResponseDelta(delta: String) {}
             override fun onGenerationFinished(sc: Int) {}
         }
@@ -375,6 +378,7 @@ class LlamaServiceTest {
             val firstFinished = CountDownLatch(1)
             val firstStatus = AtomicInteger(Int.MIN_VALUE)
             val firstCb = object : ILlamaGenerationCallback.Stub() {
+                override fun onToolCallStarted() {}
                 override fun onResponseDelta(delta: String) {}
                 override fun onGenerationFinished(sc: Int) {
                     firstStatus.set(sc); firstFinished.countDown()
@@ -383,6 +387,7 @@ class LlamaServiceTest {
             val secondFinished = CountDownLatch(1)
             val secondStatus = AtomicInteger(Int.MIN_VALUE)
             val secondCb = object : ILlamaGenerationCallback.Stub() {
+                override fun onToolCallStarted() {}
                 override fun onResponseDelta(delta: String) {}
                 override fun onGenerationFinished(sc: Int) {
                     secondStatus.set(sc); secondFinished.countDown()
@@ -435,6 +440,7 @@ class LlamaServiceTest {
             val statusCode = AtomicInteger(Int.MIN_VALUE)
 
             val cb = object : ILlamaGenerationCallback.Stub() {
+                override fun onToolCallStarted() {}
                 override fun onResponseDelta(delta: String) { deltaCount.incrementAndGet() }
                 override fun onGenerationFinished(sc: Int) {
                     statusCode.set(sc)

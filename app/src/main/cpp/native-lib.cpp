@@ -766,6 +766,14 @@ Java_com_druk_llamacpp_jni_NativeLlamaSession_getTurnCount(JNIEnv *env, jobject 
     return session->getTurnCount();
 }
 
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_druk_llamacpp_jni_NativeLlamaSession_isWritingToolCall(JNIEnv *env, jobject thiz) {
+    jclass clazz = env->GetObjectClass(thiz);
+    jfieldID fid = env->GetFieldID(clazz, "nativeHandle", "J");
+    auto *session = (LlamaGenerationSession*)env->GetLongField(thiz, fid);
+    return session != nullptr && session->isWritingToolCall();
+}
+
 extern "C"
 JNIEXPORT jboolean JNICALL
 Java_com_druk_llamacpp_jni_NativeLlamaModel_supportsToolCalling(JNIEnv *env, jobject thiz) {

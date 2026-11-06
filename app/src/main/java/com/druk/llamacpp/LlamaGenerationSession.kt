@@ -178,6 +178,7 @@ class LlamaGenerationSession internal constructor(
                 }
                 callback.onFullResponse(full)
             }
+            override fun onToolCallStarted() = callback.onToolCallStarted()
             override fun onGenerationFinished(statusCode: Int) {
                 finished.complete(statusCode)
             }

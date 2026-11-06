@@ -70,6 +70,7 @@ internal class GenerationWorker(
 
             if (!cancelled) {
                 var sentLength = 0
+                var toolCallSignalled = false
                 val nativeCallback = object : LlamaGenerationCallback {
                     override fun onFullResponse(response: String) {
                         if (response.length > sentLength) {
@@ -93,7 +94,13 @@ internal class GenerationWorker(
                     //        proxy can drain them and resume
                     //   other → error/forbidden state ⇒ propagate as-is
                     val rc = nativeSession.generate(nativeCallback)
-                    if (rc == 0) continue
+                    if (rc == 0) {
+                        if (!toolCallSignalled && nativeSession.isWritingToolCall()) {
+                            toolCallSignalled = true
+                            try { cb.onToolCallStarted() } catch (_: RemoteException) { cancelled = true }
+                        }
+                        continue
+                    }
                     statusCode = if (rc == 1) 0 else rc
                     break
                 }

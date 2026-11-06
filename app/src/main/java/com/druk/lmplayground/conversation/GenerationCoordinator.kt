@@ -64,6 +64,9 @@ class GenerationCoordinator(
         /** A tool round completed; attach [infos] to the assistant message. */
         fun onToolCalls(infos: List<ToolCallInfo>)
 
+        /** A tool call started being written or run ([running] true), or its round finished. */
+        fun onToolsRunning(running: Boolean) {}
+
         /** Thinking (re)started for the post-tool response phase. */
         fun onThinkingRestarted()
 
@@ -195,6 +198,7 @@ class GenerationCoordinator(
             // Throttle the per-token haptic tick so fast streams feel
             // like rapid typing instead of one continuous buzz.
             var lastHapticMs = 0L
+            override fun onToolCallStarted() = listener.onToolsRunning(true)
             override fun onFullResponse(response: String) {
                 totalTokens++
                 val nowMs = System.currentTimeMillis()
@@ -276,7 +280,12 @@ class GenerationCoordinator(
                 tools = object : ToolCallLoop.ToolExecutor {
                     override fun executeToolCalls(toolCallsJson: String): String {
                         Log.d(TAG, "Tool calls: $toolCallsJson")
-                        return toolRegistry.executeToolCalls(toolCallsJson, enforceEnabled = true)
+                        listener.onToolsRunning(true)
+                        try {
+                            return toolRegistry.executeToolCalls(toolCallsJson, enforceEnabled = true)
+                        } finally {
+                            listener.onToolsRunning(false)
+                        }
                     }
                     override fun cancelInFlight() = toolRegistry.cancelInFlight()
                 },

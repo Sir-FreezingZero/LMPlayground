@@ -15,5 +15,7 @@ package com.druk.llamacpp;
  */
 oneway interface ILlamaGenerationCallback {
     void onResponseDelta(String delta);
+    /** The model started writing a tool call; sent once per startGeneration. */
+    void onToolCallStarted();
     void onGenerationFinished(int statusCode);
 }

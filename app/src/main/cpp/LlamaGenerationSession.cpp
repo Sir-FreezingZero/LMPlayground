@@ -1197,10 +1197,12 @@ int LlamaGenerationSession::generate(const ResponseCallback& callback) {
         }
 
         if (!is_eog) {
+            writing_tool_call = false;
             // Use PEG parser to normalize thinking format for the UI
             if (parser_initialized) {
                 try {
                     auto parsed = common_chat_parse(common_chat_input(response), /*is_partial=*/true, parser_params);
+                    writing_tool_call = !parsed.tool_calls.empty();
                     std::string normalized;
                     if (!parsed.reasoning_content.empty()) {
                         normalized = "<think>" + parsed.reasoning_content;

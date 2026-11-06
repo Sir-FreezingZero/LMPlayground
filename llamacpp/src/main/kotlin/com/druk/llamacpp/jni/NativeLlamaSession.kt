@@ -35,6 +35,9 @@ class NativeLlamaSession {
     /** User turns in the conversation; the next addMessage is this index. */
     external fun getTurnCount(): Int
 
+    /** True while the reply being streamed contains a tool call. */
+    external fun isWritingToolCall(): Boolean
+
     external fun setTools(toolsJson: String)
 
     external fun getToolCallsJson(): String
