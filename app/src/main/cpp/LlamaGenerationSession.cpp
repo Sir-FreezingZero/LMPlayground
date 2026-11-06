@@ -1496,8 +1496,12 @@ bool LlamaGenerationSession::tryPreambleCache(bool enableThinking) {
             const bool ver_ok     = manifest.value("version", 0) == 1;
             const bool ctx_ok     = manifest.value("n_ctx", -1) == llama_n_ctx(ctx);
             const bool prelude_ok = manifest.value("preamble", "") == preamble;
+            // A cache from another llama.cpp version may hold tokens from an
+            // older tokenizer or KV state laid out differently, even when the
+            // state file format number is unchanged, so it is never reused.
+            const bool engine_ok  = manifest.value("engine", "") == llama_version();
 
-            if (fp_ok && ver_ok && ctx_ok && prelude_ok) {
+            if (fp_ok && ver_ok && ctx_ok && prelude_ok && engine_ok) {
                 std::vector<llama_token> tokens(llama_n_ctx(ctx));
                 size_t n_loaded = 0;
                 bool ok = llama_state_seq_load_file(ctx, bin_path.c_str(),
@@ -1516,8 +1520,8 @@ bool LlamaGenerationSession::tryPreambleCache(bool enableThinking) {
                 LOGi("Preamble cache: load returned ok=%d n_loaded=%zu, falling through to miss path",
                      (int)ok, n_loaded);
             } else {
-                LOGi("Preamble cache: manifest mismatch (fp=%d ver=%d ctx=%d preamble=%d), regenerating",
-                     (int)fp_ok, (int)ver_ok, (int)ctx_ok, (int)prelude_ok);
+                LOGi("Preamble cache: manifest mismatch (fp=%d ver=%d ctx=%d preamble=%d engine=%d), regenerating",
+                     (int)fp_ok, (int)ver_ok, (int)ctx_ok, (int)prelude_ok, (int)engine_ok);
             }
         } catch (const std::exception &e) {
             LOGi("Preamble cache: manifest read failed (%s), regenerating", e.what());
@@ -1586,6 +1590,7 @@ bool LlamaGenerationSession::tryPreambleCache(bool enableThinking) {
         nlohmann::ordered_json manifest;
         manifest["version"]     = 1;
         manifest["fingerprint"] = preamble_cache_fingerprint;
+        manifest["engine"]      = llama_version();
         manifest["n_ctx"]       = n_ctx;
         manifest["preamble"]    = preamble;
         manifest["n_tokens"]    = (int)tokens.size();

@@ -184,9 +184,9 @@ bool LlamaModel::supportsToolCalling() {
     if (!chat_tmpls) {
         return false;
     }
+    // Since llama.cpp 0.8 the caps are a JSON object, not a map of bools.
     auto caps = common_chat_templates_get_caps(chat_tmpls.get());
-    auto it = caps.find("supports_tools");
-    return it != caps.end() && it->second;
+    return caps.contains("supports_tools") && caps.at("supports_tools").get<bool>();
 }
 
 bool LlamaModel::supportsVision() {

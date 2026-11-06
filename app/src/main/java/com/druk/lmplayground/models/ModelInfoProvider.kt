@@ -225,6 +225,17 @@ object ModelInfoProvider {
             logoRes = R.drawable.logo_liquid,
             supportedLanguages = LFM25_LANGS
         ),
+        // Needs llama.cpp 0.8+ (the lfm3 architecture). Liquid's card lists 16
+        // languages without naming them here; LFM2.5's 16 is the closest match.
+        ModelInfo(
+            name = "LFM3 1.7B",
+            filename = "LFM3-1.7B-Q4_K_M.gguf",
+            remoteUri = Uri.parse("https://huggingface.co/LiquidAI/LFM3-1.7B-GGUF/resolve/main/LFM3-1.7B-Q4_K_M.gguf"),
+            releaseDate = LocalDate.parse("2026-10-27"),
+            description = "Liquid AI · Chat and tool-use model · 1.10Gb",
+            logoRes = R.drawable.logo_liquid,
+            supportedLanguages = LFM25_LANGS
+        ),
         ModelInfo(
             name = "Ministral 3 3B Instruct",
             filename = "Ministral-3-3B-Instruct-2512-Q4_K_M.gguf",

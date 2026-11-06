@@ -1,7 +1,8 @@
 # Architecture
 
-LM Playground runs GGUF models on-device through [llama.cpp](https://github.com/andriydruk/llama.cpp-android)
-(a fork carrying one patch — see [fd:N paths](#fdn-file-descriptor-paths)).
+LM Playground runs GGUF models on-device through [llama.cpp](https://github.com/Sir-FreezingZero/llama.cpp-android)
+(branch `android-0.9.0`: upstream v0.9.0 plus four patches — see
+[Patches on the llama.cpp fork](#patches-on-the-llamacpp-fork)).
 This document maps the moving parts and the contracts between them.
 
 ## Process model
@@ -167,9 +168,24 @@ session by replay instead (`ModelRuntime.rewindSession`).
 Models live in a user-chosen SAF folder, which has no filesystem path.
 The app opens a `ParcelFileDescriptor` and sends it over AIDL; the
 service dups it and builds an `fd:N` pseudo-path that the fork's
-`ggml_fopen` / `llama-mmap` understand. This is the only patch carried
-on the llama.cpp fork. The app-side PFD is kept alive in `ModelRuntime`
-for the model's lifetime (the mmap dies with the descriptor).
+`ggml_fopen` / `llama-mmap` understand (the first patch below). The
+app-side PFD is kept alive in `ModelRuntime` for the model's lifetime
+(the mmap dies with the descriptor).
+
+## Patches on the llama.cpp fork
+
+Branch `android-0.9.0` of Sir-FreezingZero/llama.cpp-android is upstream
+llama.cpp v0.9.0 with Andrew Druk's four patches from
+andriydruk/llama.cpp-android `android-0.7.0`, re-applied:
+
+1. Accept `fd:N` paths in `ggml_fopen` and `llama-mmap` (SAF model loading).
+2. Vocab: warn instead of abort on duplicated tokens.
+3. Vendor parakeet.cpp as `tools/parakeet` (voice dictation).
+4. Vulkan: don't enable `VK_EXT_device_fault` on the Qualcomm driver
+   (Adreno crash after a device loss).
+
+To move to a newer llama.cpp, branch from the new upstream tag and
+cherry-pick the four commits; only the Vulkan one has needed a hand fix.
 
 ## AIDL payload budget
 

@@ -34,8 +34,9 @@ if(DEFINED SPIRV_HEADERS_INCLUDE_DIR)
 endif()
 
 # Include llama.cpp subdirectory.
-# The submodule points at the andriydruk/llama.cpp-android fork (android-b9496),
-# which bakes "fd:N" file-descriptor handling into ggml_fopen / llama-mmap, so the
+# The submodule points at the Sir-FreezingZero/llama.cpp-android fork (android-0.9.0:
+# upstream llama.cpp v0.9.0 plus Andrew Druk's four Android patches, see
+# ARCHITECTURE.md), which bakes "fd:N" file-descriptor handling into ggml_fopen / llama-mmap, so the
 # old ggml_fopen_override.c static-lib + --whole-archive hack is no longer needed.
 # The build uses BUILD_SHARED_LIBS=ON + GGML_BACKEND_DL (set in build.gradle.kts):
 # ggml is a single shared libggml-base.so, and CPU/Vulkan backends are loaded at
