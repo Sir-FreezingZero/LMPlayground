@@ -13,9 +13,8 @@ import kotlin.math.abs
  */
 class UnitConverterTool : Tool {
     override val name = "convert_units"
-    override val useFor = "Converts amounts between units, such as miles to kilometers or Fahrenheit to Celsius."
-    override val description = "Convert a number from one unit to another: length, weight, temperature, volume, area, speed, data size or time. Units can be names or short codes, like \"feet\", \"km\" or \"°F\"."
-    override val parametersSchema = """{"type":"object","properties":{"value":{"type":"number","description":"The numeric value to convert"},"from":{"type":"string","description":"The unit the number is in now, e.g. \"meters\""},"to":{"type":"string","description":"The unit wanted, e.g. \"feet\""}},"required":["value","from","to"]}"""
+    override val description = "Converts an amount between units of length, weight, temperature, volume, area, speed, data size or time, such as miles to kilometers or Fahrenheit to Celsius. Returns the converted amount."
+    override val parametersSchema = """{"type":"object","properties":{"value":{"type":"number","description":"The amount to convert"},"from":{"type":"string","description":"The unit it is in now, as a name or short code, e.g. \"miles\" or \"mi\""},"to":{"type":"string","description":"The unit wanted, e.g. \"kilometers\" or \"km\""}},"required":["value","from","to"]}"""
 
     override fun execute(arguments: String): String {
         return try {

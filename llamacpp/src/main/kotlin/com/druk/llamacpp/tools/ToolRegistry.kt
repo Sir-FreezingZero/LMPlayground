@@ -22,6 +22,9 @@ class ToolRegistry {
 
     fun getTool(name: String): Tool? = tools[name]
 
+    /** The tool that offers [function], the name the model called. */
+    fun toolFor(function: String): Tool? = tools.values.firstOrNull { t -> t.functions.any { it.name == function } }
+
     fun isToolEnabled(name: String): Boolean = enabledState[name] ?: false
 
     fun setToolEnabled(name: String, enabled: Boolean) {
@@ -44,14 +47,13 @@ class ToolRegistry {
         val arr = JSONArray()
         for (tool in tools.values) {
             if (!isToolEnabled(tool.name)) continue
-            val obj = JSONObject()
-            obj.put("type", "function")
-            val func = JSONObject()
-            func.put("name", tool.name)
-            func.put("description", tool.description)
-            func.put("parameters", JSONObject(tool.parametersSchema))
-            obj.put("function", func)
-            arr.put(obj)
+            for (f in tool.functions) {
+                val func = JSONObject()
+                    .put("name", f.name)
+                    .put("description", f.description)
+                    .put("parameters", JSONObject(f.parametersSchema))
+                arr.put(JSONObject().put("type", "function").put("function", func))
+            }
         }
         return arr.toString()
     }
@@ -73,11 +75,11 @@ class ToolRegistry {
             val arguments = call.getString("arguments")
             val id = call.getString("id")
 
-            val tool = getTool(name)
+            val tool = toolFor(name)
             val content = when {
                 tool == null -> """{"error":"Unknown tool: $name"}"""
-                enforceEnabled && !isToolEnabled(name) -> """{"error":"The $name tool is not enabled."}"""
-                else -> tool.execute(arguments)
+                enforceEnabled && !isToolEnabled(tool.name) -> """{"error":"The $name tool is not enabled."}"""
+                else -> tool.execute(name, arguments)
             }
 
             val result = JSONObject()

@@ -10,9 +10,8 @@ import org.jsoup.Jsoup
 
 class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
     override val name = "web_search"
-    override val useFor = "Searches the web for news, recent events and anything that may have changed since you were trained."
-    override val description = "Search the web and return results with titles, snippets, and a compact reference for each result. Pass a result's \"ref\" to web_fetch to read that page."
-    override val parametersSchema = """{"type":"object","properties":{"query":{"type":"string","description":"The search query"},"max_results":{"type":"integer","description":"Maximum number of results to return (default 5, max 10)"}},"required":["query"]}"""
+    override val description = "Searches the web for news, recent events and anything that may have changed since you were trained. Returns the top results, each with a title, a snippet and a ref to pass to web_fetch for the full page."
+    override val parametersSchema = """{"type":"object","properties":{"query":{"type":"string","description":"What to search for"}},"required":["query"]}"""
 
     override fun cancelInFlight() {
         WebHttp.client.dispatcher.cancelAll()

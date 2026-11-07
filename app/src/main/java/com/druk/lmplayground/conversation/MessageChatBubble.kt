@@ -348,7 +348,7 @@ private fun formatDuration(seconds: Int): String {
     }
 }
 
-/** Friendly display name for a tool (falls back to the raw name for unknowns). */
+/** Friendly display name for a tool the model called (falls back to the raw name for unknowns). */
 @Composable
 private fun toolDisplayName(name: String): String = when (name) {
     "run_javascript" -> stringResource(R.string.tool_run_javascript_title)
@@ -356,12 +356,12 @@ private fun toolDisplayName(name: String): String = when (name) {
     "web_search" -> stringResource(R.string.tool_web_search_title)
     "web_fetch" -> stringResource(R.string.tool_web_fetch_title)
     "set_alarm" -> stringResource(R.string.tool_set_alarm_title)
-    "calculator" -> stringResource(R.string.tool_calculator_title)
+    "calculate" -> stringResource(R.string.tool_calculator_title)
     "convert_units" -> stringResource(R.string.tool_convert_units_title)
-    "device_info" -> stringResource(R.string.tool_device_info_title)
-    "wikipedia" -> stringResource(R.string.tool_wikipedia_title)
-    "location" -> stringResource(R.string.tool_location_title)
-    "memory" -> stringResource(R.string.tool_memory_title)
+    "get_device_info" -> stringResource(R.string.tool_device_info_title)
+    "search_wikipedia" -> stringResource(R.string.tool_wikipedia_title)
+    "get_location" -> stringResource(R.string.tool_location_title)
+    "remember", "forget" -> stringResource(R.string.tool_memory_title)
     else -> name
 }
 

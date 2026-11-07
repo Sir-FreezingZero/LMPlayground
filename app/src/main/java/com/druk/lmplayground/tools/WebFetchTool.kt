@@ -10,9 +10,8 @@ import java.nio.charset.Charset
 
 class WebFetchTool(private val linkStore: WebLinkStore? = null) : Tool {
     override val name = "web_fetch"
-    override val useFor = "Reads the text of a web page, from a link the user gives or a web_search result."
-    override val description = "Fetch a web page and return its main content as markdown. Headings, lists, links and code blocks are preserved so you can read the page structure."
-    override val parametersSchema = """{"type":"object","properties":{"url":{"type":"string","description":"The URL to fetch, or a reference from web_search results such as \"ddg:3\""},"max_length":{"type":"integer","description":"Maximum content length in characters (default 5000)"}},"required":["url"]}"""
+    override val description = "Reads a web page, from a link the user gave or a web_search result. Returns the page's title and main text."
+    override val parametersSchema = """{"type":"object","properties":{"url":{"type":"string","description":"A link, or a ref from web_search such as \"ddg:3\""}},"required":["url"]}"""
 
     override fun cancelInFlight() {
         WebHttp.client.dispatcher.cancelAll()

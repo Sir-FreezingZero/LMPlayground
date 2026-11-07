@@ -103,12 +103,12 @@ private fun JSONObject.field(key: String): String? =
     if (has("error")) null else optString(key).trim().takeIf { it.isNotEmpty() }
 
 val TOOL_TEST_CASES = listOf(
-    ToolTestCase("calculator", "What is 1234 times 5678?",
+    ToolTestCase("calculate", "What is 1234 times 5678?",
         { "1234" in it.text("expression") && "5678" in it.text("expression") }, { it.field("result") }),
     // Math hidden in an everyday question, which small models try in their heads.
-    ToolTestCase("calculator", "I paid with a \$20 bill for a \$7 order. How much change should I get?",
+    ToolTestCase("calculate", "I paid with a \$20 bill for a \$7 order. How much change should I get?",
         { "20" in it.text("expression") && "7" in it.text("expression") }, { it.field("result") },
-        label = "calculator (everyday)"),
+        label = "calculate (everyday)"),
     // The whole number is enough: "42.16 km" and "about 42.2 km" both answer it.
     ToolTestCase("convert_units", "How many kilometers is 26.2 miles?",
         { it.text("from").startsWith("mi") && it.text("to").startsWith("k") },
@@ -121,15 +121,15 @@ val TOOL_TEST_CASES = listOf(
     ToolTestCase("get_date_time", "What time is it right now?", { true },
         { it.field("time")?.substringBefore(' ') }),
     // The model should check, not ask the user where they are.
-    ToolTestCase("location", "I'm lost. Can you tell me where I am?", { true }, { it.field("place")?.substringBefore(',') }),
-    ToolTestCase("device_info", "How much RAM does my phone have?", { true }, { it.field("memory")?.substringBefore(' ') }),
-    ToolTestCase("memory", "Please remember that my favorite color is teal.", { "teal" in it.text("content") }, { null },
-        simulated = """{"saved":true,"id":1}"""),
+    ToolTestCase("get_location", "I'm lost. Can you tell me where I am?", { true }, { it.field("place")?.substringBefore(',') }),
+    ToolTestCase("get_device_info", "How much RAM does my phone have?", { true }, { it.field("memory")?.substringBefore(' ') }),
+    ToolTestCase("remember", "Please remember that my favorite color is teal.", { "teal" in it.text("fact") }, { null },
+        simulated = """{"result":"Saved as fact 1."}"""),
     // Live search results differ every time, so only the call is checked.
     ToolTestCase("web_search", "What's in the news today?", { it.text("query").isNotBlank() }, { null }),
     ToolTestCase("web_fetch", "What's the title of the page at https://example.com?",
         { "example.com" in it.text("url") }, { it.field("title") }),
-    ToolTestCase("wikipedia", "According to Wikipedia, what year was the Eiffel Tower completed?",
+    ToolTestCase("search_wikipedia", "According to Wikipedia, what year was the Eiffel Tower completed?",
         { "eiffel" in it.text("query") }, { r -> "1889".takeIf { r.field("summary")?.contains(it) == true } }),
     ToolTestCase("run_javascript", "Write and run code to count the letter r in \"strawberry raspberry\".",
         { "strawberry" in it.text("code") }, { it.field("result") }),
@@ -334,7 +334,9 @@ class ToolTestViewModel(app: Application) : AndroidViewModel(app) {
 
     /** The real tools, except the ones with side effects, which get their case's simulated result. */
     private val testTools = object : ToolCallLoop.ToolExecutor {
-        private val simulated = TOOL_TEST_CASES.mapNotNull { c -> c.simulated?.let { c.tool!! to it } }.toMap()
+        // forget has no case of its own, but must never delete a real note in a test.
+        private val simulated = TOOL_TEST_CASES.mapNotNull { c -> c.simulated?.let { c.tool!! to it } }.toMap() +
+            ("forget" to """{"result":"Fact deleted."}""")
         override fun executeToolCalls(toolCallsJson: String): String {
             val calls = JSONArray(toolCallsJson)
             return JSONArray((0 until calls.length()).map { i ->
@@ -368,7 +370,7 @@ fun ToolTestDialog(viewModel: ToolTestViewModel, onDismiss: () -> Unit) {
     fun start(only: Int? = null) {
         val model = chosen ?: return
         val run = { viewModel.run(model, only) }
-        if ((only == null || TOOL_TEST_CASES[only].tool == "location") && !locationGranted && askLocation != null) {
+        if ((only == null || TOOL_TEST_CASES[only].tool == "get_location") && !locationGranted && askLocation != null) {
             afterAsking = run
             askLocation()
         } else {
