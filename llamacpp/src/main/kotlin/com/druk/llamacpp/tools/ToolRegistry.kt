@@ -60,7 +60,7 @@ class ToolRegistry {
     /**
      * A tool's JSON result as plain text, which every model reads the same way:
      * an error as "Error: …", a lone result as itself, anything else as
-     * "Key: value" lines, with lists as blocks between "---".
+     * "Key: value" lines (empty ones left out), with lists as blocks between "---".
      */
     fun asText(json: String): String {
         val o = runCatching { JSONObject(json) }.getOrNull() ?: return json
@@ -69,7 +69,9 @@ class ToolRegistry {
         return lines(o)
     }
 
-    private fun lines(o: JSONObject): String = o.keys().asSequence().joinToString("\n") { key ->
+    private fun lines(o: JSONObject): String = o.keys().asSequence().filter {
+        o.opt(it).let { v -> v != null && v != JSONObject.NULL && v.toString().isNotBlank() }
+    }.joinToString("\n") { key ->
         when (val v = o.get(key)) {
             is JSONArray -> (0 until v.length()).joinToString("\n\n---\n\n", postfix = "\n") { i ->
                 v.optJSONObject(i)?.let { lines(it) } ?: v.optString(i)
@@ -131,10 +133,11 @@ class ToolRegistry {
 
             val match = functionFor(name)
             val content = when {
-                match == null -> """{"error":"Unknown tool: $name"}"""
-                enforceEnabled && !isToolEnabled(match.first.name) -> """{"error":"The $name tool is not enabled."}"""
-                else -> match.first.execute(match.second.name, normalizedArguments(arguments, match.second))
-            }.let(::asText)
+                match == null -> "Error: Unknown tool: $name"
+                enforceEnabled && !isToolEnabled(match.first.name) -> "Error: The $name tool is not enabled."
+                else -> runCatching { asText(match.first.execute(match.second.name, normalizedArguments(arguments, match.second))) }
+                    .getOrElse { "Error: " + (it.message ?: "The $name tool failed.") }
+            }
 
             val result = JSONObject()
             result.put("id", id)

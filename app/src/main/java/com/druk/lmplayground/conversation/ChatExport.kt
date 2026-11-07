@@ -62,7 +62,7 @@ object ChatExport {
                 appendLine("**Tool call: `${call.name}`** (${call.durationMs} ms)")
                 appendLine()
                 block("Arguments", pretty(call.arguments), "json")
-                block("Result", pretty(call.result), "json")
+                block("Result", call.result, "text")
             }
             if (sent == null && (m.content.isNotEmpty() || m.toolCalls.isNullOrEmpty())) {
                 block(if (m.toolCalls.isNullOrEmpty()) null else "Reply", m.content, "text")

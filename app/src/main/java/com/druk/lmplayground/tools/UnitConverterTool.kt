@@ -82,7 +82,7 @@ class UnitConverterTool : Tool {
         return BigDecimal(v).round(MathContext(6)).stripTrailingZeros().toPlainString()
     }
 
-    private fun errorJson(m: String) = """{"error":"${m.replace("\"", "'")}"}"""
+    private fun errorJson(m: String) = JSONObject().put("error", m).toString()
 
     private data class U(val category: String, val factor: Double)
 

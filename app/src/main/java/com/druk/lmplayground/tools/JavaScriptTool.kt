@@ -47,9 +47,7 @@ class JavaScriptTool(private val context: Context) : Tool {
                 sandbox.close()
             }
         } catch (e: Exception) {
-            val message = (e.cause?.message ?: e.message ?: "Execution failed")
-                .replace("\"", "'")
-            """{"error":"$message"}"""
+            JSONObject().put("error", e.cause?.message ?: e.message ?: "Execution failed").toString()
         }
     }
 }

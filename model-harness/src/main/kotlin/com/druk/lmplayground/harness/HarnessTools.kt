@@ -37,7 +37,7 @@ object HarnessTools {
         override val description = "Search the web and fetch page content. Returns snippets for all results. Use the url parameter to fetch full page text from a specific URL."
         override val parametersSchema = """{"type":"object","properties":{"query":{"type":"string","description":"The search query"},"url":{"type":"string","description":"A URL to fetch full page content from (instead of searching). Use this to read a page found in search results."}},"required":[]}"""
         override fun execute(arguments: String): String =
-            if ("url" in org.json.JSONObject(arguments)) """{"title":"Weather in Kyiv","content":"Kyiv, Ukraine. Currently 12°C, partly cloudy, wind 8 km/h."}"""
+            if (org.json.JSONObject(arguments).has("url")) """{"title":"Weather in Kyiv","content":"Kyiv, Ukraine. Currently 12°C, partly cloudy, wind 8 km/h."}"""
             else """{"results":[{"title":"Weather in Kyiv","snippet":"Currently 12°C and partly cloudy in Kyiv, Ukraine.","url":"ddg:1"}]}"""
     }
 

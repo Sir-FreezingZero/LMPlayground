@@ -50,7 +50,7 @@ class HardwareInfoTool(private val context: Context) : Tool {
             }
             out.toString()
         } catch (e: Exception) {
-            """{"error":"${(e.message ?: "Could not read device info").replace("\"", "'")}"}"""
+            JSONObject().put("error", e.message ?: "Could not read device info").toString()
         }
     }
 

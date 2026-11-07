@@ -28,7 +28,7 @@ class WebFetchTool(private val linkStore: WebLinkStore? = null) : Tool {
             // a bogus host.
             val resolved = linkStore?.resolve(rawUrl)
             if (resolved == null && linkStore?.isReference(rawUrl) == true) {
-                return WebHttp.errorJson("Unknown search reference '$rawUrl'. Call web_search first, then fetch a returned ref.")
+                return WebHttp.errorJson("Unknown search reference '$rawUrl'. Call web_search with a query first, then pass a returned url.")
             }
             val target = resolved ?: rawUrl
             val url = if (!target.startsWith("http")) "https://$target" else target
@@ -77,7 +77,6 @@ class WebFetchTool(private val linkStore: WebLinkStore? = null) : Tool {
                     text.substring(0, maxLength) + "\n\n[Page cut here to fit the conversation.]"
                 } else text
                 result.put("content", truncated)
-                result.put("length", truncated.length)
                 if (cut) result.put("note", "Only the first 2 MB of this page was read.")
                 result.toString()
             }

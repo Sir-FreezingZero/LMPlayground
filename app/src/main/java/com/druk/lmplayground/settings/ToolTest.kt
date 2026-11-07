@@ -318,7 +318,10 @@ class ToolTestViewModel(app: Application) : AndroidViewModel(app) {
                 else -> ToolTestResult(true, detail = said)
             }
         }
-        val call = records.firstOrNull { it.name == case.tool } ?: return ToolTestResult(
+        // The call with the right input if there is one (a search before reading a page is fine).
+        val calls = records.filter { it.name == case.tool }
+        val call = calls.firstOrNull { case.argsOk(runCatching { JSONObject(it.arguments) }.getOrDefault(JSONObject())) }
+            ?: calls.firstOrNull() ?: return ToolTestResult(
             false,
             detail = (if (records.isEmpty()) "Didn't use a tool; answered on its own." else "Used $called instead.") + " $said",
         )
