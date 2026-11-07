@@ -12,6 +12,18 @@ import java.util.concurrent.TimeUnit
  */
 internal object WebHttp {
 
+    /** The chat's context size in tokens, set at the start of each reply. */
+    @Volatile
+    var contextTokens: Int = 4096
+
+    /**
+     * How much of a page to hand the model: about 35% of the context window
+     * (at roughly 4 characters a token), between 2,000 and 16,000 characters,
+     * so one page can't crowd out the conversation on a small context.
+     */
+    fun pageChars(): Int = (contextTokens * 4 * 0.35).toInt().coerceIn(2_000, 16_000)
+
+
     const val USER_AGENT = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36"
 
     /** Most bytes read from any response; a page is cut to a few thousand characters anyway. */

@@ -317,6 +317,7 @@ class ModelRuntime(
                 // MRU is surfaced in the picker row so the user can one-tap
                 // re-apply their most-recent prompt for this model.
                 listener.onSystemPromptReset()
+                com.druk.lmplayground.tools.WebHttp.contextTokens = params.contextSize
                 val llamaSession = createSessionWithParams(llamaModel, params, "")
                 if (llamaSession == null) {
                     listener.onLoadStatus("Failed to create session")
@@ -423,6 +424,8 @@ class ModelRuntime(
 
     /** A session on the loaded model, on the phone or on a server; null when none is loaded. */
     private fun newSession(params: GenerationParams, systemPrompt: String): GenerationSession? {
+        // Tools size their results to the chat's context (see WebHttp.pageChars).
+        com.druk.lmplayground.tools.WebHttp.contextTokens = remote?.caps?.contextSize ?: params.contextSize
         val r = remote ?: return model?.let { createSessionWithParams(it, params, systemPrompt) }
         val effectivePrompt = composeSystemPrompt(systemPrompt)
         return RemoteSession(r.server, r.id, effectivePrompt, params, r.caps.contextSize)

@@ -79,7 +79,9 @@ class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
             val wrapper = JSONObject()
             wrapper.put("results", results)
             wrapper.put("query", query)
-            if (results.length() == 0) wrapper.put("message", "No results found")
+            if (results.length() == 0) wrapper.put("message", "No results found.")
+            // Small models tend to answer from a snippet; remind them the page itself is there to read.
+            else wrapper.put("note", "These are only short snippets. To read a page in full, call web_fetch with its ref.")
             wrapper.toString()
         } catch (e: Exception) {
             WebHttp.errorJson(e.message ?: "Search failed")

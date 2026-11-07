@@ -31,7 +31,7 @@ class WebFetchTool(private val linkStore: WebLinkStore? = null) : Tool {
             }
             val target = resolved ?: rawUrl
             val url = if (!target.startsWith("http")) "https://$target" else target
-            val maxLength = args.optInt("max_length", 5000).coerceIn(50, 20000)
+            val maxLength = args.optInt("max_length", WebHttp.pageChars()).coerceIn(50, 20000)
 
             val request = Request.Builder()
                 .url(url)
@@ -72,7 +72,9 @@ class WebFetchTool(private val linkStore: WebLinkStore? = null) : Tool {
                     result.put("title", "")
                     String(bytes, headerCharset ?: Charset.forName("UTF-8"))
                 }
-                val truncated = if (text.length > maxLength) text.substring(0, maxLength) + "..." else text
+                val truncated = if (text.length > maxLength) {
+                    text.substring(0, maxLength) + "\n\n[Page cut here to fit the conversation.]"
+                } else text
                 result.put("content", truncated)
                 result.put("length", truncated.length)
                 if (cut) result.put("note", "Only the first 2 MB of this page was read.")
