@@ -15,8 +15,8 @@ import org.json.JSONObject
  */
 class MemoryTool(private val context: Context) : Tool {
     override val name = "memory"
-    override val useFor = "remembering a fact about the user for later chats, only when they ask you to"
-    override val description = "Keep facts about the user across chats, like their name or preferences. Save only when the user asks you to remember something, written as a short fact (\"Name is Zach\"). Not for reminders: use set_alarm. Actions: \"save\" (with \"content\"), \"list\", \"update\" (with \"id\" and \"content\"), \"delete\" (with \"id\")."
+    override val useFor = "remembering facts about the user between chats"
+    override val description = "Save, list, update or delete short notes about the user that are kept across chats. Actions: \"save\" (with \"content\"), \"list\", \"update\" (with \"id\" and \"content\"), \"delete\" (with \"id\")."
     override val parametersSchema = """{"type":"object","properties":{"action":{"type":"string","description":"\"save\", \"list\", \"update\", or \"delete\""},"content":{"type":"string","description":"The note text, required for \"save\" and \"update\""},"id":{"type":"integer","description":"The note id, required for \"update\" and \"delete\""},"category":{"type":"string","description":"Optional short tag for a saved note, e.g. \"preferences\", \"projects\""}},"required":["action"]}"""
 
     private val dao get() = AppDatabase.getInstance(context).memoryDao()

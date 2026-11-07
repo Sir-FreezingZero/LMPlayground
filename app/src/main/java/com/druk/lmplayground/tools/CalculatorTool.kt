@@ -36,8 +36,8 @@ import kotlin.math.tanh
  */
 class CalculatorTool : Tool {
     override val name = "calculator"
-    override val useFor = "any math, including money and everyday problems like working out change"
-    override val description = "Work out a math expression exactly. Use it for any arithmetic instead of doing it yourself. Supports + - * / % ^, parentheses, common functions (sqrt, log, sin...) and pi and e. Angles are in radians."
+    override val useFor = "math and arithmetic"
+    override val description = "Evaluate a math expression exactly. Supports + - * / % ^, parentheses, common functions (sqrt, log, sin...) and pi and e. Angles are in radians."
     override val parametersSchema = """{"type":"object","properties":{"expression":{"type":"string","description":"The math expression, e.g. \"(1234 * 5678) / 3\", \"sqrt(2)\", \"sin(pi/4)\", \"log(1000)\"."}},"required":["expression"]}"""
 
     override fun execute(arguments: String): String {

@@ -28,11 +28,8 @@ class SetAlarmTool(
     private val twelveHourClock: () -> Boolean = { !DateFormat.is24HourFormat(context) },
 ) : Tool {
     override val name = "set_alarm"
-    override val useFor = "alarms and reminders at a time"
-    override val description =
-        "Set an alarm in the phone's Clock app. Pass the time the way the user said it, with words like " +
-            "\"morning\" or \"tonight\" (\"6:15 in the morning\", \"9 tonight\", \"in 2 hours\"). Don't add AM or PM " +
-            "yourself and don't turn \"in 2 hours\" into a clock time: the app works it out. One call per alarm."
+    override val useFor = "alarms and reminders"
+    override val description = "Set an alarm in the phone's Clock app."
     override val parametersSchema = """{"type":"object","properties":{""" +
         """"time":{"type":"string","description":"The time as the user said it, e.g. \"6:30 PM\", \"6:15 in the morning\", \"in 2 hours\""},""" +
         """"label":{"type":"string","description":"The name the user gave the alarm. Leave it out if they didn't name it."}},"required":["time"]}"""

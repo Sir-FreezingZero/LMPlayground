@@ -10,7 +10,7 @@ import java.nio.charset.Charset
 
 class WebFetchTool(private val linkStore: WebLinkStore? = null) : Tool {
     override val name = "web_fetch"
-    override val useFor = "reading a web page from a link or a search result"
+    override val useFor = "reading a web page"
     override val description = "Fetch a web page and return its main content as markdown. Headings, lists, links and code blocks are preserved so you can read the page structure."
     override val parametersSchema = """{"type":"object","properties":{"url":{"type":"string","description":"The URL to fetch, or a reference from web_search results such as \"ddg:3\""},"max_length":{"type":"integer","description":"Maximum content length in characters (default 5000)"}},"required":["url"]}"""
 

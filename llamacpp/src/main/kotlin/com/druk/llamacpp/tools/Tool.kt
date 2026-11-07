@@ -6,7 +6,7 @@ interface Tool {
     val parametersSchema: String
 
     /**
-     * When the model should call this tool, as a short phrase ("any math or
+     * When the model should call this tool, as a short phrase ("math and
      * arithmetic"). Listed in plain words in the system prompt, where small
      * models notice it more readily than in the JSON definitions.
      */

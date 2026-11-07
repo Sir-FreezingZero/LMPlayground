@@ -81,14 +81,15 @@ class SystemPromptExtras(
             parts.add("Today is " + DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault()).format(Date()) + ".")
         }
         if (tools.isNotEmpty()) parts.add(buildString {
-            append("You have tools. When one can find or work out the answer, call it instead of guessing, ")
-            append("working it out yourself, or asking the user for something it can find:\n")
-            tools.forEach { t ->
-                append("- ${t.name}: ${t.useFor.ifBlank { t.description.substringBefore(". ") }}\n")
-            }
-            append("For several requests in one message, call a tool for each. For anything else, answer yourself. ")
-            append("Before a tool call, say in a few words what you are doing. ")
-            append("Then answer from the result in plain words, giving only what the user asked for.")
+            append("You have tools for things you can't know or do reliably on your own:\n")
+            tools.forEach { t -> append("- ${t.name}: ${t.useFor.ifBlank { t.description.substringBefore(". ") }}\n") }
+            append("How to use them:\n")
+            append("- When a tool can find, check or calculate what the user needs, call it instead of guessing ")
+            append("or asking the user.\n")
+            append("- Call as many tools as the request needs, and pass values the way the user gave them.\n")
+            append("- Before a tool call, say briefly what you are doing.\n")
+            append("- After the results, answer in plain words, giving only what was asked. If a tool fails, say so.\n")
+            append("- Conversation, opinions and writing need no tools.")
         })
         if (withMemory) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
         return parts.joinToString("\n\n")
