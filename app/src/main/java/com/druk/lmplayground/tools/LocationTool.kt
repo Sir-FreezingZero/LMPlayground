@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit
  */
 class LocationTool(private val context: Context) : Tool {
     override val name = "location"
+    override val useFor = "where the user is right now"
     override val description = "Get the phone's approximate location: coordinates and, when known, the city, region and country."
     override val parametersSchema = """{"type":"object","properties":{}}"""
 
@@ -46,13 +47,13 @@ class LocationTool(private val context: Context) : Tool {
                 ?: known
                 ?: return """{"error":"Couldn't get a location fix. Make sure location is turned on, then try again."}"""
 
+            // Only what an answer needs, place first, so the model says where
+            // the user is instead of reading out fields.
             val out = JSONObject()
-                .put("latitude", location.latitude)
-                .put("longitude", location.longitude)
-                .put("accuracy_m", if (location.hasAccuracy()) location.accuracy.toDouble() else JSONObject.NULL)
-                .put("provider", location.provider ?: "")
-                .put("timestamp_ms", location.time)
             reverseGeocode(location.latitude, location.longitude)?.let { out.put("place", it) }
+            out.put("latitude", "%.4f".format(Locale.US, location.latitude))
+                .put("longitude", "%.4f".format(Locale.US, location.longitude))
+            if (location.hasAccuracy()) out.put("accuracy", accuracyText(location.accuracy))
             out.toString()
         } catch (e: SecurityException) {
             """{"error":"Location permission is not granted."}"""
@@ -122,6 +123,11 @@ class LocationTool(private val context: Context) : Tool {
         }
         return null
     }
+
+    /** "within about 30 m" / "within about 2 km": the precision, without false digits. */
+    private fun accuracyText(meters: Float): String =
+        if (meters < 1000) "within about ${maxOf(10, (meters / 10).toInt() * 10)} m"
+        else "within about ${"%.0f".format(Locale.US, meters / 1000)} km"
 
     private fun reverseGeocode(lat: Double, lon: Double): String? {
         return try {

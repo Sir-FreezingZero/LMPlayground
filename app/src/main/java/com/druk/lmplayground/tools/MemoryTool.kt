@@ -15,6 +15,7 @@ import org.json.JSONObject
  */
 class MemoryTool(private val context: Context) : Tool {
     override val name = "memory"
+    override val useFor = "saving or recalling facts about the user"
     override val description = "Keep notes about the user across chats. Actions: \"save\" (with \"content\"), \"list\", \"update\" (with \"id\" and \"content\"), \"delete\" (with \"id\")."
     override val parametersSchema = """{"type":"object","properties":{"action":{"type":"string","description":"\"save\", \"list\", \"update\", or \"delete\""},"content":{"type":"string","description":"The note text, required for \"save\" and \"update\""},"id":{"type":"integer","description":"The note id, required for \"update\" and \"delete\""},"category":{"type":"string","description":"Optional short tag for a saved note, e.g. \"preferences\", \"projects\""}},"required":["action"]}"""
 

@@ -19,6 +19,7 @@ class GetDateTimeTool(
     private val twelveHour: () -> Boolean = { !DateFormat.is24HourFormat(context) },
 ) : Tool {
     override val name = "get_date_time"
+    override val useFor = "the current time"
     override val description = "Get the current date, time and time zone."
     override val parametersSchema = """{"type":"object","properties":{}}"""
 

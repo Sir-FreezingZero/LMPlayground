@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit
 
 class JavaScriptTool(private val context: Context) : Tool {
     override val name = "run_javascript"
+    override val useFor = "working with text, dates or data in code"
     override val description = "Run JavaScript in a sandboxed V8 isolate; returns the last expression's value. Use for math, date and time (`new Date()`), strings, JSON, and regex. No network, filesystem, or DOM."
     override val parametersSchema = """{"type":"object","properties":{"code":{"type":"string","description":"JavaScript source; the last expression's value is returned. E.g. '(2 + 3) * 4', 'new Date().toString()'."}},"required":["code"]}"""
 

@@ -145,6 +145,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
         override fun onModelResolved(model: ModelInfo) {
             promptModelName = model.name
+            promptToolCalling = model.resolveCapabilities(storagePreferences).supportsTools
             _loadedModel.postValue(model)
             _thinkingEnabled.postValue(false)
             _supportsThinking.postValue(false)
@@ -190,6 +191,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
             if (mode == ThinkingMode.ALWAYS) _thinkingEnabled.postValue(true)
             _supportsVision.postValue(vision)
             _supportsToolCalling.postValue(toolCalling)
+            promptToolCalling = toolCalling
             if (toolCalling) {
                 val states = mutableMapOf<String, Boolean>()
                 for (tool in toolRegistry.getAllTools()) {
@@ -208,6 +210,9 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         override fun onModelReady(model: ModelInfo) {
             _isModelReady.postValue(true)
             viewModelScope.launch { refreshContextUsage() }
+            // The first session was made before the engine said whether the
+            // model calls tools; fix its prompt if that guess was wrong.
+            viewModelScope.launch { syncSystemPrompt() }
             // Update session model info if we have an active session
             val sessionId = _currentSessionId.value
             if (sessionId != null) {
@@ -1258,11 +1263,20 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
      */
     private fun composeSystemPrompt(prompt: String): String {
         val tools = toolStates(_chatTools.value.orEmpty())
-        return systemPromptExtras.compose(prompt, tools.filterValues { it }.keys.toList(), promptModelName)
+        // Tools are listed only for a model that can call them; others would
+        // write calls that go nowhere.
+        val usable = if (promptToolCalling) toolRegistry.getAllTools().filter { tools[it.name] == true } else emptyList()
+        return systemPromptExtras.compose(prompt, usable, tools["memory"] == true, promptModelName)
     }
 
     /** The loading model's name, set before its first session is made (LiveData would lag). */
     @Volatile private var promptModelName: String? = null
+
+    /**
+     * Whether the loading model can call tools: the saved guess at first, then
+     * what the engine reports. If they differ, [onModelReady] rebuilds the prompt.
+     */
+    @Volatile private var promptToolCalling = false
 
     /** Each tool's state in this chat: [chatTools] over the defaults. */
     fun toolStates(chatTools: Map<String, String>): Map<String, Boolean> =

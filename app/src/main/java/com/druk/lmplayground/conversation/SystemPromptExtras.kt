@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.druk.llamacpp.tools.Tool
 import com.druk.lmplayground.data.AppDatabase
 import com.druk.lmplayground.data.MemoryNoteEntity
 import com.druk.lmplayground.storage.StoragePreferences
@@ -53,13 +54,19 @@ class SystemPromptExtras(
      *    naming the model. Without it, small models see a prompt that is
      *    almost all tool definitions and act like a tool menu.
      * 2. Today's date.
-     * 3. With tools on ([toolNames]): which ones, and when and how to use them.
-     *    The chat format adds the tool definitions after this text.
-     * 4. Saved notes about the user, when the memory tool is on.
+     * 3. With tools on: each tool and what it's for, in plain words, and how
+     *    to use them. The chat format adds the JSON definitions after this.
+     *    Small models follow a plain list far better than the JSON alone.
+     * 4. Saved notes about the user, when the chat has the memory tool on.
      *
      * Written for the model, so it stays in English.
      */
-    fun compose(userPrompt: String, toolNames: List<String> = emptyList(), modelName: String? = null): String {
+    fun compose(
+        userPrompt: String,
+        tools: List<Tool> = emptyList(),
+        withMemory: Boolean = false,
+        modelName: String? = null,
+    ): String {
         val parts = mutableListOf<String>()
         val prompt = userPrompt.ifBlank { prefs.defaultSystemPrompt }
         when {
@@ -73,13 +80,15 @@ class SystemPromptExtras(
         if (prefs.includeDateInPrompt) {
             parts.add("Today is " + DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault()).format(Date()) + ".")
         }
-        if (toolNames.isNotEmpty()) parts.add(
-            "You can use these tools: ${toolNames.joinToString(", ")}. " +
-                "Use one only when the request needs it; otherwise answer yourself. " +
-                "Before a tool call, say in one short sentence what you are about to do, " +
-                "then use the result in your answer."
-        )
-        if ("memory" in toolNames) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
+        if (tools.isNotEmpty()) parts.add(buildString {
+            append("You have tools. When a request needs one, call it instead of guessing or working the answer out yourself:\n")
+            tools.forEach { t ->
+                append("- ${t.name}: ${t.useFor.ifBlank { t.description.substringBefore(". ") }}\n")
+            }
+            append("For anything else, answer yourself. Before a tool call, say in a few words what you are doing. ")
+            append("Then answer from the result in plain words, giving only what the user asked for.")
+        })
+        if (withMemory) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
         return parts.joinToString("\n\n")
     }
 

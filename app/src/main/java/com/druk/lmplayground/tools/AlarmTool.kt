@@ -28,6 +28,7 @@ class SetAlarmTool(
     private val twelveHourClock: () -> Boolean = { !DateFormat.is24HourFormat(context) },
 ) : Tool {
     override val name = "set_alarm"
+    override val useFor = "setting an alarm"
     override val description =
         "Set an alarm in the phone's Clock app. For a clock time, pass it as said (\"6:30\", \"6:30 PM\"); " +
             "if the user gave no AM or PM, call get_date_time first. For a time from now, keep the word \"in\" " +

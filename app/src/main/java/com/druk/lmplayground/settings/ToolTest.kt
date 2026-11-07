@@ -106,14 +106,14 @@ val TOOL_TEST_CASES = listOf(
         { "1234" in it.text("expression") && "5678" in it.text("expression") }, { it.field("result") }),
     // The whole number is enough: "42.16 km" and "about 42.2 km" both answer it.
     ToolTestCase("convert_units", "How many kilometers is 26.2 miles?",
-        { it.text("from").startsWith("mi") && it.text("to").startsWith("k") }, { it.field("result")?.substringBefore('.') }),
+        { it.text("from").startsWith("mi") && it.text("to").startsWith("k") }, { it.field("result")?.substringAfter("= ")?.substringBefore('.') }),
     ToolTestCase("run_javascript", "Use JavaScript to reverse the string \"stressed\".",
         { "stressed" in it.text("code") }, { it.field("result") }),
     ToolTestCase("get_date_time", "What day of the week is it today?", { true }, { it.field("date")?.substringBefore(',') }),
     ToolTestCase("set_alarm", "Set an alarm for 6:30 PM.", { "6:30" in it.text("time") }, { "6:30" },
         simulated = """{"result":"Alarm set for 6:30 PM today."}"""),
     ToolTestCase("location", "What city am I in right now?", { true }, { it.field("place")?.substringBefore(',') }),
-    ToolTestCase("device_info", "How much RAM does my phone have in total?", { true }, { it.field("ram_total")?.substringBefore(' ') }),
+    ToolTestCase("device_info", "How much RAM does my phone have in total?", { true }, { it.field("memory")?.substringBefore(' ') }),
     ToolTestCase("memory", "Remember that my favorite color is teal.", { "teal" in it.text("content") }, { null },
         simulated = """{"saved":true,"id":1}"""),
 )
