@@ -286,7 +286,7 @@ class ToolTestViewModel(app: Application) : AndroidViewModel(app) {
         live.addMessage(case.prompt, false)
         var answer = ""
         val ctx = currentCoroutineContext()
-        val r = ToolCallLoop(live, testTools, maxToolRounds = 3).run(
+        val r = ToolCallLoop(live, testTools, maxToolRounds = 3, toolNames = registry.getAllTools().flatMap { it.functions }.map { it.name }).run(
             object : LlamaGenerationCallback {
                 override fun onFullResponse(response: String) { answer = response }
             },

@@ -8,9 +8,7 @@ import com.druk.llamacpp.tools.Tool
 import com.druk.lmplayground.data.AppDatabase
 import com.druk.lmplayground.data.MemoryNoteEntity
 import com.druk.lmplayground.storage.StoragePreferences
-import java.text.DateFormat
-import java.util.Date
-import java.util.Locale
+import java.time.LocalDate
 
 /**
  * Adds app-wide context to the system prompt the user picked, right before a
@@ -48,16 +46,12 @@ class SystemPromptExtras(
     fun stop() = memoryNotes.removeObserver(memoryObserver)
 
     /**
-     * The system prompt the model gets, in a fixed order, each part short:
-     *
-     * 1. Who it is and how to talk: the user's prompt, or with none, one line
-     *    naming the model. Without it, small models see a prompt that is
-     *    almost all tool definitions and act like a tool menu.
-     * 2. Today's date.
-     * 3. With tools on: each tool and what it's for, in plain words, and how
-     *    to use them. The chat format adds the JSON definitions after this.
-     *    Small models follow a plain list far better than the JSON alone.
-     * 4. Saved notes about the user, when the chat has the memory tool on.
+     * The system prompt the model gets, following Unsloth Studio's: the
+     * user's prompt as written (nothing when there is none), the date, and
+     * with tools on, one short line of guidance plus a tip for web and math
+     * tools. The tool definitions themselves come from the chat format.
+     * Models under 9B (by the size in their name) get the shorter web tip.
+     * Saved notes about the user follow when the memory tool is on.
      *
      * Written for the model, so it stays in English.
      */
@@ -68,35 +62,40 @@ class SystemPromptExtras(
         modelName: String? = null,
     ): String {
         val parts = mutableListOf<String>()
-        val prompt = userPrompt.ifBlank { prefs.defaultSystemPrompt }
-        when {
-            prompt.isNotBlank() -> parts.add(prompt)
-            modelName != null -> parts.add(
-                "You are $modelName, an AI model the user is chatting with in the LM Playground app. " +
-                    "Talk naturally, and keep replies short and clear unless the user asks for more. " +
-                    "Answer greetings and simple questions yourself."
-            )
-        }
-        if (prefs.includeDateInPrompt) {
-            parts.add("Today is " + DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault()).format(Date()) + ".")
-        }
-        if (tools.isNotEmpty()) parts.add(buildString {
-            append("You have tools for things you can't know or do reliably on your own:\n")
-            tools.flatMap { it.functions }.forEach { f -> append("- ${f.name}: ${firstSentence(f.description)}\n") }
-            append("\nHow to use them:\n")
-            append("- Use a tool whenever it can find, check or calculate something the user needs. That is more ")
-            append("reliable than guessing, working it out in your head, or asking the user for something a tool can find.\n")
-            append("- One request can need several tools, or the same tool more than once. Call each one it needs.\n")
-            append("- Pass values the way the user gave them, and fill in only what the tool asks for.\n")
-            append("- Before a tool call, say briefly what you are doing.\n")
-            append("- After the results, answer the user's question in plain words with what they asked for. ")
-            append("Don't repeat every detail of a result.\n")
-            append("- If a tool fails or returns nothing useful, say so and suggest what the user can do.\n")
-            append("- Conversation, opinions, advice and writing need no tools.")
-        })
+        userPrompt.ifBlank { prefs.defaultSystemPrompt }.takeIf { it.isNotBlank() }?.let { parts.add(it) }
+        if (prefs.includeDateInPrompt) parts.add("The current date is ${LocalDate.now()}.")
+        toolGuidance(tools.flatMap { it.functions }.map { it.name }.toSet(), modelName)?.let { parts.add(it) }
         if (withMemory) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
         return parts.joinToString("\n\n")
     }
+
+    /** Unsloth's base line and tips, for the web and math tools; null when neither is on. */
+    private fun toolGuidance(names: Set<String>, modelName: String?): String? {
+        val web = "web_search" in names
+        val calc = "calculate" in names
+        val code = "run_javascript" in names
+        if (!web && !calc && !code) return null
+        val compact = modelName?.let { sizeInBillions(it) }?.let { it < 9 } == true
+        val tips = buildList {
+            if (web) add(
+                if (compact || "web_fetch" !in names) "When using web_search, do not repeat the same search query."
+                else "When using web_search and a result is relevant, fetch its full content by calling web_fetch " +
+                    "with its ref. Do not repeat the same search query. If a search returns no useful results, " +
+                    "try rephrasing or fetching a result directly."
+            )
+            if (calc) add("Use calculate for math and calculations.")
+            if (code) add("Use run_javascript for data processing, or to parse and analyze information from tool results.")
+        }
+        return "Tools are available when they materially improve the answer. Use an enabled tool for current " +
+            "facts, calculations, or code execution when it materially helps; otherwise answer normally and " +
+            "follow the user's requested format. " + tips.joinToString(" ")
+    }
+
+    /** The parameter count in a model's name ("Qwen3.5-0.8B" 0.8, "LFM2.5 350M" 0.35), or null. */
+    private fun sizeInBillions(name: String): Double? =
+        Regex("""(?i)(?<![\w.])[a-z]?(\d+(?:\.\d+)?)\s*([bm])(?![a-z])""").findAll(name).lastOrNull()?.let {
+            it.groupValues[1].toDouble() / if (it.groupValues[2].equals("m", true)) 1000 else 1
+        }
 
     /**
      * The saved notes as a delimited block, capped by note count and total
@@ -129,10 +128,6 @@ class SystemPromptExtras(
             append("</user_memory>")
         }
     }
-
-    /** Up to and including the first ". ", or all of it. */
-    private fun firstSentence(text: String): String =
-        text.indexOf(". ").let { if (it < 0) text else text.substring(0, it + 1) }
 
     private fun sanitize(text: String): String =
         text.replace(Regex("[\\u0000-\\u001F]"), " ")    // control characters -> space
