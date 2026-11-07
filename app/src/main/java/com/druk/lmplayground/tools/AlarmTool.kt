@@ -28,13 +28,13 @@ class SetAlarmTool(
     private val twelveHourClock: () -> Boolean = { !DateFormat.is24HourFormat(context) },
 ) : Tool {
     override val name = "set_alarm"
-    override val useFor = "setting an alarm"
+    override val useFor = "alarms and reminders at a time"
     override val description =
-        "Set an alarm in the phone's Clock app. For a clock time, pass it as said (\"6:30\", \"6:30 PM\"); " +
-            "if the user gave no AM or PM, call get_date_time first. For a time from now, keep the word \"in\" " +
-            "(\"in 2 hours\"); never turn it into a clock time."
+        "Set an alarm in the phone's Clock app. Pass the time the way the user said it, with words like " +
+            "\"morning\" or \"tonight\" (\"6:15 in the morning\", \"9 tonight\", \"in 2 hours\"). Don't add AM or PM " +
+            "yourself and don't turn \"in 2 hours\" into a clock time: the app works it out. One call per alarm."
     override val parametersSchema = """{"type":"object","properties":{""" +
-        """"time":{"type":"string","description":"A clock time (\"6:30 PM\") or a time from now (\"in 2 hours\")"},""" +
+        """"time":{"type":"string","description":"The time as the user said it, e.g. \"6:30 PM\", \"6:15 in the morning\", \"in 2 hours\""},""" +
         """"label":{"type":"string","description":"The name the user gave the alarm. Leave it out if they didn't name it."}},"required":["time"]}"""
 
     override fun execute(arguments: String): String {
@@ -82,13 +82,23 @@ class SetAlarmTool(
             m.groupValues[1].toDouble() * when (m.groupValues[2].first()) { 'h' -> 3600; 'm' -> 60; else -> 1 }
         }.toLong()
 
-    /** "6:30", "6:30 pm", "6 am", "18:30" as a time of day; with no AM/PM on a 12-hour phone, the next one. */
+    /**
+     * "6:30", "6:30 pm", "6 am", "18:30", "6:15 in the morning", "9 tonight" as a
+     * time of day; with no AM/PM or part of day on a 12-hour phone, the next one.
+     */
     private fun time(text: String): LocalTime? {
-        val m = Regex("""(\d{1,2})(?::(\d{2}))?\s*([ap])?\.?\s*m?""").find(text.lowercase()) ?: return null
+        val lower = text.lowercase()
+        val m = Regex("""(\d{1,2})(?::(\d{2}))?\s*([ap])?\.?\s*m?""").find(lower) ?: return null
         val hour = m.groupValues[1].toInt()
         val minute = m.groupValues[2].ifEmpty { "0" }.toInt()
         if (hour > 23 || minute > 59) return null
-        val amPm = m.groupValues[3]
+        val amPm = m.groupValues[3].ifEmpty {
+            when {
+                Regex("""\bmorning\b""").containsMatchIn(lower) -> "a"
+                Regex("""\b(afternoon|evening|night|tonight)\b""").containsMatchIn(lower) -> "p"
+                else -> ""
+            }
+        }
         return when {
             amPm.isNotEmpty() && hour in 1..12 -> LocalTime.of(hour % 12 + if (amPm == "p") 12 else 0, minute)
             hour !in 1..12 || !twelveHourClock() -> LocalTime.of(hour, minute)

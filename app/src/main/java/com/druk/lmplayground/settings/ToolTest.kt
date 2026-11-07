@@ -105,16 +105,23 @@ private fun JSONObject.field(key: String): String? =
 val TOOL_TEST_CASES = listOf(
     ToolTestCase("calculator", "What is 1234 times 5678?",
         { "1234" in it.text("expression") && "5678" in it.text("expression") }, { it.field("result") }),
+    // Math hidden in an everyday question, which small models try in their heads.
+    ToolTestCase("calculator", "I paid with a \$20 bill for a \$7 order. How much change should I get?",
+        { "20" in it.text("expression") && "7" in it.text("expression") }, { it.field("result") },
+        label = "calculator (everyday)"),
     // The whole number is enough: "42.16 km" and "about 42.2 km" both answer it.
     ToolTestCase("convert_units", "How many kilometers is 26.2 miles?",
         { it.text("from").startsWith("mi") && it.text("to").startsWith("k") },
         { it.field("result")?.substringAfter("= ")?.substringBefore('.') }),
-    ToolTestCase("set_alarm", "Wake me up at 6:30 PM.", { "6:30" in it.text("time") }, { "6:30" },
-        simulated = """{"result":"Alarm set for 6:30 PM today."}"""),
+    // "In the morning" must reach the tool as morning, not get turned into PM.
+    ToolTestCase("set_alarm", "Remind me to take out the trash at 6:15 in the morning.",
+        { t -> "6:15" in t.text("time") && ("am" in t.text("time") || "morning" in t.text("time")) }, { "6:15" },
+        simulated = """{"result":"Alarm \"take out the trash\" set for 6:15 AM tomorrow."}"""),
     // The date is in the system prompt, so ask for the time, which isn't.
     ToolTestCase("get_date_time", "What time is it right now?", { true },
         { it.field("time")?.substringBefore(' ') }),
-    ToolTestCase("location", "What city am I in?", { true }, { it.field("place")?.substringBefore(',') }),
+    // The model should check, not ask the user where they are.
+    ToolTestCase("location", "I'm lost. Can you tell me where I am?", { true }, { it.field("place")?.substringBefore(',') }),
     ToolTestCase("device_info", "How much RAM does my phone have?", { true }, { it.field("memory")?.substringBefore(' ') }),
     ToolTestCase("memory", "Please remember that my favorite color is teal.", { "teal" in it.text("content") }, { null },
         simulated = """{"saved":true,"id":1}"""),
@@ -308,6 +315,11 @@ class ToolTestViewModel(app: Application) : AndroidViewModel(app) {
             false,
             detail = (if (records.isEmpty()) "Didn't use a tool; answered on its own." else "Used $called instead.") + " $said",
         )
+        // Other calls that weren't asked for (a memory note for an alarm) fail it
+        // too; looking up the time first is harmless.
+        records.map { it.name }.filter { it != case.tool && it != "get_date_time" }.distinct().takeIf { it.isNotEmpty() }?.let {
+            return ToolTestResult(false, detail = "Right tool, but also called ${it.joinToString()}, which wasn't needed. $said")
+        }
         val args = runCatching { JSONObject(call.arguments) }.getOrDefault(JSONObject())
         if (!case.argsOk(args)) return ToolTestResult(false, detail = "Right tool, wrong input: ${call.arguments}")
         val returned = (if (case.simulated != null) "Simulated: " else "Tool returned: ") + call.result.take(200)

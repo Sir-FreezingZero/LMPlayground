@@ -81,11 +81,13 @@ class SystemPromptExtras(
             parts.add("Today is " + DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault()).format(Date()) + ".")
         }
         if (tools.isNotEmpty()) parts.add(buildString {
-            append("You have tools. When a request needs one, call it instead of guessing or working the answer out yourself:\n")
+            append("You have tools. When one can find or work out the answer, call it instead of guessing, ")
+            append("working it out yourself, or asking the user for something it can find:\n")
             tools.forEach { t ->
                 append("- ${t.name}: ${t.useFor.ifBlank { t.description.substringBefore(". ") }}\n")
             }
-            append("For anything else, answer yourself. Before a tool call, say in a few words what you are doing. ")
+            append("For several requests in one message, call a tool for each. For anything else, answer yourself. ")
+            append("Before a tool call, say in a few words what you are doing. ")
             append("Then answer from the result in plain words, giving only what the user asked for.")
         })
         if (withMemory) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }

@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
  */
 class LocationTool(private val context: Context) : Tool {
     override val name = "location"
-    override val useFor = "where the user is right now"
+    override val useFor = "where the user is right now (check it; don't ask them)"
     override val description = "Get the phone's approximate location: coordinates and, when known, the city, region and country."
     override val parametersSchema = """{"type":"object","properties":{}}"""
 
