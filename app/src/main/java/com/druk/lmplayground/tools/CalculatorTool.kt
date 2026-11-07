@@ -1,6 +1,7 @@
 package com.druk.lmplayground.tools
 
 import com.druk.llamacpp.tools.Tool
+import com.druk.llamacpp.tools.toolError
 import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.MathContext
@@ -47,7 +48,7 @@ class CalculatorTool : Tool {
             val normalized = expr.replace('×', '*').replace('·', '*').replace('÷', '/').replace('−', '-').replace("**", "^")
             val value = Parser(normalized).parse()
             if (value.isNaN() || value.isInfinite()) {
-                return """{"error":"Result is not a finite number (check for division by zero or an invalid operation)."}"""
+                return toolError("Result is not a finite number (check for division by zero or an invalid operation).")
             }
             JSONObject()
                 .put("expression", expr)
@@ -59,8 +60,7 @@ class CalculatorTool : Tool {
             // stack with a StackOverflowError, which is an Error, not an Exception.
             // Catching it here returns a clean error instead of crashing the app.
             // execute() has no suspension points, so this can't swallow cancellation.
-            // JSONObject escapes quotes/backslashes/control chars in the parser message.
-            JSONObject().put("error", e.message ?: "Could not evaluate the expression").toString()
+            toolError(e.message ?: "Could not evaluate the expression")
         }
     }
 

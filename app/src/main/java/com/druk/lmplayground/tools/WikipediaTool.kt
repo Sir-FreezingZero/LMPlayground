@@ -1,11 +1,11 @@
 package com.druk.lmplayground.tools
 
 import com.druk.llamacpp.tools.Tool
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import okhttp3.OkHttpClient
+import com.druk.llamacpp.tools.toolError
+import com.druk.llamacpp.tools.toolResult
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
 import org.json.JSONObject
-import java.util.concurrent.TimeUnit
 
 /**
  * Focused encyclopedic lookup: searches Wikipedia and returns the best matching
@@ -19,75 +19,40 @@ class WikipediaTool : Tool {
     override val description = "Looks up a well-known person, place, thing or idea on Wikipedia. Returns the article's summary, title and link."
     override val parametersSchema = """{"type":"object","properties":{"query":{"type":"string","description":"The topic, e.g. \"Eiffel Tower\""}},"required":["query"]}"""
 
-    private val client = OkHttpClient.Builder()
-        .connectTimeout(8, TimeUnit.SECONDS)
-        .readTimeout(8, TimeUnit.SECONDS)
-        .followRedirects(true)
-        .build()
+    override fun cancelInFlight() = WebHttp.client.dispatcher.cancelAll()
 
-    override fun cancelInFlight() {
-        client.dispatcher.cancelAll()
+    override fun execute(arguments: String): String = try {
+        val query = JSONObject(arguments).optString("query").trim()
+        if (query.isEmpty()) toolError("Give a topic to look up.") else lookUp(query)
+    } catch (e: Exception) {
+        toolError(e.message ?: "Wikipedia lookup failed")
     }
 
-    override fun execute(arguments: String): String {
-        return try {
-            val args = JSONObject(arguments)
-            val query = args.getString("query").trim()
-            if (query.isEmpty()) return errorJson("Empty query")
-            val lang = args.optString("lang", "en").trim().lowercase()
-                .filter { it.isLetter() || it == '-' }.ifEmpty { "en" }
-
-            val base = "https://$lang.wikipedia.org/w/api.php".toHttpUrlOrNull()
-                ?: return errorJson("Invalid language '$lang'")
-            val url = base.newBuilder()
-                .addQueryParameter("format", "json")
-                .addQueryParameter("action", "query")
-                .addQueryParameter("generator", "search")
-                .addQueryParameter("gsrsearch", query)
-                .addQueryParameter("gsrlimit", "1")
-                .addQueryParameter("prop", "extracts|info")
-                .addQueryParameter("exintro", "1")
-                .addQueryParameter("explaintext", "1")
-                .addQueryParameter("inprop", "url")
-                .addQueryParameter("redirects", "1")
-                .build()
-
-            val request = Request.Builder()
-                .url(url)
-                .header("User-Agent", USER_AGENT)
-                .get()
-                .build()
-
-            val response = client.newCall(request).execute()
-            val body = response.body?.string() ?: return errorJson("Empty response")
-
-            val pages = JSONObject(body).optJSONObject("query")?.optJSONObject("pages")
-                ?: return notFoundJson(query)
-            val firstKey = pages.keys().asSequence().firstOrNull() ?: return notFoundJson(query)
-            val page = pages.optJSONObject(firstKey) ?: return notFoundJson(query)
-
-            var extract = page.optString("extract").trim()
-            if (extract.isEmpty()) return notFoundJson(query)
-            if (extract.length > MAX_CHARS) extract = extract.substring(0, MAX_CHARS).trimEnd() + "..."
-
-            JSONObject()
-                .put("title", page.optString("title"))
-                .put("summary", extract)
-                .put("url", page.optString("fullurl"))
-                .toString()
-        } catch (e: Exception) {
-            errorJson(e.message ?: "Wikipedia lookup failed")
-        }
-    }
-
-    private fun notFoundJson(query: String) =
-        JSONObject()
-            .put("result", JSONObject.NULL)
-            .put("query", query)
-            .put("message", "No Wikipedia article found")
+    private fun lookUp(query: String): String {
+        val url = "https://en.wikipedia.org/w/api.php".toHttpUrl().newBuilder()
+            .addQueryParameter("format", "json")
+            .addQueryParameter("action", "query")
+            .addQueryParameter("generator", "search")
+            .addQueryParameter("gsrsearch", query)
+            .addQueryParameter("gsrlimit", "1")
+            .addQueryParameter("prop", "extracts|info")
+            .addQueryParameter("exintro", "1")
+            .addQueryParameter("explaintext", "1")
+            .addQueryParameter("inprop", "url")
+            .addQueryParameter("redirects", "1")
+            .build()
+        val request = Request.Builder().url(url).header("User-Agent", USER_AGENT).build()
+        val body = WebHttp.client.newCall(request).execute().use { WebHttp.text(it) }
+        val pages = JSONObject(body).optJSONObject("query")?.optJSONObject("pages")
+        val page = pages?.keys()?.asSequence()?.firstOrNull()?.let { pages.optJSONObject(it) }
+        val extract = page?.optString("extract")?.trim().orEmpty()
+        if (extract.isEmpty()) return toolResult("No Wikipedia article found for \"$query\".")
+        return JSONObject()
+            .put("title", page!!.optString("title"))
+            .put("summary", if (extract.length > MAX_CHARS) extract.take(MAX_CHARS).trimEnd() + "..." else extract)
+            .put("url", page.optString("fullurl"))
             .toString()
-
-    private fun errorJson(message: String) = JSONObject().put("error", message).toString()
+    }
 
     companion object {
         private const val MAX_CHARS = 1500

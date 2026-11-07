@@ -2,6 +2,8 @@ package com.druk.lmplayground.tools
 
 import android.content.Context
 import com.druk.llamacpp.tools.Tool
+import com.druk.llamacpp.tools.toolError
+import com.druk.llamacpp.tools.toolResult
 import com.druk.llamacpp.tools.ToolFunction
 import com.druk.lmplayground.data.AppDatabase
 import com.druk.lmplayground.data.MemoryNoteEntity
@@ -39,28 +41,26 @@ class MemoryTool(private val context: Context) : Tool {
             when (function) {
                 "forget" -> {
                     val id = args.optLong("number", args.optLong("id", -1L))
-                    if (id < 0L) return errorJson("Give the number of the fact to delete.")
-                    if (dao.deleteById(id) > 0) JSONObject().put("result", "Fact $id deleted.").toString()
-                    else errorJson("There is no fact number $id.")
+                    if (id < 0L) return toolError("Give the number of the fact to delete.")
+                    if (dao.deleteById(id) > 0) toolResult("Fact $id deleted.")
+                    else toolError("There is no fact number $id.")
                 }
                 else -> {
                     val fact = args.optString("fact").ifBlank { args.optString("content") }.trim()
-                    if (fact.isEmpty()) return errorJson("Give the fact to save.")
-                    if (fact.length > MAX_LEN) return errorJson("That fact is too long (max $MAX_LEN characters).")
+                    if (fact.isEmpty()) return toolError("Give the fact to save.")
+                    if (fact.length > MAX_LEN) return toolError("That fact is too long (max $MAX_LEN characters).")
                     if (dao.count() >= MAX_NOTES) {
-                        return errorJson("Memory is full ($MAX_NOTES facts). Ask the user to delete some in Settings.")
+                        return toolError("Memory is full ($MAX_NOTES facts). Ask the user to delete some in Settings.")
                     }
                     val now = System.currentTimeMillis()
                     val id = dao.insert(MemoryNoteEntity(content = fact, createdAt = now, updatedAt = now))
-                    JSONObject().put("result", "Saved as fact $id.").toString()
+                    toolResult("Saved as fact $id.")
                 }
             }
         } catch (e: Exception) {
-            errorJson(e.message ?: "Memory operation failed")
+            toolError(e.message ?: "Memory operation failed")
         }
     }
-
-    private fun errorJson(message: String) = JSONObject().put("error", message).toString()
 
     companion object {
         private const val MAX_LEN = 2000

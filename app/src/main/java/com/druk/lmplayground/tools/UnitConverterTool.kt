@@ -1,6 +1,8 @@
 package com.druk.lmplayground.tools
 
 import com.druk.llamacpp.tools.Tool
+import com.druk.llamacpp.tools.toolError
+import com.druk.llamacpp.tools.toolResult
 import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.MathContext
@@ -26,14 +28,14 @@ class UnitConverterTool : Tool {
             // Temperature first (affine conversion, not a shared linear base).
             convertTemp(value, from, to)?.let { return resultJson(value, from, to, it) }
 
-            val f = UNITS[from] ?: return errorJson("Unknown unit '$from'")
-            val t = UNITS[to] ?: return errorJson("Unknown unit '$to'")
+            val f = UNITS[from] ?: return toolError("Unknown unit '$from'")
+            val t = UNITS[to] ?: return toolError("Unknown unit '$to'")
             if (f.category != t.category) {
-                return errorJson("Cannot convert '$from' (${f.category}) to '$to' (${t.category})")
+                return toolError("Cannot convert '$from' (${f.category}) to '$to' (${t.category})")
             }
             resultJson(value, from, to, value * f.factor / t.factor)
         } catch (e: Exception) {
-            errorJson(e.message ?: "Conversion failed")
+            toolError(e.message ?: "Conversion failed")
         }
     }
 
@@ -67,7 +69,7 @@ class UnitConverterTool : Tool {
 
     /** One ready-to-say line ("2000 m = 6561.68 ft"), so the units can't get mixed up in the answer. */
     private fun resultJson(value: Double, from: String, to: String, result: Double): String =
-        JSONObject().put("result", "${format(value)} ${shown(from)} = ${format(result)} ${shown(to)}").toString()
+        toolResult("${format(value)} ${shown(from)} = ${format(result)} ${shown(to)}")
 
     private fun shown(unit: String) = when (unit) {
         "c", "celsius" -> "°C"
@@ -82,7 +84,6 @@ class UnitConverterTool : Tool {
         return BigDecimal(v).round(MathContext(6)).stripTrailingZeros().toPlainString()
     }
 
-    private fun errorJson(m: String) = JSONObject().put("error", m).toString()
 
     private data class U(val category: String, val factor: Double)
 

@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.CancellationSignal
 import androidx.core.content.ContextCompat
 import com.druk.llamacpp.tools.Tool
+import com.druk.llamacpp.tools.toolError
 import org.json.JSONObject
 import java.util.Locale
 import java.util.concurrent.CountDownLatch
@@ -32,12 +33,12 @@ class LocationTool(private val context: Context) : Tool {
     override fun execute(arguments: String): String {
         return try {
             if (!hasPermission()) {
-                return """{"error":"Location permission is not granted. Enable the Location tool in Settings so the app can ask for permission."}"""
+                return toolError("Location permission is not granted. Enable the Location tool in Settings so the app can ask for permission.")
             }
             val lm = context.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
-                ?: return """{"error":"Location service is unavailable on this device."}"""
+                ?: return toolError("Location service is unavailable on this device.")
             if (!lm.isLocationEnabled) {
-                return """{"error":"Location is turned off on this phone. Ask the user to turn it on, then try again."}"""
+                return toolError("Location is turned off on this phone. Ask the user to turn it on, then try again.")
             }
             // A last-known fix is instant, but many phones have none (or only an
             // old one) unless another app asked recently; then ask for a fresh one.
@@ -45,7 +46,7 @@ class LocationTool(private val context: Context) : Tool {
             val location = known?.takeIf { System.currentTimeMillis() - it.time < MAX_AGE_MS }
                 ?: currentFix(lm)
                 ?: known
-                ?: return """{"error":"Couldn't get a location fix. Make sure location is turned on, then try again."}"""
+                ?: return toolError("Couldn't get a location fix. Make sure location is turned on, then try again.")
 
             // Only what an answer needs, place first, so the model says where
             // the user is instead of reading out fields.
@@ -56,9 +57,9 @@ class LocationTool(private val context: Context) : Tool {
             if (location.hasAccuracy()) out.put("accuracy", accuracyText(location.accuracy))
             out.toString()
         } catch (e: SecurityException) {
-            """{"error":"Location permission is not granted."}"""
+            toolError("Location permission is not granted.")
         } catch (e: Exception) {
-            JSONObject().put("error", e.message ?: "Could not read the location").toString()
+            toolError(e.message ?: "Could not read the location")
         }
     }
 

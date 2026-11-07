@@ -1,10 +1,8 @@
 package com.druk.llamacpp.tools
 
-/**
- * One function the model can call: its name, what it does and returns (the
- * first sentence is also listed in the system prompt), and its inputs as a
- * JSON schema.
- */
+import org.json.JSONObject
+
+/** One function the model can call: its name, what it does and returns, and its inputs as a JSON schema. */
 class ToolFunction(val name: String, val description: String, val parametersSchema: String)
 
 interface Tool {
@@ -24,10 +22,12 @@ interface Tool {
     /** Run [function], one of [functions]. */
     fun execute(function: String, arguments: String): String = execute(arguments)
 
-    /**
-     * Abort any in-flight work (e.g. a blocking network request) so a Stop
-     * during tool execution returns promptly. Default no-op for tools with
-     * nothing to cancel (e.g. JavaScript).
-     */
+    /** Abort in-flight work (a network request) so Stop returns promptly. */
     fun cancelInFlight() {}
 }
+
+/** A result that is one line of text, `{"result": text}`; the model reads just the text. */
+fun toolResult(text: String): String = JSONObject().put("result", text).toString()
+
+/** A failed result, `{"error": message}`; the model reads it as "Error: message". */
+fun toolError(message: String): String = JSONObject().put("error", message).toString()

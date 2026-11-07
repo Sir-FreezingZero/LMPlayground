@@ -8,7 +8,6 @@ import com.druk.llamacpp.jni.NativeLlamaCpp
 import com.druk.llamacpp.jni.NativeLlamaModel
 import com.druk.llamacpp.jni.NativeLlamaSession
 import com.druk.llamacpp.tools.ToolRegistry
-import com.druk.lmplayground.tools.WebFetchTool
 import com.druk.lmplayground.tools.WebSearchTool
 import org.junit.After
 import org.junit.Assert.*
@@ -108,7 +107,6 @@ class PreambleCacheTest {
 
     private fun toolsJson(): String = ToolRegistry().apply {
         register(WebSearchTool())
-        register(WebFetchTool())
     }.toOpenAIToolsJson()
 
     private fun cachePathFor(name: String): String =

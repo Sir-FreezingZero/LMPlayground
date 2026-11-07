@@ -87,7 +87,10 @@ class ToolCallLoop(
         // Each call already run this reply, as name + arguments, so a repeat isn't run again.
         val made = mutableSetOf<String>()
 
-        // See the forced-thinking note further down.
+        // Thinking for replies after tool results. Forced on (when asked and the
+        // model can think) because Gemma 4 and harmony-style models write an
+        // empty answer after tool calls with thinking off; the thinking still
+        // goes to the collapsed section. Otherwise it follows the user toggle.
         val responseThinking = enableThinking || (supportsThinking && forceThinkingAfterTools)
 
         var roundText = ""
@@ -132,7 +135,10 @@ class ToolCallLoop(
                 // give it one more pass to answer with what it already has,
                 // rather than ending the reply on an unanswered tool call.
                 hitLimit = true
-                session.submitToolResults(limitReachedResults(session.getToolCallsJson()), responseThinking)
+                val unanswered = JSONArray(session.getToolCallsJson())
+                session.submitToolResults(JSONArray((0 until unanswered.length()).map {
+                    resultFor(unanswered.getJSONObject(it), BUDGET_EXHAUSTED)
+                }).toString(), responseThinking)
                 observer.onRoundStarted(toolRounds, responseThinking)
                 continue
             }
@@ -140,16 +146,11 @@ class ToolCallLoop(
 
             val toolCallsJson = session.getToolCallsJson()
             val started = System.currentTimeMillis()
-            // Tool execution blocks (network); run it off the calling
-            // dispatcher and await it so cancellation can interrupt — on
-            // cancel we abort in-flight requests, which unblocks promptly.
             // Calls repeated exactly from earlier in this reply aren't run again.
             val calls = JSONArray(toolCallsJson)
-            val fresh = JSONArray()
-            for (i in 0 until calls.length()) {
-                val call = calls.getJSONObject(i)
-                if (made.add(callKey(call))) fresh.put(call)
-            }
+            val fresh = JSONArray((0 until calls.length()).map { calls.getJSONObject(it) }.filter { made.add(callKey(it)) })
+            // Tools block (network), so they run off this dispatcher; on cancel the
+            // in-flight requests are aborted, which unblocks them promptly.
             val ran = if (fresh.length() == 0) JSONArray() else withContext(Dispatchers.IO) {
                 val exec = async { tools.executeToolCalls(fresh.toString()) }
                 try {
@@ -159,22 +160,12 @@ class ToolCallLoop(
                     throw e
                 }
             }
-            val toolResults = withErrorHints(calls, ran, sameResult).toString()
+            val toolResults = finishedResults(calls, ran, sameResult).toString()
             val durationMs = System.currentTimeMillis() - started
 
             val records = ToolCallPairing.pair(toolCallsJson, toolResults, durationMs)
             allRecords += records
             observer.onToolCalls(records)
-
-            // When asked, force thinking on for the response phase if the model
-            // has a thinking mode, regardless of the user toggle: Gemma 4 and
-            // harmony-style models emit an empty content channel after tool
-            // calls when thinking is off, which would show a blank assistant
-            // bubble after every tool call. Reasoning still routes to the
-            // collapsed thinking section via the always-on DEEPSEEK
-            // extraction in the parser. A no-op for models without a
-            // thinking mode (the flag is ignored).
-            // Otherwise thinking follows the user toggle, as in round one.
             session.submitToolResults(toolResults, responseThinking)
             observer.onRoundStarted(toolRounds, responseThinking)
         }
@@ -182,47 +173,27 @@ class ToolCallLoop(
         return Result(rc = rc, toolRounds = toolRounds, hitRoundLimit = hitLimit, records = allRecords)
     }
 
-    /** A result for each of [toolCallsJson]'s calls saying the round limit stopped it. */
-    private fun limitReachedResults(toolCallsJson: String): String {
-        val calls = JSONArray(toolCallsJson)
-        val results = JSONArray()
-        for (i in 0 until calls.length()) {
-            val call = calls.getJSONObject(i)
-            results.put(
-                JSONObject()
-                    .put("id", call.getString("id"))
-                    .put("name", call.getString("name"))
-                    .put("content", BUDGET_EXHAUSTED)
-            )
-        }
-        return results.toString()
-    }
+    private fun resultFor(call: JSONObject, content: String) =
+        JSONObject().put("id", call.getString("id")).put("name", call.getString("name")).put("content", content)
 
     /**
-     * A result for every call, in order: what [ran] returned, a note for a
-     * repeated call, and a hint to try something else after an error.
+     * A result for every call, in order: what [ran] returned (a repeated call
+     * gets a note instead), with a hint after an error and a note when a tool
+     * keeps returning the same thing.
      */
-    private fun withErrorHints(calls: JSONArray, ran: JSONArray, sameResult: MutableMap<String, Pair<String, Int>>): JSONArray {
+    private fun finishedResults(calls: JSONArray, ran: JSONArray, sameResult: MutableMap<String, Pair<String, Int>>): JSONArray {
         val byId = (0 until ran.length()).associate { ran.getJSONObject(it).let { r -> r.getString("id") to r } }
-        val out = JSONArray()
-        for (i in 0 until calls.length()) {
+        return JSONArray((0 until calls.length()).map { i ->
             val call = calls.getJSONObject(i)
-            val id = call.getString("id")
-            val result = byId[id] ?: JSONObject().put("id", id).put("name", call.getString("name"))
-                .put("content", DUPLICATE_CALL)
-            val content = result.optString("content")
-            if (content.startsWith("Error:")) result.put("content", content + TOOL_ERROR_HINT)
-            // The same result again and again won't change by asking once more.
             val name = call.getString("name")
+            val content = byId[call.getString("id")]?.optString("content") ?: DUPLICATE_CALL
             val times = sameResult[name]?.takeIf { it.first == content }?.second?.plus(1) ?: 1
             sameResult[name] = content to times
-            if (times >= SAME_RESULT_LIMIT && content != DUPLICATE_CALL) {
-                result.put("content", result.getString("content") + "\n\n[$name returned exactly this $times " +
-                    "times; it will not change. Continue from what you have and finish the task.]")
-            }
-            out.put(result)
-        }
-        return out
+            resultFor(call, content +
+                (if (content.startsWith("Error:")) TOOL_ERROR_HINT else "") +
+                (if (times >= SAME_RESULT_LIMIT && content != DUPLICATE_CALL) "\n\n[$name returned exactly this " +
+                    "$times times; it will not change. Continue from what you have and finish the task.]" else ""))
+        })
     }
 
     companion object {
@@ -267,13 +238,14 @@ class ToolCallLoop(
         /** A short reply that announces an action without taking it. */
         fun isIntentWithoutAction(text: String) = text.length in 1 until REPROMPT_MAX_CHARS && INTENT.containsMatchIn(text)
 
+        private val THINKING = Regex("(?s)<think>(.*?)(?:</think>|$)")
+
         /** The reply's thinking, closed or not. */
         private fun thinkingText(response: String): String =
-            Regex("(?s)<think>(.*?)(?:</think>|$)").findAll(response).joinToString("\n") { it.groupValues[1] }
+            THINKING.findAll(response).joinToString("\n") { it.groupValues[1] }
 
         /** The reply without its thinking. */
-        private fun answerText(response: String): String =
-            response.replace(Regex("(?s)<think>.*?</think>"), "").replace(Regex("(?s)<think>.*"), "").trim()
+        private fun answerText(response: String): String = response.replace(THINKING, "").trim()
 
         /** Name plus arguments with keys sorted, so the same call matches however it's written. */
         private fun callKey(call: JSONObject): String {

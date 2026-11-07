@@ -10,7 +10,6 @@ import com.druk.llamacpp.tools.ToolRegistry
 import com.druk.lmplayground.tools.createDefault
 import com.druk.lmplayground.tools.WebSearchTool
 import com.druk.lmplayground.tools.JavaScriptTool
-import com.druk.lmplayground.tools.WebFetchTool
 import org.json.JSONArray
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.After
@@ -876,47 +875,18 @@ class ToolCallingTest {
     }
 
     @Test
-    fun testWebSearchMaxResults() {
-        val tool = WebSearchTool()
-        val result = tool.execute("""{"query":"Android development","max_results":2}""")
-        Log.d(TAG, "WebSearch max_results result: ${result.take(500)}")
-        val json = org.json.JSONObject(result)
-        if (!json.has("error")) {
-            val results = json.getJSONArray("results")
-            assertTrue("Should have at most 2 results", results.length() <= 2)
-        }
-    }
-
-    @Test
-    fun testWebFetchReturnsContent() {
-        val tool = WebFetchTool()
-        val result = tool.execute("""{"url":"https://httpbin.org/html"}""")
-        Log.d(TAG, "WebFetch result: ${result.take(500)}")
+    fun testWebSearchReadsPage() {
+        val result = WebSearchTool().execute("""{"url":"https://httpbin.org/html"}""")
+        Log.d(TAG, "Page result: ${result.take(500)}")
         val json = org.json.JSONObject(result)
         assertFalse("Should not have error: $result", json.has("error"))
-        assertTrue("Should have content", json.has("content"))
-        val content = json.getString("content")
-        assertTrue("Content should not be empty", content.isNotEmpty())
+        assertTrue("Content should not be empty", json.optString("content").isNotEmpty())
     }
 
     @Test
-    fun testWebFetchTruncation() {
-        val tool = WebFetchTool()
-        val result = tool.execute("""{"url":"https://httpbin.org/html","max_length":50}""")
-        Log.d(TAG, "WebFetch truncated: ${result.take(200)}")
-        val json = org.json.JSONObject(result)
-        assertFalse("Should not have error: $result", json.has("error"))
-        val content = json.getString("content")
-        assertTrue("Content should be truncated to ~50 chars, got ${content.length}", content.length <= 54)
-    }
-
-    @Test
-    fun testWebFetchInvalidUrl() {
-        val tool = WebFetchTool()
-        val result = tool.execute("""{"url":"https://thisdoesnotexist.invalid"}""")
-        Log.d(TAG, "WebFetch invalid: $result")
-        val json = org.json.JSONObject(result)
-        assertTrue("Should have error for invalid URL", json.has("error"))
+    fun testWebSearchInvalidUrl() {
+        val result = WebSearchTool().execute("""{"url":"https://thisdoesnotexist.invalid"}""")
+        assertTrue("Should have error for invalid URL", org.json.JSONObject(result).has("error"))
     }
 
     @Test

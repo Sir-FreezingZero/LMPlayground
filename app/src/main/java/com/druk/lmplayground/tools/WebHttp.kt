@@ -2,13 +2,11 @@ package com.druk.lmplayground.tools
 
 import okhttp3.OkHttpClient
 import okhttp3.Response
-import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
 /**
- * What web_search and its page reader (WebFetchTool) share: one HTTP client (one connection pool
- * and thread pool instead of one per tool), the browser User-Agent, a
- * size-capped body read, and JSON error replies.
+ * What the web tools share: one HTTP client (one connection and thread pool
+ * instead of one per tool), the browser User-Agent, and size-capped reads.
  */
 internal object WebHttp {
 
@@ -23,7 +21,6 @@ internal object WebHttp {
      */
     fun pageChars(): Int = (contextTokens * 4 * 0.35).toInt().coerceIn(2_000, 16_000)
 
-
     const val USER_AGENT = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36"
 
     /** Most bytes read from any response; a page is cut to a few thousand characters anyway. */
@@ -35,16 +32,13 @@ internal object WebHttp {
         .followRedirects(true)
         .build()
 
-    /** The body's bytes, at most [MAX_BODY_BYTES], and whether more was left unread. */
-    fun readCapped(response: Response): Pair<ByteArray, Boolean> {
-        val body = response.body ?: return ByteArray(0) to false
-        val source = body.source()
-        source.request(MAX_BODY_BYTES + 1)
-        val buffered = source.buffer.size
-        val bytes = source.buffer.readByteArray(minOf(buffered, MAX_BODY_BYTES))
-        return bytes to (buffered > MAX_BODY_BYTES)
+    /** The body's bytes, at most [MAX_BODY_BYTES]. */
+    fun bytes(response: Response): ByteArray {
+        val source = response.body?.source() ?: return ByteArray(0)
+        source.request(MAX_BODY_BYTES)
+        return source.buffer.readByteArray(minOf(source.buffer.size, MAX_BODY_BYTES))
     }
 
-    /** `{"error": message}`, escaped properly whatever the message holds. */
-    fun errorJson(message: String): String = JSONObject().put("error", message).toString()
+    /** The body as UTF-8 text, at most [MAX_BODY_BYTES]. */
+    fun text(response: Response): String = String(bytes(response), Charsets.UTF_8)
 }

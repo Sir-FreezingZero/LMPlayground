@@ -6,6 +6,7 @@ import android.os.BatteryManager
 import android.os.Build
 import android.os.StatFs
 import com.druk.llamacpp.tools.Tool
+import com.druk.llamacpp.tools.toolError
 import org.json.JSONObject
 import java.util.Locale
 
@@ -50,7 +51,7 @@ class HardwareInfoTool(private val context: Context) : Tool {
             }
             out.toString()
         } catch (e: Exception) {
-            JSONObject().put("error", e.message ?: "Could not read device info").toString()
+            toolError(e.message ?: "Could not read device info")
         }
     }
 

@@ -1,9 +1,11 @@
 package com.druk.lmplayground.tools
 
-import com.druk.llamacpp.tools.Tool
 import android.content.Context
 import androidx.javascriptengine.IsolateStartupParameters
 import androidx.javascriptengine.JavaScriptSandbox
+import com.druk.llamacpp.tools.Tool
+import com.druk.llamacpp.tools.toolError
+import com.druk.llamacpp.tools.toolResult
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
@@ -12,42 +14,26 @@ class JavaScriptTool(private val context: Context) : Tool {
     override val description = "Runs JavaScript and returns the value of its last line. Useful for text, dates, lists and other data that are easier to handle in code. No internet or files."
     override val parametersSchema = """{"type":"object","properties":{"code":{"type":"string","description":"JavaScript source; the last expression's value is returned. E.g. '(2 + 3) * 4', 'new Date().toString()'."}},"required":["code"]}"""
 
-    override fun execute(arguments: String): String {
-        return try {
-            if (!JavaScriptSandbox.isSupported()) {
-                return """{"error":"JavaScript engine not supported on this device"}"""
-            }
-            val args = JSONObject(arguments)
-            val code = args.getString("code")
-
-            val sandbox = JavaScriptSandbox.createConnectedInstanceAsync(context)
-                .get(5, TimeUnit.SECONDS)
-            try {
-                val startupParams = IsolateStartupParameters()
+    override fun execute(arguments: String): String = try {
+        if (!JavaScriptSandbox.isSupported()) {
+            toolError("JavaScript engine not supported on this device")
+        } else {
+            val code = JSONObject(arguments).getString("code")
+            JavaScriptSandbox.createConnectedInstanceAsync(context).get(5, TimeUnit.SECONDS).use { sandbox ->
+                val params = IsolateStartupParameters()
                 if (sandbox.isFeatureSupported(JavaScriptSandbox.JS_FEATURE_ISOLATE_MAX_HEAP_SIZE)) {
-                    startupParams.setMaxHeapSizeBytes(16L * 1024 * 1024)
+                    params.setMaxHeapSizeBytes(16L * 1024 * 1024)
                 }
-                val isolate = sandbox.createIsolate(startupParams)
-                try {
-                    // AndroidX JS engine returns empty string unless the code explicitly
-                    // produces a String value. Wrap with String() to capture the result
-                    // of the last expression, using eval() to handle multi-statement code.
-                    // Pass the user code to eval() as a JSON-quoted string literal rather
-                    // than a template literal: a template literal would run `${...}`
-                    // interpolation against the wrong scope and collide with backticks in
-                    // the user code, breaking any code that uses template strings.
-                    val wrapped = "String(eval(${JSONObject.quote(code)}))"
-                    val result = isolate.evaluateJavaScriptAsync(wrapped)
-                        .get(10, TimeUnit.SECONDS)
-                    """{"result":${JSONObject.quote(result)}}"""
-                } finally {
-                    isolate.close()
+                sandbox.createIsolate(params).use { isolate ->
+                    // The engine returns "" unless the code produces a string, so
+                    // String(eval(...)) gives the last expression's value. The code
+                    // goes in as a quoted string, not a template literal, so its own
+                    // backticks and ${...} are left alone.
+                    toolResult(isolate.evaluateJavaScriptAsync("String(eval(${JSONObject.quote(code)}))").get(10, TimeUnit.SECONDS))
                 }
-            } finally {
-                sandbox.close()
             }
-        } catch (e: Exception) {
-            JSONObject().put("error", e.cause?.message ?: e.message ?: "Execution failed").toString()
         }
+    } catch (e: Exception) {
+        toolError(e.cause?.message ?: e.message ?: "Execution failed")
     }
 }

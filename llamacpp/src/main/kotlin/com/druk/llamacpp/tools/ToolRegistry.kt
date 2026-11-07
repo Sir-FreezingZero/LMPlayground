@@ -20,11 +20,6 @@ class ToolRegistry {
 
     fun getAllTools(): List<Tool> = tools.values.toList()
 
-    fun getTool(name: String): Tool? = tools[name]
-
-    /** The tool that offers [function], the name the model called. */
-    fun toolFor(function: String): Tool? = functionFor(function)?.first
-
     /**
      * The tool and function [called] means: an exact match, else the one
      * function whose name differs only in case or "-" / "_" (WEB_SEARCH, web-search).
@@ -65,7 +60,7 @@ class ToolRegistry {
     fun asText(json: String): String {
         val o = runCatching { JSONObject(json) }.getOrNull() ?: return json
         o.optString("error").takeIf { it.isNotEmpty() }?.let { return "Error: $it" }
-        if (o.length() == 1 && o.has("result")) return o.optString("result")
+        if (o.length() == 1 && o.has("result")) return o.optString("result").ifEmpty { "(empty)" }
         return lines(o)
     }
 
@@ -96,23 +91,13 @@ class ToolRegistry {
         }
     }
 
-    /**
-     * Returns OpenAI-format JSON for enabled tools only.
-     */
-    fun toOpenAIToolsJson(): String {
-        val arr = JSONArray()
-        for (tool in tools.values) {
-            if (!isToolEnabled(tool.name)) continue
-            for (f in tool.functions) {
-                val func = JSONObject()
-                    .put("name", f.name)
-                    .put("description", f.description)
-                    .put("parameters", JSONObject(f.parametersSchema))
-                arr.put(JSONObject().put("type", "function").put("function", func))
-            }
+    /** The enabled tools' functions in OpenAI format. */
+    fun toOpenAIToolsJson(): String = JSONArray(
+        tools.values.filter { isToolEnabled(it.name) }.flatMap { it.functions }.map { f ->
+            JSONObject().put("type", "function").put("function", JSONObject()
+                .put("name", f.name).put("description", f.description).put("parameters", JSONObject(f.parametersSchema)))
         }
-        return arr.toString()
-    }
+    ).toString()
 
     /**
      * Run the calls the model made and return `[{id,name,content}]`.
@@ -124,28 +109,19 @@ class ToolRegistry {
      */
     fun executeToolCalls(toolCallsJson: String, enforceEnabled: Boolean = false): String {
         val calls = JSONArray(toolCallsJson)
-        val results = JSONArray()
-        for (i in 0 until calls.length()) {
+        return JSONArray((0 until calls.length()).map { i ->
             val call = calls.getJSONObject(i)
             val name = call.getString("name")
-            val arguments = call.getString("arguments")
-            val id = call.getString("id")
-
             val match = functionFor(name)
             val content = when {
                 match == null -> "Error: Unknown tool: $name"
                 enforceEnabled && !isToolEnabled(match.first.name) -> "Error: The $name tool is not enabled."
-                else -> runCatching { asText(match.first.execute(match.second.name, normalizedArguments(arguments, match.second))) }
-                    .getOrElse { "Error: " + (it.message ?: "The $name tool failed.") }
+                else -> runCatching {
+                    asText(match.first.execute(match.second.name, normalizedArguments(call.getString("arguments"), match.second)))
+                }.getOrElse { "Error: " + (it.message ?: "The $name tool failed.") }
             }
-
-            val result = JSONObject()
-            result.put("id", id)
-            result.put("name", name)
-            result.put("content", content)
-            results.put(result)
-        }
-        return results.toString()
+            JSONObject().put("id", call.getString("id")).put("name", name).put("content", content)
+        }).toString()
     }
 
     /**

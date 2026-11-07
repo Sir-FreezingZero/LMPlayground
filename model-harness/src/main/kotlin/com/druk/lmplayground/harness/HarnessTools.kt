@@ -8,14 +8,14 @@ import com.druk.llamacpp.tools.ToolRegistry
  * The app's real [ToolRegistry], populated with deterministic stand-ins.
  *
  * name / description / parametersSchema are copied VERBATIM from the app's
- * WebSearchTool and WebFetchTool, so the chat template renders a preamble
+ * WebSearchTool and CalculatorTool, so the chat template renders a preamble
  * byte-identical to production — a paraphrased schema would change the prompt
  * and could mask or invent a formatting bug. Only execute() differs: canned
  * results, so probes have no network dependency and reproduce exactly.
  *
- * JavaScriptTool has no stand-in: it needs androidx.javascriptengine, and a
- * calculator fake fills the same role (a question the model cannot answer
- * from training data).
+ * JavaScriptTool has no stand-in: it needs androidx.javascriptengine, and the
+ * calculator fills the same role (a question the model cannot answer from
+ * training data).
  */
 object HarnessTools {
 
@@ -43,8 +43,9 @@ object HarnessTools {
 
     object FakeCalculator : Tool {
         override val name = "calculator"
-        override val description = "Evaluate an arithmetic expression and return the numeric result."
-        override val parametersSchema = """{"type":"object","properties":{"expression":{"type":"string","description":"Arithmetic expression, e.g. 17+25"}},"required":["expression"]}"""
+        override val functionName = "calculate"
+        override val description = "Works out math exactly, from simple sums and money to percentages and formulas. Returns the result."
+        override val parametersSchema = """{"type":"object","properties":{"expression":{"type":"string","description":"The math to work out, e.g. \"20 - 7\", \"0.15 * 80\", \"(1234 * 5678) / 3\", \"sqrt(2)\". Supports + - * / ^, parentheses, functions like sqrt, log and sin, and pi and e. Angles are in radians."}},"required":["expression"]}"""
         override fun execute(arguments: String): String = """{"result":42}"""
     }
 }

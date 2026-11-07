@@ -1,7 +1,7 @@
 package com.druk.llamacpp.tools
 
 /**
- * Shared between [WebSearchTool] and [WebFetchTool].
+ * Shared by web_search and its page reader.
  *
  * Web search results carry long real URLs (article slugs + tracking params)
  * that waste many tokens in the model's context — multiplied across 5–10

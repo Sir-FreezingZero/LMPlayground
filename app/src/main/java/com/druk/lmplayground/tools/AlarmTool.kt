@@ -6,8 +6,9 @@ import android.content.Intent
 import android.provider.AlarmClock
 import android.text.format.DateFormat
 import com.druk.llamacpp.tools.Tool
+import com.druk.llamacpp.tools.toolError
+import com.druk.llamacpp.tools.toolResult
 import com.druk.lmplayground.App
-import org.json.JSONException
 import org.json.JSONObject
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -17,10 +18,9 @@ import java.util.Locale
  * `set_alarm`: a one-time alarm in the phone's Clock app.
  *
  * The model passes the time as the user said it ("6:30", "6:30 pm",
- * "18:30"). It is asked to check get_date_time first when there's no AM/PM,
- * but the app settles that case itself as well, the way a person would: on
- * a 12-hour phone "6:30" is whichever 6:30 comes next; on a 24-hour phone
- * it is 06:30.
+ * "18:30", "in 2 hours"). With no AM/PM the app settles it the way a person
+ * would: on a 12-hour phone "6:30" is whichever 6:30 comes next; on a
+ * 24-hour phone it is 06:30.
  */
 class SetAlarmTool(
     private val context: Context,
@@ -34,23 +34,19 @@ class SetAlarmTool(
         """"label":{"type":"string","description":"The name the user gave the alarm. Leave it out if they didn't name it."}},"required":["time"]}"""
 
     override fun execute(arguments: String): String {
-        val args = try {
-            JSONObject(arguments)
-        } catch (_: JSONException) {
-            JSONObject()
-        }
+        val args = runCatching { JSONObject(arguments) }.getOrDefault(JSONObject())
         val label = args.optString("label").trim().take(60)
         val text = args.optString("time")
         val inSeconds = relativeSeconds(text)
-        if (inSeconds > 24 * 3600) return error("Alarms can be at most 24 hours ahead. Tell the user.")
+        if (inSeconds > 24 * 3600) return toolError("Alarms can be at most 24 hours ahead. Tell the user.")
         // "in 20 minutes": the current minute plus that (10:28 + 1 hour = 11:28);
         // under a minute ("in 30 seconds") goes to the next minute.
         val time = if (inSeconds > 0) now().withSecond(0).withNano(0).plusSeconds(maxOf(inSeconds, 60)).withSecond(0)
-        else time(text) ?: return error("Give time like \"6:30\", \"6:30 PM\", \"18:30\" or \"in 20 minutes\".")
+        else time(text) ?: return toolError("Give time like \"6:30\", \"6:30 PM\", \"18:30\" or \"in 20 minutes\".")
 
         // Android won't let a background app open another app.
         if ((context.applicationContext as? App)?.isAppInForeground == false) {
-            return error("Open LM Playground and try again; it can't open the Clock app from the background.")
+            return toolError("Open LM Playground and try again; it can't open the Clock app from the background.")
         }
         val intent = Intent(AlarmClock.ACTION_SET_ALARM)
             .putExtra(AlarmClock.EXTRA_HOUR, time.hour)
@@ -61,20 +57,20 @@ class SetAlarmTool(
         try {
             context.startActivity(intent)
         } catch (_: ActivityNotFoundException) {
-            return error("This phone has no Clock app that can set alarms.")
+            return toolError("This phone has no Clock app that can set alarms.")
         } catch (e: SecurityException) {
-            return error("Android refused to open the Clock app: ${e.message}")
+            return toolError("Android refused to open the Clock app: ${e.message}")
         }
         val day = if (time > now()) "today" else "tomorrow"
-        val ahead = if (inSeconds > 0) " (in ${text.trim().replaceFirst(Regex("(?i)^in\\s+"), "")})" else ""
+        val ahead = if (inSeconds > 0) " (in ${text.trim().replaceFirst(LEADING_IN, "")})" else ""
         val shown = time.format(DateTimeFormatter.ofPattern(if (twelveHourClock()) "h:mm a" else "HH:mm", Locale.ENGLISH))
         val name = if (label.isEmpty()) "Alarm" else "Alarm \"$label\""
-        return JSONObject().put("result", "$name set for $shown $day$ahead.").toString()
+        return toolResult("$name set for $shown $day$ahead.")
     }
 
     /** "in 20 minutes", "in 1 hour 30 min", "2 hours" in seconds from now; 0 if it isn't one. */
     private fun relativeSeconds(text: String): Long =
-        Regex("""(\d+(?:\.\d+)?)\s*(hour|hr|h\b|minute|min|m\b|second|sec|s\b)""").findAll(text.lowercase()).sumOf { m ->
+        DURATION.findAll(text.lowercase()).sumOf { m ->
             m.groupValues[1].toDouble() * when (m.groupValues[2].first()) { 'h' -> 3600; 'm' -> 60; else -> 1 }
         }.toLong()
 
@@ -84,14 +80,14 @@ class SetAlarmTool(
      */
     private fun time(text: String): LocalTime? {
         val lower = text.lowercase()
-        val m = Regex("""(\d{1,2})(?::(\d{2}))?\s*([ap])?\.?\s*m?""").find(lower) ?: return null
+        val m = CLOCK.find(lower) ?: return null
         val hour = m.groupValues[1].toInt()
         val minute = m.groupValues[2].ifEmpty { "0" }.toInt()
         if (hour > 23 || minute > 59) return null
         val amPm = m.groupValues[3].ifEmpty {
             when {
-                Regex("""\bmorning\b""").containsMatchIn(lower) -> "a"
-                Regex("""\b(afternoon|evening|night|tonight)\b""").containsMatchIn(lower) -> "p"
+                MORNING.containsMatchIn(lower) -> "a"
+                LATER.containsMatchIn(lower) -> "p"
                 else -> ""
             }
         }
@@ -108,5 +104,11 @@ class SetAlarmTool(
         }
     }
 
-    private fun error(message: String) = JSONObject().put("error", message).toString()
+    private companion object {
+        val DURATION = Regex("""(\d+(?:\.\d+)?)\s*(hour|hr|h\b|minute|min|m\b|second|sec|s\b)""")
+        val CLOCK = Regex("""(\d{1,2})(?::(\d{2}))?\s*([ap])?\.?\s*m?""")
+        val MORNING = Regex("""\bmorning\b""")
+        val LATER = Regex("""\b(afternoon|evening|night|tonight)\b""")
+        val LEADING_IN = Regex("(?i)^in\\s+")
+    }
 }
