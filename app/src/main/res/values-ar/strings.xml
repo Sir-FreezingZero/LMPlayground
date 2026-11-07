@@ -316,9 +316,6 @@
     <string name="tool_web_search_title">البحث في الويب</string>
     <string name="tool_web_search_desc">يبحث في الويب ويعيد عناوين النتائج والروابط والمقتطفات حتى يتمكن النموذج من العثور على معلومات حديثة.</string>
     <string name="tool_web_search_example">\"ابحث عن مراجعات حديثة لأحدث هاتف Pixel.\"</string>
-    <string name="tool_web_fetch_title">جلب صفحة ويب</string>
-    <string name="tool_web_fetch_desc">يفتح رابطاً ويقرأ محتواه الرئيسي كنص حتى يتمكن النموذج من تلخيص صفحة أو الاقتباس منها.</string>
-    <string name="tool_web_fetch_example">\"لخّص المقالة الموجودة في هذا الرابط.\"</string>
     <string name="tool_set_alarm_title">ضبط منبّه</string>
     <string name="tool_set_alarm_desc">ينشئ منبّهًا في تطبيق الساعة. يعمل دون اتصال، ويمكنك تغييره أو حذفه في تطبيق الساعة.</string>
     <string name="tool_set_alarm_example">\"اضبط منبّهًا على 6:30 صباحًا.\"</string>

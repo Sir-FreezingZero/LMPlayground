@@ -96,12 +96,6 @@ private val TOOL_UI: Map<String, ToolUiInfo> = mapOf(
         R.string.tool_web_search_example,
         Icons.Outlined.Search,
     ),
-    "web_fetch" to ToolUiInfo(
-        R.string.tool_web_fetch_title,
-        R.string.tool_web_fetch_desc,
-        R.string.tool_web_fetch_example,
-        Icons.Outlined.Public,
-    ),
     "set_alarm" to ToolUiInfo(
         R.string.tool_set_alarm_title,
         R.string.tool_set_alarm_desc,

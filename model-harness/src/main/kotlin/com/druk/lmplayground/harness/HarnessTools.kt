@@ -21,7 +21,6 @@ object HarnessTools {
 
     fun registry(): ToolRegistry = ToolRegistry().apply {
         register(FakeWebSearch)
-        register(FakeWebFetch)
         register(FakeCalculator)
         getAllTools().forEach { setToolEnabled(it.name, true) }
     }
@@ -35,18 +34,11 @@ object HarnessTools {
 
     object FakeWebSearch : Tool {
         override val name = "web_search"
-        override val description = "Search the web and return results with titles, snippets, and a compact reference for each result. Pass a result's \"ref\" to web_fetch to read that page."
-        override val parametersSchema = """{"type":"object","properties":{"query":{"type":"string","description":"The search query"},"max_results":{"type":"integer","description":"Maximum number of results to return (default 5, max 10)"}},"required":["query"]}"""
+        override val description = "Search the web and fetch page content. Returns snippets for all results. Use the url parameter to fetch full page text from a specific URL."
+        override val parametersSchema = """{"type":"object","properties":{"query":{"type":"string","description":"The search query"},"url":{"type":"string","description":"A URL to fetch full page content from (instead of searching). Use this to read a page found in search results."}},"required":[]}"""
         override fun execute(arguments: String): String =
-            """{"results":[{"title":"Weather in Kyiv","snippet":"Currently 12°C and partly cloudy in Kyiv, Ukraine.","ref":"ddg:1"}]}"""
-    }
-
-    object FakeWebFetch : Tool {
-        override val name = "web_fetch"
-        override val description = "Fetch a web page and return its readable text content. Accepts a URL or a \"ref\" returned by web_search."
-        override val parametersSchema = """{"type":"object","properties":{"url":{"type":"string","description":"URL or web_search reference to fetch"}},"required":["url"]}"""
-        override fun execute(arguments: String): String =
-            """{"title":"Weather in Kyiv","text":"Kyiv, Ukraine. Currently 12°C, partly cloudy, wind 8 km/h."}"""
+            if ("url" in org.json.JSONObject(arguments)) """{"title":"Weather in Kyiv","content":"Kyiv, Ukraine. Currently 12°C, partly cloudy, wind 8 km/h."}"""
+            else """{"results":[{"title":"Weather in Kyiv","snippet":"Currently 12°C and partly cloudy in Kyiv, Ukraine.","url":"ddg:1"}]}"""
     }
 
     object FakeCalculator : Tool {

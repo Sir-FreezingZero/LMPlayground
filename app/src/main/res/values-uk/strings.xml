@@ -303,8 +303,6 @@
     <string name="tool_get_date_time_desc">Повідомляє моделі сьогоднішню дату, день тижня й поточний час з вашого телефона. Працює офлайн.</string>
     <string name="tool_get_date_time_example">\"Який сьогодні день?\"</string>
     <string name="tool_run_javascript_title">Виконати JavaScript</string>
-    <string name="tool_web_fetch_desc">Відкриває посилання й читає його основний вміст як текст, щоб модель могла підсумувати або процитувати сторінку.</string>
-    <string name="tool_web_fetch_example">\"Підсумуй статтю за цим посиланням.\"</string>
     <string name="tool_set_alarm_title">Встановити будильник</string>
     <string name="tool_set_alarm_desc">Створює будильник у застосунку Годинник. Працює офлайн; його можна змінити або видалити в застосунку Годинник.</string>
     <string name="tool_set_alarm_example">\"Постав будильник на 6:30 ранку.\"</string>
@@ -322,7 +320,6 @@
     <string name="tools_html_preview_internet_title">Доступ до інтернету в переглядах</string>
     <string name="tools_html_preview_internet_desc">Дозволяє живим переглядам завантажувати з інтернету бібліотеки, шрифти, зображення й дані. Коли вимкнено, перегляди працюють повністю офлайн. «Відкрити в браузері» використовує ваш застосунок браузера, яким це налаштування не керує. Вимкнення видаляє все, що перегляди завантажили або зберегли.</string>
     <string name="html_artifact_offline_notice">Ця сторінка намагалася завантажити файли з інтернету. Перегляди працюють офлайн; дозволити доступ до інтернету можна в Налаштування \u2192 Інструменти.</string>
-    <string name="tool_web_fetch_title">Завантажити вебсторінку</string>
     <string name="tool_web_search_desc">Шукає в інтернеті й повертає заголовки результатів, посилання та фрагменти, щоб модель могла знайти актуальну інформацію.</string>
     <string name="tool_web_search_example">\"Знайди свіжі огляди найновішого телефона Pixel.\"</string>
     <string name="tool_web_search_title">Пошук у мережі</string>

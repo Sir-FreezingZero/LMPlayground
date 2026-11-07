@@ -8,10 +8,16 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.jsoup.Jsoup
 
+/**
+ * Searching and reading pages are one tool: with "url" it reads that page
+ * (a link or a result's "ddg:N" reference), otherwise it searches.
+ */
 class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
     override val name = "web_search"
-    override val description = "Searches the web for news, recent events and anything that may have changed since you were trained. Returns the top results, each with a title, a snippet and a ref to pass to web_fetch for the full page."
-    override val parametersSchema = """{"type":"object","properties":{"query":{"type":"string","description":"What to search for"}},"required":["query"]}"""
+    override val description = "Search the web and fetch page content. Returns snippets for all results. Use the url parameter to fetch full page text from a specific URL."
+    override val parametersSchema = """{"type":"object","properties":{"query":{"type":"string","description":"The search query"},"url":{"type":"string","description":"A URL to fetch full page content from (instead of searching). Use this to read a page found in search results."}},"required":[]}"""
+
+    private val page = WebFetchTool(linkStore)
 
     override fun cancelInFlight() {
         WebHttp.client.dispatcher.cancelAll()
@@ -20,7 +26,8 @@ class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
     override fun execute(arguments: String): String {
         return try {
             val args = JSONObject(arguments)
-            val query = args.getString("query")
+            if (args.optString("url").isNotBlank()) return page.execute(arguments)
+            val query = args.optString("query").ifBlank { return WebHttp.errorJson("No query provided.") }
             val maxResults = args.optInt("max_results", 5).coerceIn(1, 10)
 
             val url = "https://html.duckduckgo.com/html/"
@@ -64,8 +71,8 @@ class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
                 obj.put("title", title)
                 if (linkStore != null) {
                     // Hand the model a compact reference instead of the full
-                    // URL to save context tokens; web_fetch resolves it back.
-                    obj.put("ref", linkStore.reference(actualUrl))
+                    // URL to save context tokens; the url parameter resolves it back.
+                    obj.put("url", linkStore.reference(actualUrl))
                 } else {
                     obj.put("url", actualUrl)
                 }
@@ -82,7 +89,7 @@ class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
             wrapper.put("query", query)
             if (results.length() == 0) wrapper.put("message", "No results found.")
             // Small models tend to answer from a snippet; remind them the page itself is there to read.
-            else wrapper.put("note", "These are only short snippets. To read a page in full, call web_fetch with its ref.")
+            else wrapper.put("note", "IMPORTANT: These are only short snippets. To get the full page content, call web_search with the url parameter.")
             wrapper.toString()
         } catch (e: Exception) {
             wikipedia(args = arguments) ?: WebHttp.errorJson(e.message ?: "Search failed")
@@ -111,13 +118,13 @@ class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
             val page = "https://en.wikipedia.org/wiki/" + title.replace(' ', '_')
             results.put(
                 JSONObject().put("title", title)
-                    .put(if (linkStore != null) "ref" else "url", linkStore?.reference(page) ?: page)
+                    .put("url", linkStore?.reference(page) ?: page)
                     .put("snippet", Jsoup.parse(hits.getJSONObject(i).optString("snippet")).text())
             )
         }
         JSONObject()
             .put("note", "General web search was unavailable or returned no usable results. These are " +
-                "Wikipedia-only encyclopedia results, not current web coverage. To read one in full, call web_fetch with its ref.")
+                "Wikipedia-only encyclopedia results, not current web coverage. To get the full page content, call web_search with the url parameter.")
             .put("results", results).put("query", query).toString()
     }.getOrNull()
 

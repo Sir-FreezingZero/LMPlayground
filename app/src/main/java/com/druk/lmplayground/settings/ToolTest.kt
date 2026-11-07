@@ -90,7 +90,7 @@ class ToolTestCase(
     val tool: String?,
     val prompt: String,
     val argsOk: (JSONObject) -> Boolean = { true },
-    val expect: (JSONObject) -> String? = { null },
+    val expect: (String) -> String? = { null },
     val simulated: String? = null,
     /** Shown instead of the tool name for the no-tool checks. */
     val label: String = tool ?: "",
@@ -98,9 +98,16 @@ class ToolTestCase(
 
 private fun JSONObject.text(key: String) = optString(key).lowercase()
 
-/** [key] from a successful result, or null after an error or when it's missing. */
-private fun JSONObject.field(key: String): String? =
-    if (has("error")) null else optString(key).trim().takeIf { it.isNotEmpty() }
+/**
+ * [key] from a successful plain-text result ("Key: value" lines, or the whole
+ * text for a lone result), or null after an error or when it's missing.
+ */
+private fun String.field(key: String): String? {
+    if (startsWith("Error:")) return null
+    val label = key.replace('_', ' ').replaceFirstChar { it.uppercase() } + ": "
+    val line = lines().firstOrNull { it.startsWith(label) }?.removePrefix(label)
+    return (line ?: takeIf { key == "result" })?.trim()?.takeIf { it.isNotEmpty() }
+}
 
 val TOOL_TEST_CASES = listOf(
     ToolTestCase("calculate", "What is 1234 times 5678?",
@@ -127,10 +134,10 @@ val TOOL_TEST_CASES = listOf(
         simulated = """{"result":"Saved as fact 1."}"""),
     // Live search results differ every time, so only the call is checked.
     ToolTestCase("web_search", "What's in the news today?", { it.text("query").isNotBlank() }, { null }),
-    ToolTestCase("web_fetch", "What's the title of the page at https://example.com?",
+    ToolTestCase("web_search", "What's the title of the page at https://example.com?",
         { "example.com" in it.text("url") }, { it.field("title") }),
     ToolTestCase("search_wikipedia", "According to Wikipedia, what year was the Eiffel Tower completed?",
-        { "eiffel" in it.text("query") }, { r -> "1889".takeIf { r.field("summary")?.contains(it) == true } }),
+        { "eiffel" in it.text("query") }, { r -> "1889".takeIf { !r.startsWith("Error:") && it in r } }),
     ToolTestCase("run_javascript", "Write and run code to count the letter r in \"strawberry raspberry\".",
         { "strawberry" in it.text("code") }, { it.field("result") }),
     // And the other way round: no tool for small talk or writing.
@@ -324,7 +331,7 @@ class ToolTestViewModel(app: Application) : AndroidViewModel(app) {
         if (!case.argsOk(args)) return ToolTestResult(false, detail = "Right tool, wrong input: ${call.arguments}")
         val returned = (if (case.simulated != null) "Simulated: " else "Tool returned: ") + call.result.take(200)
         if (answer.isEmpty()) return ToolTestResult(false, detail = "Called it, then gave no answer. $returned")
-        val expected = case.expect(runCatching { JSONObject(call.result) }.getOrDefault(JSONObject()))
+        val expected = case.expect(call.result)
         fun norm(s: String) = s.lowercase().replace(Regex("[,\\s\\u00A0\\u202F]"), "")
         if (expected != null && norm(expected) !in norm(answer)) {
             return ToolTestResult(false, detail = "Called it, but the answer doesn't use the result (\"$expected\"). $returned\n$said")
@@ -342,9 +349,9 @@ class ToolTestViewModel(app: Application) : AndroidViewModel(app) {
             return JSONArray((0 until calls.length()).map { i ->
                 val call = calls.getJSONObject(i)
                 val name = call.getString("name")
-                val content = simulated[name] ?: runCatching {
+                val content = simulated[name]?.let(registry::asText) ?: runCatching {
                     JSONArray(registry.executeToolCalls(JSONArray().put(call).toString())).getJSONObject(0).getString("content")
-                }.getOrElse { JSONObject().put("error", it.message ?: "The $name tool failed.").toString() }
+                }.getOrElse { "Error: " + (it.message ?: "The $name tool failed.") }
                 JSONObject().put("id", call.getString("id")).put("name", name).put("content", content)
             }).toString()
         }

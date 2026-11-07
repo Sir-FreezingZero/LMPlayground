@@ -304,9 +304,6 @@
     <string name="tool_web_search_title">Ricerca web</string>
     <string name="tool_web_search_desc">Cerca sul web e restituisce titoli dei risultati, link e frammenti affinché il modello possa trovare informazioni aggiornate.</string>
     <string name="tool_web_search_example">\"Trova recensioni recenti dell\'ultimo telefono Pixel.\"</string>
-    <string name="tool_web_fetch_title">Carica pagina web</string>
-    <string name="tool_web_fetch_desc">Apre un link e ne legge il contenuto principale come testo affinché il modello possa riassumere o citare una pagina.</string>
-    <string name="tool_web_fetch_example">\"Riassumi l\'articolo a questo link.\"</string>
     <string name="tool_set_alarm_title">Imposta sveglia</string>
     <string name="tool_set_alarm_desc">Crea una sveglia nell\'app Orologio. Funziona offline; puoi modificarla o eliminarla nell\'app Orologio.</string>
     <string name="tool_set_alarm_example">\"Imposta una sveglia alle 6:30.\"</string>

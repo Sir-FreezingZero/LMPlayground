@@ -8,6 +8,7 @@ import org.jsoup.Jsoup
 import java.io.ByteArrayInputStream
 import java.nio.charset.Charset
 
+/** Reads a page for web_search's url input; not offered to the model on its own. */
 class WebFetchTool(private val linkStore: WebLinkStore? = null) : Tool {
     override val name = "web_fetch"
     override val description = "Reads a web page, from a link the user gave or a web_search result. Returns the page's title and main text."

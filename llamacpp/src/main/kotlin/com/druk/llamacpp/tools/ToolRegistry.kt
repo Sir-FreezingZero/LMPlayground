@@ -8,7 +8,7 @@ class ToolRegistry {
     private val enabledState = mutableMapOf<String, Boolean>()
 
     /**
-     * Shared by web_search / web_fetch for compact result references. Exposed so
+     * Shared by web_search and its page reader for compact result references. Exposed so
      * the conversation layer can snapshot it into a session's metadata and
      * restore it when that conversation is reopened. See [WebLinkStore].
      */
@@ -39,17 +39,43 @@ class ToolRegistry {
     /**
      * [raw] arguments as a JSON object the tool can read. A function with one
      * input also takes a bare value ("2+2") or a single input under another
-     * name ({"q": "..."}), which small models often write.
+     * name ({"expr": "..."}), and common other names for "query" and "url"
+     * are read as those ({"q": ...}, {"link": ...}), as small models write them.
      */
     private fun normalizedArguments(raw: String, function: ToolFunction): String {
         val props = runCatching { JSONObject(function.parametersSchema).optJSONObject("properties") }.getOrNull()
         val only = props?.takeIf { it.length() == 1 }?.keys()?.next()
         val parsed = runCatching { JSONObject(raw.ifBlank { "{}" }) }.getOrNull()
-        return when {
-            parsed == null -> if (only != null) JSONObject().put(only, raw.trim().removeSurrounding("\"")).toString() else raw
-            only != null && !parsed.has(only) && parsed.length() == 1 ->
-                JSONObject().put(only, parsed.opt(parsed.keys().next())).toString()
-            else -> parsed.toString()
+            ?: return if (only != null) JSONObject().put(only, raw.trim().removeSurrounding("\"")).toString() else raw
+        if (only != null && !parsed.has(only) && parsed.length() == 1) {
+            return JSONObject().put(only, parsed.opt(parsed.keys().next())).toString()
+        }
+        for ((name, others) in ALIASES) {
+            if (props?.has(name) != true || parsed.has(name)) continue
+            others.firstOrNull { parsed.has(it) }?.let { parsed.put(name, parsed.remove(it)) }
+        }
+        return parsed.toString()
+    }
+
+    /**
+     * A tool's JSON result as plain text, which every model reads the same way:
+     * an error as "Error: …", a lone result as itself, anything else as
+     * "Key: value" lines, with lists as blocks between "---".
+     */
+    fun asText(json: String): String {
+        val o = runCatching { JSONObject(json) }.getOrNull() ?: return json
+        o.optString("error").takeIf { it.isNotEmpty() }?.let { return "Error: $it" }
+        if (o.length() == 1 && o.has("result")) return o.optString("result")
+        return lines(o)
+    }
+
+    private fun lines(o: JSONObject): String = o.keys().asSequence().joinToString("\n") { key ->
+        when (val v = o.get(key)) {
+            is JSONArray -> (0 until v.length()).joinToString("\n\n---\n\n", postfix = "\n") { i ->
+                v.optJSONObject(i)?.let { lines(it) } ?: v.optString(i)
+            }
+            is JSONObject -> lines(v)
+            else -> key.replace('_', ' ').replaceFirstChar { it.uppercase() } + ": " + v
         }
     }
 
@@ -108,7 +134,7 @@ class ToolRegistry {
                 match == null -> """{"error":"Unknown tool: $name"}"""
                 enforceEnabled && !isToolEnabled(match.first.name) -> """{"error":"The $name tool is not enabled."}"""
                 else -> match.first.execute(match.second.name, normalizedArguments(arguments, match.second))
-            }
+            }.let(::asText)
 
             val result = JSONObject()
             result.put("id", id)
@@ -124,5 +150,10 @@ class ToolRegistry {
      * concrete tools need a Context / okhttp / the JS engine and stay there,
      * while the registry itself must be usable from a plain JVM.
      */
-    companion object
+    companion object {
+        private val ALIASES = mapOf(
+            "query" to listOf("q", "search_query", "search", "text"),
+            "url" to listOf("uri", "href", "link"),
+        )
+    }
 }

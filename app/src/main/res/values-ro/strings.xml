@@ -305,9 +305,6 @@
     <string name="tool_web_search_title">Căutare web</string>
     <string name="tool_web_search_desc">Caută pe web și returnează titluri de rezultate, linkuri și fragmente pentru ca modelul să poată găsi informații actuale.</string>
     <string name="tool_web_search_example">\"Găsește recenzii recente despre cel mai nou telefon Pixel.\"</string>
-    <string name="tool_web_fetch_title">Încarcă pagină web</string>
-    <string name="tool_web_fetch_desc">Deschide un link și îi citește conținutul principal ca text pentru ca modelul să poată rezuma sau cita o pagină.</string>
-    <string name="tool_web_fetch_example">\"Rezumă articolul de la acest link.\"</string>
     <string name="tool_set_alarm_title">Setează alarmă</string>
     <string name="tool_set_alarm_desc">Creează o alarmă în aplicația Ceas. Funcționează offline; o poți modifica sau șterge din aplicația Ceas.</string>
     <string name="tool_set_alarm_example">\"Setează o alarmă la 6:30 dimineața.\"</string>

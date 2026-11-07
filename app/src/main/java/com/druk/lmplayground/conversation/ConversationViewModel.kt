@@ -1167,7 +1167,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                     .getStringMap(ConversationMetadata.KEY_TOOLS)
 
                 // Restore web_search link references saved with this conversation
-                // so the model can still web_fetch a previously-returned ref.
+                // so the model can still read a previously-returned ref.
                 toolRegistry.webLinkStore.restore(
                     ConversationMetadata.parse(sessionEntity.metadata)
                         .getStringMap(ConversationMetadata.KEY_WEB_LINKS)

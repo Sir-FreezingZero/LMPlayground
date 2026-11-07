@@ -312,9 +312,6 @@
     <string name="tool_web_search_title">वेब खोज</string>
     <string name="tool_web_search_desc">वेब पर खोजता है और परिणाम के शीर्षक, लिंक और स्निपेट लौटाता है ताकि मॉडल मौजूदा जानकारी पा सके।</string>
     <string name="tool_web_search_example">\"नवीनतम Pixel फ़ोन की हालिया समीक्षाएँ खोजें।\"</string>
-    <string name="tool_web_fetch_title">वेब पेज फ़ेच करें</string>
-    <string name="tool_web_fetch_desc">एक लिंक खोलता है और उसकी मुख्य सामग्री को टेक्स्ट के रूप में पढ़ता है ताकि मॉडल किसी पेज का सारांश दे सके या उद्धृत कर सके।</string>
-    <string name="tool_web_fetch_example">\"इस लिंक पर मौजूद लेख का सारांश दें।\"</string>
     <string name="tool_set_alarm_title">अलार्म सेट करें</string>
     <string name="tool_set_alarm_desc">आपके क्लॉक ऐप में एक अलार्म बनाता है। ऑफ़लाइन काम करता है; आप इसे क्लॉक ऐप में बदल या हटा सकते हैं।</string>
     <string name="tool_set_alarm_example">\"सुबह 6:30 बजे का अलार्म लगाओ।\"</string>

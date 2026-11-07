@@ -305,9 +305,6 @@
     <string name="tool_web_search_title">网络搜索</string>
     <string name="tool_web_search_desc">搜索网络并返回结果的标题、链接和摘要，让模型能够查找最新信息。</string>
     <string name="tool_web_search_example">\"查找最新款 Pixel 手机的近期评测。\"</string>
-    <string name="tool_web_fetch_title">抓取网页</string>
-    <string name="tool_web_fetch_desc">打开链接并以文本形式读取其主要内容，让模型能够总结或引用页面。</string>
-    <string name="tool_web_fetch_example">\"总结此链接中的文章。\"</string>
     <string name="tool_set_alarm_title">设置闹钟</string>
     <string name="tool_set_alarm_desc">在“时钟”应用中创建闹钟。可离线使用；可在“时钟”应用中修改或删除。</string>
     <string name="tool_set_alarm_example">\"设一个早上 6:30 的闹钟。\"</string>

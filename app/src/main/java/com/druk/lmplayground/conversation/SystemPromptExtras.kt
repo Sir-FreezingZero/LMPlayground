@@ -110,10 +110,10 @@ class SystemPromptExtras(
         val compact = modelName?.let { GenerationParams.sizeInBillions(it) }?.let { it < 9 } == true
         val tips = buildList {
             if (web) add(
-                if (compact || "web_fetch" !in names) "When using web_search, do not repeat the same search query."
-                else "When using web_search and a result is relevant, fetch its full content by calling web_fetch " +
-                    "with its ref. Do not repeat the same search query. If a search returns no useful results, " +
-                    "try rephrasing or fetching a result directly."
+                if (compact) "When using web_search, do not repeat the same search query."
+                else "When using web_search and a result URL is relevant, fetch its full content by calling " +
+                    "web_search with the url parameter. Do not repeat the same search query. If a search returns " +
+                    "no useful results, try rephrasing or fetching a result URL directly."
             )
             if (calc) add("Use calculate for math and calculations.")
             if (code) add("Use run_javascript for data processing, or to parse and analyze information from tool results.")

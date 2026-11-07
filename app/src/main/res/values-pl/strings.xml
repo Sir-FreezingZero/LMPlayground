@@ -303,8 +303,6 @@
     <string name="tool_get_date_time_desc">Podaje modelowi dzisiejszą datę, dzień tygodnia i bieżącą godzinę z telefonu. Działa offline.</string>
     <string name="tool_get_date_time_example">\"Jaki jest dziś dzień?\"</string>
     <string name="tool_run_javascript_title">Uruchom JavaScript</string>
-    <string name="tool_web_fetch_desc">Otwiera link i odczytuje jego główną treść jako tekst, aby model mógł podsumować lub zacytować stronę.</string>
-    <string name="tool_web_fetch_example">\"Podsumuj artykuł pod tym linkiem.\"</string>
     <string name="tool_set_alarm_title">Ustaw alarm</string>
     <string name="tool_set_alarm_desc">Tworzy alarm w aplikacji Zegar. Działa offline; możesz go zmienić lub usunąć w aplikacji Zegar.</string>
     <string name="tool_set_alarm_example">\"Ustaw budzik na 6:30 rano.\"</string>
@@ -322,7 +320,6 @@
     <string name="tools_html_preview_internet_title">Dostęp do internetu w podglądach</string>
     <string name="tools_html_preview_internet_desc">Pozwala podglądom na żywo wczytywać biblioteki, czcionki, obrazy i dane z internetu. Gdy jest wyłączone, podglądy działają całkowicie offline. Otwórz w przeglądarce korzysta z Twojej aplikacji przeglądarki, której to ustawienie nie dotyczy. Wyłączenie usuwa wszystko, co podglądy pobrały lub zapisały.</string>
     <string name="html_artifact_offline_notice">Ta strona próbowała wczytać pliki z internetu. Podglądy działają offline; dostęp do internetu możesz włączyć w Ustawienia \u2192 Narzędzia.</string>
-    <string name="tool_web_fetch_title">Pobierz stronę internetową</string>
     <string name="tool_web_search_desc">Przeszukuje sieć i zwraca tytuły wyników, linki oraz fragmenty, aby model mógł znaleźć aktualne informacje.</string>
     <string name="tool_web_search_example">\"Znajdź najnowsze recenzje najnowszego telefonu Pixel.\"</string>
     <string name="tool_web_search_title">Wyszukiwanie w sieci</string>

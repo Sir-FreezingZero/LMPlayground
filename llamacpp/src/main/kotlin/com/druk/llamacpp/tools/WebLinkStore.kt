@@ -7,7 +7,7 @@ package com.druk.llamacpp.tools
  * that waste many tokens in the model's context — multiplied across 5–10
  * results per search. Instead of handing the model those URLs, web_search
  * stores each one here and returns a compact reference like "ddg:3". When the
- * model later calls web_fetch with that reference, [resolve] maps it back to
+ * model later calls web_search with that reference as its url, [resolve] maps it back to
  * the real URL before the request goes out.
  *
  * One instance is shared by the two tools within a [ToolRegistry] (see

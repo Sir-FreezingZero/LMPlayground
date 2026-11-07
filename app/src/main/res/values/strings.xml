@@ -358,9 +358,6 @@
     <string name="tool_web_search_title">Web search</string>
     <string name="tool_web_search_desc">Searches the web and returns result titles, links, and snippets so the model can find current information.</string>
     <string name="tool_web_search_example">\"Find recent reviews of the latest Pixel phone.\"</string>
-    <string name="tool_web_fetch_title">Fetch web page</string>
-    <string name="tool_web_fetch_desc">Opens a link and reads its main content as text so the model can summarize or quote a page.</string>
-    <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
     <string name="tool_set_alarm_title">Set alarm</string>
     <string name="tool_set_alarm_desc">Creates an alarm in your Clock app. Works offline; you can change or delete it in the Clock app.</string>
     <string name="tool_set_alarm_example">\"Set an alarm for 6:30 am.\"</string>

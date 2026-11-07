@@ -340,9 +340,6 @@
     <string name="tool_web_search_title">ค้นหาเว็บ</string>
     <string name="tool_web_search_desc">ค้นหาบนเว็บและส่งคืนชื่อผลลัพธ์ ลิงก์ และข้อความตัวอย่าง เพื่อให้โมเดลค้นหาข้อมูลล่าสุดได้</string>
     <string name="tool_web_search_example">\"Find recent reviews of the latest Pixel phone.\"</string>
-    <string name="tool_web_fetch_title">ดึงหน้าเว็บ</string>
-    <string name="tool_web_fetch_desc">เปิดลิงก์และอ่านเนื้อหาหลักเป็นข้อความ เพื่อให้โมเดลสรุปหรืออ้างอิงหน้าเว็บได้</string>
-    <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
     <string name="tool_set_alarm_title">ตั้งปลุก</string>
     <string name="tool_set_alarm_desc">สร้างการปลุกในแอปนาฬิกา ทำงานแบบออฟไลน์ คุณเปลี่ยนหรือลบได้ในแอปนาฬิกา</string>
     <string name="tool_set_alarm_example">\"ตั้งปลุกตอน 6:30 น.\"</string>

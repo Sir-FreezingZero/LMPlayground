@@ -354,7 +354,6 @@ private fun toolDisplayName(name: String): String = when (name) {
     "run_javascript" -> stringResource(R.string.tool_run_javascript_title)
     "get_date_time" -> stringResource(R.string.tool_get_date_time_title)
     "web_search" -> stringResource(R.string.tool_web_search_title)
-    "web_fetch" -> stringResource(R.string.tool_web_fetch_title)
     "set_alarm" -> stringResource(R.string.tool_set_alarm_title)
     "calculate" -> stringResource(R.string.tool_calculator_title)
     "convert_units" -> stringResource(R.string.tool_convert_units_title)

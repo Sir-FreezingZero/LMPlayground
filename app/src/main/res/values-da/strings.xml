@@ -335,9 +335,6 @@
     <string name="tool_web_search_title">Websøgning</string>
     <string name="tool_web_search_desc">Søger på nettet og returnerer resultaternes titler, links og uddrag, så modellen kan finde aktuel information.</string>
     <string name="tool_web_search_example">“Find nylige anmeldelser af den nyeste Pixel-telefon.”</string>
-    <string name="tool_web_fetch_title">Hent webside</string>
-    <string name="tool_web_fetch_desc">Åbner et link og læser hovedindholdet som tekst, så modellen kan opsummere eller citere en side.</string>
-    <string name="tool_web_fetch_example">“Opsummer artiklen på dette link.”</string>
     <string name="tool_set_alarm_title">Indstil alarm</string>
     <string name="tool_set_alarm_desc">Opretter en alarm i din Ur-app. Virker offline; du kan ændre eller slette den i Ur-appen.</string>
     <string name="tool_set_alarm_example">\"Sæt en alarm til kl. 6.30.\"</string>

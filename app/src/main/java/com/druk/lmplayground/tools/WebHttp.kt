@@ -6,7 +6,7 @@ import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
 /**
- * What web_search and web_fetch share: one HTTP client (one connection pool
+ * What web_search and its page reader (WebFetchTool) share: one HTTP client (one connection pool
  * and thread pool instead of one per tool), the browser User-Agent, a
  * size-capped body read, and JSON error replies.
  */

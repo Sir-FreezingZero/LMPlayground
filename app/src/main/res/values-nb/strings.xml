@@ -335,9 +335,6 @@
     <string name="tool_web_search_title">Nettsøk</string>
     <string name="tool_web_search_desc">Søker på nettet og returnerer titler, lenker og utdrag fra resultatene slik at modellen kan finne oppdatert informasjon.</string>
     <string name="tool_web_search_example">“Finn nylige anmeldelser av den nyeste Pixel-telefonen.”</string>
-    <string name="tool_web_fetch_title">Hent nettside</string>
-    <string name="tool_web_fetch_desc">Åpner en lenke og leser hovedinnholdet som tekst slik at modellen kan oppsummere eller sitere en side.</string>
-    <string name="tool_web_fetch_example">“Oppsummer artikkelen på denne lenken.”</string>
     <string name="tool_set_alarm_title">Still inn alarm</string>
     <string name="tool_set_alarm_desc">Oppretter en alarm i Klokke-appen. Fungerer frakoblet; du kan endre eller slette den i Klokke-appen.</string>
     <string name="tool_set_alarm_example">\"Sett en alarm til kl. 6.30.\"</string>

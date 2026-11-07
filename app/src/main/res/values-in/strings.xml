@@ -302,9 +302,6 @@
     <string name="tool_web_search_title">Pencarian web</string>
     <string name="tool_web_search_desc">Mencari di web dan mengembalikan judul hasil, tautan, dan cuplikan agar model dapat menemukan informasi terkini.</string>
     <string name="tool_web_search_example">\"Find recent reviews of the latest Pixel phone.\"</string>
-    <string name="tool_web_fetch_title">Ambil halaman web</string>
-    <string name="tool_web_fetch_desc">Membuka tautan dan membaca konten utamanya sebagai teks agar model dapat meringkas atau mengutip sebuah halaman.</string>
-    <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
     <string name="tool_set_alarm_title">Setel alarm</string>
     <string name="tool_set_alarm_desc">Membuat alarm di aplikasi Jam. Berfungsi offline; Anda dapat mengubah atau menghapusnya di aplikasi Jam.</string>
     <string name="tool_set_alarm_example">\"Pasang alarm pukul 6.30 pagi.\"</string>

@@ -192,7 +192,7 @@ class ToolCallLoop(
                 JSONObject()
                     .put("id", call.getString("id"))
                     .put("name", call.getString("name"))
-                    .put("content", JSONObject().put("error", BUDGET_EXHAUSTED).toString())
+                    .put("content", BUDGET_EXHAUSTED)
             )
         }
         return results.toString()
@@ -209,17 +209,14 @@ class ToolCallLoop(
             val call = calls.getJSONObject(i)
             val id = call.getString("id")
             val result = byId[id] ?: JSONObject().put("id", id).put("name", call.getString("name"))
-                .put("content", JSONObject().put("error", DUPLICATE_CALL).toString())
+                .put("content", DUPLICATE_CALL)
             val content = result.optString("content")
-            val error = runCatching { JSONObject(content).optString("error") }.getOrDefault("")
-            if (error.isNotEmpty() && error != DUPLICATE_CALL) {
-                result.put("content", JSONObject(content).put("error", error + TOOL_ERROR_HINT).toString())
-            }
+            if (content.startsWith("Error:")) result.put("content", content + TOOL_ERROR_HINT)
             // The same result again and again won't change by asking once more.
             val name = call.getString("name")
             val times = sameResult[name]?.takeIf { it.first == content }?.second?.plus(1) ?: 1
             sameResult[name] = content to times
-            if (times >= SAME_RESULT_LIMIT && error != DUPLICATE_CALL) {
+            if (times >= SAME_RESULT_LIMIT && content != DUPLICATE_CALL) {
                 result.put("content", result.getString("content") + "\n\n[$name returned exactly this $times " +
                     "times; it will not change. Continue from what you have and finish the task.]")
             }
@@ -234,8 +231,8 @@ class ToolCallLoop(
             "have found so far, provide your final answer now. Do not call any more tools."
         private const val DUPLICATE_CALL = "You already made this exact call. Do not repeat the same tool call. " +
             "Try a different approach, or provide your final answer now."
-        private const val TOOL_ERROR_HINT = " The tool call encountered an issue. Please try a different approach " +
-            "or rephrase your request."
+        private const val TOOL_ERROR_HINT = "\n\nThe tool call encountered an issue. Please try a different " +
+            "approach or rephrase your request."
         private const val MAX_REPROMPTS = 3
         private const val MAX_EMPTY_RETRIES = 2
         private const val SAME_RESULT_LIMIT = 3

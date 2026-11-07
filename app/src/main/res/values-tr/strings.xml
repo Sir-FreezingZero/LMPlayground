@@ -307,9 +307,6 @@
     <string name="tool_web_search_title">Web aramas\u0131</string>
     <string name="tool_web_search_desc">Webde arama yapar ve sonu\u00E7 ba\u015Fl\u0131klar\u0131n\u0131, ba\u011Flant\u0131lar\u0131 ve al\u0131nt\u0131lar\u0131 d\u00F6nd\u00FCrerek modelin g\u00FCncel bilgi bulmas\u0131n\u0131 sa\u011Flar.</string>
     <string name="tool_web_search_example">\"En yeni Pixel telefonunun son incelemelerini bul.\"</string>
-    <string name="tool_web_fetch_title">Web sayfas\u0131 getir</string>
-    <string name="tool_web_fetch_desc">Bir ba\u011Flant\u0131y\u0131 a\u00E7ar ve ana i\u00E7eri\u011Fini metin olarak okur, b\u00F6ylece model bir sayfay\u0131 \u00F6zetleyebilir veya al\u0131nt\u0131layabilir.</string>
-    <string name="tool_web_fetch_example">\"Bu ba\u011Flant\u0131daki makaleyi \u00F6zetle.\"</string>
     <string name="tool_set_alarm_title">Alarm kur</string>
     <string name="tool_set_alarm_desc">Saat uygulamanızda bir alarm oluşturur. Çevrimdışı çalışır; Saat uygulamasından değiştirebilir veya silebilirsiniz.</string>
     <string name="tool_set_alarm_example">\"Sabah 6:30\'a alarm kur.\"</string>
