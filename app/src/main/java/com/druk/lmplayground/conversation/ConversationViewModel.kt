@@ -904,6 +904,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
             sessionStore.persistMessage(sessionId, userMessage, persistedImageFile?.absolutePath)
 
             val wire = buildWireContent(sessionId, message.content)
+            clearIfFull(sessionId, wire)
             if (wire != message.content) sentContents[userMessage.id] = wire
             generation.runTurn(
                 content = wire,
@@ -1095,16 +1096,20 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         val rag = ragRepository ?: return userText
         return try {
             if (!rag.hasReadyDocuments(sessionId)) return userText
-            val retrieved = rag.retrieve(sessionId, userText)
-            if (retrieved.isEmpty()) return userText
             val contextSize = _generationParams.value?.contextSize ?: 4096
-            // Excerpt budget: ~25% of the session context, and never past
-            // the binder payload ceiling (the pre-flight check in
-            // addMessage only covered the original text).
+            // Room for the whole document: what's left after the chat so far,
+            // a quarter for the reply and some slack, at most ~6,000 tokens.
+            val used = _contextUsage.value?.first ?: 0
+            val whole = ((contextSize * 3 / 4 - used - 512) * 4).coerceIn(0, 24_000)
+            // Excerpt budget: ~25% of the session context (or the whole document
+            // when it fits), and never past the binder payload ceiling (the
+            // pre-flight check in addMessage only covered the original text).
             val budget = minOf(
-                RagPromptBuilder.budgetChars(contextSize),
+                maxOf(RagPromptBuilder.budgetChars(contextSize), whole),
                 InferenceLimits.MAX_PAYLOAD_BYTES / 2 - userText.length - 500,
             )
+            val retrieved = rag.retrieve(sessionId, userText, wholeDocumentChars = minOf(whole, budget))
+            if (retrieved.isEmpty()) return userText
             RagPromptBuilder.build(userText, retrieved, budget)
         } catch (t: Throwable) {
             android.util.Log.w("ConversationViewModel", "Retrieval failed; sending plain message", t)
@@ -1118,6 +1123,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
     @MainThread
     fun loadSession(sessionId: String) {
+        carried = null
         newChatFolderId = null
         viewModelScope.launch {
             val uiMessages = sessionStore.loadSessionMessages(sessionId) ?: return@launch
@@ -1266,7 +1272,28 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         // Tools are listed only for a model that can call them; others would
         // write calls that go nowhere.
         val usable = if (promptToolCalling) toolRegistry.getAllTools().filter { tools[it.name] == true } else emptyList()
-        return systemPromptExtras.compose(prompt, usable, tools["memory"] == true, promptModelName)
+        return systemPromptExtras.compose(
+            prompt, usable, tools["memory"] == true, promptModelName,
+            carried?.takeIf { it.first == _currentSessionId.value }?.second,
+        )
+    }
+
+    /** The chat id and its earlier messages kept after it was cleared to fit; see [clearIfFull]. */
+    @Volatile private var carried: Pair<String, String>? = null
+
+    /**
+     * When [next] won't fit beside the chat so far and room for the reply (a
+     * quarter of the context), start the session over with just the system
+     * prompt and the user's earlier messages quoted in it. Done once when the
+     * chat fills, not a little on every reply, so the phone re-reads it once.
+     */
+    private suspend fun clearIfFull(sessionId: String, next: String) {
+        val (used, total) = _contextUsage.value ?: return
+        if (used + next.length / 3 + total / 4 <= total) return
+        val earlier = uiState.messages.dropLast(2).filter { it.author == "User" }.map { it.content }
+        if (earlier.isEmpty()) return
+        carried = sessionId to SystemPromptExtras.carriedForward(earlier, total)
+        runtime.replaceSession(_generationParams.value ?: GenerationParams(), _systemPrompt.value.orEmpty())
     }
 
     /** The loading model's name, set before its first session is made (LiveData would lag). */

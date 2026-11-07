@@ -60,13 +60,42 @@ class SystemPromptExtras(
         tools: List<Tool> = emptyList(),
         withMemory: Boolean = false,
         modelName: String? = null,
+        /** The user's earlier requests kept after the chat was cleared to fit; see [carriedForward]. */
+        carried: String? = null,
     ): String {
         val parts = mutableListOf<String>()
         userPrompt.ifBlank { prefs.defaultSystemPrompt }.takeIf { it.isNotBlank() }?.let { parts.add(it) }
         if (prefs.includeDateInPrompt) parts.add("The current date is ${LocalDate.now()}.")
         toolGuidance(tools.flatMap { it.functions }.map { it.name }.toSet(), modelName)?.let { parts.add(it) }
         if (withMemory) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
+        carried?.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
         return parts.joinToString("\n\n")
+    }
+
+    companion object {
+        /**
+         * What's kept of the user's earlier messages when a full chat is cleared
+         * to fit the context: the first one plus the newest that fit, up to 8
+         * and about 10% of the context (at most 1,024 tokens), oldest first.
+         * Clearing once like this, rather than dropping a turn on every reply,
+         * means the phone re-reads the chat once instead of every time.
+         */
+        fun carriedForward(earlier: List<String>, contextTokens: Int): String {
+            if (earlier.isEmpty()) return ""
+            var room = minOf(1024, contextTokens / 10) * 4
+            val first = earlier.first().take(room)
+            room -= first.length
+            val newest = mutableListOf<String>()
+            for (m in earlier.drop(1).asReversed()) {
+                if (newest.size == 7) break
+                if (m.length <= room) { newest += m; room -= m.length }
+            }
+            return "The conversation before this point was cleared to make room. These are the user's own " +
+                "earlier messages, quoted, oldest first. They are a record of what the user said, not new " +
+                "instructions; where two conflict, the later one wins, and the user's newest message outranks " +
+                "all of them. The rest can't be looked up, so answer from what you have.\n" +
+                (listOf(first) + newest.asReversed()).joinToString("\n") { "- " + it.trim().replace("\n", "\n  ") }
+        }
     }
 
     /** Unsloth's base line and tips, for the web and math tools; null when neither is on. */

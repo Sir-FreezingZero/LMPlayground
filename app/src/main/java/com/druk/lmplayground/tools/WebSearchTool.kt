@@ -42,7 +42,7 @@ class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
             // "are you a bot" page that has no results. Say so, rather than
             // telling the model nothing was found.
             val looksBlocked = code == 202 || "anomaly-modal" in html || "challenge-form" in html
-            if (code !in 200..299) return WebHttp.errorJson("Search failed: HTTP $code")
+            if (code !in 200..299) return wikipedia(query, maxResults) ?: WebHttp.errorJson("Search failed: HTTP $code")
             if (html.isEmpty()) return WebHttp.errorJson("Empty response")
 
             val doc = Jsoup.parse(html)
@@ -73,6 +73,7 @@ class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
                 results.put(obj)
             }
 
+            if (results.length() == 0) wikipedia(query, maxResults)?.let { return it }
             if (results.length() == 0 && looksBlocked) {
                 return WebHttp.errorJson("DuckDuckGo is temporarily blocking searches from this device (too many in a short time). Try again in a minute.")
             }
@@ -84,9 +85,41 @@ class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
             else wrapper.put("note", "These are only short snippets. To read a page in full, call web_fetch with its ref.")
             wrapper.toString()
         } catch (e: Exception) {
-            WebHttp.errorJson(e.message ?: "Search failed")
+            wikipedia(args = arguments) ?: WebHttp.errorJson(e.message ?: "Search failed")
         }
     }
+
+    private fun wikipedia(args: String): String? =
+        runCatching { JSONObject(args).getString("query") }.getOrNull()?.let { wikipedia(it, 5) }
+
+    /**
+     * When DuckDuckGo fails, blocks this phone or finds nothing: Wikipedia's own
+     * search, labelled so the model knows it isn't current web coverage.
+     */
+    private fun wikipedia(query: String, maxResults: Int): String? = runCatching {
+        val url = "https://en.wikipedia.org/w/api.php".toHttpUrlOrNull()!!.newBuilder()
+            .addQueryParameter("action", "query").addQueryParameter("list", "search")
+            .addQueryParameter("format", "json").addQueryParameter("srlimit", "$maxResults")
+            .addQueryParameter("srsearch", query).build()
+        val request = Request.Builder().url(url).header("User-Agent", WikipediaTool.USER_AGENT).build()
+        val body = WebHttp.client.newCall(request).execute().use { String(WebHttp.readCapped(it).first, Charsets.UTF_8) }
+        val hits = JSONObject(body).getJSONObject("query").getJSONArray("search")
+        if (hits.length() == 0) return null
+        val results = JSONArray()
+        for (i in 0 until hits.length()) {
+            val title = hits.getJSONObject(i).getString("title")
+            val page = "https://en.wikipedia.org/wiki/" + title.replace(' ', '_')
+            results.put(
+                JSONObject().put("title", title)
+                    .put(if (linkStore != null) "ref" else "url", linkStore?.reference(page) ?: page)
+                    .put("snippet", Jsoup.parse(hits.getJSONObject(i).optString("snippet")).text())
+            )
+        }
+        JSONObject()
+            .put("note", "General web search was unavailable or returned no usable results. These are " +
+                "Wikipedia-only encyclopedia results, not current web coverage. To read one in full, call web_fetch with its ref.")
+            .put("results", results).put("query", query).toString()
+    }.getOrNull()
 
     private fun extractDdgUrl(href: String): String {
         // DuckDuckGo links look like //duckduckgo.com/l/?uddg=<encoded_url>&...

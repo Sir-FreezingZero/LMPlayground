@@ -525,6 +525,18 @@ class ModelRuntime(
     }
 
     /**
+     * A fresh session with no history in place of the live one, called from
+     * inside the reply being generated, so unlike the resets below nothing
+     * is cancelled. Used when the chat no longer fits the context.
+     */
+    suspend fun replaceSession(params: GenerationParams, systemPrompt: String) {
+        if (!isLoaded) return
+        withContext(Dispatchers.Default) {
+            newSession(params, systemPrompt)?.let { swapInSessionWithReplay(it, session, emptyList()) }
+        }
+    }
+
+    /**
      * Recreate the session with [params] + [systemPrompt], replaying
      * [messages] into it. Create-then-swap: the previous session is
      * destroyed only after a successful create + replay, so a late failure

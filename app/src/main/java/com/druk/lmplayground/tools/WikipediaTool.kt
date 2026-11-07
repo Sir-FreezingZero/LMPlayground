@@ -91,6 +91,6 @@ class WikipediaTool : Tool {
 
     companion object {
         private const val MAX_CHARS = 1500
-        private const val USER_AGENT = "LMPlayground-Android/1.0 (github.com/Sir-FreezingZero/LMPlayground)"
+        const val USER_AGENT = "LMPlayground-Android/1.0 (github.com/Sir-FreezingZero/LMPlayground)"
     }
 }
