@@ -48,7 +48,7 @@ class SystemPromptExtras(
     /**
      * The system prompt the model gets: the user's prompt as written (the
      * default when there is none), the date, and with tools on, short general
-     * guidance plus tips for the web, math and code tools. The tool
+     * guidance plus tips, when the web, math or code tools are on. The tool
      * definitions themselves come from the chat format.
      * Models under 9B (by the size in their name) get the shorter web tip.
      * Saved notes about the user follow when the memory tool is on.
@@ -104,12 +104,12 @@ class SystemPromptExtras(
         }
     }
 
-    /** General tool guidance plus tips for the web, math and code tools; null without tools. */
+    /** One line of tool guidance plus tips for the web, math and code tools; null when none of them is on. */
     private fun toolGuidance(names: Set<String>, modelName: String?): String? {
-        if (names.isEmpty()) return null
         val web = "web_search" in names
         val calc = "calculate" in names
         val code = "run_javascript" in names
+        if (!web && !calc && !code) return null
         val compact = modelName?.let { GenerationParams.sizeInBillions(it) }?.let { it < 9 } == true
         val tips = buildList {
             if (web) add(
@@ -123,8 +123,7 @@ class SystemPromptExtras(
         }
         return "Tools are available when they materially improve the answer. Use an enabled tool for current " +
             "facts, calculations, or code execution when it materially helps; otherwise answer normally and " +
-            "follow the user's requested format. When a tool can find out what the user asks about, call it " +
-            "instead of asking the user or guessing, then answer from its result. " + tips.joinToString(" ")
+            "follow the user's requested format. " + tips.joinToString(" ")
     }
 
     /**
