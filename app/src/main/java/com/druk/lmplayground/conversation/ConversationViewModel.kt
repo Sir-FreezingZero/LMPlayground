@@ -897,8 +897,10 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
             val sessionId = ensureSession(message)
             sessionStore.persistMessage(sessionId, userMessage, persistedImageFile?.absolutePath)
 
+            val wire = buildWireContent(sessionId, message.content)
+            if (wire != message.content) sentContents[userMessage.id] = wire
             generation.runTurn(
-                content = buildWireContent(sessionId, message.content),
+                content = wire,
                 enableThinking = enableThinking,
                 persistedImageFile = persistedImageFile,
                 modelFilename = _loadedModel.value?.filename,
@@ -1052,6 +1054,37 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
      * originals (retrieval re-runs for every new turn instead). Any
      * failure degrades to the plain message.
      */
+    /** What was sent for user messages that got document excerpts added, for [exportChat]. */
+    private val sentContents = java.util.concurrent.ConcurrentHashMap<Long, String>()
+
+    /**
+     * The open chat as Markdown (see [ChatExport]): settings, the system
+     * prompt and tools as the model gets them, then every message.
+     */
+    suspend fun exportChat(): String {
+        val model = _loadedModel.value
+        val session = runtime.session
+        val systemPrompt = session?.let { runtime.effectiveSystemPrompt(it) }
+            ?: _systemPrompt.value.orEmpty() // No model loaded: the chat's own prompt.
+        val toolsJson = withContext(Dispatchers.IO) {
+            if (_supportsToolCalling.value != true) return@withContext null
+            toolStates(_chatTools.value.orEmpty()).forEach { (name, on) -> toolRegistry.setToolEnabled(name, on) }
+            if (toolRegistry.hasEnabledTools()) toolRegistry.toOpenAIToolsJson() else null
+        }
+        return ChatExport.markdown(
+            title = sessions.value?.firstOrNull { it.id == _currentSessionId.value }?.title ?: "Chat",
+            modelName = model?.name,
+            modelFilename = model?.filename,
+            params = _generationParams.value,
+            thinking = _thinkingEnabled.value == true,
+            systemPrompt = systemPrompt,
+            toolsJson = toolsJson,
+            promptStart = renderPromptStart(),
+            messages = uiState.messages,
+            sentContent = { sentContents[it.id] },
+        )
+    }
+
     private suspend fun buildWireContent(sessionId: String, userText: String): String {
         val rag = ragRepository ?: return userText
         return try {

@@ -461,4 +461,5 @@
     <string name="remote_models">โมเดล: %1$d</string>
     <string name="remote_connecting">กำลังเชื่อมต่อ…</string>
     <string name="remote_unreachable">เข้าถึง %1$s ไม่ได้ ตรวจสอบว่าเซิร์ฟเวอร์ทำงานอยู่และโทรศัพท์นี้อยู่ในเครือข่ายเดียวกัน</string>
+    <string name="export_chat">ส่งออกแชท</string>
 </resources>

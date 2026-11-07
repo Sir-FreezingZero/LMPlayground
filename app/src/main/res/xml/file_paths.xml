@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
     <cache-path name="chat_images" path="chat_images/" />
+    <!-- Chat exports, handed to the share sheet. -->
+    <cache-path name="exports" path="exports/" />
     <!-- Persistent copy of attached images, referenced by ChatMessageEntity.imagePath
          so saved conversations keep their images across restarts / cache clears. -->
     <files-path name="chat_images_files" path="chat_images/" />

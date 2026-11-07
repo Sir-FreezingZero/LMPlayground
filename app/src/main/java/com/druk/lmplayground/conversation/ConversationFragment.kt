@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.content.Intent
 import android.widget.Toast
 import android.view.View
 import android.view.ViewGroup
@@ -79,7 +80,9 @@ import com.druk.lmplayground.theme.PlaygroundTheme
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.druk.lmplayground.dictation.DictationState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ConversationFragment : Fragment() {
 
@@ -205,6 +208,34 @@ class ConversationFragment : Fragment() {
             viewModel.dictation.startListening()
         } else {
             recordAudioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+        }
+    }
+
+    /**
+     * Write the open chat to a Markdown file and hand it to the share sheet,
+     * where it can be saved to Files or Drive or sent anywhere.
+     */
+    private fun exportChat() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val text = viewModel.exportChat()
+            val context = requireContext()
+            try {
+                val file = withContext(Dispatchers.IO) {
+                    val dir = File(context.cacheDir, "exports").apply { mkdirs() }
+                    dir.listFiles()?.forEach { it.delete() } // only the latest is kept
+                    val stamp = java.text.SimpleDateFormat("yyyy-MM-dd_HH-mm", java.util.Locale.US)
+                        .format(java.util.Date())
+                    File(dir, "chat_$stamp.md").apply { writeText(text) }
+                }
+                val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+                val send = Intent(Intent.ACTION_SEND)
+                    .setType("text/plain")
+                    .putExtra(Intent.EXTRA_STREAM, uri)
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                startActivity(Intent.createChooser(send, getString(R.string.export_chat)))
+            } catch (e: Exception) {
+                Toast.makeText(context, e.message ?: e.javaClass.simpleName, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -817,6 +848,7 @@ class ConversationFragment : Fragment() {
                             } else null,
                             onSystemPromptPressed = { paramsSheetTab = 1; showParamsSheet = true },
                             onToolsPressed = { paramsSheetTab = 2; showParamsSheet = true },
+                            onExportPressed = ::exportChat,
                             contextUsage = contextUsage,
                             modifier = Modifier
                                 .align(Alignment.TopCenter)

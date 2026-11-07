@@ -429,4 +429,5 @@
     <string name="remote_models">Modelos: %1$d</string>
     <string name="remote_connecting">Conectando…</string>
     <string name="remote_unreachable">No se pudo conectar con %1$s. Comprueba que el servidor esté en marcha y que este teléfono esté en la misma red.</string>
+    <string name="export_chat">Exportar chat</string>
 </resources>

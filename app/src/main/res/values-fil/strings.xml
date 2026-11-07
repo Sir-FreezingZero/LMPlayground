@@ -463,4 +463,5 @@
     <string name="remote_models">Mga model: %1$d</string>
     <string name="remote_connecting">Kumokonekta…</string>
     <string name="remote_unreachable">Hindi maabot ang %1$s. Tiyaking tumatakbo ang server at nasa parehong network ang teleponong ito.</string>
+    <string name="export_chat">I-export ang chat</string>
 </resources>

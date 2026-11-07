@@ -436,4 +436,5 @@
     <string name="remote_models">النماذج: %1$d</string>
     <string name="remote_connecting">جارٍ الاتصال…</string>
     <string name="remote_unreachable">تعذّر الوصول إلى %1$s. تأكد من أن الخادم يعمل وأن هذا الهاتف على الشبكة نفسها.</string>
+    <string name="export_chat">تصدير المحادثة</string>
 </resources>

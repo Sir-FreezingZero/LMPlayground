@@ -80,6 +80,7 @@ fun ConversationBar(
     /** Open the same sheet on its System Prompt and Tools tabs. */
     onSystemPromptPressed: () -> Unit = {},
     onToolsPressed: () -> Unit = {},
+    onExportPressed: () -> Unit = {},
     /** Tokens used and context size; shown as a wheel next to the ⋮ menu. */
     contextUsage: Pair<Int, Int>? = null,
 ) {
@@ -211,6 +212,13 @@ fun ConversationBar(
                             onClick = {
                                 showMenu = false
                                 onToolsPressed()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.export_chat)) },
+                            onClick = {
+                                showMenu = false
+                                onExportPressed()
                             }
                         )
                     }

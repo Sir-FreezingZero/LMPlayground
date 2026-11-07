@@ -462,4 +462,5 @@
     <string name="remote_models">Model: %1$d</string>
     <string name="remote_connecting">Menyambung…</string>
     <string name="remote_unreachable">Tidak dapat mencapai %1$s. Pastikan pelayan sedang berjalan dan telefon ini dalam rangkaian yang sama.</string>
+    <string name="export_chat">Eksport sembang</string>
 </resources>

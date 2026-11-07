@@ -423,4 +423,5 @@
     <string name="remote_models">Моделі: %1$d</string>
     <string name="remote_connecting">Підключення…</string>
     <string name="remote_unreachable">Не вдалося з’єднатися з %1$s. Перевірте, що сервер працює, а телефон у тій самій мережі.</string>
+    <string name="export_chat">Експортувати чат</string>
 </resources>

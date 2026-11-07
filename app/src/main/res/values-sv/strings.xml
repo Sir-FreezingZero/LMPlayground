@@ -471,4 +471,5 @@
     <string name="remote_models">Modeller: %1$d</string>
     <string name="remote_connecting">Ansluter…</string>
     <string name="remote_unreachable">Kunde inte nå %1$s. Kontrollera att servern körs och att telefonen är på samma nätverk.</string>
+    <string name="export_chat">Exportera chatt</string>
 </resources>

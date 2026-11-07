@@ -547,4 +547,5 @@
     <string name="remote_models">Models: %1$d</string>
     <string name="remote_connecting">Connecting…</string>
     <string name="remote_unreachable">Couldn\'t reach %1$s. Check that the server is running and this phone is on the same network.</string>
+    <string name="export_chat">Export chat</string>
 </resources>

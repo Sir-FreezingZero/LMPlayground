@@ -460,4 +460,5 @@
     <string name="remote_models">Mallit: %1$d</string>
     <string name="remote_connecting">Yhdistetään…</string>
     <string name="remote_unreachable">Palvelimeen %1$s ei saatu yhteyttä. Tarkista, että palvelin on käynnissä ja puhelin on samassa verkossa.</string>
+    <string name="export_chat">Vie keskustelu</string>
 </resources>
