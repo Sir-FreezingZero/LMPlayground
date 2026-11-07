@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
  */
 class WikipediaTool : Tool {
     override val name = "wikipedia"
-    override val useFor = "facts about well-known topics"
+    override val useFor = "Gets a short summary of a well-known person, place, thing or idea from Wikipedia."
     override val description = "Look up a topic on Wikipedia and return the article's summary, title and URL."
     override val parametersSchema = """{"type":"object","properties":{"query":{"type":"string","description":"The topic to look up, e.g. \"Adreno GPU\""},"lang":{"type":"string","description":"Wikipedia language code (default \"en\")"}},"required":["query"]}"""
 

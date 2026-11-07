@@ -82,14 +82,17 @@ class SystemPromptExtras(
         }
         if (tools.isNotEmpty()) parts.add(buildString {
             append("You have tools for things you can't know or do reliably on your own:\n")
-            tools.forEach { t -> append("- ${t.name}: ${t.useFor.ifBlank { t.description.substringBefore(". ") }}\n") }
-            append("How to use them:\n")
-            append("- When a tool can find, check or calculate what the user needs, call it instead of guessing ")
-            append("or asking the user.\n")
-            append("- Call as many tools as the request needs, and pass values the way the user gave them.\n")
+            tools.forEach { t -> append("- ${t.name}: ${t.useFor.ifBlank { t.description }}\n") }
+            append("\nHow to use them:\n")
+            append("- Use a tool whenever it can find, check or calculate something the user needs. That is more ")
+            append("reliable than guessing, working it out in your head, or asking the user for something a tool can find.\n")
+            append("- One request can need several tools, or the same tool more than once. Call each one it needs.\n")
+            append("- Pass values the way the user gave them, and fill in only what the tool asks for.\n")
             append("- Before a tool call, say briefly what you are doing.\n")
-            append("- After the results, answer in plain words, giving only what was asked. If a tool fails, say so.\n")
-            append("- Conversation, opinions and writing need no tools.")
+            append("- After the results, answer the user's question in plain words with what they asked for. ")
+            append("Don't repeat every detail of a result.\n")
+            append("- If a tool fails or returns nothing useful, say so and suggest what the user can do.\n")
+            append("- Conversation, opinions, advice and writing need no tools.")
         })
         if (withMemory) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
         return parts.joinToString("\n\n")

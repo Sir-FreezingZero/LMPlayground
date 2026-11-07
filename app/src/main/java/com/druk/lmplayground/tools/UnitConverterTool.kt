@@ -13,7 +13,7 @@ import kotlin.math.abs
  */
 class UnitConverterTool : Tool {
     override val name = "convert_units"
-    override val useFor = "unit conversions"
+    override val useFor = "Converts amounts between units, such as miles to kilometers or Fahrenheit to Celsius."
     override val description = "Convert a number from one unit to another: length, weight, temperature, volume, area, speed, data size or time. Units can be names or short codes, like \"feet\", \"km\" or \"°F\"."
     override val parametersSchema = """{"type":"object","properties":{"value":{"type":"number","description":"The numeric value to convert"},"from":{"type":"string","description":"The unit the number is in now, e.g. \"meters\""},"to":{"type":"string","description":"The unit wanted, e.g. \"feet\""}},"required":["value","from","to"]}"""
 

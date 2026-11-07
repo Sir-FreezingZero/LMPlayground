@@ -6,9 +6,10 @@ interface Tool {
     val parametersSchema: String
 
     /**
-     * When the model should call this tool, as a short phrase ("math and
-     * arithmetic"). Listed in plain words in the system prompt, where small
-     * models notice it more readily than in the JSON definitions.
+     * One plain sentence on what this tool does and when it helps ("Works out
+     * math exactly, from simple sums and money to percentages and formulas.").
+     * Listed in the system prompt, where small models notice it more readily
+     * than in the JSON definitions.
      */
     val useFor: String get() = ""
     fun execute(arguments: String): String
