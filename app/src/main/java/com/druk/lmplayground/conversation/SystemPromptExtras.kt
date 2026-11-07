@@ -46,10 +46,10 @@ class SystemPromptExtras(
     fun stop() = memoryNotes.removeObserver(memoryObserver)
 
     /**
-     * The system prompt the model gets: the
-     * user's prompt as written (nothing when there is none), the date, and
-     * with tools on, one short line of guidance plus a tip for web and math
-     * tools. The tool definitions themselves come from the chat format.
+     * The system prompt the model gets: the user's prompt as written (the
+     * default when there is none), the date, and with tools on, short general
+     * guidance plus tips for the web, math and code tools. The tool
+     * definitions themselves come from the chat format.
      * Models under 9B (by the size in their name) get the shorter web tip.
      * Saved notes about the user follow when the memory tool is on.
      *
@@ -75,6 +75,9 @@ class SystemPromptExtras(
     companion object {
         private const val MAX_NOTES = 40
         private const val MAX_CHARS = 4000
+        private val CONTROL = Regex("[\\u0000-\\u001F]")
+        private val OWN_TAGS = Regex("(?i)</?user_memory>")
+        private val SPACES = Regex(" {2,}")
 
         /**
          * What's kept of the user's earlier messages when a full chat is cleared
@@ -101,12 +104,12 @@ class SystemPromptExtras(
         }
     }
 
-    /** One line of tool guidance plus tips for the web and math tools; null when neither is on. */
+    /** General tool guidance plus tips for the web, math and code tools; null without tools. */
     private fun toolGuidance(names: Set<String>, modelName: String?): String? {
+        if (names.isEmpty()) return null
         val web = "web_search" in names
         val calc = "calculate" in names
         val code = "run_javascript" in names
-        if (!web && !calc && !code) return null
         val compact = modelName?.let { GenerationParams.sizeInBillions(it) }?.let { it < 9 } == true
         val tips = buildList {
             if (web) add(
@@ -120,7 +123,8 @@ class SystemPromptExtras(
         }
         return "Tools are available when they materially improve the answer. Use an enabled tool for current " +
             "facts, calculations, or code execution when it materially helps; otherwise answer normally and " +
-            "follow the user's requested format. " + tips.joinToString(" ")
+            "follow the user's requested format. When a tool can find out what the user asks about, call it " +
+            "instead of asking the user or guessing, then answer from its result. " + tips.joinToString(" ")
     }
 
     /**
@@ -156,8 +160,5 @@ class SystemPromptExtras(
     }
 
     private fun sanitize(text: String): String =
-        text.replace(Regex("[\\u0000-\\u001F]"), " ")    // control characters -> space
-            .replace(Regex("(?i)</?user_memory>"), "") // strip our own tags
-            .replace(Regex(" {2,}"), " ")
-            .trim()
+        text.replace(CONTROL, " ").replace(OWN_TAGS, "").replace(SPACES, " ").trim()
 }

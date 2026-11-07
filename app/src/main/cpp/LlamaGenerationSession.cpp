@@ -1078,7 +1078,7 @@ void LlamaGenerationSession::closeOpenTurn() {
         for (const auto &tc : calls) {
             common_chat_msg tool_msg;
             tool_msg.role = "tool";
-            tool_msg.content = R"({"error":"Not run: the reply ended before this tool ran."})";
+            tool_msg.content = "Error: Not run: the reply ended before this tool ran.";
             tool_msg.tool_call_id = tc.id;
             tool_msg.tool_name = tc.name;
             messages.push_back(tool_msg);
@@ -1704,10 +1704,22 @@ int LlamaGenerationSession::submitToolResults(const char *resultsJson, bool enab
 
     try {
         auto results = nlohmann::ordered_json::parse(resultsJson);
+        // Results must leave room for the reply (an eighth of the context), so
+        // one that won't fit is cut, at about 3 characters a token, rather than
+        // failing the turn and leaving the model with nothing to read.
+        const int n_ctx = llama_n_ctx(ctx);
+        const int used = std::max(0, (int) llama_memory_seq_pos_max(llama_get_memory(ctx), 0));
+        const int count = std::max(1, (int) results.size());
+        const size_t each = (size_t) std::max(0, (n_ctx - n_ctx / 8 - used) / count - 64) * 3;
         for (const auto &result : results) {
             common_chat_msg tool_msg;
             tool_msg.role = "tool";
             tool_msg.content = result["content"].get<std::string>();
+            if (tool_msg.content.size() > each) {
+                size_t cut = each;
+                while (cut > 0 && (tool_msg.content[cut] & 0xC0) == 0x80) cut--;  // whole UTF-8 characters
+                tool_msg.content = tool_msg.content.substr(0, cut) + "\n[Cut here to fit the conversation.]";
+            }
             tool_msg.tool_call_id = result["id"].get<std::string>();
             tool_msg.tool_name = result["name"].get<std::string>();
             messages.push_back(tool_msg);
