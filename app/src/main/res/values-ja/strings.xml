@@ -410,6 +410,8 @@
     <string name="tool_steps_desc">モデルが回答する前に1回の返信で使えるツールの最大回数</string>
     <string name="remote_servers">リモートサーバー</string>
     <string name="remote_servers_subtitle">ネットワーク上のコンピューターのモデル</string>
+    <string name="testing">テスト</string>
+    <string name="testing_subtitle">モデルでツール・チャット・速度のテストを実行し、結果を書き出します</string>
     <string name="remote_help">別のコンピューターの LM Studio、Ollama、llama-server で動くモデルを使います。そのコンピューターでローカルネットワークからの接続を許可してください。</string>
     <string name="remote_saved">サーバー</string>
     <string name="remote_add">サーバーを追加</string>

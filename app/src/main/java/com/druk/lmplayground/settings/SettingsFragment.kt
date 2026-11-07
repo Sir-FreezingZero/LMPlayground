@@ -226,6 +226,9 @@ class SettingsFragment : Fragment() {
                     onRemoteServersClick = {
                         findNavController().navigateFromSettings(R.id.action_settings_to_remote_servers)
                     },
+                    onTestingClick = {
+                        findNavController().navigateFromSettings(R.id.action_settings_to_testing)
+                    },
                     onLanguageClick = {
                         findNavController().navigateFromSettings(R.id.action_settings_to_language)
                     },

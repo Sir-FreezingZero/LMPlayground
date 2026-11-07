@@ -528,6 +528,8 @@
     <string name="tool_steps_desc">Most tool uses in one reply before the model must answer</string>
     <string name="remote_servers">Remote servers</string>
     <string name="remote_servers_subtitle">Models on a computer on your network</string>
+    <string name="testing">Testing</string>
+    <string name="testing_subtitle">Run tool, chat and speed tests on a model and export the results</string>
     <string name="remote_help">Use models running in LM Studio, Ollama or llama-server on another computer. On that computer, allow connections from the local network.</string>
     <string name="remote_saved">Servers</string>
     <string name="remote_add">Add a server</string>

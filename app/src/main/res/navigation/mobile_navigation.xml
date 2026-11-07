@@ -64,6 +64,9 @@
             android:id="@+id/action_settings_to_remote_servers"
             app:destination="@id/nav_remote_servers" />
         <action
+            android:id="@+id/action_settings_to_testing"
+            app:destination="@id/nav_testing" />
+        <action
             android:id="@+id/action_settings_to_language"
             app:destination="@id/nav_language" />
     </fragment>
@@ -87,6 +90,11 @@
         android:id="@+id/nav_remote_servers"
         android:name="com.druk.lmplayground.settings.RemoteServersFragment"
         android:label="@string/remote_servers" />
+
+    <fragment
+        android:id="@+id/nav_testing"
+        android:name="com.druk.lmplayground.settings.ModelTestsFragment"
+        android:label="@string/testing" />
 
     <fragment
         android:id="@+id/nav_system_prompts"

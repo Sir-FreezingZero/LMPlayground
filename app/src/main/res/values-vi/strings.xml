@@ -406,6 +406,8 @@
     <string name="tool_steps_desc">Số lần dùng công cụ tối đa trong một câu trả lời trước khi mô hình phải trả lời</string>
     <string name="remote_servers">Máy chủ từ xa</string>
     <string name="remote_servers_subtitle">Mô hình trên máy tính trong mạng của bạn</string>
+    <string name="testing">Kiểm thử</string>
+    <string name="testing_subtitle">Chạy kiểm thử công cụ, trò chuyện và tốc độ trên một mô hình rồi xuất kết quả</string>
     <string name="remote_help">Dùng mô hình chạy trong LM Studio, Ollama hoặc llama-server trên máy tính khác. Trên máy tính đó, hãy cho phép kết nối từ mạng cục bộ.</string>
     <string name="remote_saved">Máy chủ</string>
     <string name="remote_add">Thêm máy chủ</string>

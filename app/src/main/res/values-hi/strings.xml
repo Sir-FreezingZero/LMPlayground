@@ -415,6 +415,8 @@
     <string name="tool_steps_desc">मॉडल को जवाब देने से पहले एक उत्तर में टूल के अधिकतम उपयोग</string>
     <string name="remote_servers">रिमोट सर्वर</string>
     <string name="remote_servers_subtitle">आपके नेटवर्क के किसी कंप्यूटर पर मॉडल</string>
+    <string name="testing">परीक्षण</string>
+    <string name="testing_subtitle">किसी मॉडल पर टूल, चैट और गति के परीक्षण चलाएँ और नतीजे निर्यात करें</string>
     <string name="remote_help">किसी दूसरे कंप्यूटर पर LM Studio, Ollama या llama-server में चल रहे मॉडल इस्तेमाल करें। उस कंप्यूटर पर लोकल नेटवर्क से कनेक्शन की अनुमति दें।</string>
     <string name="remote_saved">सर्वर</string>
     <string name="remote_add">सर्वर जोड़ें</string>

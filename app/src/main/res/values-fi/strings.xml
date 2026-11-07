@@ -443,6 +443,8 @@
     <string name="tool_steps_desc">Työkalujen käyttökertoja enintään yhdessä vastauksessa ennen kuin mallin on vastattava</string>
     <string name="remote_servers">Etäpalvelimet</string>
     <string name="remote_servers_subtitle">Malleja verkkosi tietokoneella</string>
+    <string name="testing">Testaus</string>
+    <string name="testing_subtitle">Suorita mallille työkalu-, keskustelu- ja nopeustestit ja vie tulokset</string>
     <string name="remote_help">Käytä malleja, jotka toimivat LM Studiossa, Ollamassa tai llama-serverissä toisella tietokoneella. Salli siinä tietokoneessa yhteydet lähiverkosta.</string>
     <string name="remote_saved">Palvelimet</string>
     <string name="remote_add">Lisää palvelin</string>
