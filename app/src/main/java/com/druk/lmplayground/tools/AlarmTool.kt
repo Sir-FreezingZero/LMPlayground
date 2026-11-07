@@ -29,11 +29,9 @@ class SetAlarmTool(
 ) : Tool {
     override val name = "set_alarm"
     override val description =
-        "Set an alarm in the phone's Clock app. There are two kinds of request, and time is written differently for each:\n" +
-            "1. A clock time, like \"set an alarm for 6:30\": time is that time, e.g. \"6:30\", \"6:30 PM\" or \"18:30\". " +
-            "If the user didn't say AM or PM, call get_date_time first.\n" +
-            "2. A time from now, like \"remind me in 2 hours\": time keeps the word \"in\", e.g. \"in 2 hours\". " +
-            "Never turn it into a clock time like \"2:00\"; the app works out when that is."
+        "Set an alarm in the phone's Clock app. For a clock time, pass it as said (\"6:30\", \"6:30 PM\"); " +
+            "if the user gave no AM or PM, call get_date_time first. For a time from now, keep the word \"in\" " +
+            "(\"in 2 hours\"); never turn it into a clock time."
     override val parametersSchema = """{"type":"object","properties":{""" +
         """"time":{"type":"string","description":"A clock time (\"6:30 PM\") or a time from now (\"in 2 hours\")"},""" +
         """"label":{"type":"string","description":"The name the user gave the alarm. Leave it out if they didn't name it."}},"required":["time"]}"""

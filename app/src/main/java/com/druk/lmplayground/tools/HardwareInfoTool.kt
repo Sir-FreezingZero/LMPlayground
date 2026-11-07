@@ -18,7 +18,7 @@ import java.util.Locale
  */
 class HardwareInfoTool(private val context: Context) : Tool {
     override val name = "device_info"
-    override val description = "Get this device's hardware and system information: manufacturer and model, Android version, chipset (SoC), CPU core count, supported ABIs, total and available RAM, internal storage total/free, and battery level and charging state. Useful to reason about what can run on this device."
+    override val description = "Get this phone's details: model, Android version, chipset, CPU cores, RAM, storage and battery."
     override val parametersSchema = """{"type":"object","properties":{}}"""
 
     override fun execute(arguments: String): String {

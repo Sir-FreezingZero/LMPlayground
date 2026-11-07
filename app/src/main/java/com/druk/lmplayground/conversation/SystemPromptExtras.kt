@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.druk.lmplayground.R
 import com.druk.lmplayground.data.AppDatabase
 import com.druk.lmplayground.data.MemoryNoteEntity
 import com.druk.lmplayground.storage.StoragePreferences
@@ -48,22 +47,39 @@ class SystemPromptExtras(
     fun stop() = memoryNotes.removeObserver(memoryObserver)
 
     /**
-     * [withToolHint]: some tool is on, so ask the model to say what it's doing before each call.
-     * [modelName]: with no prompt of the user's, a line telling the model who it is and how to
-     * talk. Without it, small models see a system prompt that is almost all tool definitions
-     * and act like a tool menu ("What do you need: device info, a calculation...?").
+     * The system prompt the model gets, in a fixed order, each part short:
+     *
+     * 1. Who it is and how to talk: the user's prompt, or with none, one line
+     *    naming the model. Without it, small models see a prompt that is
+     *    almost all tool definitions and act like a tool menu.
+     * 2. Today's date.
+     * 3. With tools on ([toolNames]): which ones, and when and how to use them.
+     *    The chat format adds the tool definitions after this text.
+     * 4. Saved notes about the user, when the memory tool is on.
+     *
+     * Written for the model, so it stays in English.
      */
-    fun compose(userPrompt: String, withMemory: Boolean, withToolHint: Boolean = false, modelName: String? = null): String {
+    fun compose(userPrompt: String, toolNames: List<String> = emptyList(), modelName: String? = null): String {
         val parts = mutableListOf<String>()
-        if (prefs.includeDateInPrompt) {
-            val today = DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault()).format(Date())
-            parts.add(app.getString(R.string.system_prompt_date, today))
-        }
-        if (withMemory) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
         val prompt = userPrompt.ifBlank { prefs.defaultSystemPrompt }
-        if (prompt.isNotBlank()) parts.add(prompt)
-        else if (modelName != null) parts.add(app.getString(R.string.system_prompt_base, modelName))
-        if (withToolHint) parts.add(app.getString(R.string.system_prompt_tool_hint))
+        when {
+            prompt.isNotBlank() -> parts.add(prompt)
+            modelName != null -> parts.add(
+                "You are $modelName, an AI model the user is chatting with in the LM Playground app. " +
+                    "Talk naturally, and keep replies short and clear unless the user asks for more. " +
+                    "Answer greetings and simple questions yourself."
+            )
+        }
+        if (prefs.includeDateInPrompt) {
+            parts.add("Today is " + DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault()).format(Date()) + ".")
+        }
+        if (toolNames.isNotEmpty()) parts.add(
+            "You can use these tools: ${toolNames.joinToString(", ")}. " +
+                "Use one only when the request needs it; otherwise answer yourself. " +
+                "Before a tool call, say in one short sentence what you are about to do, " +
+                "then use the result in your answer."
+        )
+        if ("memory" in toolNames) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
         return parts.joinToString("\n\n")
     }
 

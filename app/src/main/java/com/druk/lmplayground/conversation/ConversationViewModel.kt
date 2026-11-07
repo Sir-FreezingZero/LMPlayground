@@ -1258,7 +1258,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
      */
     private fun composeSystemPrompt(prompt: String): String {
         val tools = toolStates(_chatTools.value.orEmpty())
-        return systemPromptExtras.compose(prompt, tools["memory"] == true, tools.values.any { it }, promptModelName)
+        return systemPromptExtras.compose(prompt, tools.filterValues { it }.keys.toList(), promptModelName)
     }
 
     /** The loading model's name, set before its first session is made (LiveData would lag). */
