@@ -47,15 +47,22 @@ class SystemPromptExtras(
     @MainThread
     fun stop() = memoryNotes.removeObserver(memoryObserver)
 
-    /** [withToolHint]: some tool is on, so ask the model to say what it's doing before each call. */
-    fun compose(userPrompt: String, withMemory: Boolean, withToolHint: Boolean = false): String {
+    /**
+     * [withToolHint]: some tool is on, so ask the model to say what it's doing before each call.
+     * [modelName]: with no prompt of the user's, a line telling the model who it is and how to
+     * talk. Without it, small models see a system prompt that is almost all tool definitions
+     * and act like a tool menu ("What do you need: device info, a calculation...?").
+     */
+    fun compose(userPrompt: String, withMemory: Boolean, withToolHint: Boolean = false, modelName: String? = null): String {
         val parts = mutableListOf<String>()
         if (prefs.includeDateInPrompt) {
             val today = DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault()).format(Date())
             parts.add(app.getString(R.string.system_prompt_date, today))
         }
         if (withMemory) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
-        userPrompt.ifBlank { prefs.defaultSystemPrompt }.takeIf { it.isNotBlank() }?.let { parts.add(it) }
+        val prompt = userPrompt.ifBlank { prefs.defaultSystemPrompt }
+        if (prompt.isNotBlank()) parts.add(prompt)
+        else if (modelName != null) parts.add(app.getString(R.string.system_prompt_base, modelName))
         if (withToolHint) parts.add(app.getString(R.string.system_prompt_tool_hint))
         return parts.joinToString("\n\n")
     }

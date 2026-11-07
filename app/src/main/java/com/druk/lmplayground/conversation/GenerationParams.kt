@@ -22,6 +22,23 @@ data class GenerationParams(
     )
 
     companion object {
+        /**
+         * The maker's recommended sampling for [filename]'s model, where we know it
+         * (Liquid's model cards); the general defaults otherwise. Small models get
+         * rambling and repetitive at the general 0.8 temperature.
+         */
+        fun recommendedFor(filename: String?): GenerationParams {
+            // Server models are "remote:<url>|<id>"; match on the model id.
+            val f = filename.orEmpty().substringAfterLast('|').substringAfterLast('/').lowercase()
+            return when {
+                f.startsWith("lfm3") -> GenerationParams(temperature = 0.1f, topK = 50, topP = 1f, minP = 0f, repetitionPenalty = 1.1f)
+                f.startsWith("lfm2.5-vl") || f.startsWith("lfm3-vl") ->
+                    GenerationParams(temperature = 0.1f, topK = 50, topP = 1f, minP = 0.15f, repetitionPenalty = 1.05f)
+                f.startsWith("lfm2.5") -> GenerationParams(temperature = 0.1f, topK = 50, topP = 1f, minP = 0f, repetitionPenalty = 1.05f)
+                else -> GenerationParams()
+            }
+        }
+
         fun fromMap(map: Map<String, Float>): GenerationParams {
             val contextSize = map["contextSize"]?.toInt() ?: 4096
             return GenerationParams(

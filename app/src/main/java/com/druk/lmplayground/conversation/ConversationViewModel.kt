@@ -144,6 +144,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         }
 
         override fun onModelResolved(model: ModelInfo) {
+            promptModelName = model.name
             _loadedModel.postValue(model)
             _thinkingEnabled.postValue(false)
             _supportsThinking.postValue(false)
@@ -1257,8 +1258,11 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
      */
     private fun composeSystemPrompt(prompt: String): String {
         val tools = toolStates(_chatTools.value.orEmpty())
-        return systemPromptExtras.compose(prompt, tools["memory"] == true, tools.values.any { it })
+        return systemPromptExtras.compose(prompt, tools["memory"] == true, tools.values.any { it }, promptModelName)
     }
+
+    /** The loading model's name, set before its first session is made (LiveData would lag). */
+    @Volatile private var promptModelName: String? = null
 
     /** Each tool's state in this chat: [chatTools] over the defaults. */
     fun toolStates(chatTools: Map<String, String>): Map<String, Boolean> =
