@@ -21,4 +21,5 @@ data class SamplerParams(
     val seed: Int,
     val thinkingBudget: Int,
     val systemPrompt: String,
+    val presencePenalty: Float = 0f,
 ) : Parcelable

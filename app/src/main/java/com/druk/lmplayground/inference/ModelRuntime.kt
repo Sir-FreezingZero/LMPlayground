@@ -463,7 +463,8 @@ class ModelRuntime(
                 params.minP,
                 params.seed,
                 params.thinkingBudget,
-                effectivePrompt
+                effectivePrompt,
+                params.presencePenalty,
             )?.also { synchronized(effectivePrompts) { effectivePrompts[it] = effectivePrompt } }
         } catch (e: InferenceUnavailableException) {
             // The :llama service died (or hasn't bound yet). Surface a

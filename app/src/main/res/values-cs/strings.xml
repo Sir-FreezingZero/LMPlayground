@@ -464,4 +464,5 @@
     <string name="remote_connecting">Připojování…</string>
     <string name="remote_unreachable">Nelze se spojit s %1$s. Zkontrolujte, že server běží a tento telefon je ve stejné síti.</string>
     <string name="export_chat">Exportovat chat</string>
+    <string name="thinking_no_limit">Bez omezení</string>
 </resources>

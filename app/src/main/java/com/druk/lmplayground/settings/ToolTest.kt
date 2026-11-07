@@ -278,7 +278,7 @@ class ToolTestViewModel(app: Application) : AndroidViewModel(app) {
             val prompt = promptExtras.compose("", registry.getAllTools(), modelName = modelName)
             val p = prefs.getModelGenerationParams(filename)?.let { GenerationParams.fromMap(it) }
                 ?: GenerationParams.recommendedFor(filename)
-            llama.createSession(4096, p.temperature, p.topP, p.repetitionPenalty, p.topK, p.minP, 42, 256, prompt)?.also {
+            llama.createSession(4096, p.temperature, p.topP, p.repetitionPenalty, p.topK, p.minP, 42, 256, prompt, p.presencePenalty)?.also {
                 it.setTools(toolsJson)
                 preambleCache.apply(it, filename, llama.getModelSize(), prompt, toolsJson)
             }.also { session = it }

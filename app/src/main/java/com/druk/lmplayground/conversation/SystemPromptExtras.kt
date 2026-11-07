@@ -46,7 +46,7 @@ class SystemPromptExtras(
     fun stop() = memoryNotes.removeObserver(memoryObserver)
 
     /**
-     * The system prompt the model gets, following Unsloth Studio's: the
+     * The system prompt the model gets: the
      * user's prompt as written (nothing when there is none), the date, and
      * with tools on, one short line of guidance plus a tip for web and math
      * tools. The tool definitions themselves come from the chat format.
@@ -73,6 +73,9 @@ class SystemPromptExtras(
     }
 
     companion object {
+        private const val MAX_NOTES = 40
+        private const val MAX_CHARS = 4000
+
         /**
          * What's kept of the user's earlier messages when a full chat is cleared
          * to fit the context: the first one plus the newest that fit, up to 8
@@ -98,13 +101,13 @@ class SystemPromptExtras(
         }
     }
 
-    /** Unsloth's base line and tips, for the web and math tools; null when neither is on. */
+    /** One line of tool guidance plus tips for the web and math tools; null when neither is on. */
     private fun toolGuidance(names: Set<String>, modelName: String?): String? {
         val web = "web_search" in names
         val calc = "calculate" in names
         val code = "run_javascript" in names
         if (!web && !calc && !code) return null
-        val compact = modelName?.let { sizeInBillions(it) }?.let { it < 9 } == true
+        val compact = modelName?.let { GenerationParams.sizeInBillions(it) }?.let { it < 9 } == true
         val tips = buildList {
             if (web) add(
                 if (compact || "web_fetch" !in names) "When using web_search, do not repeat the same search query."
@@ -119,12 +122,6 @@ class SystemPromptExtras(
             "facts, calculations, or code execution when it materially helps; otherwise answer normally and " +
             "follow the user's requested format. " + tips.joinToString(" ")
     }
-
-    /** The parameter count in a model's name ("Qwen3.5-0.8B" 0.8, "LFM2.5 350M" 0.35), or null. */
-    private fun sizeInBillions(name: String): Double? =
-        Regex("""(?i)(?<![\w.])[a-z]?(\d+(?:\.\d+)?)\s*([bm])(?![a-z])""").findAll(name).lastOrNull()?.let {
-            it.groupValues[1].toDouble() / if (it.groupValues[2].equals("m", true)) 1000 else 1
-        }
 
     /**
      * The saved notes as a delimited block, capped by note count and total
@@ -163,9 +160,4 @@ class SystemPromptExtras(
             .replace(Regex("(?i)</?user_memory>"), "") // strip our own tags
             .replace(Regex(" {2,}"), " ")
             .trim()
-
-    private companion object {
-        const val MAX_NOTES = 40
-        const val MAX_CHARS = 4000
-    }
 }

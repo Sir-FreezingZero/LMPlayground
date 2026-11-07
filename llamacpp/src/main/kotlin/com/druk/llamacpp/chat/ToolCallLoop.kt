@@ -229,7 +229,7 @@ class ToolCallLoop(
     }
 
     companion object {
-        // The wording below follows Unsloth Studio's tool loop, which works well across models.
+        // Kept short and plain so small models follow it.
         private const val BUDGET_EXHAUSTED = "You have used all available tool calls. Based on everything you " +
             "have found so far, provide your final answer now. Do not call any more tools."
         private const val DUPLICATE_CALL = "You already made this exact call. Do not repeat the same tool call. " +

@@ -69,6 +69,7 @@ struct SamplerParams {
     uint32_t seed;
     int32_t thinking_budget; // -1 = unlimited
     std::string system_prompt;
+    float presence_penalty = 0.0f; // 0 = off
 };
 
 class LlamaGenerationSession {

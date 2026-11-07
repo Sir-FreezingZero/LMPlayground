@@ -432,4 +432,5 @@
     <string name="remote_connecting">Verbinde…</string>
     <string name="remote_unreachable">%1$s ist nicht erreichbar. Prüfe, ob der Server läuft und dieses Telefon im selben Netzwerk ist.</string>
     <string name="export_chat">Chat exportieren</string>
+    <string name="thinking_no_limit">Kein Limit</string>
 </resources>

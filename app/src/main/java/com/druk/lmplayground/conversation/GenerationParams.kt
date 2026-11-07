@@ -8,7 +8,10 @@ data class GenerationParams(
     val topK: Int = 40,
     val minP: Float = 0.05f,
     val seed: Int = -1,
-    val thinkingBudget: Int = contextSize / 4
+    /** Tokens of thinking before the model is made to answer; -1 = no limit. */
+    val thinkingBudget: Int = -1,
+    /** Penalty for reusing any word already said; curbs loops. 0 = off. */
+    val presencePenalty: Float = 0f,
 ) {
     fun toMap(): Map<String, Float> = mapOf(
         "contextSize" to contextSize.toFloat(),
@@ -18,7 +21,8 @@ data class GenerationParams(
         "topK" to topK.toFloat(),
         "minP" to minP,
         "seed" to seed.toFloat(),
-        "thinkingBudget" to thinkingBudget.toFloat()
+        "thinkingBudget" to thinkingBudget.toFloat(),
+        "presencePenalty" to presencePenalty,
     )
 
     companion object {
@@ -26,18 +30,31 @@ data class GenerationParams(
          * The model makers' recommended sampling for [filename]'s family, for a
          * model with no saved settings; the general defaults for unknown ones.
          * Families match by name, most specific first ("qwen3.5" before "qwen3").
-         * Values per family: temperature, top-p, top-k (0 = off), min-p, repetition penalty.
+         * Values per family: temperature, top-p, top-k (0 = off), min-p, repetition
+         * penalty and, where given, presence penalty. Models of 2B or less get an
+         * 8,192-token context, which their small memory footprint allows even on
+         * low-end phones; bigger ones 4,096.
          */
         fun recommendedFor(filename: String?): GenerationParams {
             // Server models are "remote:<url>|<id>"; match on the model id.
             val f = filename.orEmpty().substringAfterLast('|').substringAfterLast('/').lowercase()
-            val p = FAMILIES.firstOrNull { (pattern, _) -> pattern in f }?.second ?: return GenerationParams()
-            return GenerationParams(temperature = p[0], topP = p[1], topK = p[2].toInt(), minP = p[3], repetitionPenalty = p[4])
+            val base = GenerationParams(contextSize = if ((sizeInBillions(f) ?: 99.0) <= 2.0) 8192 else 4096)
+            val p = FAMILIES.firstOrNull { (pattern, _) -> pattern in f }?.second ?: return base
+            return base.copy(
+                temperature = p[0], topP = p[1], topK = p[2].toInt(), minP = p[3], repetitionPenalty = p[4],
+                presencePenalty = p.getOrElse(5) { 0f },
+            )
         }
 
+        /** The parameter count in a model's name ("Qwen3.5-0.8B" 0.8, "LFM2.5-350M" 0.35), or null. */
+        fun sizeInBillions(name: String): Double? =
+            Regex("""(?i)(?<![\w.])[a-z]?(\d+(?:\.\d+)?)\s*([bm])(?![a-z])""").findAll(name).lastOrNull()?.let {
+                it.groupValues[1].toDouble() / if (it.groupValues[2].equals("m", true)) 1000 else 1
+            }
+
         private val FAMILIES: List<Pair<String, FloatArray>> = listOf(
-            "qwen3.6" to floatArrayOf(0.7f, 0.8f, 20f, 0f, 1f),
-            "qwen3.5" to floatArrayOf(0.7f, 0.8f, 20f, 0f, 1f),
+            "qwen3.6" to floatArrayOf(0.7f, 0.8f, 20f, 0f, 1f, 1.5f),
+            "qwen3.5" to floatArrayOf(0.7f, 0.8f, 20f, 0f, 1f, 1.5f),
             "qwen3-vl" to floatArrayOf(0.7f, 0.8f, 20f, 0f, 1f),
             "qwen3" to floatArrayOf(0.6f, 0.95f, 20f, 0f, 1f),
             "qwen2.5" to floatArrayOf(0.7f, 0.8f, 20f, 0f, 1f),
@@ -74,7 +91,8 @@ data class GenerationParams(
                 topK = map["topK"]?.toInt() ?: 40,
                 minP = map["minP"] ?: 0.05f,
                 seed = map["seed"]?.toInt() ?: -1,
-                thinkingBudget = map["thinkingBudget"]?.toInt() ?: (contextSize / 4)
+                thinkingBudget = map["thinkingBudget"]?.toInt() ?: -1,
+                presencePenalty = map["presencePenalty"] ?: 0f,
             )
         }
     }

@@ -1157,7 +1157,9 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                     topK = sessionEntity.topK,
                     minP = sessionEntity.minP,
                     seed = sessionEntity.seed,
-                    thinkingBudget = sessionEntity.thinkingBudget
+                    thinkingBudget = sessionEntity.thinkingBudget,
+                    // Not stored per chat; follow the model's recommendation.
+                    presencePenalty = GenerationParams.recommendedFor(sessionEntity.modelFilename).presencePenalty,
                 )
                 _generationParams.value = params
                 _systemPrompt.value = sessionEntity.systemPrompt

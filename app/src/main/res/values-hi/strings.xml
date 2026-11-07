@@ -433,4 +433,5 @@
     <string name="remote_connecting">कनेक्ट हो रहा है…</string>
     <string name="remote_unreachable">%1$s तक नहीं पहुँच सके। देखें कि सर्वर चल रहा है और यह फ़ोन उसी नेटवर्क पर है।</string>
     <string name="export_chat">चैट एक्सपोर्ट करें</string>
+    <string name="thinking_no_limit">कोई सीमा नहीं</string>
 </resources>

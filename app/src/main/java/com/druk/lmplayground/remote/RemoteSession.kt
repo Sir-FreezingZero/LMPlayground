@@ -119,6 +119,7 @@ class RemoteSession(
         put("top_k", params.topK)
         put("min_p", params.minP.toDouble())
         put("repeat_penalty", params.repetitionPenalty.toDouble())
+        if (params.presencePenalty > 0f) put("presence_penalty", params.presencePenalty.toDouble())
         if (params.seed >= 0) put("seed", params.seed)
         if (!thinking) put("chat_template_kwargs", JSONObject().put("enable_thinking", false))
         if (withTools) tools?.let { put("tools", it) }

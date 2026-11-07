@@ -424,4 +424,5 @@
     <string name="remote_connecting">Menghubungkan…</string>
     <string name="remote_unreachable">Tidak dapat menjangkau %1$s. Pastikan server berjalan dan ponsel ini berada di jaringan yang sama.</string>
     <string name="export_chat">Ekspor chat</string>
+    <string name="thinking_no_limit">Tanpa batas</string>
 </resources>

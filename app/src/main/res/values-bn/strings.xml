@@ -472,4 +472,5 @@
     <string name="remote_connecting">সংযোগ হচ্ছে…</string>
     <string name="remote_unreachable">%1$s-এ পৌঁছানো যায়নি। সার্ভার চলছে কি না এবং এই ফোন একই নেটওয়ার্কে আছে কি না দেখুন।</string>
     <string name="export_chat">চ্যাট এক্সপোর্ট করুন</string>
+    <string name="thinking_no_limit">কোনো সীমা নেই</string>
 </resources>

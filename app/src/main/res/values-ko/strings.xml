@@ -428,4 +428,5 @@
     <string name="remote_connecting">연결 중…</string>
     <string name="remote_unreachable">%1$s에 연결할 수 없습니다. 서버가 실행 중이고 이 휴대폰이 같은 네트워크에 있는지 확인하세요.</string>
     <string name="export_chat">채팅 내보내기</string>
+    <string name="thinking_no_limit">제한 없음</string>
 </resources>
