@@ -83,7 +83,7 @@ class GenerationParamsTest {
         val params = GenerationParams.fromMap(map)
         assertEquals(8192, params.contextSize)
         assertEquals(1.5f, params.temperature)
-        assertEquals(0.95f, params.topP) // default
+        assertEquals(0.9f, params.topP) // default
         assertEquals(40, params.topK)    // default
         assertEquals(2048, params.thinkingBudget) // 8192 / 4
     }

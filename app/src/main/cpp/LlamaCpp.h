@@ -19,6 +19,10 @@
 constexpr int kMaxBatchSize = 512;
 // Generation thread cap — leaves cores free for the UI process.
 constexpr int kMaxGenerationThreads = 4;
+// How many recent tokens the repetition penalty looks at. A short window
+// stops loops and stock phrases without punishing words the reply needs
+// again (names, the topic), which made long answers stilted at 256.
+constexpr int kRepeatLastN = 64;
 // Vision (CLIP) encode thread cap — encode is short-lived, so use more cores.
 constexpr int kMaxVisionThreads = 8;
 // renderPreambleString fallback: how far back from the probe position to

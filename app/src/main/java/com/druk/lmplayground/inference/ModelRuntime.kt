@@ -310,7 +310,7 @@ class ModelRuntime(
                 val params = if (savedMap != null) {
                     GenerationParams.fromMap(savedMap)
                 } else {
-                    GenerationParams.recommendedFor(model.filename)
+                    GenerationParams()
                 }
                 listener.onGenerationParams(params)
                 // Every model load starts without a system prompt. Per-model
@@ -405,7 +405,7 @@ class ModelRuntime(
             notifications.update(R.string.inference_notification_loaded_title)
             listener.onMaxContextSize(caps.contextSize)
             val params = storagePreferences.getModelGenerationParams(model.filename)
-                ?.let { GenerationParams.fromMap(it) } ?: GenerationParams.recommendedFor(model.filename)
+                ?.let { GenerationParams.fromMap(it) } ?: GenerationParams()
             listener.onGenerationParams(params)
             listener.onSystemPromptReset()
             val newSession = newSession(params, "") ?: return@withContext

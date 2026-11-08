@@ -349,7 +349,7 @@ class ModelTestsViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private fun params(model: ModelInfo) =
-        prefs.getModelGenerationParams(model.filename)?.let { GenerationParams.fromMap(it) } ?: GenerationParams.recommendedFor(model.filename)
+        prefs.getModelGenerationParams(model.filename)?.let { GenerationParams.fromMap(it) } ?: GenerationParams()
 
     private fun systemPrompt(model: ModelInfo, withTools: Boolean) =
         promptExtras.compose("")
