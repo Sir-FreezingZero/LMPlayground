@@ -182,6 +182,11 @@
     <string name="skip">Skip</string>
     <string name="migrating_models">Migrating Models</string>
     <string name="migration_progress">Copying %1$d of %2$d</string>
+    <string name="importing_models" tools:ignore="MissingTranslation">Importing models</string>
+    <string name="import_from_folder" tools:ignore="MissingTranslation">Import from folder</string>
+    <string name="import_folder_no_access" tools:ignore="MissingTranslation">Can\'t open that folder or the models folder</string>
+    <string name="import_folder_none" tools:ignore="MissingTranslation">No new .gguf models in that folder</string>
+    <string name="import_folder_done" tools:ignore="MissingTranslation">Imported %1$d of %2$d models</string>
 
     <!-- System prompts -->
     <string name="system_prompts">System Prompts</string>
@@ -267,7 +272,11 @@
     <string name="phone_server_model" tools:ignore="MissingTranslation">Serving %1$s</string>
     <string name="phone_server_busy" tools:ignore="MissingTranslation">The phone server is answering a request. Try again when it\'s done.</string>
     <string name="phone_server_no_model" tools:ignore="MissingTranslation">No model loaded on the phone. Load one in a chat to serve it.</string>
-    <string name="logs" tools:ignore="MissingTranslation">Log</string>
+    <string name="logs" tools:ignore="MissingTranslation">Logs</string>
+    <string name="logs_subtitle" tools:ignore="MissingTranslation">What the app and the model engine reported</string>
+    <string name="logs_refresh" tools:ignore="MissingTranslation">Refresh</string>
+    <string name="logs_clear" tools:ignore="MissingTranslation">Clear</string>
+    <string name="logs_empty" tools:ignore="MissingTranslation">Nothing logged yet</string>
     <string name="model_params_all_models" tools:ignore="MissingTranslation">These settings apply to every model.</string>
     <string name="top_p" translatable="false">Top-P</string>
     <string name="repetition_penalty">Repetition Penalty</string>

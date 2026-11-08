@@ -235,6 +235,9 @@ class SettingsFragment : Fragment() {
                     onPhoneServerClick = {
                         findNavController().navigateFromSettings(R.id.action_settings_to_phone_server)
                     },
+                    onLogsClick = {
+                        findNavController().navigateFromSettings(R.id.action_settings_to_logs)
+                    },
                     onLanguageClick = {
                         findNavController().navigateFromSettings(R.id.action_settings_to_language)
                     },

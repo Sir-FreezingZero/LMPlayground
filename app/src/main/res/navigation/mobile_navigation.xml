@@ -73,6 +73,9 @@
             android:id="@+id/action_settings_to_phone_server"
             app:destination="@id/nav_phone_server" />
         <action
+            android:id="@+id/action_settings_to_logs"
+            app:destination="@id/nav_logs" />
+        <action
             android:id="@+id/action_settings_to_language"
             app:destination="@id/nav_language" />
     </fragment>
@@ -96,6 +99,11 @@
         android:id="@+id/nav_remote_servers"
         android:name="com.druk.lmplayground.settings.RemoteServersFragment"
         android:label="@string/remote_servers" />
+
+    <fragment
+        android:id="@+id/nav_logs"
+        android:name="com.druk.lmplayground.settings.LogsFragment"
+        android:label="@string/logs" />
 
     <fragment
         android:id="@+id/nav_phone_server"

@@ -46,6 +46,13 @@ class ModelsFragment : Fragment() {
         }
     }
 
+    // Import from folder: read access to the picked folder is enough.
+    private val importFolderLauncher = registerForActivityResult(
+        ActivityResultContracts.OpenDocumentTree()
+    ) { uri ->
+        uri?.let { viewModel.importFromFolder(it) }
+    }
+
     private val notificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { _ ->
@@ -124,6 +131,13 @@ class ModelsFragment : Fragment() {
                     migrationProgress = migrationProgress,
                     deviceLanguage = viewModel.deviceLanguage,
                     onBackClick = { findNavController().popBackStack() },
+                    onImportFolderClick = {
+                        try {
+                            importFolderLauncher.launch(null)
+                        } catch (_: ActivityNotFoundException) {
+                            viewModel.showSnackbar(getString(R.string.import_folder_no_access))
+                        }
+                    },
                     onChangeFolderClick = {
                         try {
                             folderPickerLauncher.launch(null)

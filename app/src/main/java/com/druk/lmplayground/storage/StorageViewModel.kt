@@ -57,7 +57,9 @@ data class MigrationState(
 data class MigrationProgress(
     val currentModel: String,
     val currentIndex: Int,
-    val totalCount: Int
+    val totalCount: Int,
+    /** Copying in from another folder ("Import from folder") rather than moving. */
+    val isImport: Boolean = false,
 )
 
 class StorageViewModel(application: Application) : AndroidViewModel(application) {
@@ -350,6 +352,60 @@ class StorageViewModel(application: Application) : AndroidViewModel(application)
         }
     }
     
+    /**
+     * Import from folder (PrivateLM's folder import): copy every .gguf in
+     * [sourceUri] (a folder picked with the system picker) into the models
+     * folder, one after another, with the same progress dialog as a folder
+     * move. Files already there by name are skipped. They then show up as
+     * models like any other file in the folder.
+     */
+    fun importFromFolder(sourceUri: Uri) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val source = androidx.documentfile.provider.DocumentFile.fromTreeUri(context, sourceUri)
+                val target = prefs.modelStorageUri?.let { StorageDocuments.fromStorageUri(context, it) }
+                if (source == null || target == null) {
+                    showSnackbar(context.getString(com.druk.lmplayground.R.string.import_folder_no_access))
+                    return@withContext
+                }
+                // Saved with a lower-case .gguf, which the model list looks for.
+                fun importName(name: String) = name.dropLast(5) + ".gguf"
+                val existing = target.listFiles().mapNotNull { it.name }.toSet()
+                val files = source.listFiles().filter {
+                    val name = it.name
+                    it.isFile && name != null && name.endsWith(".gguf", ignoreCase = true) && importName(name) !in existing
+                }
+                if (files.isEmpty()) {
+                    showSnackbar(context.getString(com.druk.lmplayground.R.string.import_folder_none))
+                    return@withContext
+                }
+                var copied = 0
+                files.forEachIndexed { index, file ->
+                    val name = importName(file.name ?: return@forEachIndexed)
+                    _migrationProgress.postValue(MigrationProgress(name, index + 1, files.size, isImport = true))
+                    // Written under a temporary name and renamed when done,
+                    // so a cut-short copy never looks like a model.
+                    val part = "$name.part"
+                    try {
+                        target.findFile(part)?.delete()
+                        val dest = target.createFile("application/octet-stream", part) ?: return@forEachIndexed
+                        context.contentResolver.openInputStream(file.uri)?.use { input ->
+                            context.contentResolver.openOutputStream(dest.uri)?.use { output ->
+                                input.copyTo(output, bufferSize = 1 shl 16)
+                            }
+                        }
+                        if (dest.renameTo(name)) copied++ else dest.delete()
+                    } catch (e: Exception) {
+                        target.findFile(part)?.delete()
+                    }
+                }
+                _migrationProgress.postValue(null)
+                showSnackbar(context.getString(com.druk.lmplayground.R.string.import_folder_done, copied, files.size))
+            }
+            loadStorageInfo()
+        }
+    }
+
     /**
      * User declined migration - just change to new folder without copying
      */

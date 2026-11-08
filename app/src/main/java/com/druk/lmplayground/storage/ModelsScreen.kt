@@ -103,6 +103,8 @@ fun ModelsScreen(
     onCancelMigration: () -> Unit,
     embeddingModel: ModelWithStatus? = null,
     dictationModel: ModelWithStatus? = null,
+    /** "Import from folder": copy models in from another folder. Hidden when null. */
+    onImportFolderClick: (() -> Unit)? = null,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -142,6 +144,7 @@ fun ModelsScreen(
             onCancelMigration = onCancelMigration,
             embeddingModel = embeddingModel,
             dictationModel = dictationModel,
+            onImportFolderClick = onImportFolderClick,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
@@ -185,6 +188,7 @@ fun ModelsContent(
     // flight (progress + cancel); never offered under Available.
     embeddingModel: ModelWithStatus? = null,
     dictationModel: ModelWithStatus? = null,
+    onImportFolderClick: (() -> Unit)? = null,
 ) {
     var modelToDelete by remember { mutableStateOf<ModelInfo?>(null) }
     // Vision model awaiting the "with images / text only" download choice.
@@ -287,6 +291,7 @@ fun ModelsContent(
                         StorageInfoCard(
                             storageInfo = storageInfo,
                             onChangeFolderClick = onChangeFolderClick,
+                            onImportFolderClick = onImportFolderClick,
                             // No top padding — the card's top edge sits flush
                             // with the divider / topbar bottom so scrolling
                             // visually slides it under the bar.
@@ -566,7 +571,7 @@ fun ModelsContent(
         AlertDialog(
             modifier = Modifier.menuOutline(),
             onDismissRequest = { /* Cannot dismiss while migrating */ },
-            title = { Text(stringResource(R.string.migrating_models)) },
+            title = { Text(stringResource(if (progress.isImport) R.string.importing_models else R.string.migrating_models)) },
             text = {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -599,7 +604,8 @@ fun ModelsContent(
 private fun StorageInfoCard(
     storageInfo: StorageInfo,
     onChangeFolderClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onImportFolderClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val usedFormatted = Formatter.formatFileSize(context, storageInfo.usedBytes)
@@ -641,6 +647,11 @@ private fun StorageInfoCard(
                 }
                 TextButton(onClick = onChangeFolderClick) {
                     Text(stringResource(R.string.change_folder))
+                }
+            }
+            if (onImportFolderClick != null) {
+                TextButton(onClick = onImportFolderClick, modifier = Modifier.align(Alignment.End)) {
+                    Text(stringResource(R.string.import_from_folder))
                 }
             }
 
