@@ -63,7 +63,6 @@
     <string name="settings">설정</string>
     <string name="back">뒤로</string>
     <string name="version">버전 %s</string>
-    <string name="models_subtitle">모델 다운로드 및 관리</string>
     <string name="privacy_policy">개인정보 처리방침</string>
     <string name="privacy_policy_effective_date">시행일: 2026년 6월 2일</string>
     <string name="privacy_policy_intro">LM Playground에 오신 것을 환영합니다! 저는 이 앱을 사용하는 모든 분의 신뢰를 유지하기 위해 최선을 다하고 있습니다. 이 개인정보 처리방침은 앱이 무엇을 수집하고 무엇을 수집하지 않는지, 대화가 어떻게 기기에 보관되는지, 그리고 선택적 웹 도구와 같이 정보가 기기를 벗어나는 몇 가지 경우를 설명하여, 무슨 일이 일어나는지 항상 알 수 있도록 합니다.</string>
@@ -84,7 +83,6 @@
     <string name="privacy_policy_s7_body">개인정보 처리방침에 대한 질문이나 제안이 있으시면 언제든지 연락해 주세요.</string>
     <string name="send_feedback">피드백 보내기</string>
     <string name="faq">자주 묻는 질문</string>
-    <string name="faq_subtitle">자주 묻는 질문과 답변</string>
     <string name="faq_q1">LM Playground란 무엇인가요?</string>
     <string name="faq_a1">LM Playground는 Android 기기에서 직접 대규모 언어 모델을 실행할 수 있는 앱입니다. 모든 처리는 로컬에서 이루어지며 클라우드 서버가 필요하지 않습니다.</string>
     <string name="faq_q2">어떤 모델을 지원하나요?</string>
@@ -134,7 +132,6 @@
     <string name="cancel">취소</string>
     <string name="low_ram_warning_title">모델이 불안정할 수 있습니다</string>
     <string name="low_ram_warning_message">모델에 약 %1$s RAM이 필요하지만 이 기기의 총 용량은 %2$s에 불과합니다. 메모리가 부족해 충돌할 수 있습니다. 그런 경우 설정 → 고급에서 “리팩 활성화”를 꺼서 저메모리 모드로 로드하세요.</string>
-    <string name="advanced_subtitle">메모리 및 성능 옵션</string>
     <string name="enable_repack_title">리팩 활성화</string>
     <string name="enable_repack_desc">모델 가중치를 RAM으로 리팩해 응답 속도를 높입니다. 메모리 매핑으로 로드할 때보다 메모리를 훨씬 많이 사용합니다. 큰 모델이 로드 중 메모리가 부족해지면 끄세요.</string>
     <string name="load_anyway">계속 로드</string>
@@ -195,7 +192,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">시스템 프롬프트</string>
-    <string name="system_prompts_subtitle">모든 모델에서 재사용 가능한 지침</string>
     <string name="system_prompt_current">현재 시스템 프롬프트</string>
     <string name="save">저장</string>
     <string name="add">추가</string>
@@ -275,7 +271,6 @@
 
     <!-- Sound and Haptic -->
     <string name="sound_and_haptic">소리 및 햅틱</string>
-    <string name="sound_and_haptic_subtitle">완료음과 입력 햅틱</string>
     <string name="sound_on_completion_title">생성 완료 시 소리 재생</string>
     <string name="sound_on_completion_desc">앱이 백그라운드에 있을 때 모델이 응답을 마치면 짧은 알림음을 재생합니다.</string>
     <string name="haptic_on_generation_title">생성 시 햅틱 피드백</string>
@@ -283,7 +278,6 @@
 
     <!-- Tools -->
     <string name="tools">도구</string>
-    <string name="tools_subtitle">유능한 모델이 작업을 수행하도록</string>
     <string name="tools_section_intro">도구를 사용하면 유능한 모델이 웹 검색이나 계산 수행 같은 작업을 응답 중에 실행할 수 있습니다. 각 도구는 기본적으로 꺼져 있으며 — 원하는 도구만 켜세요. 도구는 이를 지원하는 모델에서만 작동합니다(망치 배지를 확인하세요).</string>
     <string name="tools_example_label">예시: %1$s</string>
     <string name="tools_params_sheet_subtitle">모델이 응답 중에 이를 호출할 수 있습니다</string>
@@ -388,7 +382,6 @@
     <string name="branch_title_numbered">%1$s (분기 %2$d)</string>
     <string name="branch_created">새 채팅에서 계속합니다</string>
     <string name="appearance">화면 스타일</string>
-    <string name="appearance_subtitle">테마 및 상태 표시줄 색상</string>
     <string name="appearance_theme">테마</string>
     <string name="appearance_theme_system">시스템 기본값</string>
     <string name="appearance_theme_light">라이트</string>
@@ -404,9 +397,7 @@
     <string name="tool_steps_title">도구 단계</string>
     <string name="tool_steps_desc">모델이 답변하기 전에 한 응답에서 도구를 사용할 수 있는 최대 횟수</string>
     <string name="remote_servers">원격 서버</string>
-    <string name="remote_servers_subtitle">네트워크에 있는 컴퓨터의 모델</string>
     <string name="testing">테스트</string>
-    <string name="testing_subtitle">모델로 도구, 채팅, 속도 테스트를 실행하고 결과를 내보냅니다</string>
     <string name="remote_help">다른 컴퓨터의 LM Studio, Ollama 또는 llama-server에서 실행 중인 모델을 사용합니다. 그 컴퓨터에서 로컬 네트워크 연결을 허용하세요.</string>
     <string name="remote_saved">서버</string>
     <string name="remote_add">서버 추가</string>

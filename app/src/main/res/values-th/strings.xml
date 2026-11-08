@@ -75,7 +75,6 @@
     <string name="settings">การตั้งค่า</string>
     <string name="back">ย้อนกลับ</string>
     <string name="version">เวอร์ชัน %s</string>
-    <string name="models_subtitle">ดาวน์โหลดและจัดการโมเดล</string>
     <string name="privacy_policy">นโยบายความเป็นส่วนตัว</string>
     <string name="privacy_policy_effective_date">มีผลบังคับใช้: 2 มิถุนายน 2026</string>
     <string name="privacy_policy_intro">ยินดีต้อนรับสู่ LM Playground! ผมมุ่งมั่นที่จะรักษาความไว้วางใจและความเชื่อมั่นของทุกคนที่ใช้แอปของผม นโยบายความเป็นส่วนตัวฉบับนี้อธิบายว่าแอปเก็บและไม่เก็บข้อมูลอะไรบ้าง บทสนทนาของคุณยังคงอยู่บนอุปกรณ์ของคุณอย่างไร และในไม่กี่กรณี — เช่น เครื่องมือเว็บเสริม — ที่ข้อมูลออกจากอุปกรณ์ของคุณ เพื่อให้คุณรู้เสมอว่าจะคาดหวังอะไรได้บ้าง</string>
@@ -97,7 +96,6 @@
     <string name="privacy_policy_contact_email" translatable="false">andriydruk@gmail.com</string>
     <string name="send_feedback">ส่งความคิดเห็น</string>
     <string name="faq">คำถามที่พบบ่อย</string>
-    <string name="faq_subtitle">คำถามที่พบบ่อย</string>
 
     <!-- FAQ -->
     <string name="faq_q1">LM Playground คืออะไร?</string>
@@ -151,7 +149,6 @@
     <string name="cancel">ยกเลิก</string>
     <string name="low_ram_warning_title">โมเดลอาจไม่เสถียร</string>
     <string name="low_ram_warning_message">โมเดลต้องการ RAM ประมาณ %1$s แต่อุปกรณ์นี้มีทั้งหมดเพียง %2$s อาจหน่วยความจำไม่พอและขัดข้องได้ หากเกิดเหตุการณ์นั้น ให้ปิด “เปิดการรีแพ็ก” ใน การตั้งค่า → ขั้นสูง เพื่อโหลดในโหมดหน่วยความจำต่ำ</string>
-    <string name="advanced_subtitle">ตัวเลือกหน่วยความจำและประสิทธิภาพ</string>
     <string name="enable_repack_title">เปิดการรีแพ็ก</string>
     <string name="enable_repack_desc">รีแพ็กน้ำหนักของโมเดลลงใน RAM เพื่อให้ตอบเร็วขึ้น ใช้หน่วยความจำมากกว่าการโหลดแบบแมปหน่วยความจำมาก หากโมเดลขนาดใหญ่หน่วยความจำไม่พอขณะโหลด ให้ปิดตัวเลือกนี้</string>
     <string name="load_anyway">โหลดต่อไป</string>
@@ -178,7 +175,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">พรอมต์ระบบ</string>
-    <string name="system_prompts_subtitle">คำสั่งที่ใช้ซ้ำได้สำหรับทุกโมเดล</string>
     <string name="system_prompt_current">พรอมต์ระบบปัจจุบัน</string>
     <string name="save">บันทึก</string>
     <string name="add">เพิ่ม</string>
@@ -314,7 +310,6 @@
     <string name="haptic_on_generation_title">การสั่นตอบสนองขณะสร้าง</string>
     <string name="haptic_on_generation_desc">การสั่นเบาๆ ขณะที่แต่ละส่วนของคำตอบสตรีมเข้ามา</string>
     <string name="sound_and_haptic">เสียงและการสั่น</string>
-    <string name="sound_and_haptic_subtitle">เสียงเมื่อเสร็จและการสั่นขณะพิมพ์</string>
     <string name="sound_on_completion_title">เล่นเสียงเมื่อสร้างเสร็จ</string>
     <string name="sound_on_completion_desc">เล่นเสียงสั้นๆ เมื่อโมเดลตอบเสร็จขณะที่แอปทำงานอยู่เบื้องหลัง</string>
     <string name="response_copied">คัดลอกไปยังคลิปบอร์ดแล้ว</string>
@@ -324,7 +319,6 @@
     <string name="inference_notification_tokens_line">%1$s · %2$s</string>
     <string name="set_up_tools">ตั้งค่าเครื่องมือ</string>
     <string name="tools">เครื่องมือ</string>
-    <string name="tools_subtitle">ให้โมเดลที่มีความสามารถลงมือทำ</string>
     <string name="tools_section_intro">เครื่องมือช่วยให้โมเดลที่มีความสามารถลงมือทำสิ่งต่างๆ ระหว่างการตอบ เช่น ค้นหาเว็บหรือคำนวณ เครื่องมือแต่ละอย่างปิดอยู่โดยค่าเริ่มต้น — เปิดเฉพาะที่คุณต้องการ เครื่องมือใช้ได้เฉพาะกับโมเดลที่รองรับเท่านั้น (มองหาตราค้อน)</string>
     <string name="tools_params_sheet_subtitle">โมเดลสามารถเรียกใช้สิ่งเหล่านี้ระหว่างการตอบ</string>
     <string name="tools_example_label">ตัวอย่าง: %1$s</string>
@@ -420,7 +414,6 @@
     <string name="branch_title_numbered">%1$s (แขนง %2$d)</string>
     <string name="branch_created">กำลังทำต่อในแชทใหม่</string>
     <string name="appearance">รูปลักษณ์</string>
-    <string name="appearance_subtitle">ธีมและสีของเส้นสถานะ</string>
     <string name="appearance_theme">ธีม</string>
     <string name="appearance_theme_system">ค่าเริ่มต้นของระบบ</string>
     <string name="appearance_theme_light">สว่าง</string>
@@ -436,9 +429,7 @@
     <string name="tool_steps_title">ขั้นตอนการใช้เครื่องมือ</string>
     <string name="tool_steps_desc">จำนวนครั้งสูงสุดที่ใช้เครื่องมือในหนึ่งคำตอบก่อนที่โมเดลต้องตอบ</string>
     <string name="remote_servers">เซิร์ฟเวอร์ระยะไกล</string>
-    <string name="remote_servers_subtitle">โมเดลบนคอมพิวเตอร์ในเครือข่ายของคุณ</string>
     <string name="testing">การทดสอบ</string>
-    <string name="testing_subtitle">ทดสอบเครื่องมือ แชต และความเร็วกับโมเดล แล้วส่งออกผลลัพธ์</string>
     <string name="remote_help">ใช้โมเดลที่ทำงานใน LM Studio, Ollama หรือ llama-server บนคอมพิวเตอร์เครื่องอื่น บนคอมพิวเตอร์เครื่องนั้น ให้อนุญาตการเชื่อมต่อจากเครือข่ายภายใน</string>
     <string name="remote_saved">เซิร์ฟเวอร์</string>
     <string name="remote_add">เพิ่มเซิร์ฟเวอร์</string>

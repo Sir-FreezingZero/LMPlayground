@@ -84,6 +84,9 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     // while the on/off switch is meaningless because it always reasons.
     private val _thinkingToggleable = MutableLiveData(false)
     private val _generationParams = MutableLiveData(GenerationParams())
+    private val _loadedOnGpu = MutableLiveData(false)
+    /** Whether the loaded model runs on the GPU (shown on the Models tab). */
+    val loadedOnGpu: LiveData<Boolean> = _loadedOnGpu
     private val _maxContextSize = MutableLiveData(4096)
     private val _sessionModelHint = MutableLiveData<Pair<String, String>?>(null) // (modelName, modelFilename)
     // Set when a vision-capable model loads without its image module (mmproj),
@@ -163,6 +166,10 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
         override fun onMaxContextSize(maxContextSize: Int) {
             _maxContextSize.postValue(maxContextSize)
+        }
+
+        override fun onLoadedOn(gpu: Boolean) {
+            _loadedOnGpu.postValue(gpu)
         }
 
         override fun onGenerationParams(params: GenerationParams) {

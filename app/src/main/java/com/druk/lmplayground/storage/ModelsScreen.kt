@@ -68,6 +68,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 import com.druk.lmplayground.R
+import com.druk.lmplayground.ui.PillButton
+import com.druk.lmplayground.ui.SectionLabel
+import com.druk.lmplayground.ui.TabColors
 import com.druk.lmplayground.models.ModelCapabilityIcons
 import com.druk.lmplayground.models.ModelInfo
 import com.druk.lmplayground.models.ModelInfoProvider
@@ -274,11 +277,6 @@ fun ModelsContent(
                 .fillMaxHeight()
                 .widthIn(max = maxContentWidth)
         ) {
-            if (isScrolled) {
-                // Symmetric 12dp inset (same as the chat scaffold dividers)
-                // so the line doesn't run all the way to the pane edges.
-                HorizontalDivider(modifier = Modifier.padding(horizontal = 12.dp))
-            }
             LazyVerticalGrid(
                 state = gridState,
                 columns = GridCells.Adaptive(minSize = 340.dp),
@@ -291,26 +289,13 @@ fun ModelsContent(
                         StorageInfoCard(
                             storageInfo = storageInfo,
                             onChangeFolderClick = onChangeFolderClick,
-                            onImportFolderClick = onImportFolderClick,
-                            // No top padding — the card's top edge sits flush
-                            // with the divider / topbar bottom so scrolling
-                            // visually slides it under the bar.
-                            modifier = Modifier.padding(
-                                start = 16.dp,
-                                end = 16.dp,
-                                bottom = 16.dp,
-                            )
                         )
                     }
                 }
 
                 // Downloaded section header
                 item(span = { GridItemSpan(maxLineSpan) }) {
-                    Text(
-                        text = stringResource(R.string.downloaded_models),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                    )
+                    SectionLabel(stringResource(R.string.downloaded_models))
                 }
 
                 if (downloadedModels.isEmpty() && !showEmbeddingRow && !showDictationRow) {
@@ -319,7 +304,7 @@ fun ModelsContent(
                             text = stringResource(R.string.no_downloaded_models),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(16.dp)
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
                         )
                     }
                 } else {
@@ -385,14 +370,11 @@ fun ModelsContent(
                 // language-supported and other models (non-English locales).
                 if (supportedModels.isNotEmpty()) {
                     item(span = { GridItemSpan(maxLineSpan) }) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = stringResource(
+                        SectionLabel(
+                            stringResource(
                                 if (splitByLanguage) R.string.supports_your_language
                                 else R.string.available_models
-                            ),
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                            )
                         )
                     }
 
@@ -418,12 +400,7 @@ fun ModelsContent(
 
                 if (otherModels.isNotEmpty()) {
                     item(span = { GridItemSpan(maxLineSpan) }) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = stringResource(R.string.other_models),
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                        )
+                        SectionLabel(stringResource(R.string.other_models))
                     }
 
                     // Grouped by model family: the leading letters of the name.
@@ -600,63 +577,41 @@ fun ModelsContent(
     }
 }
 
+/** The models folder and how much space is used, as a flat section like the other settings pages. */
 @Composable
 private fun StorageInfoCard(
     storageInfo: StorageInfo,
     onChangeFolderClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    onImportFolderClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val usedFormatted = Formatter.formatFileSize(context, storageInfo.usedBytes)
     val availableFormatted = Formatter.formatFileSize(context, storageInfo.availableBytes)
 
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
-        modifier = modifier.fillMaxWidth()
-    ) {
-        // Compact layout: folder info on the left, change-folder button trailing
-        // on the right; storage usage row directly below with progress bar
-        // inline with available-bytes label. Trims roughly 40dp of vertical
-        // space vs the previous stacked layout.
-        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
+    Column(Modifier.fillMaxWidth()) {
+        SectionLabel(
+            if (storageInfo.isCustomFolder) stringResource(R.string.custom_folder)
+            else stringResource(R.string.downloads_folder)
+        ) {
+            PillButton(stringResource(R.string.change_folder), onClick = onChangeFolderClick)
+        }
+        Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Outlined.Folder,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                Spacer(modifier = Modifier.width(12.dp))
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = if (storageInfo.isCustomFolder)
-                            stringResource(R.string.custom_folder)
-                        else
-                            stringResource(R.string.downloads_folder),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = storageInfo.path,
-                        style = MaterialTheme.typography.bodyMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-                TextButton(onClick = onChangeFolderClick) {
-                    Text(stringResource(R.string.change_folder))
-                }
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = storageInfo.path,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                )
             }
-            if (onImportFolderClick != null) {
-                TextButton(onClick = onImportFolderClick, modifier = Modifier.align(Alignment.End)) {
-                    Text(stringResource(R.string.import_from_folder))
-                }
-            }
-
             Spacer(modifier = Modifier.height(8.dp))
-
             if (storageInfo.totalBytes > 0) {
                 val progressValue = storageInfo.usedBytes.toFloat() / storageInfo.totalBytes.toFloat()
                 LinearProgressIndicator(
@@ -699,7 +654,7 @@ private fun DownloadedModelItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (model.logoRes != 0) {
@@ -707,7 +662,7 @@ private fun DownloadedModelItem(
                 painter = painterResource(id = model.logoRes),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(28.dp)
                     .clip(CircleShape),
                 contentScale = ContentScale.Crop
             )
@@ -716,7 +671,7 @@ private fun DownloadedModelItem(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = model.name,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -762,7 +717,7 @@ private fun AvailableModelItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (model.logoRes != 0) {
@@ -770,7 +725,7 @@ private fun AvailableModelItem(
                 painter = painterResource(id = model.logoRes),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(28.dp)
                     .clip(CircleShape),
                 contentScale = ContentScale.Crop
             )
@@ -779,7 +734,7 @@ private fun AvailableModelItem(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = model.name,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -787,7 +742,7 @@ private fun AvailableModelItem(
                 Text(
                     text = formatDownloadStats(context, downloadProgress),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary
+                    color = TabColors.Accent
                 )
             } else {
                 // For a module-only offer the main model is already installed,
@@ -855,7 +810,7 @@ private fun AvailableModelItem(
                         if (moduleOnly) R.string.cd_download_image_module
                         else R.string.download_model
                     ),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = TabColors.Accent
                 )
             }
         }
@@ -951,7 +906,7 @@ private fun LazyGridScope.familyHeader(family: String, key: String) =
             text = family,
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 4.dp)
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 2.dp)
         )
     }
 

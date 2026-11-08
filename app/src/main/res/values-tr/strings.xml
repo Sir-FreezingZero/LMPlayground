@@ -63,7 +63,6 @@
     <string name="settings">Ayarlar</string>
     <string name="back">Geri</string>
     <string name="version">S\u00FCr\u00FCm %s</string>
-    <string name="models_subtitle">Modelleri indirin ve y\u00F6netin</string>
     <string name="privacy_policy">Gizlilik Politikas\u0131</string>
     <string name="privacy_policy_effective_date">Y\u00FCr\u00FCrl\u00FCk Tarihi: 2 Haziran 2026</string>
     <string name="privacy_policy_intro">LM Playground\'a ho\u015F geldiniz! Uygulamam\u0131 kullanan herkesin g\u00FCvenini ve g\u00FCvencesini korumaya kararl\u0131y\u0131m. Bu Gizlilik Politikas\u0131, uygulaman\u0131n neleri toplay\u0131p neleri toplamad\u0131\u011F\u0131n\u0131, sohbetlerinizin cihaz\u0131n\u0131zda nas\u0131l kald\u0131\u011F\u0131n\u0131 ve \u2014 iste\u011Fe ba\u011Fl\u0131 web ara\u00E7lar\u0131 gibi \u2014 bilgilerin cihaz\u0131n\u0131zdan \u00E7\u0131kt\u0131\u011F\u0131 birka\u00E7 durumu a\u00E7\u0131klar; b\u00F6ylece her zaman ne bekleyece\u011Finizi bilirsiniz.</string>
@@ -84,7 +83,6 @@
     <string name="privacy_policy_s7_body">Gizlilik Politikam hakk\u0131nda sorular\u0131n\u0131z veya \u00F6nerileriniz varsa, benimle ileti\u015Fime ge\u00E7mekten \u00E7ekinmeyin.</string>
     <string name="send_feedback">Geri Bildirim G\u00F6nder</string>
     <string name="faq">SSS</string>
-    <string name="faq_subtitle">S\u0131k\u00E7a sorulan sorular</string>
     <string name="faq_q1">LM Playground nedir?</string>
     <string name="faq_a1">LM Playground, b\u00FCy\u00FCk dil modellerini do\u011Frudan Android cihaz\u0131n\u0131zda \u00E7al\u0131\u015Ft\u0131rman\u0131z\u0131 sa\u011Flar. T\u00FCm i\u015Flemler yerel olarak ger\u00E7ekle\u015Fir \u2013 bulut sunucular\u0131na gerek yoktur.</string>
     <string name="faq_q2">Hangi modeller destekleniyor?</string>
@@ -134,7 +132,6 @@
     <string name="cancel">\u0130ptal</string>
     <string name="low_ram_warning_title">Model kararsız olabilir</string>
     <string name="low_ram_warning_message">Model yaklaşık %1$s RAM gerektirir, ancak bu cihazın toplam %2$s belleği var. Belleği tükenip çökebilir. Bu olursa, düşük bellek modunda yüklemek için Ayarlar → Gelişmiş bölümünden Yeniden paketlemeyi etkinleştir seçeneğini kapatın.</string>
-    <string name="advanced_subtitle">Bellek ve performans seçenekleri</string>
     <string name="enable_repack_title">Yeniden paketlemeyi etkinleştir</string>
     <string name="enable_repack_desc">Daha hızlı yanıtlar için model ağırlıklarını RAM\'e yeniden paketler. Belleğe eşlenmiş olarak yüklemeye göre çok daha fazla bellek kullanır. Büyük bir model yüklenirken belleği tükenirse kapatın.</string>
     <string name="load_anyway">Yine de y\u00fckle</string>
@@ -192,7 +189,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">Sistem \u0130stemleri</string>
-    <string name="system_prompts_subtitle">Herhangi bir model i\u00E7in yeniden kullan\u0131labilir talimatlar</string>
     <string name="system_prompt_current">G\u00FCncel sistem istemi</string>
     <string name="save">Kaydet</string>
     <string name="add">Ekle</string>
@@ -277,7 +273,6 @@
 
     <!-- Sound and Haptic -->
     <string name="sound_and_haptic">Ses ve Titre\u015Fim</string>
-    <string name="sound_and_haptic_subtitle">Tamamlanma sesi ve yazma titre\u015Fimleri</string>
     <string name="sound_on_completion_title">\u00DCretim bitti\u011Finde ses \u00E7al</string>
     <string name="sound_on_completion_desc">Uygulama arka plandayken model bir yan\u0131t\u0131 tamamlad\u0131\u011F\u0131nda k\u0131sa bir bildirim sesi \u00E7alar.</string>
     <string name="haptic_on_generation_title">\u00DCretim s\u0131ras\u0131nda titre\u015Fim geri bildirimi</string>
@@ -285,7 +280,6 @@
 
     <!-- Tools -->
     <string name="tools">Ara\u00E7lar</string>
-    <string name="tools_subtitle">Yetenekli modellerin i\u015Flem yapmas\u0131n\u0131 sa\u011Fla</string>
     <string name="tools_section_intro">Ara\u00E7lar, yetenekli modellerin yan\u0131t s\u0131ras\u0131nda webde arama yapma veya hesaplama \u00E7al\u0131\u015Ft\u0131rma gibi i\u015Flemler yapmas\u0131n\u0131 sa\u011Flar. Her ara\u00E7 varsay\u0131lan olarak kapal\u0131d\u0131r — yaln\u0131zca istedi\u011Finiz ara\u00E7lar\u0131 a\u00E7\u0131n. Ara\u00E7lar yaln\u0131zca onlar\u0131 destekleyen modellerle \u00E7al\u0131\u015F\u0131r (\u00E7eki\u00E7 rozetine bak\u0131n).</string>
     <string name="tools_example_label">\u00D6rnek: %1$s</string>
     <string name="tools_params_sheet_subtitle">Model, yan\u0131t s\u0131ras\u0131nda bunlar\u0131 \u00E7a\u011F\u0131rabilir</string>
@@ -391,7 +385,6 @@
     <string name="branch_title_numbered">%1$s (dal %2$d)</string>
     <string name="branch_created">Yeni bir sohbette devam ediliyor</string>
     <string name="appearance">Görünüm</string>
-    <string name="appearance_subtitle">Tema ve durum çizgisi renkleri</string>
     <string name="appearance_theme">Tema</string>
     <string name="appearance_theme_system">Sistem varsayılanı</string>
     <string name="appearance_theme_light">Açık</string>
@@ -407,9 +400,7 @@
     <string name="tool_steps_title">Araç adımları</string>
     <string name="tool_steps_desc">Modelin yanıt vermesi gerekmeden önce bir yanıtta en fazla araç kullanımı</string>
     <string name="remote_servers">Uzak sunucular</string>
-    <string name="remote_servers_subtitle">Ağınızdaki bir bilgisayardaki modeller</string>
     <string name="testing">Test</string>
-    <string name="testing_subtitle">Bir modelde araç, sohbet ve hız testleri çalıştırın ve sonuçları dışa aktarın</string>
     <string name="remote_help">Başka bir bilgisayarda LM Studio, Ollama veya llama-server içinde çalışan modelleri kullanın. O bilgisayarda yerel ağdan gelen bağlantılara izin verin.</string>
     <string name="remote_saved">Sunucular</string>
     <string name="remote_add">Sunucu ekle</string>

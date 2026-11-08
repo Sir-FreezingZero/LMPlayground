@@ -63,7 +63,6 @@
     <string name="settings">Pengaturan</string>
     <string name="back">Kembali</string>
     <string name="version">Versi %s</string>
-    <string name="models_subtitle">Unduh dan kelola model</string>
     <string name="privacy_policy">Kebijakan Privasi</string>
     <string name="privacy_policy_effective_date">Tanggal Berlaku: 2 Juni 2026</string>
     <string name="privacy_policy_intro">Selamat datang di LM Playground! Saya berkomitmen untuk menjaga kepercayaan dan keyakinan semua orang yang menggunakan aplikasi saya. Kebijakan Privasi ini menjelaskan apa yang dikumpulkan dan tidak dikumpulkan oleh aplikasi, bagaimana percakapan Anda tetap berada di perangkat Anda, dan beberapa kasus — seperti alat web opsional — di mana informasi meninggalkan perangkat Anda, sehingga Anda selalu tahu apa yang dapat diharapkan.</string>
@@ -84,7 +83,6 @@
     <string name="privacy_policy_s7_body">Jika Anda memiliki pertanyaan atau saran tentang Kebijakan Privasi saya, jangan ragu untuk menghubungi saya.</string>
     <string name="send_feedback">Kirim Masukan</string>
     <string name="faq">FAQ</string>
-    <string name="faq_subtitle">Pertanyaan yang sering diajukan</string>
     <string name="faq_q1">Apa itu LM Playground?</string>
     <string name="faq_a1">LM Playground memungkinkan Anda menjalankan model bahasa besar langsung di perangkat Android Anda. Semua pemrosesan dilakukan secara lokal \u2013 tanpa perlu server cloud.</string>
     <string name="faq_q2">Model apa saja yang didukung?</string>
@@ -134,7 +132,6 @@
     <string name="cancel">Batal</string>
     <string name="low_ram_warning_title">Model mungkin tidak stabil</string>
     <string name="low_ram_warning_message">Model membutuhkan ~%1$s RAM, tetapi perangkat ini hanya memiliki total %2$s. Memori mungkin habis dan menyebabkan crash. Jika itu terjadi, nonaktifkan Aktifkan repack di Pengaturan → Lanjutan untuk memuatnya dalam mode memori rendah.</string>
-    <string name="advanced_subtitle">Opsi memori dan performa</string>
     <string name="enable_repack_title">Aktifkan repack</string>
     <string name="enable_repack_desc">Mengemas kembali bobot model ke RAM agar respons lebih cepat. Menggunakan jauh lebih banyak memori daripada memuatnya dengan pemetaan memori. Nonaktifkan jika model besar kehabisan memori saat dimuat.</string>
     <string name="load_anyway">Tetap muat</string>
@@ -192,7 +189,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">Prompt Sistem</string>
-    <string name="system_prompts_subtitle">Instruksi yang dapat digunakan ulang untuk model apa pun</string>
     <string name="system_prompt_current">Prompt sistem saat ini</string>
     <string name="save">Simpan</string>
     <string name="add">Tambah</string>
@@ -278,7 +274,6 @@
     <string name="haptic_on_generation_title">Umpan balik haptik saat menghasilkan</string>
     <string name="haptic_on_generation_desc">Getaran halus saat setiap bagian respons mengalir masuk.</string>
     <string name="sound_and_haptic">Suara dan Haptik</string>
-    <string name="sound_and_haptic_subtitle">Suara penyelesaian dan haptik pengetikan</string>
     <string name="sound_on_completion_title">Putar suara saat pembuatan selesai</string>
     <string name="sound_on_completion_desc">Memutar nada singkat saat model menyelesaikan respons ketika aplikasi berada di latar belakang.</string>
     <string name="response_copied">Disalin ke clipboard</string>
@@ -288,7 +283,6 @@
     <string name="inference_notification_tokens_line">%1$s · %2$s</string>
     <string name="set_up_tools">Siapkan alat</string>
     <string name="tools">Alat</string>
-    <string name="tools_subtitle">Biarkan model yang mampu mengambil tindakan</string>
     <string name="tools_section_intro">Alat memungkinkan model yang mampu mengambil tindakan selama membalas, seperti mencari di web atau melakukan perhitungan. Setiap alat nonaktif secara default — aktifkan hanya yang Anda inginkan. Alat hanya berfungsi dengan model yang mendukungnya (cari lencana palu).</string>
     <string name="tools_params_sheet_subtitle">Model dapat memanggil ini selama membalas</string>
     <string name="tools_example_label">Contoh: %1$s</string>
@@ -384,7 +378,6 @@
     <string name="branch_title_numbered">%1$s (cabang %2$d)</string>
     <string name="branch_created">Melanjutkan di chat baru</string>
     <string name="appearance">Tampilan</string>
-    <string name="appearance_subtitle">Tema dan warna garis status</string>
     <string name="appearance_theme">Tema</string>
     <string name="appearance_theme_system">Default sistem</string>
     <string name="appearance_theme_light">Terang</string>
@@ -400,9 +393,7 @@
     <string name="tool_steps_title">Langkah alat</string>
     <string name="tool_steps_desc">Jumlah maksimum penggunaan alat dalam satu balasan sebelum model harus menjawab</string>
     <string name="remote_servers">Server jarak jauh</string>
-    <string name="remote_servers_subtitle">Model di komputer dalam jaringan Anda</string>
     <string name="testing">Pengujian</string>
-    <string name="testing_subtitle">Jalankan uji alat, obrolan, dan kecepatan pada model lalu ekspor hasilnya</string>
     <string name="remote_help">Gunakan model yang berjalan di LM Studio, Ollama, atau llama-server di komputer lain. Di komputer itu, izinkan koneksi dari jaringan lokal.</string>
     <string name="remote_saved">Server</string>
     <string name="remote_add">Tambahkan server</string>

@@ -74,7 +74,6 @@
     <string name="settings">সেটিংস</string>
     <string name="back">পেছনে</string>
     <string name="version">সংস্করণ %s</string>
-    <string name="models_subtitle">মডেল ডাউনলোড ও পরিচালনা করুন</string>
     <string name="privacy_policy">গোপনীয়তা নীতি</string>
     <string name="privacy_policy_effective_date">কার্যকর তারিখ: ২ জুন, ২০২৬</string>
     <string name="privacy_policy_intro">LM Playground-এ স্বাগতম! আমার অ্যাপ ব্যবহার করা প্রত্যেকের আস্থা ও বিশ্বাস বজায় রাখতে আমি প্রতিশ্রুতিবদ্ধ। এই গোপনীয়তা নীতি ব্যাখ্যা করে অ্যাপটি কী সংগ্রহ করে এবং কী করে না, আপনার কথোপকথন কীভাবে আপনার ডিভাইসেই থাকে, এবং সেই কয়েকটি ক্ষেত্র — যেমন ঐচ্ছিক ওয়েব টুল — যেখানে তথ্য আপনার ডিভাইসের বাইরে যায়, যাতে আপনি সবসময় জানেন কী আশা করতে হবে।</string>
@@ -96,7 +95,6 @@
     <string name="privacy_policy_contact_email" translatable="false">andriydruk@gmail.com</string>
     <string name="send_feedback">মতামত পাঠান</string>
     <string name="faq">FAQ</string>
-    <string name="faq_subtitle">প্রায়শই জিজ্ঞাসিত প্রশ্ন</string>
 
     <!-- FAQ -->
     <string name="faq_q1">LM Playground কী?</string>
@@ -150,7 +148,6 @@
     <string name="cancel">বাতিল</string>
     <string name="low_ram_warning_title">মডেলটি অস্থির হতে পারে</string>
     <string name="low_ram_warning_message">মডেলের জন্য প্রায় %1$s RAM প্রয়োজন, কিন্তু এই ডিভাইসে মোট %2$s আছে। এর মেমরি ফুরিয়ে গিয়ে এটি ক্র্যাশ করতে পারে। তা ঘটলে, কম-মেমরি মোডে এটি লোড করতে সেটিংস → উন্নত-এ রিপ্যাক সক্রিয় করুন বন্ধ করুন।</string>
-    <string name="advanced_subtitle">মেমরি ও কর্মক্ষমতার বিকল্প</string>
     <string name="enable_repack_title">রিপ্যাক সক্রিয় করুন</string>
     <string name="enable_repack_desc">দ্রুত সাড়ার জন্য মডেলের ওজন RAM-এ রিপ্যাক করে। মেমরি-ম্যাপড আকারে লোড করার চেয়ে অনেক বেশি মেমরি ব্যবহার করে। লোড হওয়ার সময় কোনো বড় মডেলের মেমরি ফুরিয়ে গেলে এটি বন্ধ করুন।</string>
     <string name="load_anyway">তবুও লোড করুন</string>
@@ -177,7 +174,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">সিস্টেম প্রম্পট</string>
-    <string name="system_prompts_subtitle">যেকোনো মডেলের জন্য পুনরায় ব্যবহারযোগ্য নির্দেশাবলী</string>
     <string name="system_prompt_current">বর্তমান সিস্টেম প্রম্পট</string>
     <string name="save">সংরক্ষণ</string>
     <string name="add">যোগ করুন</string>
@@ -326,7 +322,6 @@
 
     <!-- Sound and haptic -->
     <string name="sound_and_haptic">শব্দ এবং হ্যাপটিক</string>
-    <string name="sound_and_haptic_subtitle">সম্পন্ন হলে শব্দ এবং টাইপিংয়ের সময় হ্যাপটিক</string>
     <string name="sound_on_completion_title">জেনারেশন শেষ হলে শব্দ বাজান</string>
     <string name="sound_on_completion_desc">অ্যাপ ব্যাকগ্রাউন্ডে থাকা অবস্থায় মডেল প্রতিক্রিয়া শেষ করলে একটি ছোট ধ্বনি বাজে।</string>
     <string name="haptic_on_generation_title">জেনারেশনে হ্যাপটিক ফিডব্যাক</string>
@@ -334,7 +329,6 @@
 
     <!-- Tools -->
     <string name="tools">টুল</string>
-    <string name="tools_subtitle">সক্ষম মডেলকে কাজ করতে দিন</string>
     <string name="set_up_tools">টুল সেট আপ করুন</string>
     <string name="tools_section_intro">টুল সক্ষম মডেলকে প্রতিক্রিয়ার সময় কাজ করতে দেয়, যেমন ওয়েবে অনুসন্ধান করা বা গণনা করা। প্রতিটি টুল ডিফল্টভাবে বন্ধ থাকে — শুধু আপনি যেগুলি চান সেগুলি চালু করুন। টুল কেবল সেই মডেলগুলির সাথেই কাজ করে যেগুলি এগুলি সমর্থন করে (হ্যামার ব্যাজ খুঁজুন)।</string>
     <string name="tools_params_sheet_subtitle">মডেল প্রতিক্রিয়ার সময় এগুলি কল করতে পারে</string>
@@ -430,7 +424,6 @@
     <string name="branch_title_numbered">%1$s (শাখা %2$d)</string>
     <string name="branch_created">নতুন চ্যাটে চালিয়ে যাওয়া হচ্ছে</string>
     <string name="appearance">চেহারা</string>
-    <string name="appearance_subtitle">থিম ও স্ট্যাটাস লাইনের রং</string>
     <string name="appearance_theme">থিম</string>
     <string name="appearance_theme_system">সিস্টেম ডিফল্ট</string>
     <string name="appearance_theme_light">লাইট</string>
@@ -446,9 +439,7 @@
     <string name="tool_steps_title">টুল ধাপ</string>
     <string name="tool_steps_desc">মডেলকে উত্তর দেওয়ার আগে এক উত্তরে সর্বোচ্চ কতবার টুল ব্যবহার করা যাবে</string>
     <string name="remote_servers">রিমোট সার্ভার</string>
-    <string name="remote_servers_subtitle">আপনার নেটওয়ার্কের কম্পিউটারে থাকা মডেল</string>
     <string name="testing">পরীক্ষা</string>
-    <string name="testing_subtitle">একটি মডেলে টুল, চ্যাট ও গতির পরীক্ষা চালান এবং ফলাফল রপ্তানি করুন</string>
     <string name="remote_help">অন্য কম্পিউটারে LM Studio, Ollama বা llama-server-এ চলা মডেল ব্যবহার করুন। সেই কম্পিউটারে লোকাল নেটওয়ার্ক থেকে সংযোগের অনুমতি দিন।</string>
     <string name="remote_saved">সার্ভার</string>
     <string name="remote_add">সার্ভার যোগ করুন</string>

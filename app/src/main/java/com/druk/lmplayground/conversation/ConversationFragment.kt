@@ -66,6 +66,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
@@ -83,7 +84,8 @@ import kotlinx.coroutines.launch
 
 class ConversationFragment : Fragment() {
 
-    private val viewModel: ConversationViewModel by viewModels()
+    // Shared with the Models tab, which loads and unloads the same model.
+    private val viewModel: ConversationViewModel by activityViewModels()
     private val storageViewModel: StorageViewModel by viewModels()
 
     private var attachedImageUri = mutableStateOf<Uri?>(null)
@@ -253,6 +255,13 @@ class ConversationFragment : Fragment() {
         // death while it is foregrounded. Persist the pending capture destination
         // so the result callback can still map back to the temp file on return.
         pendingCaptureFile?.let { outState.putString(KEY_PENDING_CAPTURE_FILE, it.absolutePath) }
+    }
+
+    /** The Models tab, where models are loaded and unloaded. */
+    private fun openModelsTab() {
+        if (findNavController().currentDestination?.id == R.id.nav_home) {
+            (activity as? com.druk.lmplayground.MainActivity)?.openTab(com.druk.lmplayground.ui.AppTab.MODELS)
+        }
     }
 
     override fun onResume() {
@@ -851,9 +860,8 @@ class ConversationFragment : Fragment() {
                                 scope.launch { drawerState.open() }
                             },
                             colors = topBarColors,
-                            onModelNamePressed = {
-                                viewModel.loadModelList()
-                            },
+                            // Models are chosen in the Models tab.
+                            onModelNamePressed = { openModelsTab() },
                             onGenerationParamsPressed = if (modelInfo != null) {
                                 { paramsSheetTab = 0; showParamsSheet = true }
                             } else null,
@@ -1061,10 +1069,7 @@ class ConversationFragment : Fragment() {
                                     // Guard against NavController throwing IllegalArgumentException
                                     // when the user double-taps or another navigation moved us
                                     // off nav_home before this callback fired.
-                                    val nav = findNavController()
-                                    if (nav.currentDestination?.id == R.id.nav_home) {
-                                        nav.navigate(R.id.action_home_to_models)
-                                    }
+                                    openModelsTab()
                                 },
                                 onDismissRequest = {
                                     viewModel.resetModelList()
@@ -1083,9 +1088,7 @@ class ConversationFragment : Fragment() {
                             // No downloaded models - go directly to Models screen
                             LaunchedEffect(Unit) {
                                 viewModel.resetModelList()
-                                if (findNavController().currentDestination?.id == R.id.nav_home) {
-                                    findNavController().navigate(R.id.action_home_to_models)
-                                }
+                                openModelsTab()
                             }
                         }
                     } else if (modelReport != null) {

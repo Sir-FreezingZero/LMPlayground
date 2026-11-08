@@ -75,7 +75,6 @@
     <string name="settings">Asetukset</string>
     <string name="back">Takaisin</string>
     <string name="version">Versio %s</string>
-    <string name="models_subtitle">Lataa ja hallitse malleja</string>
     <string name="privacy_policy">Tietosuojakäytäntö</string>
     <string name="privacy_policy_effective_date">Voimaantulopäivä: 2. kesäkuuta 2026</string>
     <string name="privacy_policy_intro">Tervetuloa LM Playgroundiin! Olen sitoutunut ylläpitämään sovellukseni kaikkien käyttäjien luottamusta. Tässä tietosuojakäytännössä selitetään, mitä sovellus kerää ja mitä se ei kerää, miten keskustelusi pysyvät laitteellasi, sekä ne harvat tapaukset — kuten valinnaiset verkkotyökalut — joissa tietoja lähtee laitteeltasi, jotta tiedät aina, mitä odottaa.</string>
@@ -97,7 +96,6 @@
     <string name="privacy_policy_contact_email" translatable="false">andriydruk@gmail.com</string>
     <string name="send_feedback">Lähetä palaute</string>
     <string name="faq">UKK</string>
-    <string name="faq_subtitle">Usein kysytyt kysymykset</string>
 
     <!-- FAQ -->
     <string name="faq_q1">Mikä on LM Playground?</string>
@@ -151,7 +149,6 @@
     <string name="cancel">Peruuta</string>
     <string name="low_ram_warning_title">Malli voi olla epävakaa</string>
     <string name="low_ram_warning_message">Malli tarvitsee noin %1$s RAM-muistia, mutta tässä laitteessa on yhteensä vain %2$s. Muisti voi loppua ja sovellus kaatua. Jos näin käy, poista Ota uudelleenpakkaus käyttöön -asetus käytöstä kohdassa Asetukset → Lisäasetukset ladataksesi sen vähämuistisessa tilassa.</string>
-    <string name="advanced_subtitle">Muisti- ja suorituskykyasetukset</string>
     <string name="enable_repack_title">Ota uudelleenpakkaus käyttöön</string>
     <string name="enable_repack_desc">Pakkaa mallin painot uudelleen RAM-muistiin, jotta vastaukset ovat nopeampia. Käyttää paljon enemmän muistia kuin painojen lataaminen muistiin kartoitettuna. Poista käytöstä, jos suurelta mallilta loppuu muisti latauksen aikana.</string>
     <string name="load_anyway">Lataa silti</string>
@@ -178,7 +175,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">Järjestelmäkehotteet</string>
-    <string name="system_prompts_subtitle">Uudelleenkäytettävät ohjeet mille tahansa mallille</string>
     <string name="system_prompt_current">Nykyinen järjestelmäkehote</string>
     <string name="save">Tallenna</string>
     <string name="add">Lisää</string>
@@ -322,7 +318,6 @@
     <string name="response_copied">Kopioitu leikepöydälle</string>
     <string name="set_up_tools">Määritä työkalut</string>
     <string name="sound_and_haptic">Ääni ja värinä</string>
-    <string name="sound_and_haptic_subtitle">Valmistumisääni ja kirjoitusvärinä</string>
     <string name="sound_on_completion_desc">Soittaa lyhyen merkkiäänen, kun malli saa vastauksen valmiiksi sovelluksen ollessa taustalla.</string>
     <string name="sound_on_completion_title">Soita ääni, kun generointi valmistuu</string>
     <string name="tool_call_input">Syöte</string>
@@ -357,7 +352,6 @@
     <string name="tools_example_label">Esimerkki: %1$s</string>
     <string name="tools_params_sheet_subtitle">Malli voi kutsua näitä vastauksen aikana</string>
     <string name="tools_section_intro">Työkalujen avulla kyvykkäät mallit voivat tehdä toimintoja vastauksen aikana, kuten hakea verkosta tai suorittaa laskutoimituksen. Jokainen työkalu on oletuksena pois päältä — ota käyttöön vain haluamasi. Työkalut toimivat vain niitä tukevien mallien kanssa (etsi vasaramerkkiä).</string>
-    <string name="tools_subtitle">Anna kyvykkäiden mallien tehdä toimintoja</string>
     <string name="whats_new_cache">Nopeammat vastaukset välimuistiin tallennetuilla kehotteilla &amp; työkaluilla</string>
     <string name="whats_new_tools">Verkkohaku, sivun nouto ja JavaScriptin suoritus</string>
     <string name="attach_document">Liitä asiakirja</string>
@@ -419,7 +413,6 @@
     <string name="branch_title_numbered">%1$s (haara %2$d)</string>
     <string name="branch_created">Jatketaan uudessa keskustelussa</string>
     <string name="appearance">Ulkoasu</string>
-    <string name="appearance_subtitle">Teema ja tilarivin värit</string>
     <string name="appearance_theme">Teema</string>
     <string name="appearance_theme_system">Järjestelmän oletus</string>
     <string name="appearance_theme_light">Vaalea</string>
@@ -435,9 +428,7 @@
     <string name="tool_steps_title">Työkaluvaiheet</string>
     <string name="tool_steps_desc">Työkalujen käyttökertoja enintään yhdessä vastauksessa ennen kuin mallin on vastattava</string>
     <string name="remote_servers">Etäpalvelimet</string>
-    <string name="remote_servers_subtitle">Malleja verkkosi tietokoneella</string>
     <string name="testing">Testaus</string>
-    <string name="testing_subtitle">Suorita mallille työkalu-, keskustelu- ja nopeustestit ja vie tulokset</string>
     <string name="remote_help">Käytä malleja, jotka toimivat LM Studiossa, Ollamassa tai llama-serverissä toisella tietokoneella. Salli siinä tietokoneessa yhteydet lähiverkosta.</string>
     <string name="remote_saved">Palvelimet</string>
     <string name="remote_add">Lisää palvelin</string>

@@ -63,7 +63,6 @@
     <string name="settings">Param\u00E8tres</string>
     <string name="back">Retour</string>
     <string name="version">Version %s</string>
-    <string name="models_subtitle">T\u00E9l\u00E9charger et g\u00E9rer les mod\u00E8les</string>
     <string name="privacy_policy">Politique de confidentialit\u00E9</string>
     <string name="privacy_policy_effective_date">Date d\'entr\u00E9e en vigueur : 2 juin 2026</string>
     <string name="privacy_policy_intro">Bienvenue sur LM Playground ! Je m\'engage \u00E0 pr\u00E9server la confiance de toutes les personnes qui utilisent mon application. Cette Politique de Confidentialit\u00E9 explique ce que l\'application collecte et ne collecte pas, comment vos conversations restent sur votre appareil, et les quelques cas \u2014 comme les outils web optionnels \u2014 o\u00F9 des informations quittent votre appareil, afin que vous sachiez toujours \u00E0 quoi vous attendre.</string>
@@ -84,7 +83,6 @@
     <string name="privacy_policy_s7_body">Si vous avez des questions ou des suggestions concernant ma Politique de Confidentialit\u00E9, n\'h\u00E9sitez pas \u00E0 me contacter.</string>
     <string name="send_feedback">Envoyer des commentaires</string>
     <string name="faq">FAQ</string>
-    <string name="faq_subtitle">Questions fr\u00E9quemment pos\u00E9es</string>
     <string name="faq_q1">Qu\'est-ce que LM Playground ?</string>
     <string name="faq_a1">LM Playground vous permet d\'ex\u00E9cuter des grands mod\u00E8les de langage directement sur votre appareil Android. Tout le traitement se fait localement \u2013 aucun serveur cloud n\u00E9cessaire.</string>
     <string name="faq_q2">Quels mod\u00E8les sont pris en charge ?</string>
@@ -134,7 +132,6 @@
     <string name="cancel">Annuler</string>
     <string name="low_ram_warning_title">Le modèle pourrait être instable</string>
     <string name="low_ram_warning_message">Le modèle nécessite environ %1$s de RAM, mais cet appareil n\'en a que %2$s au total. Il pourrait manquer de mémoire et planter. Si cela arrive, désactivez Activer le réagencement dans Paramètres → Avancé pour le charger dans un mode à faible mémoire.</string>
-    <string name="advanced_subtitle">Options de mémoire et de performances</string>
     <string name="enable_repack_title">Activer le réagencement</string>
     <string name="enable_repack_desc">Réagence les poids du modèle dans la RAM pour accélérer les réponses. Utilise beaucoup plus de mémoire que le chargement mappé en mémoire. Désactivez cette option si un grand modèle manque de mémoire lors du chargement.</string>
     <string name="load_anyway">Charger quand même</string>
@@ -195,7 +192,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">Invites syst\u00E8me</string>
-    <string name="system_prompts_subtitle">Instructions r\u00E9utilisables pour tout mod\u00E8le</string>
     <string name="system_prompt_current">Invite syst\u00E8me actuelle</string>
     <string name="save">Enregistrer</string>
     <string name="add">Ajouter</string>
@@ -281,7 +277,6 @@
 
     <!-- Son et retour haptique -->
     <string name="sound_and_haptic">Son et retour haptique</string>
-    <string name="sound_and_haptic_subtitle">Son de fin et retour haptique à la saisie</string>
     <string name="sound_on_completion_title">Jouer un son à la fin de la génération</string>
     <string name="sound_on_completion_desc">Joue un court carillon lorsque le modèle termine une réponse pendant que l\'application est en arrière-plan.</string>
     <string name="haptic_on_generation_title">Retour haptique pendant la génération</string>
@@ -289,7 +284,6 @@
 
     <!-- Outils -->
     <string name="tools">Outils</string>
-    <string name="tools_subtitle">Laissez les modèles capables agir</string>
     <string name="set_up_tools">Configurer les outils</string>
     <string name="tools_section_intro">Les outils permettent aux modèles capables d\'effectuer des actions pendant une réponse, comme rechercher sur le web ou faire un calcul. Chaque outil est désactivé par défaut : n\'activez que ceux que vous voulez. Les outils ne fonctionnent qu\'avec les modèles qui les prennent en charge (repérez le badge en forme de clé).</string>
     <string name="tools_params_sheet_subtitle">Le modèle peut les utiliser pendant une réponse</string>
@@ -390,7 +384,6 @@
     <string name="branch_title_numbered">%1$s (branche %2$d)</string>
     <string name="branch_created">Suite dans un nouveau chat</string>
     <string name="appearance">Apparence</string>
-    <string name="appearance_subtitle">Thème et couleurs de la ligne d\'état</string>
     <string name="appearance_theme">Thème</string>
     <string name="appearance_theme_system">Paramètre du système</string>
     <string name="appearance_theme_light">Clair</string>
@@ -406,9 +399,7 @@
     <string name="tool_steps_title">Étapes d\'outils</string>
     <string name="tool_steps_desc">Nombre maximal d\'utilisations d\'outils dans une réponse avant que le modèle doive répondre</string>
     <string name="remote_servers">Serveurs distants</string>
-    <string name="remote_servers_subtitle">Modèles sur un ordinateur de votre réseau</string>
     <string name="testing">Tests</string>
-    <string name="testing_subtitle">Lancez des tests d’outils, de discussion et de vitesse sur un modèle et exportez les résultats</string>
     <string name="remote_help">Utilisez des modèles qui tournent dans LM Studio, Ollama ou llama-server sur un autre ordinateur. Sur cet ordinateur, autorisez les connexions depuis le réseau local.</string>
     <string name="remote_saved">Serveurs</string>
     <string name="remote_add">Ajouter un serveur</string>

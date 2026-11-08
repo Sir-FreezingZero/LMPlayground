@@ -63,7 +63,6 @@
     <string name="settings">设置</string>
     <string name="back">返回</string>
     <string name="version">版本 %s</string>
-    <string name="models_subtitle">下载和管理模型</string>
     <string name="privacy_policy">隐私政策</string>
     <string name="privacy_policy_effective_date">生效日期：2026年6月2日</string>
     <string name="privacy_policy_intro">欢迎使用 LM Playground！我致力于维护每一位用户的信任。本隐私政策说明了本应用收集和不收集哪些信息、您的对话如何留在您的设备上，以及在哪些少数情况下（例如可选的网络工具）信息会离开您的设备，让您始终清楚会发生什么。</string>
@@ -84,7 +83,6 @@
     <string name="privacy_policy_s7_body">如果您对我的隐私政策有任何疑问或建议，请随时与我联系。</string>
     <string name="send_feedback">发送反馈</string>
     <string name="faq">常见问题</string>
-    <string name="faq_subtitle">常见问题解答</string>
     <string name="faq_q1">什么是 LM Playground？</string>
     <string name="faq_a1">LM Playground 可让您直接在 Android 设备上运行大语言模型。所有处理均在本地完成，无需云服务器。</string>
     <string name="faq_q2">支持哪些模型？</string>
@@ -134,7 +132,6 @@
     <string name="cancel">取消</string>
     <string name="low_ram_warning_title">模型可能不稳定</string>
     <string name="low_ram_warning_message">模型大约需要 %1$s RAM，但此设备总共只有 %2$s。可能会内存不足并崩溃。如果发生这种情况，请在 设置 → 高级 中关闭“启用重打包”，以低内存模式加载它。</string>
-    <string name="advanced_subtitle">内存与性能选项</string>
     <string name="enable_repack_title">启用重打包</string>
     <string name="enable_repack_desc">将模型权重重打包到 RAM 中，以加快响应速度。相比内存映射方式加载，会占用多得多的内存。如果大型模型加载时内存不足，请关闭此选项。</string>
     <string name="load_anyway">仍然加载</string>
@@ -195,7 +192,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">系统提示词</string>
-    <string name="system_prompts_subtitle">适用于任意模型的可复用指令</string>
     <string name="system_prompt_current">当前系统提示词</string>
     <string name="save">保存</string>
     <string name="add">添加</string>
@@ -275,7 +271,6 @@
 
     <!-- Sound and Haptic -->
     <string name="sound_and_haptic">声音与触感</string>
-    <string name="sound_and_haptic_subtitle">完成提示音和输入触感反馈</string>
     <string name="sound_on_completion_title">生成完成时播放提示音</string>
     <string name="sound_on_completion_desc">当应用在后台运行时，模型完成回复后会播放一声短促的提示音。</string>
     <string name="haptic_on_generation_title">生成时的触感反馈</string>
@@ -283,7 +278,6 @@
 
     <!-- Tools -->
     <string name="tools">工具</string>
-    <string name="tools_subtitle">让有能力的模型执行操作</string>
     <string name="tools_section_intro">工具让有能力的模型在回复过程中执行操作，例如搜索网络或进行计算。每个工具默认关闭 — 只需开启你想要的工具。工具仅适用于支持它们的模型（请留意锤子徽标）。</string>
     <string name="tools_example_label">示例：%1$s</string>
     <string name="tools_params_sheet_subtitle">模型可在回复时调用这些工具</string>
@@ -388,7 +382,6 @@
     <string name="branch_title_numbered">%1$s（分支 %2$d）</string>
     <string name="branch_created">已在新对话中继续</string>
     <string name="appearance">外观</string>
-    <string name="appearance_subtitle">主题和状态线颜色</string>
     <string name="appearance_theme">主题</string>
     <string name="appearance_theme_system">跟随系统</string>
     <string name="appearance_theme_light">浅色</string>
@@ -404,9 +397,7 @@
     <string name="tool_steps_title">工具步数</string>
     <string name="tool_steps_desc">模型必须作答前，单次回复中最多可使用工具的次数</string>
     <string name="remote_servers">远程服务器</string>
-    <string name="remote_servers_subtitle">你网络中某台电脑上的模型</string>
     <string name="testing">测试</string>
-    <string name="testing_subtitle">在模型上运行工具、聊天和速度测试，并导出结果</string>
     <string name="remote_help">使用另一台电脑上 LM Studio、Ollama 或 llama-server 中运行的模型。请在那台电脑上允许来自局域网的连接。</string>
     <string name="remote_saved">服务器</string>
     <string name="remote_add">添加服务器</string>

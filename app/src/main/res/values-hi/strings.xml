@@ -63,7 +63,6 @@
     <string name="settings">\u0938\u0947\u091F\u093F\u0902\u0917\u094D\u0938</string>
     <string name="back">\u0935\u093E\u092A\u0938</string>
     <string name="version">\u0938\u0902\u0938\u094D\u0915\u0930\u0923 %s</string>
-    <string name="models_subtitle">\u092E\u0949\u0921\u0932 \u0921\u093E\u0909\u0928\u0932\u094B\u0921 \u0914\u0930 \u092A\u094D\u0930\u092C\u0902\u0927\u093F\u0924 \u0915\u0930\u0947\u0902</string>
     <string name="privacy_policy">\u0917\u094B\u092A\u0928\u0940\u092F\u0924\u093E \u0928\u0940\u0924\u093F</string>
     <string name="privacy_policy_effective_date">\u092A\u094D\u0930\u092D\u093E\u0935\u0940 \u0924\u093F\u0925\u093F: 2 \u091C\u0942\u0928 2026</string>
     <string name="privacy_policy_intro">LM Playground \u092E\u0947\u0902 \u0906\u092A\u0915\u093E \u0938\u094D\u0935\u093E\u0917\u0924 \u0939\u0948! \u092E\u0948\u0902 \u0905\u092A\u0928\u0947 \u0910\u092A \u0915\u093E \u0909\u092A\u092F\u094B\u0917 \u0915\u0930\u0928\u0947 \u0935\u093E\u0932\u0947 \u0939\u0930 \u0935\u094D\u092F\u0915\u094D\u0924\u093F \u0915\u093E \u0935\u093F\u0936\u094D\u0935\u093E\u0938 \u0914\u0930 \u092D\u0930\u094B\u0938\u093E \u092C\u0928\u093E\u090F \u0930\u0916\u0928\u0947 \u0915\u0947 \u0932\u093F\u090F \u092A\u094D\u0930\u0924\u093F\u092C\u0926\u094D\u0927 \u0939\u0942\u0902\u0964 \u092F\u0939 \u0917\u094B\u092A\u0928\u0940\u092F\u0924\u093E \u0928\u0940\u0924\u093F \u092C\u0924\u093E\u0924\u0940 \u0939\u0948 \u0915\u093F \u0910\u092A \u0915\u094D\u092F\u093E \u090F\u0915\u0924\u094D\u0930 \u0915\u0930\u0924\u093E \u0939\u0948 \u0914\u0930 \u0915\u094D\u092F\u093E \u0928\u0939\u0940\u0902, \u0906\u092A\u0915\u0940 \u092C\u093E\u0924\u091A\u0940\u0924 \u0915\u0948\u0938\u0947 \u0906\u092A\u0915\u0947 \u0921\u093F\u0935\u093E\u0907\u0938 \u092A\u0930 \u0939\u0940 \u0930\u0939\u0924\u0940 \u0939\u0948, \u0914\u0930 \u0935\u0947 \u0915\u0941\u091B \u0938\u0940\u092E\u093F\u0924 \u0938\u094D\u0925\u093F\u0924\u093F\u092F\u093E\u0901 \u2014 \u091C\u0948\u0938\u0947 \u0935\u0948\u0915\u0932\u094D\u092A\u093F\u0915 \u0935\u0947\u092C \u091F\u0942\u0932 \u2014 \u091C\u093F\u0928\u092E\u0947\u0902 \u091C\u093E\u0928\u0915\u093E\u0930\u0940 \u0906\u092A\u0915\u0947 \u0921\u093F\u0935\u093E\u0907\u0938 \u0938\u0947 \u092C\u093E\u0939\u0930 \u091C\u093E\u0924\u0940 \u0939\u0948, \u0924\u093E\u0915\u093F \u0906\u092A\u0915\u094B \u0939\u092E\u0947\u0936\u093E \u092A\u0924\u093E \u0930\u0939\u0947 \u0915\u093F \u0915\u094D\u092F\u093E \u0905\u092A\u0947\u0915\u094D\u0937\u093F\u0924 \u0939\u0948\u0964</string>
@@ -84,7 +83,6 @@
     <string name="privacy_policy_s7_body">\u092F\u0926\u093F \u0906\u092A\u0915\u0947 \u092E\u0947\u0930\u0940 \u0917\u094B\u092A\u0928\u0940\u092F\u0924\u093E \u0928\u0940\u0924\u093F \u0915\u0947 \u092C\u093E\u0930\u0947 \u092E\u0947\u0902 \u0915\u094B\u0908 \u092A\u094D\u0930\u0936\u094D\u0928 \u092F\u093E \u0938\u0941\u091D\u093E\u0935 \u0939\u0948\u0902, \u0924\u094B \u092E\u0941\u091D\u0938\u0947 \u0938\u0902\u092A\u0930\u094D\u0915 \u0915\u0930\u0928\u0947 \u092E\u0947\u0902 \u0938\u0902\u0915\u094B\u091A \u0928 \u0915\u0930\u0947\u0902\u0964</string>
     <string name="send_feedback">\u092A\u094D\u0930\u0924\u093F\u0915\u094D\u0930\u093F\u092F\u093E \u092D\u0947\u091C\u0947\u0902</string>
     <string name="faq">\u0905\u0915\u094D\u0938\u0930 \u092A\u0942\u091B\u0947 \u091C\u093E\u0928\u0947 \u0935\u093E\u0932\u0947 \u092A\u094D\u0930\u0936\u094D\u0928</string>
-    <string name="faq_subtitle">\u0905\u0915\u094D\u0938\u0930 \u092A\u0942\u091B\u0947 \u091C\u093E\u0928\u0947 \u0935\u093E\u0932\u0947 \u092A\u094D\u0930\u0936\u094D\u0928</string>
     <string name="faq_q1">LM Playground \u0915\u094D\u092F\u093E \u0939\u0948?</string>
     <string name="faq_a1">LM Playground \u0906\u092A\u0915\u094B \u0938\u0940\u0927\u0947 \u0905\u092A\u0928\u0947 Android \u0921\u093F\u0935\u093E\u0907\u0938 \u092A\u0930 \u092C\u0921\u093C\u0947 \u092D\u093E\u0937\u093E \u092E\u0949\u0921\u0932 \u091A\u0932\u093E\u0928\u0947 \u0926\u0947\u0924\u093E \u0939\u0948\u0964 \u0938\u092D\u0940 \u092A\u094D\u0930\u094B\u0938\u0947\u0938\u093F\u0902\u0917 \u0938\u094D\u0925\u093E\u0928\u0940\u092F \u0930\u0942\u092A \u0938\u0947 \u0939\u094B\u0924\u0940 \u0939\u0948 \u2013 \u0915\u094D\u0932\u093E\u0909\u0921 \u0938\u0930\u094D\u0935\u0930 \u0915\u0940 \u0906\u0935\u0936\u094D\u092F\u0915\u0924\u093E \u0928\u0939\u0940\u0902 \u0939\u0948\u0964</string>
     <string name="faq_q2">\u0915\u094C\u0928 \u0938\u0947 \u092E\u0949\u0921\u0932 \u0938\u092E\u0930\u094D\u0925\u093F\u0924 \u0939\u0948\u0902?</string>
@@ -134,7 +132,6 @@
     <string name="cancel">\u0930\u0926\u094D\u0926 \u0915\u0930\u0947\u0902</string>
     <string name="low_ram_warning_title">मॉडल अस्थिर हो सकता है</string>
     <string name="low_ram_warning_message">मॉडल को लगभग %1$s RAM चाहिए, लेकिन इस डिवाइस में कुल %2$s ही है। इसकी मेमोरी खत्म हो सकती है और यह क्रैश हो सकता है। अगर ऐसा हो, तो इसे कम-मेमोरी मोड में लोड करने के लिए सेटिंग्स → उन्नत में रीपैक सक्षम करें बंद करें।</string>
-    <string name="advanced_subtitle">मेमोरी और प्रदर्शन विकल्प</string>
     <string name="enable_repack_title">रीपैक सक्षम करें</string>
     <string name="enable_repack_desc">तेज़ प्रतिक्रियाओं के लिए मॉडल वज़न को RAM में रीपैक करता है। मेमोरी-मैप्ड रूप में लोड करने की तुलना में बहुत अधिक मेमोरी का उपयोग करता है। अगर लोड होते समय किसी बड़े मॉडल की मेमोरी खत्म हो जाए, तो इसे बंद कर दें।</string>
     <string name="load_anyway">\u092B\u093F\u0930 \u092D\u0940 \u0932\u094B\u0921 \u0915\u0930\u0947\u0902</string>
@@ -195,7 +192,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">\u0938\u093F\u0938\u094D\u091F\u092E \u092A\u094D\u0930\u0949\u092E\u094D\u092A\u094D\u091F</string>
-    <string name="system_prompts_subtitle">\u0915\u093F\u0938\u0940 \u092D\u0940 \u092E\u0949\u0921\u0932 \u0915\u0947 \u0932\u093F\u090F \u092A\u0941\u0928: \u0909\u092A\u092F\u094B\u0917 \u092F\u094B\u0917\u094D\u092F \u0928\u093F\u0930\u094D\u0926\u0947\u0936</string>
     <string name="system_prompt_current">\u0935\u0930\u094D\u0924\u092E\u093E\u0928 \u0938\u093F\u0938\u094D\u091F\u092E \u092A\u094D\u0930\u0949\u092E\u094D\u092A\u094D\u091F</string>
     <string name="save">\u0938\u0939\u0947\u091C\u0947\u0902</string>
     <string name="add">\u091C\u094B\u0921\u093C\u0947\u0902</string>
@@ -289,7 +285,6 @@
 
     <!-- Sound and haptic -->
     <string name="sound_and_haptic">ध्वनि और हैप्टिक</string>
-    <string name="sound_and_haptic_subtitle">पूरा होने पर ध्वनि और टाइपिंग के दौरान हैप्टिक</string>
     <string name="sound_on_completion_title">जनरेशन पूरा होने पर ध्वनि बजाएँ</string>
     <string name="sound_on_completion_desc">जब ऐप बैकग्राउंड में हो और मॉडल जवाब पूरा करे, तो एक छोटी ध्वनि बजती है।</string>
     <string name="haptic_on_generation_title">जनरेशन पर हैप्टिक फ़ीडबैक</string>
@@ -297,7 +292,6 @@
 
     <!-- Tools -->
     <string name="tools">टूल</string>
-    <string name="tools_subtitle">सक्षम मॉडलों को कार्रवाई करने दें</string>
     <string name="set_up_tools">टूल सेट अप करें</string>
     <string name="tools_section_intro">टूल सक्षम मॉडलों को जवाब के दौरान कार्रवाई करने देते हैं, जैसे वेब पर खोजना या कोई गणना करना। हर टूल डिफ़ॉल्ट रूप से बंद है — केवल वही चालू करें जो आप चाहते हैं। टूल केवल उन्हीं मॉडलों के साथ काम करते हैं जो इन्हें सपोर्ट करते हैं (हैमर बैज देखें)।</string>
     <string name="tools_params_sheet_subtitle">मॉडल जवाब के दौरान इन्हें कॉल कर सकता है</string>
@@ -393,7 +387,6 @@
     <string name="branch_title_numbered">%1$s (शाखा %2$d)</string>
     <string name="branch_created">नई चैट में जारी है</string>
     <string name="appearance">दिखावट</string>
-    <string name="appearance_subtitle">थीम और स्टेटस लाइन के रंग</string>
     <string name="appearance_theme">थीम</string>
     <string name="appearance_theme_system">सिस्टम डिफ़ॉल्ट</string>
     <string name="appearance_theme_light">लाइट</string>
@@ -409,9 +402,7 @@
     <string name="tool_steps_title">टूल चरण</string>
     <string name="tool_steps_desc">मॉडल को जवाब देने से पहले एक उत्तर में टूल के अधिकतम उपयोग</string>
     <string name="remote_servers">रिमोट सर्वर</string>
-    <string name="remote_servers_subtitle">आपके नेटवर्क के किसी कंप्यूटर पर मॉडल</string>
     <string name="testing">परीक्षण</string>
-    <string name="testing_subtitle">किसी मॉडल पर टूल, चैट और गति के परीक्षण चलाएँ और नतीजे निर्यात करें</string>
     <string name="remote_help">किसी दूसरे कंप्यूटर पर LM Studio, Ollama या llama-server में चल रहे मॉडल इस्तेमाल करें। उस कंप्यूटर पर लोकल नेटवर्क से कनेक्शन की अनुमति दें।</string>
     <string name="remote_saved">सर्वर</string>
     <string name="remote_add">सर्वर जोड़ें</string>

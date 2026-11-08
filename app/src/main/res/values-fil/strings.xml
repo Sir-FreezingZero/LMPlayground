@@ -74,7 +74,6 @@
     <string name="settings">Mga setting</string>
     <string name="back">Bumalik</string>
     <string name="version">Bersyon %s</string>
-    <string name="models_subtitle">Mag-download at pamahalaan ang mga modelo</string>
     <string name="privacy_policy">Patakaran sa Privacy</string>
     <string name="privacy_policy_effective_date">Petsa ng Pagkabisa: Hunyo 2, 2026</string>
     <string name="privacy_policy_intro">Maligayang pagdating sa LM Playground! Nakatuon ako sa pagpapanatili ng tiwala at kumpiyansa ng lahat ng gumagamit ng aking app. Ipinapaliwanag ng Patakaran sa Privacy na ito kung ano ang kinokolekta at hindi kinokolekta ng app, kung paano nananatili sa iyong device ang iyong mga usapan, at ang ilang kaso — tulad ng mga opsyonal na web tool — kung saan umaalis ang impormasyon mula sa iyong device, upang lagi mong alam kung ano ang aasahan.</string>
@@ -96,7 +95,6 @@
     <string name="privacy_policy_contact_email" translatable="false">andriydruk@gmail.com</string>
     <string name="send_feedback">Magpadala ng Feedback</string>
     <string name="faq">FAQ</string>
-    <string name="faq_subtitle">Mga madalas itanong</string>
 
     <!-- FAQ -->
     <string name="faq_q1">Ano ang LM Playground?</string>
@@ -150,7 +148,6 @@
     <string name="cancel">Kanselahin</string>
     <string name="low_ram_warning_title">Maaaring hindi stable ang modelo</string>
     <string name="low_ram_warning_message">Kailangan ng modelo ng ~%1$s na RAM ngunit ang device na ito ay may %2$s lang sa kabuuan. Maaari itong maubusan ng memory at mag-crash. Kung mangyari iyon, i-off ang Enable repack sa Mga setting → Advanced upang i-load ito sa low-memory mode.</string>
-    <string name="advanced_subtitle">Mga opsyon sa memory at performance</string>
     <string name="enable_repack_title">Enable repack</string>
     <string name="enable_repack_desc">Muling ini-pack ang mga timbang ng modelo sa RAM para sa mas mabibilis na tugon. Gumagamit ng mas maraming memory kaysa sa pag-load ng mga ito nang memory-mapped. I-off ito kung nauubusan ng memory ang isang malaking modelo habang naglo-load.</string>
     <string name="load_anyway">I-load pa rin</string>
@@ -177,7 +174,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">Mga System Prompt</string>
-    <string name="system_prompts_subtitle">Magagamit muli na mga tagubilin para sa anumang modelo</string>
     <string name="system_prompt_current">Kasalukuyang system prompt</string>
     <string name="save">I-save</string>
     <string name="add">Idagdag</string>
@@ -315,7 +311,6 @@
     <string name="haptic_on_generation_title">Haptic feedback sa generation</string>
     <string name="haptic_on_generation_desc">Banayad na tick habang dumarating ang bawat bahagi ng tugon.</string>
     <string name="sound_and_haptic">Tunog at Haptic</string>
-    <string name="sound_and_haptic_subtitle">Tunog kapag tapos at haptic sa pag-type</string>
     <string name="sound_on_completion_title">Mag-play ng tunog kapag tapos ang generation</string>
     <string name="sound_on_completion_desc">Nagpapatugtog ng maikling chime kapag natapos ng model ang tugon habang nasa background ang app.</string>
     <string name="response_copied">Kinopya sa clipboard</string>
@@ -325,7 +320,6 @@
     <string name="inference_notification_tokens_line">%1$s · %2$s</string>
     <string name="set_up_tools">I-set up ang mga tool</string>
     <string name="tools">Mga Tool</string>
-    <string name="tools_subtitle">Hayaang magsagawa ng aksyon ang mga magagaling na model</string>
     <string name="tools_section_intro">Pinapayagan ng mga tool ang magagaling na model na magsagawa ng mga aksyon habang tumutugon, tulad ng paghahanap sa web o pagkukwenta. Naka-off bilang default ang bawat tool — i-on lang ang mga gusto mo. Gumagana lang ang mga tool sa mga model na sumusuporta sa mga ito (hanapin ang hammer badge).</string>
     <string name="tools_params_sheet_subtitle">Maaaring tawagin ng model ang mga ito habang tumutugon</string>
     <string name="tools_example_label">Halimbawa: %1$s</string>
@@ -422,7 +416,6 @@
     <string name="branch_title_numbered">%1$s (branch %2$d)</string>
     <string name="branch_created">Itinutuloy sa bagong chat</string>
     <string name="appearance">Hitsura</string>
-    <string name="appearance_subtitle">Tema at mga kulay ng status line</string>
     <string name="appearance_theme">Tema</string>
     <string name="appearance_theme_system">Default ng system</string>
     <string name="appearance_theme_light">Maliwanag</string>
@@ -438,9 +431,7 @@
     <string name="tool_steps_title">Mga hakbang ng tool</string>
     <string name="tool_steps_desc">Pinakamaraming paggamit ng tool sa isang sagot bago kailangang sumagot ng model</string>
     <string name="remote_servers">Mga remote server</string>
-    <string name="remote_servers_subtitle">Mga model sa isang computer sa iyong network</string>
     <string name="testing">Pagsubok</string>
-    <string name="testing_subtitle">Magpatakbo ng mga pagsubok sa tool, chat at bilis sa isang modelo at i-export ang mga resulta</string>
     <string name="remote_help">Gumamit ng mga model na tumatakbo sa LM Studio, Ollama o llama-server sa ibang computer. Sa computer na iyon, payagan ang mga koneksyon mula sa lokal na network.</string>
     <string name="remote_saved">Mga server</string>
     <string name="remote_add">Magdagdag ng server</string>

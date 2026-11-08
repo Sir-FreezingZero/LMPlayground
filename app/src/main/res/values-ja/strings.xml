@@ -63,7 +63,6 @@
     <string name="settings">設定</string>
     <string name="back">戻る</string>
     <string name="version">バージョン %s</string>
-    <string name="models_subtitle">モデルのダウンロードと管理</string>
     <string name="privacy_policy">プライバシーポリシー</string>
     <string name="privacy_policy_effective_date">発効日：2026年6月2日</string>
     <string name="privacy_policy_intro">LM Playground へようこそ！私はこのアプリを使うすべての方の信頼を維持することに尽力しています。このプライバシーポリシーでは、アプリが何を収集し何を収集しないのか、あなたの会話がどのようにデバイス上にとどまるのか、そして任意のウェブツールなど、情報がデバイスから外部に出るわずかなケースについて説明し、何が起こるかを常に把握できるようにします。</string>
@@ -84,7 +83,6 @@
     <string name="privacy_policy_s7_body">プライバシーポリシーに関するご質問やご提案がございましたら、お気軽にお問い合わせください。</string>
     <string name="send_feedback">フィードバックを送信</string>
     <string name="faq">よくある質問</string>
-    <string name="faq_subtitle">よくある質問と回答</string>
     <string name="faq_q1">LM Playground とは何ですか？</string>
     <string name="faq_a1">LM Playground は、Android デバイス上で大規模言語モデルを直接実行できるアプリです。すべての処理はローカルで行われ、クラウドサーバーは不要です。</string>
     <string name="faq_q2">どのモデルに対応していますか？</string>
@@ -134,7 +132,6 @@
     <string name="cancel">キャンセル</string>
     <string name="low_ram_warning_title">モデルが不安定になる可能性があります</string>
     <string name="low_ram_warning_message">モデルには約 %1$s の RAM が必要ですが、このデバイスの総容量は %2$s しかありません。メモリ不足でクラッシュする可能性があります。その場合は、設定 → 詳細設定 で「再パックを有効化」をオフにして、低メモリモードで読み込んでください。</string>
-    <string name="advanced_subtitle">メモリとパフォーマンスのオプション</string>
     <string name="enable_repack_title">再パックを有効化</string>
     <string name="enable_repack_desc">モデルの重みを RAM に再パックして応答を高速化します。メモリマップで読み込む場合よりも大幅に多くのメモリを使用します。大きなモデルが読み込み中にメモリ不足になる場合はオフにしてください。</string>
     <string name="load_anyway">それでも読み込む</string>
@@ -195,7 +192,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">システムプロンプト</string>
-    <string name="system_prompts_subtitle">どのモデルでも再利用できる指示</string>
     <string name="system_prompt_current">現在のシステムプロンプト</string>
     <string name="save">保存</string>
     <string name="add">追加</string>
@@ -275,7 +271,6 @@
 
     <!-- Sound and Haptic -->
     <string name="sound_and_haptic">サウンドと触覚</string>
-    <string name="sound_and_haptic_subtitle">完了音と入力時の触覚フィードバック</string>
     <string name="sound_on_completion_title">生成完了時にサウンドを再生</string>
     <string name="sound_on_completion_desc">アプリがバックグラウンドにあるときにモデルが応答を完了すると、短いチャイムを鳴らします。</string>
     <string name="haptic_on_generation_title">生成時の触覚フィードバック</string>
@@ -283,7 +278,6 @@
 
     <!-- Tools -->
     <string name="tools">ツール</string>
-    <string name="tools_subtitle">対応モデルにアクションを実行させる</string>
     <string name="tools_section_intro">ツールを使うと、対応モデルが応答中にウェブ検索や計算などのアクションを実行できます。各ツールはデフォルトでオフになっています — 使いたいものだけをオンにしてください。ツールは対応モデルでのみ動作します（ハンマーのバッジを目印にしてください）。</string>
     <string name="tools_example_label">例：%1$s</string>
     <string name="tools_params_sheet_subtitle">モデルは応答中にこれらを呼び出せます</string>
@@ -388,7 +382,6 @@
     <string name="branch_title_numbered">%1$s（分岐 %2$d）</string>
     <string name="branch_created">新しいチャットで続けています</string>
     <string name="appearance">外観</string>
-    <string name="appearance_subtitle">テーマとステータスラインの色</string>
     <string name="appearance_theme">テーマ</string>
     <string name="appearance_theme_system">システムのデフォルト</string>
     <string name="appearance_theme_light">ライト</string>
@@ -404,9 +397,7 @@
     <string name="tool_steps_title">ツールのステップ数</string>
     <string name="tool_steps_desc">モデルが回答する前に1回の返信で使えるツールの最大回数</string>
     <string name="remote_servers">リモートサーバー</string>
-    <string name="remote_servers_subtitle">ネットワーク上のコンピューターのモデル</string>
     <string name="testing">テスト</string>
-    <string name="testing_subtitle">モデルでツール・チャット・速度のテストを実行し、結果を書き出します</string>
     <string name="remote_help">別のコンピューターの LM Studio、Ollama、llama-server で動くモデルを使います。そのコンピューターでローカルネットワークからの接続を許可してください。</string>
     <string name="remote_saved">サーバー</string>
     <string name="remote_add">サーバーを追加</string>

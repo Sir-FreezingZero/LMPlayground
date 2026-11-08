@@ -74,7 +74,6 @@
     <string name="settings">Indstillinger</string>
     <string name="back">Tilbage</string>
     <string name="version">Version %s</string>
-    <string name="models_subtitle">Download og administrer modeller</string>
     <string name="privacy_policy">Privatlivspolitik</string>
     <string name="privacy_policy_effective_date">Ikrafttrædelsesdato: 2. juni 2026</string>
     <string name="privacy_policy_intro">Velkommen til LM Playground! Jeg er forpligtet til at opretholde tilliden og fortroligheden hos alle brugere af min app. Denne privatlivspolitik forklarer, hvad appen indsamler og ikke indsamler, hvordan dine samtaler bliver på din enhed, og de få tilfælde — såsom de valgfrie webværktøjer — hvor oplysninger forlader din enhed, så du altid ved, hvad du kan forvente.</string>
@@ -96,7 +95,6 @@
     <string name="privacy_policy_contact_email" translatable="false">andriydruk@gmail.com</string>
     <string name="send_feedback">Send feedback</string>
     <string name="faq">FAQ</string>
-    <string name="faq_subtitle">Ofte stillede spørgsmål</string>
 
     <!-- FAQ -->
     <string name="faq_q1">Hvad er LM Playground?</string>
@@ -151,7 +149,6 @@
     <string name="cancel">Annuller</string>
     <string name="low_ram_warning_title">Modellen kan være ustabil</string>
     <string name="low_ram_warning_message">Modellen kræver ~%1$s RAM, men denne enhed har kun %2$s i alt. Den løber muligvis tør for hukommelse og går ned. Hvis det sker, så slå Aktiver ompakning fra under Indstillinger → Avanceret for at indlæse den i en tilstand med lav hukommelse.</string>
-    <string name="advanced_subtitle">Indstillinger for hukommelse og ydeevne</string>
     <string name="enable_repack_title">Aktiver ompakning</string>
     <string name="enable_repack_desc">Pakker modelvægtene om i RAM for hurtigere svar. Bruger meget mere hukommelse end at indlæse dem memory-mapped. Slå fra, hvis en stor model løber tør for hukommelse under indlæsning.</string>
     <string name="load_anyway">Indlæs alligevel</string>
@@ -178,7 +175,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">Systemprompter</string>
-    <string name="system_prompts_subtitle">Genbrugelige instruktioner til enhver model</string>
     <string name="system_prompt_current">Aktuel systemprompt</string>
     <string name="save">Gem</string>
     <string name="add">Tilføj</string>
@@ -313,7 +309,6 @@
     <!-- Tools -->
     <string name="set_up_tools">Konfigurer værktøjer</string>
     <string name="tools">Værktøjer</string>
-    <string name="tools_subtitle">Lad dygtige modeller udføre handlinger</string>
     <string name="tools_section_intro">Med værktøjer kan dygtige modeller udføre handlinger undervejs i et svar, som at søge på nettet eller foretage en beregning. Hvert værktøj er slået fra som standard – slå kun dem til, du vil bruge. Værktøjer fungerer kun med modeller, der understøtter dem (se efter hammersymbolet).</string>
     <string name="tools_example_label">Eksempel: %1$s</string>
     <string name="tools_params_sheet_subtitle">Modellen kan kalde disse undervejs i et svar</string>
@@ -350,7 +345,6 @@
 
     <!-- Sound and Haptic -->
     <string name="sound_and_haptic">Lyd og haptik</string>
-    <string name="sound_and_haptic_subtitle">Fuldførelseslyd og haptik ved indtastning</string>
     <string name="sound_on_completion_title">Afspil lyd, når genereringen er færdig</string>
     <string name="sound_on_completion_desc">Afspiller en kort tone, når modellen fuldfører et svar, mens appen kører i baggrunden.</string>
     <string name="haptic_on_generation_title">Haptisk feedback ved generering</string>
@@ -430,7 +424,6 @@
     <string name="branch_title_numbered">%1$s (forgrening %2$d)</string>
     <string name="branch_created">Fortsætter i en ny chat</string>
     <string name="appearance">Udseende</string>
-    <string name="appearance_subtitle">Tema og farver for statuslinjen</string>
     <string name="appearance_theme">Tema</string>
     <string name="appearance_theme_system">Systemstandard</string>
     <string name="appearance_theme_light">Lyst</string>
@@ -446,9 +439,7 @@
     <string name="tool_steps_title">Værktøjstrin</string>
     <string name="tool_steps_desc">Højst så mange værktøjskald i ét svar, før modellen skal svare</string>
     <string name="remote_servers">Fjernservere</string>
-    <string name="remote_servers_subtitle">Modeller på en computer på dit netværk</string>
     <string name="testing">Test</string>
-    <string name="testing_subtitle">Kør værktøjs-, chat- og hastighedstest på en model, og eksportér resultaterne</string>
     <string name="remote_help">Brug modeller, der kører i LM Studio, Ollama eller llama-server på en anden computer. Tillad forbindelser fra det lokale netværk på den computer.</string>
     <string name="remote_saved">Servere</string>
     <string name="remote_add">Tilføj en server</string>

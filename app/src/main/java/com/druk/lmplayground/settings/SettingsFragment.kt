@@ -46,71 +46,6 @@ import kotlinx.coroutines.withContext
 
 class SettingsFragment : Fragment() {
 
-    // Lazily created via Compose property delegate — only allocated on tablet
-    // when the user actually opens a Models/Prompts detail pane, since the
-    // ViewModel hits storage as soon as it's constructed.
-    private val storageViewModel: StorageViewModel by viewModels()
-    private val systemPromptsViewModel: SystemPromptsViewModel by viewModels()
-    private val toolsViewModel: ToolsViewModel by viewModels()
-    private val soundHapticViewModel: SoundHapticViewModel by viewModels()
-    private val advancedViewModel: AdvancedViewModel by viewModels()
-
-    // Action deferred across the notification-permission request (a download
-    // started only after the user answers the permission dialog).
-    private var pendingDownload: (() -> Unit)? = null
-
-    private val folderPickerLauncher = registerForActivityResult(
-        ActivityResultContracts.OpenDocumentTree()
-    ) { uri ->
-        uri?.let {
-            requireContext().contentResolver.takePersistableUriPermission(
-                uri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            )
-            storageViewModel.requestStorageFolderChange(uri)
-        }
-    }
-
-    private val notificationPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { _ ->
-        pendingDownload?.invoke()
-        pendingDownload = null
-    }
-
-    /** Run [action] (a download) after ensuring the notification permission has been asked for. */
-    private fun withNotificationPermission(action: () -> Unit) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            action()
-            return
-        }
-
-        val granted = ContextCompat.checkSelfPermission(
-            requireContext(), Manifest.permission.POST_NOTIFICATIONS
-        ) == PackageManager.PERMISSION_GRANTED
-
-        if (granted || shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS).not()
-            && hasAskedNotificationPermission()
-        ) {
-            action()
-        } else {
-            pendingDownload = action
-            setAskedNotificationPermission()
-            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
-    }
-
-    private fun hasAskedNotificationPermission(): Boolean {
-        return requireContext().getSharedPreferences("download_prefs", 0)
-            .getBoolean("asked_notification_permission", false)
-    }
-
-    private fun setAskedNotificationPermission() {
-        requireContext().getSharedPreferences("download_prefs", 0)
-            .edit().putBoolean("asked_notification_permission", true).apply()
-    }
-
     /**
      * Rapid double-taps on a settings row can fire the second click after the
      * first has already navigated away from nav_settings, at which point the
@@ -174,262 +109,49 @@ class SettingsFragment : Fragment() {
         layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
         setContent {
             PlaygroundTheme {
-                val configuration = LocalConfiguration.current
-                // Mirror the SettingsScreen.twoPane threshold so we only build
-                // the inline detail content (and instantiate ViewModels) when
-                // it'll actually render.
-                val twoPane = configuration.screenWidthDp >= 840
-
-                // Foldable book posture: line the master/detail boundary up
-                // with the vertical hinge. Falls back to 360dp on flat
-                // devices / horizontal hinges / folded outer display.
-                val hingeWidth = rememberHingeWidthDp(requireActivity())
-                // 320dp matches the chat sidebar default so both screens have
-                // the same pane width on tablets without a hinge.
-                val masterWidth = if (hingeWidth != androidx.compose.ui.unit.Dp.Unspecified) {
-                    maxOf(320.dp, hingeWidth)
-                } else {
-                    320.dp
-                }
-
-                // Deep link from "What's New": on phone, forward straight to the
-                // Tools screen; on tablet, the Tools detail pane opens via
-                // initialDetailKey below. Consume the argument so returning to
-                // Settings doesn't re-trigger the jump.
+                // Deep link from "What's New": straight to the Tools page.
+                // Consume the argument so returning here doesn't jump again.
                 val openDetail = arguments?.getString(ARG_OPEN_DETAIL)
                 LaunchedEffect(Unit) {
                     if (openDetail == DETAIL_TOOLS) {
                         arguments?.remove(ARG_OPEN_DETAIL)
-                        if (!twoPane) {
-                            findNavController().navigateFromSettings(R.id.action_settings_to_tools)
-                        }
+                        findNavController().navigateFromSettings(R.id.action_settings_to_tools)
                     }
                 }
-
-                SettingsScreen(
-                    onBackClick = { findNavController().popBackStack() },
-                    onModelsClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_models)
-                    },
-                    onSystemPromptsClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_system_prompts)
-                    },
-                    onMemoryClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_memory)
-                    },
-                    onGeneralClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_general)
-                    },
-                    onAppearanceClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_appearance)
-                    },
-                    onRemoteServersClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_remote_servers)
-                    },
-                    onTestingClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_testing)
-                    },
-                    onModelSettingsClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_model_settings)
-                    },
-                    onPhoneServerClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_phone_server)
-                    },
-                    onLogsClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_logs)
-                    },
-                    onLanguageClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_language)
-                    },
-                    onPrivacyPolicyClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_privacy_policy)
-                    },
-                    onFaqClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_faq)
-                    },
-                    onToolsClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_tools)
-                    },
-                    onSoundHapticClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_sound_haptic)
-                    },
-                    onAdvancedClick = {
-                        findNavController().navigateFromSettings(R.id.action_settings_to_advanced)
-                    },
-                    onSendFeedbackClick = {
-                        val email = getString(R.string.privacy_policy_contact_email)
-                        val intent = Intent(Intent.ACTION_SENDTO).apply {
-                            data = Uri.parse("mailto:$email")
-                            putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
-                        }
-                        startActivity(intent)
-                    },
-                    modelsDetailContent = if (twoPane) {
-                        { ModelsDetailPane() }
-                    } else null,
-                    promptsDetailContent = if (twoPane) {
-                        { PromptsDetailPane() }
-                    } else null,
-                    languageDetailContent = if (twoPane) {
-                        { LanguageContent() }
-                    } else null,
-                    toolsDetailContent = if (twoPane) {
-                        { ToolsDetailPane() }
-                    } else null,
-                    soundHapticDetailContent = if (twoPane) {
-                        { SoundHapticDetailPane() }
-                    } else null,
-                    advancedDetailContent = if (twoPane) {
-                        { AdvancedDetailPane() }
-                    } else null,
-                    initialDetailKey = openDetail,
-                    masterWidth = masterWidth,
+                val nav = findNavController()
+                SettingsTab(
+                    actions = SettingsTabActions(
+                        appearance = { nav.navigateFromSettings(R.id.action_settings_to_appearance) },
+                        soundHaptic = { nav.navigateFromSettings(R.id.action_settings_to_sound_haptic) },
+                        language = { nav.navigateFromSettings(R.id.action_settings_to_language) },
+                        chatOptions = { nav.navigateFromSettings(R.id.action_settings_to_general) },
+                        systemPrompt = { nav.navigateFromSettings(R.id.action_settings_to_system_prompts) },
+                        modelSettings = { nav.navigateFromSettings(R.id.action_settings_to_model_settings) },
+                        tools = { nav.navigateFromSettings(R.id.action_settings_to_tools) },
+                        memory = { nav.navigateFromSettings(R.id.action_settings_to_memory) },
+                        remoteServers = { nav.navigateFromSettings(R.id.action_settings_to_remote_servers) },
+                        advanced = { nav.navigateFromSettings(R.id.action_settings_to_advanced) },
+                        testing = { nav.navigateFromSettings(R.id.action_settings_to_testing) },
+                        logs = { nav.navigateFromSettings(R.id.action_settings_to_logs) },
+                        faq = { nav.navigateFromSettings(R.id.action_settings_to_faq) },
+                        feedback = {
+                            val email = getString(R.string.privacy_policy_contact_email)
+                            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                                data = Uri.parse("mailto:$email")
+                                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+                            }
+                            try { startActivity(intent) } catch (_: ActivityNotFoundException) {}
+                        },
+                        privacy = { nav.navigateFromSettings(R.id.action_settings_to_privacy_policy) },
+                        // Debug builds can crash the inference process to
+                        // check the recovery flow.
+                        crashEngine = if (BuildConfig.DEBUG) {
+                            { crashInferenceEngine() }
+                        } else null,
+                    ),
                     appVersion = BuildConfig.VERSION_NAME,
-                    // Debug builds expose a button to crash the inference
-                    // process so we can verify the recovery flow without
-                    // waiting for an organic SIGSEGV.
-                    onCrashEngineClick = if (BuildConfig.DEBUG) {
-                        { crashInferenceEngine() }
-                    } else null,
                 )
             }
         }
     }
-
-    /**
-     * Embedded Models pane — same observable surface that [ModelsFragment]
-     * binds, just rendered without the Scaffold/topBar wrapper.
-     */
-    @androidx.compose.runtime.Composable
-    private fun ModelsDetailPane() {
-        val storageInfo by storageViewModel.storageInfo.observeAsState()
-        val allModels by storageViewModel.allModels.observeAsState(emptyList())
-        val embeddingModel by storageViewModel.embeddingModel.observeAsState()
-            val dictationModel by storageViewModel.dictationModel.observeAsState()
-        val downloadingProgress by storageViewModel.downloadingModels.observeAsState(emptyMap())
-        val snackbarMessage by storageViewModel.snackbarMessage.observeAsState()
-        val pendingMigration by storageViewModel.pendingMigration.observeAsState()
-        val migrationProgress by storageViewModel.migrationProgress.observeAsState()
-
-        // Refresh storage info when a download completes (mirrors the
-        // LaunchedEffect that lives in ModelsFragment).
-        val prevDownloadCount = remember { mutableIntStateOf(downloadingProgress.size) }
-        LaunchedEffect(downloadingProgress.size) {
-            if (downloadingProgress.size < prevDownloadCount.intValue) {
-                storageViewModel.loadStorageInfo()
-            }
-            prevDownloadCount.intValue = downloadingProgress.size
-        }
-        // Settings doesn't call loadStorageInfo() at fragment-create time
-        // (unlike ModelsFragment) because we don't know if Models will be
-        // opened. Trigger a fetch when this pane first composes.
-        LaunchedEffect(Unit) {
-            storageViewModel.loadStorageInfo()
-        }
-
-        val snackbarHostState = remember { SnackbarHostState() }
-        ModelsContent(
-            storageInfo = storageInfo,
-            allModels = allModels,
-            downloadingModels = downloadingProgress,
-            snackbarMessage = snackbarMessage,
-            pendingMigration = pendingMigration,
-            migrationProgress = migrationProgress,
-            deviceLanguage = storageViewModel.deviceLanguage,
-            snackbarHostState = snackbarHostState,
-            onChangeFolderClick = {
-                try {
-                    folderPickerLauncher.launch(null)
-                } catch (_: ActivityNotFoundException) {
-                    // No DocumentsUI on this device — offer the
-                    // app-private fallback folder instead.
-                    val fallbackUri = StorageDocuments.appStorageFallbackUri(requireContext())
-                    if (fallbackUri != null) {
-                        Toast.makeText(
-                            requireContext(),
-                            R.string.storage_fallback_used,
-                            Toast.LENGTH_LONG,
-                        ).show()
-                        storageViewModel.requestStorageFolderChange(fallbackUri)
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            R.string.folder_picker_unavailable,
-                            Toast.LENGTH_LONG,
-                        ).show()
-                    }
-                }
-            },
-            onDeleteModel = { model -> storageViewModel.deleteModel(model) },
-            onDownloadModel = { model, includeMmproj ->
-                withNotificationPermission { storageViewModel.downloadModel(model, includeMmproj) }
-            },
-            onDownloadMmproj = { model ->
-                withNotificationPermission { storageViewModel.downloadMmprojOnly(model) }
-            },
-            onCancelDownload = { model -> storageViewModel.cancelDownload(model) },
-            onSnackbarDismiss = { storageViewModel.clearSnackbar() },
-            onConfirmMigration = { storageViewModel.confirmMigration() },
-            onSkipMigration = { storageViewModel.skipMigration() },
-            onCancelMigration = { storageViewModel.cancelMigration() },
-            embeddingModel = embeddingModel,
-            dictationModel = dictationModel,
-        )
-    }
-
-    /**
-     * Embedded Tools pane — per-tool global default toggles, rendered without
-     * the Scaffold/topBar wrapper that [ToolsFragment] adds on phone.
-     */
-    @androidx.compose.runtime.Composable
-    private fun ToolsDetailPane() {
-        val enabled by toolsViewModel.enabled.collectAsStateWithLifecycle()
-        ToolsContent(
-            tools = toolsViewModel.tools,
-            enabledStates = enabled,
-            onToolEnabledChanged = { name, value -> toolsViewModel.setEnabled(name, value) },
-        )
-    }
-
-    /**
-     * Embedded Sound and Haptic pane — completion-sound + generation-haptic
-     * toggles, rendered without the Scaffold/topBar that [SoundHapticFragment]
-     * adds on phone.
-     */
-    @androidx.compose.runtime.Composable
-    private fun SoundHapticDetailPane() {
-        val soundEnabled by soundHapticViewModel.soundEnabled.collectAsStateWithLifecycle()
-        val hapticEnabled by soundHapticViewModel.hapticEnabled.collectAsStateWithLifecycle()
-        SoundHapticContent(
-            soundEnabled = soundEnabled,
-            hapticEnabled = hapticEnabled,
-            onSoundChanged = { soundHapticViewModel.setSoundEnabled(it) },
-            onHapticChanged = { soundHapticViewModel.setHapticEnabled(it) },
-        )
-    }
-
-    /**
-     * Embedded Advanced pane — memory/performance toggles, rendered without
-     * the Scaffold/topBar that [AdvancedFragment] adds on phone.
-     */
-    @androidx.compose.runtime.Composable
-    private fun AdvancedDetailPane() {
-        val repackEnabled by advancedViewModel.repackEnabled.collectAsStateWithLifecycle()
-        AdvancedContent(
-            repackEnabled = repackEnabled,
-            onRepackEnabledChanged = { advancedViewModel.setRepackEnabled(it) },
-        )
-    }
-
-    /**
-     * Embedded System Prompts pane — the default prompt box.
-     */
-    @androidx.compose.runtime.Composable
-    private fun PromptsDetailPane() {
-        SystemPromptsContent(
-            defaultPrompt = systemPromptsViewModel.defaultPrompt,
-            onDefaultPromptChange = { systemPromptsViewModel.defaultPrompt = it },
-        )
-    }
-
 }

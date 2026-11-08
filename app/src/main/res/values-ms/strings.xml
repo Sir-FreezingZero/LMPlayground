@@ -74,7 +74,6 @@
     <string name="settings">Tetapan</string>
     <string name="back">Kembali</string>
     <string name="version">Versi %s</string>
-    <string name="models_subtitle">Muat turun dan urus model</string>
     <string name="privacy_policy">Dasar Privasi</string>
     <string name="privacy_policy_effective_date">Tarikh Kuat Kuasa: 2 Jun 2026</string>
     <string name="privacy_policy_intro">Selamat datang ke LM Playground! Saya komited untuk mengekalkan kepercayaan dan keyakinan semua orang yang menggunakan aplikasi saya. Dasar Privasi ini menerangkan apa yang dikumpul dan tidak dikumpul oleh aplikasi, bagaimana perbualan anda kekal pada peranti anda, dan beberapa keadaan — seperti alat web pilihan — apabila maklumat meninggalkan peranti anda, supaya anda sentiasa tahu apa yang dijangkakan.</string>
@@ -96,7 +95,6 @@
     <string name="privacy_policy_contact_email" translatable="false">andriydruk@gmail.com</string>
     <string name="send_feedback">Hantar Maklum Balas</string>
     <string name="faq">Soalan Lazim</string>
-    <string name="faq_subtitle">Soalan yang sering ditanya</string>
 
     <!-- FAQ -->
     <string name="faq_q1">Apakah LM Playground?</string>
@@ -150,7 +148,6 @@
     <string name="cancel">Batal</string>
     <string name="low_ram_warning_title">Model mungkin tidak stabil</string>
     <string name="low_ram_warning_message">Model memerlukan ~%1$s RAM tetapi peranti ini hanya mempunyai %2$s secara keseluruhan. Ia mungkin kehabisan memori dan ranap. Jika itu berlaku, matikan Dayakan repack dalam Tetapan → Lanjutan untuk memuatkannya dalam mod memori rendah.</string>
-    <string name="advanced_subtitle">Pilihan memori dan prestasi</string>
     <string name="enable_repack_title">Dayakan repack</string>
     <string name="enable_repack_desc">Mengemas semula pemberat model ke dalam RAM untuk respons yang lebih pantas. Menggunakan memori yang jauh lebih banyak berbanding memuatkannya secara dipetakan memori. Matikan jika model besar kehabisan memori semasa dimuatkan.</string>
     <string name="load_anyway">Muatkan juga</string>
@@ -177,7 +174,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">Gesaan Sistem</string>
-    <string name="system_prompts_subtitle">Arahan boleh guna semula untuk mana-mana model</string>
     <string name="system_prompt_current">Gesaan sistem semasa</string>
     <string name="save">Simpan</string>
     <string name="add">Tambah</string>
@@ -315,7 +311,6 @@
     <string name="haptic_on_generation_title">Maklum balas haptik semasa penjanaan</string>
     <string name="haptic_on_generation_desc">Getaran halus apabila setiap bahagian respons dialirkan masuk.</string>
     <string name="sound_and_haptic">Bunyi dan Haptik</string>
-    <string name="sound_and_haptic_subtitle">Bunyi siap dan haptik menaip</string>
     <string name="sound_on_completion_title">Mainkan bunyi apabila penjanaan selesai</string>
     <string name="sound_on_completion_desc">Memainkan bunyi pendek apabila model selesai memberi respons semasa aplikasi berada di latar belakang.</string>
     <string name="response_copied">Disalin ke papan keratan</string>
@@ -325,7 +320,6 @@
     <string name="inference_notification_tokens_line">%1$s · %2$s</string>
     <string name="set_up_tools">Sediakan alat</string>
     <string name="tools">Alat</string>
-    <string name="tools_subtitle">Biar model yang berkemampuan mengambil tindakan</string>
     <string name="tools_section_intro">Alat membolehkan model yang berkemampuan mengambil tindakan semasa membalas, seperti mencari di web atau melakukan pengiraan. Setiap alat dimatikan secara lalai — hidupkan hanya yang anda mahu. Alat hanya berfungsi dengan model yang menyokongnya (cari lencana tukul).</string>
     <string name="tools_params_sheet_subtitle">Model boleh memanggil ini semasa membalas</string>
     <string name="tools_example_label">Contoh: %1$s</string>
@@ -421,7 +415,6 @@
     <string name="branch_title_numbered">%1$s (cabang %2$d)</string>
     <string name="branch_created">Meneruskan dalam sembang baharu</string>
     <string name="appearance">Penampilan</string>
-    <string name="appearance_subtitle">Tema dan warna garis status</string>
     <string name="appearance_theme">Tema</string>
     <string name="appearance_theme_system">Lalai sistem</string>
     <string name="appearance_theme_light">Cerah</string>
@@ -437,9 +430,7 @@
     <string name="tool_steps_title">Langkah alat</string>
     <string name="tool_steps_desc">Bilangan maksimum penggunaan alat dalam satu balasan sebelum model mesti menjawab</string>
     <string name="remote_servers">Pelayan jauh</string>
-    <string name="remote_servers_subtitle">Model pada komputer dalam rangkaian anda</string>
     <string name="testing">Ujian</string>
-    <string name="testing_subtitle">Jalankan ujian alat, sembang dan kelajuan pada model dan eksport keputusannya</string>
     <string name="remote_help">Gunakan model yang berjalan dalam LM Studio, Ollama atau llama-server pada komputer lain. Pada komputer itu, benarkan sambungan daripada rangkaian setempat.</string>
     <string name="remote_saved">Pelayan</string>
     <string name="remote_add">Tambah pelayan</string>

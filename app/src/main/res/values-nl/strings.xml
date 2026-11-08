@@ -75,7 +75,6 @@
     <string name="settings">Instellingen</string>
     <string name="back">Terug</string>
     <string name="version">Versie %s</string>
-    <string name="models_subtitle">Modellen downloaden en beheren</string>
     <string name="privacy_policy">Privacybeleid</string>
     <string name="privacy_policy_effective_date">Ingangsdatum: 2 juni 2026</string>
     <string name="privacy_policy_intro">Welkom bij LM Playground! Ik zet me in om het vertrouwen van alle gebruikers van mijn app te behouden. Dit privacybeleid legt uit wat de app wel en niet verzamelt, hoe je gesprekken op je apparaat blijven en in welke weinige gevallen — zoals bij de optionele webtools — informatie je apparaat verlaat, zodat je altijd weet wat je kunt verwachten.</string>
@@ -97,7 +96,6 @@
     <string name="privacy_policy_contact_email" translatable="false">andriydruk@gmail.com</string>
     <string name="send_feedback">Feedback sturen</string>
     <string name="faq">FAQ</string>
-    <string name="faq_subtitle">Veelgestelde vragen</string>
 
     <!-- FAQ -->
     <string name="faq_q1">Wat is LM Playground?</string>
@@ -152,7 +150,6 @@
     <string name="cancel">Annuleren</string>
     <string name="low_ram_warning_title">Model kan instabiel zijn</string>
     <string name="low_ram_warning_message">Het model heeft ~%1$s RAM nodig, maar dit apparaat heeft in totaal slechts %2$s. Mogelijk raakt het geheugen op en crasht de app. Als dat gebeurt, schakel dan Herverpakken inschakelen uit via Instellingen → Geavanceerd om het in een modus met weinig geheugen te laden.</string>
-    <string name="advanced_subtitle">Geheugen- en prestatieopties</string>
     <string name="enable_repack_title">Herverpakken inschakelen</string>
     <string name="enable_repack_desc">Verpakt de modelgewichten opnieuw in het RAM voor snellere antwoorden. Gebruikt veel meer geheugen dan memory-mapped laden. Schakel uit als een groot model bij het laden zonder geheugen komt te zitten.</string>
     <string name="load_anyway">Toch laden</string>
@@ -179,7 +176,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">Systeemprompts</string>
-    <string name="system_prompts_subtitle">Herbruikbare instructies voor elk model</string>
     <string name="system_prompt_current">Huidige systeemprompt</string>
     <string name="save">Opslaan</string>
     <string name="add">Toevoegen</string>
@@ -314,7 +310,6 @@
     <!-- Tools -->
     <string name="set_up_tools">Tools instellen</string>
     <string name="tools">Tools</string>
-    <string name="tools_subtitle">Laat capabele modellen acties uitvoeren</string>
     <string name="tools_section_intro">Met tools kunnen capabele modellen tijdens een antwoord acties uitvoeren, zoals zoeken op het web of een berekening maken. Elke tool staat standaard uit – zet alleen de tools aan die je wilt gebruiken. Tools werken alleen met modellen die ze ondersteunen (let op het hamersymbool).</string>
     <string name="tools_example_label">Voorbeeld: %1$s</string>
     <string name="tools_params_sheet_subtitle">Het model kan deze tijdens een antwoord aanroepen</string>
@@ -351,7 +346,6 @@
 
     <!-- Sound and Haptic -->
     <string name="sound_and_haptic">Geluid en haptiek</string>
-    <string name="sound_and_haptic_subtitle">Voltooiingsgeluid en haptiek bij typen</string>
     <string name="sound_on_completion_title">Geluid afspelen wanneer het genereren klaar is</string>
     <string name="sound_on_completion_desc">Speelt een korte toon af wanneer het model een antwoord voltooit terwijl de app op de achtergrond draait.</string>
     <string name="haptic_on_generation_title">Haptische feedback bij genereren</string>
@@ -431,7 +425,6 @@
     <string name="branch_title_numbered">%1$s (aftakking %2$d)</string>
     <string name="branch_created">Verder in een nieuwe chat</string>
     <string name="appearance">Weergave</string>
-    <string name="appearance_subtitle">Thema en kleuren van de statuslijn</string>
     <string name="appearance_theme">Thema</string>
     <string name="appearance_theme_system">Systeemstandaard</string>
     <string name="appearance_theme_light">Licht</string>
@@ -447,9 +440,7 @@
     <string name="tool_steps_title">Toolstappen</string>
     <string name="tool_steps_desc">Maximaal aantal keer dat het model tools gebruikt in één antwoord voordat het moet antwoorden</string>
     <string name="remote_servers">Externe servers</string>
-    <string name="remote_servers_subtitle">Modellen op een computer in je netwerk</string>
     <string name="testing">Testen</string>
-    <string name="testing_subtitle">Voer tool-, chat- en snelheidstests uit op een model en exporteer de resultaten</string>
     <string name="remote_help">Gebruik modellen die in LM Studio, Ollama of llama-server op een andere computer draaien. Sta op die computer verbindingen vanaf het lokale netwerk toe.</string>
     <string name="remote_saved">Servers</string>
     <string name="remote_add">Server toevoegen</string>

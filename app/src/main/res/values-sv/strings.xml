@@ -74,7 +74,6 @@
     <string name="settings">Inställningar</string>
     <string name="back">Tillbaka</string>
     <string name="version">Version %s</string>
-    <string name="models_subtitle">Ladda ned och hantera modeller</string>
     <string name="privacy_policy">Integritetspolicy</string>
     <string name="privacy_policy_effective_date">Träder i kraft: 2 juni 2026</string>
     <string name="privacy_policy_intro">Välkommen till LM Playground! Jag är dedikerad till att upprätthålla förtroendet hos alla användare av min app. Denna integritetspolicy förklarar vad appen samlar in och inte samlar in, hur dina konversationer stannar på din enhet och de få fall — som de valfria webbverktygen — då information lämnar din enhet, så att du alltid vet vad du kan förvänta dig.</string>
@@ -96,7 +95,6 @@
     <string name="privacy_policy_contact_email" translatable="false">andriydruk@gmail.com</string>
     <string name="send_feedback">Skicka feedback</string>
     <string name="faq">FAQ</string>
-    <string name="faq_subtitle">Vanliga frågor</string>
 
     <!-- FAQ -->
     <string name="faq_q1">Vad är LM Playground?</string>
@@ -151,7 +149,6 @@
     <string name="cancel">Avbryt</string>
     <string name="low_ram_warning_title">Modellen kan vara instabil</string>
     <string name="low_ram_warning_message">Modellen behöver ~%1$s RAM, men den här enheten har bara %2$s totalt. Minnet kan ta slut och appen krascha. Om det händer, stäng av Aktivera ompackning under Inställningar → Avancerat för att läsa in den i ett lågminnesläge.</string>
-    <string name="advanced_subtitle">Alternativ för minne och prestanda</string>
     <string name="enable_repack_title">Aktivera ompackning</string>
     <string name="enable_repack_desc">Packar om modellvikterna i RAM för snabbare svar. Använder mycket mer minne än att läsa in dem minnesmappade. Stäng av om en stor modell får slut på minne vid inläsning.</string>
     <string name="load_anyway">Läs in ändå</string>
@@ -178,7 +175,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">Systemprompter</string>
-    <string name="system_prompts_subtitle">Återanvändbara instruktioner för valfri modell</string>
     <string name="system_prompt_current">Nuvarande systemprompt</string>
     <string name="save">Spara</string>
     <string name="add">Lägg till</string>
@@ -313,7 +309,6 @@
     <!-- Tools -->
     <string name="set_up_tools">Konfigurera verktyg</string>
     <string name="tools">Verktyg</string>
-    <string name="tools_subtitle">Låt kapabla modeller utföra åtgärder</string>
     <string name="tools_section_intro">Med verktyg kan kapabla modeller utföra åtgärder under ett svar, som att söka på webben eller göra en beräkning. Varje verktyg är avstängt som standard – slå bara på dem du vill använda. Verktyg fungerar bara med modeller som stöder dem (leta efter hammarsymbolen).</string>
     <string name="tools_example_label">Exempel: %1$s</string>
     <string name="tools_params_sheet_subtitle">Modellen kan anropa dessa under ett svar</string>
@@ -350,7 +345,6 @@
 
     <!-- Sound and Haptic -->
     <string name="sound_and_haptic">Ljud och haptik</string>
-    <string name="sound_and_haptic_subtitle">Slutförandeljud och haptik vid skrivning</string>
     <string name="sound_on_completion_title">Spela upp ljud när genereringen är klar</string>
     <string name="sound_on_completion_desc">Spelar upp en kort ton när modellen slutför ett svar medan appen körs i bakgrunden.</string>
     <string name="haptic_on_generation_title">Haptisk återkoppling vid generering</string>
@@ -430,7 +424,6 @@
     <string name="branch_title_numbered">%1$s (förgrening %2$d)</string>
     <string name="branch_created">Fortsätter i en ny chatt</string>
     <string name="appearance">Utseende</string>
-    <string name="appearance_subtitle">Tema och färger för statuslinjen</string>
     <string name="appearance_theme">Tema</string>
     <string name="appearance_theme_system">Systemstandard</string>
     <string name="appearance_theme_light">Ljust</string>
@@ -446,9 +439,7 @@
     <string name="tool_steps_title">Verktygssteg</string>
     <string name="tool_steps_desc">Högst så många verktygsanrop i ett svar innan modellen måste svara</string>
     <string name="remote_servers">Fjärrservrar</string>
-    <string name="remote_servers_subtitle">Modeller på en dator i ditt nätverk</string>
     <string name="testing">Testning</string>
-    <string name="testing_subtitle">Kör verktygs-, chatt- och hastighetstester på en modell och exportera resultaten</string>
     <string name="remote_help">Använd modeller som körs i LM Studio, Ollama eller llama-server på en annan dator. Tillåt anslutningar från det lokala nätverket på den datorn.</string>
     <string name="remote_saved">Servrar</string>
     <string name="remote_add">Lägg till en server</string>

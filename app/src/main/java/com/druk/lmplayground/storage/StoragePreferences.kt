@@ -169,6 +169,9 @@ class StoragePreferences(context: Context) {
     var serverAllowNetwork: Boolean
         get() = prefs.getBoolean("server_allow_network", false)
         set(value) = prefs.edit { putBoolean("server_allow_network", value) }
+    var serverRequireKey: Boolean
+        get() = prefs.getBoolean("server_require_key", false)
+        set(value) = prefs.edit { putBoolean("server_require_key", value) }
     var serverApiKey: String
         get() = prefs.getString("server_api_key", "").orEmpty()
         set(value) = prefs.edit { putString("server_api_key", value) }

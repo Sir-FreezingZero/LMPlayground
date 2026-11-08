@@ -82,6 +82,9 @@ class ModelRuntime(
         /** The model settings (the same for every model) resolved during load. */
         fun onGenerationParams(params: GenerationParams)
 
+        /** Where the loaded model runs: the GPU or the CPU (Models tab: "Loaded · GPU"). */
+        fun onLoadedOn(gpu: Boolean) {}
+
         /** Every model load starts without a system prompt. */
         fun onSystemPromptReset()
 
@@ -288,6 +291,7 @@ class ModelRuntime(
                     load(retryHandle.pfd, StoragePreferences.PERFORMANCE_CPU)
                 }
                 Log.i(TAG, "Model loaded on the ${if (onGpu) "GPU" else "CPU"}")
+                listener.onLoadedOn(onGpu)
 
                 // Load mmproj for vision models. The mtmd loader needs a
                 // real filesystem path, so we copy the mmproj GGUF to a

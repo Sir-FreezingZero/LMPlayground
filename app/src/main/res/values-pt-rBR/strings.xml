@@ -63,7 +63,6 @@
     <string name="settings">Configura\u00E7\u00F5es</string>
     <string name="back">Voltar</string>
     <string name="version">Vers\u00E3o %s</string>
-    <string name="models_subtitle">Baixar e gerenciar modelos</string>
     <string name="privacy_policy">Pol\u00EDtica de Privacidade</string>
     <string name="privacy_policy_effective_date">Data de vig\u00EAncia: 2 de junho de 2026</string>
     <string name="privacy_policy_intro">Bem-vindo ao LM Playground! Estou comprometido em manter a confian\u00E7a de todas as pessoas que usam meu aplicativo. Esta Pol\u00EDtica de Privacidade explica o que o aplicativo coleta e o que n\u00E3o coleta, como suas conversas permanecem no seu dispositivo e os poucos casos \u2014 como as ferramentas web opcionais \u2014 em que informa\u00E7\u00F5es saem do seu dispositivo, para que voc\u00EA sempre saiba o que esperar.</string>
@@ -84,7 +83,6 @@
     <string name="privacy_policy_s7_body">Se voc\u00EA tiver alguma d\u00FAvida ou sugest\u00E3o sobre minha Pol\u00EDtica de Privacidade, n\u00E3o hesite em entrar em contato.</string>
     <string name="send_feedback">Enviar feedback</string>
     <string name="faq">Perguntas frequentes</string>
-    <string name="faq_subtitle">Perguntas frequentes</string>
     <string name="faq_q1">O que \u00E9 o LM Playground?</string>
     <string name="faq_a1">O LM Playground permite executar modelos de linguagem grandes diretamente no seu dispositivo Android. Todo o processamento acontece localmente \u2013 sem necessidade de servidores na nuvem.</string>
     <string name="faq_q2">Quais modelos s\u00E3o compat\u00EDveis?</string>
@@ -134,7 +132,6 @@
     <string name="cancel">Cancelar</string>
     <string name="low_ram_warning_title">O modelo pode ficar instável</string>
     <string name="low_ram_warning_message">O modelo precisa de ~%1$s de RAM, mas este dispositivo tem apenas %2$s no total. Pode ficar sem memória e travar. Se isso acontecer, desative Ativar reempacotamento em Configurações → Avançado para carregá-lo em um modo de baixa memória.</string>
-    <string name="advanced_subtitle">Opções de memória e desempenho</string>
     <string name="enable_repack_title">Ativar reempacotamento</string>
     <string name="enable_repack_desc">Reempacota os pesos do modelo na RAM para respostas mais rápidas. Usa muito mais memória do que carregá-los mapeados em memória. Desative se um modelo grande ficar sem memória ao carregar.</string>
     <string name="load_anyway">Carregar mesmo assim</string>
@@ -195,7 +192,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">Prompts de sistema</string>
-    <string name="system_prompts_subtitle">Instru\u00E7\u00F5es reutiliz\u00E1veis para qualquer modelo</string>
     <string name="system_prompt_current">Prompt de sistema atual</string>
     <string name="save">Salvar</string>
     <string name="add">Adicionar</string>
@@ -281,7 +277,6 @@
 
     <!-- Som e vibração -->
     <string name="sound_and_haptic">Som e vibração</string>
-    <string name="sound_and_haptic_subtitle">Som ao concluir e vibração ao digitar</string>
     <string name="sound_on_completion_title">Tocar som ao concluir a geração</string>
     <string name="sound_on_completion_desc">Toca um breve sinal sonoro quando o modelo termina uma resposta enquanto o app está em segundo plano.</string>
     <string name="haptic_on_generation_title">Vibração durante a geração</string>
@@ -289,7 +284,6 @@
 
     <!-- Ferramentas -->
     <string name="tools">Ferramentas</string>
-    <string name="tools_subtitle">Deixe os modelos capazes realizarem ações</string>
     <string name="set_up_tools">Configurar ferramentas</string>
     <string name="tools_section_intro">As ferramentas permitem que modelos capazes realizem ações durante uma resposta, como buscar na web ou fazer um cálculo. Cada ferramenta vem desativada por padrão — ative apenas as que você quiser. As ferramentas funcionam somente com modelos compatíveis (procure o selo com o ícone de chave).</string>
     <string name="tools_params_sheet_subtitle">O modelo pode usá-las durante uma resposta</string>
@@ -390,7 +384,6 @@
     <string name="branch_title_numbered">%1$s (ramificação %2$d)</string>
     <string name="branch_created">Continuando em uma nova conversa</string>
     <string name="appearance">Aparência</string>
-    <string name="appearance_subtitle">Tema e cores da linha de status</string>
     <string name="appearance_theme">Tema</string>
     <string name="appearance_theme_system">Padrão do sistema</string>
     <string name="appearance_theme_light">Claro</string>
@@ -406,9 +399,7 @@
     <string name="tool_steps_title">Etapas de ferramentas</string>
     <string name="tool_steps_desc">Máximo de usos de ferramentas em uma resposta antes que o modelo precise responder</string>
     <string name="remote_servers">Servidores remotos</string>
-    <string name="remote_servers_subtitle">Modelos em um computador da sua rede</string>
     <string name="testing">Testes</string>
-    <string name="testing_subtitle">Execute testes de ferramentas, chat e velocidade em um modelo e exporte os resultados</string>
     <string name="remote_help">Use modelos rodando no LM Studio, Ollama ou llama-server em outro computador. Nesse computador, permita conexões da rede local.</string>
     <string name="remote_saved">Servidores</string>
     <string name="remote_add">Adicionar servidor</string>

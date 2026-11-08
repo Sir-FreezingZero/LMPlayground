@@ -75,7 +75,6 @@
     <string name="settings">הגדרות</string>
     <string name="back">חזרה</string>
     <string name="version">גרסה %s</string>
-    <string name="models_subtitle">הורד ונהל מודלים</string>
     <string name="privacy_policy">מדיניות פרטיות</string>
     <string name="privacy_policy_effective_date">תאריך תחילה: 2 ביוני, 2026</string>
     <string name="privacy_policy_intro">ברוכים הבאים ל-LM Playground! אני מחויב לשמור על האמון של כל מי שמשתמש באפליקציה שלי. מדיניות פרטיות זו מסבירה מה האפליקציה אוספת ומה אינה אוספת, כיצד השיחות שלך נשארות במכשיר שלך, ואת המקרים המעטים — כמו כלי הווב האופציונליים — שבהם מידע יוצא מהמכשיר שלך, כך שתמיד תדע למה לצפות.</string>
@@ -97,7 +96,6 @@
     <string name="privacy_policy_contact_email" translatable="false">andriydruk@gmail.com</string>
     <string name="send_feedback">שלח משוב</string>
     <string name="faq">שאלות נפוצות</string>
-    <string name="faq_subtitle">שאלות שנשאלות לעתים קרובות</string>
 
     <!-- FAQ -->
     <string name="faq_q1">מה זה LM Playground?</string>
@@ -151,7 +149,6 @@
     <string name="cancel">ביטול</string>
     <string name="low_ram_warning_title">המודל עשוי להיות לא יציב</string>
     <string name="low_ram_warning_message">המודל זקוק לכ-%1$s RAM, אך למכשיר זה יש בסך הכל %2$s בלבד. ייתכן שייגמר לו הזיכרון והוא יקרוס. אם זה קורה, כבה את האפשרות הפעלת אריזה מחדש בהגדרות → מתקדם כדי לטעון אותו במצב זיכרון נמוך.</string>
-    <string name="advanced_subtitle">אפשרויות זיכרון וביצועים</string>
     <string name="enable_repack_title">הפעלת אריזה מחדש</string>
     <string name="enable_repack_desc">אורז מחדש את משקלי המודל ל-RAM לקבלת תגובות מהירות יותר. משתמש בהרבה יותר זיכרון מאשר טעינתם ממופים לזיכרון. כבה אם למודל גדול נגמר הזיכרון במהלך הטעינה.</string>
     <string name="load_anyway">טען בכל זאת</string>
@@ -178,7 +175,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">פרומפטים של מערכת</string>
-    <string name="system_prompts_subtitle">הוראות לשימוש חוזר לכל מודל</string>
     <string name="system_prompt_current">פרומפט מערכת נוכחי</string>
     <string name="save">שמור</string>
     <string name="add">הוסף</string>
@@ -329,7 +325,6 @@
 
     <!-- Sound and haptic -->
     <string name="sound_and_haptic">צליל ורטט</string>
-    <string name="sound_and_haptic_subtitle">צליל סיום ורטט בעת הקלדה</string>
     <string name="sound_on_completion_title">השמע צליל בסיום היצירה</string>
     <string name="sound_on_completion_desc">משמיע צליל קצר כשהמודל מסיים תגובה בזמן שהאפליקציה ברקע.</string>
     <string name="haptic_on_generation_title">משוב מישושי בעת יצירה</string>
@@ -337,7 +332,6 @@
 
     <!-- Tools -->
     <string name="tools">כלים</string>
-    <string name="tools_subtitle">אפשר למודלים מתאימים לבצע פעולות</string>
     <string name="set_up_tools">הגדר כלים</string>
     <string name="tools_section_intro">כלים מאפשרים למודלים מתאימים לבצע פעולות במהלך תגובה, כמו חיפוש באינטרנט או ביצוע חישוב. כל כלי מושבת כברירת מחדל — הפעל רק את אלה שאתה רוצה. כלים פועלים רק עם מודלים שתומכים בהם (חפש את תג הפטיש).</string>
     <string name="tools_params_sheet_subtitle">המודל יכול לקרוא לאלה במהלך תגובה</string>
@@ -433,7 +427,6 @@
     <string name="branch_title_numbered">%1$s (ענף %2$d)</string>
     <string name="branch_created">ממשיכים בצ׳אט חדש</string>
     <string name="appearance">מראה</string>
-    <string name="appearance_subtitle">ערכת נושא וצבעי קו הסטטוס</string>
     <string name="appearance_theme">ערכת נושא</string>
     <string name="appearance_theme_system">ברירת המחדל של המערכת</string>
     <string name="appearance_theme_light">בהיר</string>
@@ -449,9 +442,7 @@
     <string name="tool_steps_title">שלבי כלים</string>
     <string name="tool_steps_desc">מספר השימושים המרבי בכלים בתשובה אחת לפני שהמודל חייב לענות</string>
     <string name="remote_servers">שרתים מרוחקים</string>
-    <string name="remote_servers_subtitle">מודלים במחשב ברשת שלך</string>
     <string name="testing">בדיקות</string>
-    <string name="testing_subtitle">הרצת בדיקות כלים, צ׳אט ומהירות על מודל וייצוא התוצאות</string>
     <string name="remote_help">השתמשו במודלים שרצים ב-LM Studio, ‏Ollama או llama-server במחשב אחר. במחשב הזה, אפשרו חיבורים מהרשת המקומית.</string>
     <string name="remote_saved">שרתים</string>
     <string name="remote_add">הוספת שרת</string>

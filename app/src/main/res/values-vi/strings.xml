@@ -63,7 +63,6 @@
     <string name="settings">C\u00E0i \u0111\u1EB7t</string>
     <string name="back">Quay l\u1EA1i</string>
     <string name="version">Phi\u00EAn b\u1EA3n %s</string>
-    <string name="models_subtitle">T\u1EA3i xu\u1ED1ng v\u00E0 qu\u1EA3n l\u00FD m\u00F4 h\u00ECnh</string>
     <string name="privacy_policy">Ch\u00EDnh s\u00E1ch B\u1EA3o m\u1EADt</string>
     <string name="privacy_policy_effective_date">Ng\u00E0y hi\u1EC7u l\u1EF1c: 2 th\u00E1ng 6, 2026</string>
     <string name="privacy_policy_intro">Ch\u00E0o m\u1EEBng b\u1EA1n \u0111\u1EBFn v\u1EDBi LM Playground! T\u00F4i cam k\u1EBFt duy tr\u00EC ni\u1EC1m tin v\u00E0 s\u1EF1 t\u00EDn nhi\u1EC7m c\u1EE7a m\u1ECDi ng\u01B0\u1EDDi d\u00F9ng \u1EE9ng d\u1EE5ng c\u1EE7a t\u00F4i. Ch\u00EDnh s\u00E1ch B\u1EA3o m\u1EADt n\u00E0y gi\u1EA3i th\u00EDch nh\u1EEFng g\u00EC \u1EE9ng d\u1EE5ng c\u00F3 v\u00E0 kh\u00F4ng thu th\u1EADp, c\u00E1ch c\u00E1c cu\u1ED9c tr\u00F2 chuy\u1EC7n c\u1EE7a b\u1EA1n \u0111\u01B0\u1EE3c gi\u1EEF tr\u00EAn thi\u1EBFt b\u1ECB, v\u00E0 m\u1ED9t v\u00E0i tr\u01B0\u1EDDng h\u1EE3p \u2014 ch\u1EB3ng h\u1EA1n nh\u01B0 c\u00E1c c\u00F4ng c\u1EE5 web t\u00F9y ch\u1ECDn \u2014 khi th\u00F4ng tin r\u1EDDi kh\u1ECFi thi\u1EBFt b\u1ECB c\u1EE7a b\u1EA1n, \u0111\u1EC3 b\u1EA1n lu\u00F4n bi\u1EBFt \u0111i\u1EC1u g\u00EC s\u1EBD x\u1EA3y ra.</string>
@@ -84,7 +83,6 @@
     <string name="privacy_policy_s7_body">N\u1EBFu b\u1EA1n c\u00F3 b\u1EA5t k\u1EF3 c\u00E2u h\u1ECFi ho\u1EB7c \u0111\u1EC1 xu\u1EA5t n\u00E0o v\u1EC1 Ch\u00EDnh s\u00E1ch B\u1EA3o m\u1EADt c\u1EE7a t\u00F4i, \u0111\u1EEBng ng\u1EA7n ng\u1EA1i li\u00EAn h\u1EC7 v\u1EDBi t\u00F4i.</string>
     <string name="send_feedback">G\u1EEDi ph\u1EA3n h\u1ED3i</string>
     <string name="faq">C\u00E2u h\u1ECFi th\u01B0\u1EDDng g\u1EB7p</string>
-    <string name="faq_subtitle">C\u00E2u h\u1ECFi th\u01B0\u1EDDng g\u1EB7p</string>
     <string name="faq_q1">LM Playground l\u00E0 g\u00EC?</string>
     <string name="faq_a1">LM Playground cho ph\u00E9p b\u1EA1n ch\u1EA1y c\u00E1c m\u00F4 h\u00ECnh ng\u00F4n ng\u1EEF l\u1EDBn tr\u1EF1c ti\u1EBFp tr\u00EAn thi\u1EBFt b\u1ECB Android c\u1EE7a b\u1EA1n. To\u00E0n b\u1ED9 qu\u00E1 tr\u00ECnh x\u1EED l\u00FD di\u1EC5n ra c\u1EE5c b\u1ED9 \u2013 kh\u00F4ng c\u1EA7n m\u00E1y ch\u1EE7 \u0111\u00E1m m\u00E2y.</string>
     <string name="faq_q2">Nh\u1EEFng m\u00F4 h\u00ECnh n\u00E0o \u0111\u01B0\u1EE3c h\u1ED7 tr\u1EE3?</string>
@@ -134,7 +132,6 @@
     <string name="cancel">H\u1EE7y</string>
     <string name="low_ram_warning_title">Mô hình có thể không ổn định</string>
     <string name="low_ram_warning_message">Mô hình cần khoảng %1$s RAM nhưng thiết bị này chỉ có tổng cộng %2$s. Có thể bị hết bộ nhớ và gặp sự cố. Nếu điều đó xảy ra, hãy tắt Bật repack trong Cài đặt → Nâng cao để tải mô hình ở chế độ ít bộ nhớ.</string>
-    <string name="advanced_subtitle">Tùy chọn bộ nhớ và hiệu suất</string>
     <string name="enable_repack_title">Bật repack</string>
     <string name="enable_repack_desc">Đóng gói lại trọng số mô hình vào RAM để phản hồi nhanh hơn. Sử dụng nhiều bộ nhớ hơn đáng kể so với tải theo kiểu ánh xạ bộ nhớ. Hãy tắt nếu một mô hình lớn bị hết bộ nhớ khi tải.</string>
     <string name="load_anyway">V\u1EABn t\u1EA3i</string>
@@ -192,7 +189,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">L\u1EDDi nh\u1EAFc h\u1EC7 th\u1ED1ng</string>
-    <string name="system_prompts_subtitle">H\u01B0\u1EDBng d\u1EABn t\u00E1i s\u1EED d\u1EE5ng cho m\u1ECDi m\u00F4 h\u00ECnh</string>
     <string name="system_prompt_current">L\u1EDDi nh\u1EAFc h\u1EC7 th\u1ED1ng hi\u1EC7n t\u1EA1i</string>
     <string name="save">L\u01B0u</string>
     <string name="add">Th\u00EAm</string>
@@ -278,7 +274,6 @@
     <string name="haptic_on_generation_title">Ph\u1EA3n h\u1ED3i rung khi t\u1EA1o ph\u1EA3n h\u1ED3i</string>
     <string name="haptic_on_generation_desc">M\u1ED9t nh\u1ECBp rung nh\u1EB9 khi t\u1EEBng ph\u1EA7n ph\u1EA3n h\u1ED3i \u0111\u01B0\u1EE3c truy\u1EC1n v\u1EC1.</string>
     <string name="sound_and_haptic">\u00C2m thanh v\u00E0 Rung</string>
-    <string name="sound_and_haptic_subtitle">\u00C2m b\u00E1o ho\u00E0n t\u1EA5t v\u00E0 rung khi g\u00F5</string>
     <string name="sound_on_completion_title">Ph\u00E1t \u00E2m thanh khi t\u1EA1o xong</string>
     <string name="sound_on_completion_desc">Ph\u00E1t m\u1ED9t ti\u1EBFng chu\u00F4ng ng\u1EAFn khi m\u00F4 h\u00ECnh ho\u00E0n t\u1EA5t ph\u1EA3n h\u1ED3i trong khi \u1EE9ng d\u1EE5ng \u0111ang ch\u1EA1y n\u1EC1n.</string>
     <string name="response_copied">\u0110\u00E3 sao ch\u00E9p v\u00E0o b\u1ED9 nh\u1EDB t\u1EA1m</string>
@@ -288,7 +283,6 @@
     <string name="inference_notification_tokens_line">%1$s \u00B7 %2$s</string>
     <string name="set_up_tools">Thi\u1EBFt l\u1EADp c\u00F4ng c\u1EE5</string>
     <string name="tools">C\u00F4ng c\u1EE5</string>
-    <string name="tools_subtitle">Cho m\u00F4 h\u00ECnh m\u1EA1nh th\u1EF1c hi\u1EC7n h\u00E0nh \u0111\u1ED9ng</string>
     <string name="tools_section_intro">C\u00F4ng c\u1EE5 cho ph\u00E9p c\u00E1c m\u00F4 h\u00ECnh \u0111\u1EE7 kh\u1EA3 n\u0103ng th\u1EF1c hi\u1EC7n h\u00E0nh \u0111\u1ED9ng trong khi tr\u1EA3 l\u1EDDi, nh\u01B0 t\u00ECm ki\u1EBFm web ho\u1EB7c th\u1EF1c hi\u1EC7n ph\u00E9p t\u00EDnh. M\u1ED7i c\u00F4ng c\u1EE5 m\u1EB7c \u0111\u1ECBnh \u0111\u1EC1u t\u1EAFt \u2014 ch\u1EC9 b\u1EADt nh\u1EEFng c\u00F4ng c\u1EE5 b\u1EA1n mu\u1ED1n. C\u00F4ng c\u1EE5 ch\u1EC9 ho\u1EA1t \u0111\u1ED9ng v\u1EDBi c\u00E1c m\u00F4 h\u00ECnh h\u1ED7 tr\u1EE3 ch\u00FAng (h\u00E3y t\u00ECm huy hi\u1EC7u h\u00ECnh b\u00FAa).</string>
     <string name="tools_params_sheet_subtitle">M\u00F4 h\u00ECnh c\u00F3 th\u1EC3 g\u1ECDi nh\u1EEFng c\u00F4ng c\u1EE5 n\u00E0y trong khi tr\u1EA3 l\u1EDDi</string>
     <string name="tools_example_label">V\u00ED d\u1EE5: %1$s</string>
@@ -384,7 +378,6 @@
     <string name="branch_title_numbered">%1$s (nhánh %2$d)</string>
     <string name="branch_created">Đang tiếp tục trong cuộc trò chuyện mới</string>
     <string name="appearance">Giao diện</string>
-    <string name="appearance_subtitle">Chủ đề và màu thanh trạng thái</string>
     <string name="appearance_theme">Chủ đề</string>
     <string name="appearance_theme_system">Mặc định hệ thống</string>
     <string name="appearance_theme_light">Sáng</string>
@@ -400,9 +393,7 @@
     <string name="tool_steps_title">Số bước dùng công cụ</string>
     <string name="tool_steps_desc">Số lần dùng công cụ tối đa trong một câu trả lời trước khi mô hình phải trả lời</string>
     <string name="remote_servers">Máy chủ từ xa</string>
-    <string name="remote_servers_subtitle">Mô hình trên máy tính trong mạng của bạn</string>
     <string name="testing">Kiểm thử</string>
-    <string name="testing_subtitle">Chạy kiểm thử công cụ, trò chuyện và tốc độ trên một mô hình rồi xuất kết quả</string>
     <string name="remote_help">Dùng mô hình chạy trong LM Studio, Ollama hoặc llama-server trên máy tính khác. Trên máy tính đó, hãy cho phép kết nối từ mạng cục bộ.</string>
     <string name="remote_saved">Máy chủ</string>
     <string name="remote_add">Thêm máy chủ</string>

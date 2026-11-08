@@ -76,7 +76,6 @@
     <string name="settings">Nastavení</string>
     <string name="back">Zpět</string>
     <string name="version">Verze %s</string>
-    <string name="models_subtitle">Stáhnout a spravovat modely</string>
     <string name="privacy_policy">Zásady ochrany osobních údajů</string>
     <string name="privacy_policy_effective_date">Datum účinnosti: 2. června 2026</string>
     <string name="privacy_policy_intro">Vítejte v LM Playground! Záleží mi na zachování důvěry všech, kdo mou aplikaci používají. Tyto zásady ochrany osobních údajů vysvětlují, co aplikace shromažďuje a co ne, jak vaše konverzace zůstávají ve vašem zařízení a v jakých několika případech — například u volitelných webových nástrojů — informace vaše zařízení opouštějí, abyste vždy věděli, co očekávat.</string>
@@ -98,7 +97,6 @@
     <string name="privacy_policy_contact_email" translatable="false">andriydruk@gmail.com</string>
     <string name="send_feedback">Odeslat zpětnou vazbu</string>
     <string name="faq">FAQ</string>
-    <string name="faq_subtitle">Často kladené otázky</string>
 
     <!-- FAQ -->
     <string name="faq_q1">Co je LM Playground?</string>
@@ -152,7 +150,6 @@
     <string name="cancel">Zrušit</string>
     <string name="low_ram_warning_title">Model může být nestabilní</string>
     <string name="low_ram_warning_message">Model potřebuje ~%1$s RAM, ale toto zařízení má celkem pouze %2$s. Může dojít paměť a aplikace může spadnout. Pokud k tomu dojde, vypněte možnost Povolit přebalení v Nastavení → Pokročilé, aby se načetl v režimu nízké paměti.</string>
-    <string name="advanced_subtitle">Možnosti paměti a výkonu</string>
     <string name="enable_repack_title">Povolit přebalení</string>
     <string name="enable_repack_desc">Přebaluje váhy modelu do RAM pro rychlejší odpovědi. Využívá mnohem více paměti než jejich načtení mapované do paměti. Vypněte, pokud velkému modelu při načítání dojde paměť.</string>
     <string name="load_anyway">Přesto načíst</string>
@@ -179,7 +176,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">Systémové pokyny</string>
-    <string name="system_prompts_subtitle">Opakovaně použitelné pokyny pro jakýkoli model</string>
     <string name="system_prompt_current">Aktuální systémový pokyn</string>
     <string name="save">Uložit</string>
     <string name="add">Přidat</string>
@@ -325,7 +321,6 @@
     <string name="response_copied">Zkopírováno do schránky</string>
     <string name="set_up_tools">Nastavit nástroje</string>
     <string name="sound_and_haptic">Zvuk a haptika</string>
-    <string name="sound_and_haptic_subtitle">Zvuk dokončení a haptika při psaní</string>
     <string name="sound_on_completion_desc">Přehraje krátký tón, když model dokončí odpověď a aplikace je na pozadí.</string>
     <string name="sound_on_completion_title">Přehrát zvuk po dokončení generování</string>
     <string name="tool_call_input">Vstup</string>
@@ -360,7 +355,6 @@
     <string name="tools_example_label">Příklad: %1$s</string>
     <string name="tools_params_sheet_subtitle">Model je může během odpovědi vyvolat</string>
     <string name="tools_section_intro">Nástroje umožňují schopným modelům provádět akce během odpovědi, jako je vyhledávání na webu nebo provedení výpočtu. Každý nástroj je ve výchozím nastavení vypnutý — zapněte jen ty, které chcete. Nástroje fungují pouze s modely, které je podporují (hledejte odznak s kladivem).</string>
-    <string name="tools_subtitle">Umožněte schopným modelům provádět akce</string>
     <string name="whats_new_cache">Rychlejší odpovědi díky cache promptů &amp; nástrojů</string>
     <string name="whats_new_tools">Vyhledávání na webu, načtení stránky a spuštění JavaScriptu</string>
     <string name="attach_document">Připojit dokument</string>
@@ -422,7 +416,6 @@
     <string name="branch_title_numbered">%1$s (větev %2$d)</string>
     <string name="branch_created">Pokračuje se v novém chatu</string>
     <string name="appearance">Vzhled</string>
-    <string name="appearance_subtitle">Motiv a barvy stavové čáry</string>
     <string name="appearance_theme">Motiv</string>
     <string name="appearance_theme_system">Podle systému</string>
     <string name="appearance_theme_light">Světlý</string>
@@ -438,9 +431,7 @@
     <string name="tool_steps_title">Kroky nástrojů</string>
     <string name="tool_steps_desc">Nejvyšší počet použití nástrojů v jedné odpovědi, než model musí odpovědět</string>
     <string name="remote_servers">Vzdálené servery</string>
-    <string name="remote_servers_subtitle">Modely na počítači ve vaší síti</string>
     <string name="testing">Testování</string>
-    <string name="testing_subtitle">Spusťte na modelu testy nástrojů, chatu a rychlosti a exportujte výsledky</string>
     <string name="remote_help">Používejte modely běžící v LM Studiu, Ollamě nebo llama-serveru na jiném počítači. Na tom počítači povolte připojení z místní sítě.</string>
     <string name="remote_saved">Servery</string>
     <string name="remote_add">Přidat server</string>

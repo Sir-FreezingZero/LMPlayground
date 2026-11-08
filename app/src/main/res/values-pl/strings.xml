@@ -63,7 +63,6 @@
     <string name="settings">Ustawienia</string>
     <string name="back">Wstecz</string>
     <string name="version">Wersja %s</string>
-    <string name="models_subtitle">Pobierz modele i zarządzaj nimi</string>
     <string name="privacy_policy">Polityka prywatności</string>
     <string name="privacy_policy_effective_date">Data wejścia w życie: 2 czerwca 2026</string>
     <string name="privacy_policy_intro">Witamy w LM Playground! Zależy mi na utrzymaniu zaufania wszystkich osób korzystających z mojej aplikacji. Niniejsza Polityka prywatności wyjaśnia, co aplikacja zbiera, a czego nie zbiera, w jaki sposób Twoje rozmowy pozostają na Twoim urządzeniu oraz w jakich nielicznych przypadkach — takich jak opcjonalne narzędzia internetowe — informacje opuszczają Twoje urządzenie, abyś zawsze wiedział, czego się spodziewać.</string>
@@ -84,7 +83,6 @@
     <string name="privacy_policy_s7_body">Jeśli masz pytania lub sugestie dotyczące mojej Polityki prywatności, nie wahaj się ze mną skontaktować.</string>
     <string name="send_feedback">Wyślij opinię</string>
     <string name="faq">FAQ</string>
-    <string name="faq_subtitle">Często zadawane pytania</string>
     <string name="faq_q1">Czym jest LM Playground?</string>
     <string name="faq_a1">LM Playground umożliwia uruchamianie dużych modeli językowych bezpośrednio na urządzeniu z Androidem. Całe przetwarzanie odbywa się lokalnie \u2013 bez potrzeby serwerów w chmurze.</string>
     <string name="faq_q2">Jakie modele są obsługiwane?</string>
@@ -134,7 +132,6 @@
     <string name="cancel">Anuluj</string>
     <string name="low_ram_warning_title">Model może być niestabilny</string>
     <string name="low_ram_warning_message">Model wymaga ok. %1$s RAM, a to urządzenie ma łącznie tylko %2$s. Może zabraknąć pamięci i nastąpić awaria. Jeśli tak się stanie, wyłącz opcję Włącz przepakowywanie w Ustawienia → Zaawansowane, aby załadować go w trybie małej ilości pamięci.</string>
-    <string name="advanced_subtitle">Opcje pamięci i wydajności</string>
     <string name="enable_repack_title">Włącz przepakowywanie</string>
     <string name="enable_repack_desc">Przepakowuje wagi modelu do RAM, aby przyspieszyć odpowiedzi. Zużywa znacznie więcej pamięci niż ładowanie ich mapowanych w pamięci. Wyłącz, jeśli dużemu modelowi zabraknie pamięci podczas ładowania.</string>
     <string name="load_anyway">Załaduj mimo to</string>
@@ -195,7 +192,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">Prompty systemowe</string>
-    <string name="system_prompts_subtitle">Instrukcje wielokrotnego użytku dla dowolnego modelu</string>
     <string name="system_prompt_current">Bieżący prompt systemowy</string>
     <string name="save">Zapisz</string>
     <string name="add">Dodaj</string>
@@ -287,7 +283,6 @@
     <string name="response_copied">Skopiowano do schowka</string>
     <string name="set_up_tools">Skonfiguruj narzędzia</string>
     <string name="sound_and_haptic">Dźwięk i wibracje</string>
-    <string name="sound_and_haptic_subtitle">Dźwięk zakończenia i wibracje przy pisaniu</string>
     <string name="sound_on_completion_desc">Odtwarza krótki dźwięk, gdy model kończy odpowiedź, a aplikacja działa w tle.</string>
     <string name="sound_on_completion_title">Odtwarzaj dźwięk po zakończeniu generowania</string>
     <string name="tool_call_input">Wejście</string>
@@ -322,7 +317,6 @@
     <string name="tools_example_label">Przykład: %1$s</string>
     <string name="tools_params_sheet_subtitle">Model może wywołać je podczas odpowiedzi</string>
     <string name="tools_section_intro">Narzędzia pozwalają zdolnym modelom wykonywać działania podczas odpowiedzi, takie jak wyszukiwanie w sieci czy wykonywanie obliczeń. Każde narzędzie jest domyślnie wyłączone — włącz tylko te, których chcesz używać. Narzędzia działają tylko z modelami, które je obsługują (szukaj odznaki z młotkiem).</string>
-    <string name="tools_subtitle">Pozwól zdolnym modelom wykonywać działania</string>
     <string name="whats_new_cache">Szybsze odpowiedzi dzięki buforowaniu promptów &amp; narzędzi</string>
     <string name="whats_new_tools">Wyszukiwanie w sieci, pobieranie stron i uruchamianie JavaScript</string>
     <string name="attach_document">Załącz dokument</string>
@@ -384,7 +378,6 @@
     <string name="branch_title_numbered">%1$s (gałąź %2$d)</string>
     <string name="branch_created">Kontynuacja w nowym czacie</string>
     <string name="appearance">Wygląd</string>
-    <string name="appearance_subtitle">Motyw i kolory linii stanu</string>
     <string name="appearance_theme">Motyw</string>
     <string name="appearance_theme_system">Domyślny systemu</string>
     <string name="appearance_theme_light">Jasny</string>
@@ -400,9 +393,7 @@
     <string name="tool_steps_title">Kroki narzędzi</string>
     <string name="tool_steps_desc">Maksymalna liczba użyć narzędzi w jednej odpowiedzi, zanim model musi odpowiedzieć</string>
     <string name="remote_servers">Serwery zdalne</string>
-    <string name="remote_servers_subtitle">Modele na komputerze w Twojej sieci</string>
     <string name="testing">Testy</string>
-    <string name="testing_subtitle">Uruchom testy narzędzi, czatu i szybkości na modelu i wyeksportuj wyniki</string>
     <string name="remote_help">Korzystaj z modeli działających w LM Studio, Ollamie lub llama-serverze na innym komputerze. Na tym komputerze zezwól na połączenia z sieci lokalnej.</string>
     <string name="remote_saved">Serwery</string>
     <string name="remote_add">Dodaj serwer</string>

@@ -63,7 +63,6 @@
     <string name="settings">Set\u0103ri</string>
     <string name="back">\u00CEnapoi</string>
     <string name="version">Versiunea %s</string>
-    <string name="models_subtitle">Descarc\u0103 \u015Fi gestioneaz\u0103 modele</string>
     <string name="privacy_policy">Politica de confiden\u021Bialitate</string>
     <string name="privacy_policy_effective_date">Data intr\u0103rii \u00EEn vigoare: 2 iunie 2026</string>
     <string name="privacy_policy_intro">Bine ai venit \u00EEn LM Playground! M\u0103 angajez s\u0103 men\u021Bin \u00EEncrederea tuturor celor care folosesc aplica\u021Bia mea. Aceast\u0103 Politic\u0103 de Confiden\u021Bialitate explic\u0103 ce colecteaz\u0103 \u015Fi ce nu colecteaz\u0103 aplica\u021Bia, cum r\u0103m\u00E2n conversa\u021Biile tale pe dispozitiv \u015Fi pu\u021Binele cazuri \u2014 precum instrumentele web op\u021Bionale \u2014 \u00EEn care informa\u021Biile p\u0103r\u0103sesc dispozitivul t\u0103u, astfel \u00EEnc\u00E2t s\u0103 \u015Ftii mereu la ce s\u0103 te a\u015Ftep\u021Bi.</string>
@@ -84,7 +83,6 @@
     <string name="privacy_policy_s7_body">Dac\u0103 ave\u021Bi \u00EEntreb\u0103ri sau sugestii despre Politica mea de Confiden\u021Bialitate, nu ezita\u021Bi s\u0103 m\u0103 contacta\u021Bi.</string>
     <string name="send_feedback">Trimite feedback</string>
     <string name="faq">\u00CEntreb\u0103ri frecvente</string>
-    <string name="faq_subtitle">\u00CEntreb\u0103ri frecvente</string>
     <string name="faq_q1">Ce este LM Playground?</string>
     <string name="faq_a1">LM Playground \u00EE\u021Bi permite s\u0103 rulezi modele lingvistice mari direct pe dispozitivul t\u0103u Android. Toat\u0103 procesarea are loc local \u2013 f\u0103r\u0103 servere cloud.</string>
     <string name="faq_q2">Ce modele sunt compatibile?</string>
@@ -134,7 +132,6 @@
     <string name="cancel">Anuleaz\u0103</string>
     <string name="low_ram_warning_title">Modelul ar putea fi instabil</string>
     <string name="low_ram_warning_message">Modelul are nevoie de ~%1$s RAM, dar acest dispozitiv are doar %2$s în total. Ar putea rămâne fără memorie și să se blocheze. Dacă se întâmplă, dezactivează Activează reambalarea din Setări → Avansat pentru a-l încărca într-un mod cu memorie redusă.</string>
-    <string name="advanced_subtitle">Opțiuni de memorie și performanță</string>
     <string name="enable_repack_title">Activează reambalarea</string>
     <string name="enable_repack_desc">Reambalează ponderile modelului în RAM pentru răspunsuri mai rapide. Folosește mult mai multă memorie decât încărcarea lor mapată în memorie. Dezactivează dacă un model mare rămâne fără memorie la încărcare.</string>
     <string name="load_anyway">\u00cencarc\u0103 oricum</string>
@@ -195,7 +192,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">Prompturi de sistem</string>
-    <string name="system_prompts_subtitle">Instruc\u021Biuni reutilizabile pentru orice model</string>
     <string name="system_prompt_current">Prompt de sistem curent</string>
     <string name="save">Salveaz\u0103</string>
     <string name="add">Adaug\u0103</string>
@@ -282,7 +278,6 @@
 
     <!-- Sunet și vibrații -->
     <string name="sound_and_haptic">Sunet și vibrații</string>
-    <string name="sound_and_haptic_subtitle">Sunet la finalizare și vibrații la tastare</string>
     <string name="sound_on_completion_title">Redă un sunet la finalizarea generării</string>
     <string name="sound_on_completion_desc">Redă un scurt semnal sonor când modelul termină un răspuns în timp ce aplicația este în fundal.</string>
     <string name="haptic_on_generation_title">Vibrații în timpul generării</string>
@@ -290,7 +285,6 @@
 
     <!-- Instrumente -->
     <string name="tools">Instrumente</string>
-    <string name="tools_subtitle">Lasă modelele capabile să întreprindă acțiuni</string>
     <string name="set_up_tools">Configurează instrumentele</string>
     <string name="tools_section_intro">Instrumentele permit modelelor capabile să întreprindă acțiuni în timpul unui răspuns, cum ar fi căutarea pe web sau efectuarea unui calcul. Fiecare instrument este dezactivat implicit — activează-le doar pe cele dorite. Instrumentele funcționează numai cu modelele care le acceptă (caută insigna cu pictograma cheii).</string>
     <string name="tools_params_sheet_subtitle">Modelul le poate folosi în timpul unui răspuns</string>
@@ -391,7 +385,6 @@
     <string name="branch_title_numbered">%1$s (ramură %2$d)</string>
     <string name="branch_created">Se continuă într-un chat nou</string>
     <string name="appearance">Aspect</string>
-    <string name="appearance_subtitle">Temă și culorile liniei de stare</string>
     <string name="appearance_theme">Temă</string>
     <string name="appearance_theme_system">Prestabilit de sistem</string>
     <string name="appearance_theme_light">Luminoasă</string>
@@ -407,9 +400,7 @@
     <string name="tool_steps_title">Pași cu instrumente</string>
     <string name="tool_steps_desc">Numărul maxim de folosiri ale instrumentelor într-un răspuns înainte ca modelul să răspundă</string>
     <string name="remote_servers">Servere la distanță</string>
-    <string name="remote_servers_subtitle">Modele pe un computer din rețeaua ta</string>
     <string name="testing">Testare</string>
-    <string name="testing_subtitle">Rulează teste de instrumente, chat și viteză pe un model și exportă rezultatele</string>
     <string name="remote_help">Folosește modele care rulează în LM Studio, Ollama sau llama-server pe alt computer. Pe acel computer, permite conexiunile din rețeaua locală.</string>
     <string name="remote_saved">Servere</string>
     <string name="remote_add">Adaugă un server</string>

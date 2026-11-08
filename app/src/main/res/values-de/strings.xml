@@ -63,7 +63,6 @@
     <string name="settings">Einstellungen</string>
     <string name="back">Zurück</string>
     <string name="version">Version %s</string>
-    <string name="models_subtitle">Modelle herunterladen und verwalten</string>
     <string name="privacy_policy">Datenschutzrichtlinie</string>
     <string name="privacy_policy_effective_date">Gültig ab: 2. Juni 2026</string>
     <string name="privacy_policy_intro">Willkommen bei LM Playground! Ich bin bestrebt, das Vertrauen aller Nutzer meiner App zu bewahren. Diese Datenschutzrichtlinie erklärt, was die App erfasst und was nicht, wie Ihre Unterhaltungen auf Ihrem Gerät bleiben und in welchen wenigen Fällen — etwa bei den optionalen Web-Tools — Informationen Ihr Gerät verlassen, damit Sie stets wissen, was Sie erwartet.</string>
@@ -84,7 +83,6 @@
     <string name="privacy_policy_s7_body">Wenn Sie Fragen oder Anregungen zu meiner Datenschutzrichtlinie haben, zögern Sie nicht, mich zu kontaktieren.</string>
     <string name="send_feedback">Feedback senden</string>
     <string name="faq">FAQ</string>
-    <string name="faq_subtitle">Häufig gestellte Fragen</string>
     <string name="faq_q1">Was ist LM Playground?</string>
     <string name="faq_a1">Mit LM Playground können Sie große Sprachmodelle direkt auf Ihrem Android-Gerät ausführen. Die gesamte Verarbeitung erfolgt lokal \u2013 keine Cloud-Server erforderlich.</string>
     <string name="faq_q2">Welche Modelle werden unterstützt?</string>
@@ -134,7 +132,6 @@
     <string name="cancel">Abbrechen</string>
     <string name="low_ram_warning_title">Modell könnte instabil sein</string>
     <string name="low_ram_warning_message">Das Modell benötigt etwa %1$s RAM, aber dieses Gerät hat insgesamt nur %2$s. Möglicherweise geht der Speicher aus und die App stürzt ab. Falls das passiert, deaktiviere unter Einstellungen → Erweitert die Option Neuverpacken aktivieren, um es in einem speicherarmen Modus zu laden.</string>
-    <string name="advanced_subtitle">Speicher- und Leistungsoptionen</string>
     <string name="enable_repack_title">Neuverpacken aktivieren</string>
     <string name="enable_repack_desc">Verpackt die Modellgewichte neu in den RAM, um Antworten zu beschleunigen. Verbraucht deutlich mehr Speicher als das Laden per Memory-Mapping. Deaktiviere die Option, wenn einem großen Modell beim Laden der Speicher ausgeht.</string>
     <string name="load_anyway">Trotzdem laden</string>
@@ -195,7 +192,6 @@
 
     <!-- System prompts -->
     <string name="system_prompts">System-Prompts</string>
-    <string name="system_prompts_subtitle">Wiederverwendbare Anweisungen für jedes Modell</string>
     <string name="system_prompt_current">Aktueller System-Prompt</string>
     <string name="save">Speichern</string>
     <string name="add">Hinzufügen</string>
@@ -276,7 +272,6 @@
     <!-- Tools -->
     <string name="set_up_tools">Tools einrichten</string>
     <string name="tools">Tools</string>
-    <string name="tools_subtitle">Leistungsfähige Modelle Aktionen ausführen lassen</string>
     <string name="tools_section_intro">Mit Tools können leistungsfähige Modelle während einer Antwort Aktionen ausführen, etwa im Web suchen oder eine Berechnung durchführen. Jedes Tool ist standardmäßig deaktiviert – aktiviere nur die, die du nutzen möchtest. Tools funktionieren nur mit Modellen, die sie unterstützen (achte auf das Hammer-Symbol).</string>
     <string name="tools_example_label">Beispiel: %1$s</string>
     <string name="tools_params_sheet_subtitle">Das Modell kann diese während einer Antwort aufrufen</string>
@@ -313,7 +308,6 @@
 
     <!-- Sound and Haptic -->
     <string name="sound_and_haptic">Ton und Haptik</string>
-    <string name="sound_and_haptic_subtitle">Abschlusston und haptisches Tippen</string>
     <string name="sound_on_completion_title">Ton abspielen, wenn die Generierung abgeschlossen ist</string>
     <string name="sound_on_completion_desc">Spielt einen kurzen Klang ab, wenn das Modell eine Antwort abschließt, während die App im Hintergrund läuft.</string>
     <string name="haptic_on_generation_title">Haptisches Feedback bei der Generierung</string>
@@ -392,7 +386,6 @@
     <string name="branch_title_numbered">%1$s (Abzweigung %2$d)</string>
     <string name="branch_created">Weiter in einem neuen Chat</string>
     <string name="appearance">Darstellung</string>
-    <string name="appearance_subtitle">Design und Farben der Statuslinie</string>
     <string name="appearance_theme">Design</string>
     <string name="appearance_theme_system">Systemstandard</string>
     <string name="appearance_theme_light">Hell</string>
@@ -408,9 +401,7 @@
     <string name="tool_steps_title">Tool-Schritte</string>
     <string name="tool_steps_desc">Höchstzahl an Tool-Aufrufen pro Antwort, bevor das Modell antworten muss</string>
     <string name="remote_servers">Remote-Server</string>
-    <string name="remote_servers_subtitle">Modelle auf einem Computer in deinem Netzwerk</string>
     <string name="testing">Tests</string>
-    <string name="testing_subtitle">Werkzeug-, Chat- und Geschwindigkeitstests mit einem Modell ausführen und die Ergebnisse exportieren</string>
     <string name="remote_help">Nutze Modelle, die in LM Studio, Ollama oder llama-server auf einem anderen Computer laufen. Erlaube auf diesem Computer Verbindungen aus dem lokalen Netzwerk.</string>
     <string name="remote_saved">Server</string>
     <string name="remote_add">Server hinzufügen</string>
