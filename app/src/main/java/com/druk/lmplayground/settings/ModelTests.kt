@@ -235,7 +235,6 @@ class ModelTestsViewModel(app: Application) : AndroidViewModel(app) {
     private val preambleCache = PreambleCacheManager(app.filesDir)
     private val registry = ToolRegistry.createDefault(app).apply { getAllTools().forEach { setToolEnabled(it.name, true) } }
     private val toolsJson = registry.toOpenAIToolsJson()
-    private val toolNames = registry.getAllTools().flatMap { it.functions }.map { it.name }
     private val promptExtras = SystemPromptExtras(app, prefs)
 
     private val _models = MutableStateFlow<List<ModelInfo>>(emptyList())
@@ -353,7 +352,7 @@ class ModelTestsViewModel(app: Application) : AndroidViewModel(app) {
         prefs.getModelGenerationParams(model.filename)?.let { GenerationParams.fromMap(it) } ?: GenerationParams.recommendedFor(model.filename)
 
     private fun systemPrompt(model: ModelInfo, withTools: Boolean) =
-        promptExtras.compose("", if (withTools) registry.getAllTools() else emptyList())
+        promptExtras.compose("")
 
     /**
      * A session as a chat would start it: the model's context size and
@@ -377,7 +376,7 @@ class ModelTestsViewModel(app: Application) : AndroidViewModel(app) {
         session.addMessage(message, false)
         var answer = ""
         val ctx = currentCoroutineContext()
-        val r = ToolCallLoop(session, testTools, maxToolRounds = maxRounds, toolNames = if (withTools) toolNames else emptyList()).run(
+        val r = ToolCallLoop(session, testTools, maxToolRounds = maxRounds).run(
             object : LlamaGenerationCallback {
                 override fun onFullResponse(response: String) { answer = response }
             },

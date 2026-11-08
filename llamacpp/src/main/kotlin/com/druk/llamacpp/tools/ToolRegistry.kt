@@ -21,38 +21,6 @@ class ToolRegistry {
     fun getAllTools(): List<Tool> = tools.values.toList()
 
     /**
-     * The tool and function [called] means: an exact match, else the one
-     * function whose name differs only in case or "-" / "_" (WEB_SEARCH, web-search).
-     */
-    private fun functionFor(called: String): Pair<Tool, ToolFunction>? {
-        val all = tools.values.flatMap { t -> t.functions.map { t to it } }
-        all.firstOrNull { it.second.name == called }?.let { return it }
-        fun key(n: String) = n.lowercase().replace('-', '_')
-        return all.filter { key(it.second.name) == key(called.trim()) }.singleOrNull()
-    }
-
-    /**
-     * [raw] arguments as a JSON object the tool can read. A function with one
-     * input also takes a bare value ("2+2") or a single input under another
-     * name ({"expr": "..."}), and common other names for "query" and "url"
-     * are read as those ({"q": ...}, {"link": ...}), as small models write them.
-     */
-    private fun normalizedArguments(raw: String, function: ToolFunction): String {
-        val props = runCatching { JSONObject(function.parametersSchema).optJSONObject("properties") }.getOrNull()
-        val only = props?.takeIf { it.length() == 1 }?.keys()?.next()
-        val parsed = runCatching { JSONObject(raw.ifBlank { "{}" }) }.getOrNull()
-            ?: return if (only != null) JSONObject().put(only, raw.trim().removeSurrounding("\"")).toString() else raw
-        if (only != null && !parsed.has(only) && parsed.length() == 1) {
-            return JSONObject().put(only, parsed.opt(parsed.keys().next())).toString()
-        }
-        for ((name, others) in ALIASES) {
-            if (props?.has(name) != true || parsed.has(name)) continue
-            others.firstOrNull { parsed.has(it) }?.let { parsed.put(name, parsed.remove(it)) }
-        }
-        return parsed.toString()
-    }
-
-    /**
      * A tool's JSON result as plain text, which every model reads the same way:
      * an error as "Error: …", a lone result as itself, anything else as
      * "Key: value" lines (empty ones left out), with lists as blocks between "---".
@@ -112,13 +80,12 @@ class ToolRegistry {
         return JSONArray((0 until calls.length()).map { i ->
             val call = calls.getJSONObject(i)
             val name = call.getString("name")
-            val match = functionFor(name)
+            val tool = tools.values.firstOrNull { t -> t.functions.any { it.name == name } }
             val content = when {
-                match == null -> "Error: Unknown tool: $name"
-                enforceEnabled && !isToolEnabled(match.first.name) -> "Error: The $name tool is not enabled."
-                else -> runCatching {
-                    asText(match.first.execute(match.second.name, normalizedArguments(call.getString("arguments"), match.second)))
-                }.getOrElse { "Error: " + (it.message ?: "The $name tool failed.") }
+                tool == null -> "Error: Unknown tool: $name"
+                enforceEnabled && !isToolEnabled(tool.name) -> "Error: The $name tool is not enabled."
+                else -> runCatching { asText(tool.execute(name, call.getString("arguments"))) }
+                    .getOrElse { "Error: " + (it.message ?: "The $name tool failed.") }
             }
             JSONObject().put("id", call.getString("id")).put("name", name).put("content", content)
         }).toString()
@@ -129,10 +96,5 @@ class ToolRegistry {
      * concrete tools need a Context / okhttp / the JS engine and stay there,
      * while the registry itself must be usable from a plain JVM.
      */
-    companion object {
-        private val ALIASES = mapOf(
-            "query" to listOf("q", "search_query", "search", "text"),
-            "url" to listOf("uri", "href", "link"),
-        )
-    }
+    companion object
 }

@@ -321,8 +321,6 @@ class GenerationCoordinator(
                 },
                 // Settings → Tools → Tool steps, read once per reply.
                 maxToolRounds = storagePreferences.maxToolSteps,
-                toolNames = if (!toolsActive) emptyList() else toolRegistry.getAllTools()
-                    .filter { toolRegistry.isToolEnabled(it.name) }.flatMap { it.functions }.map { it.name },
                 observer = object : ToolCallLoop.Observer {
                     override fun onToolCalls(calls: List<ToolCallRecord>) {
                         // The round's last text must be on screen before the

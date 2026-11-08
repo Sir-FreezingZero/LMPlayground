@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.druk.llamacpp.tools.Tool
 import com.druk.lmplayground.data.AppDatabase
 import com.druk.lmplayground.data.MemoryNoteEntity
 import com.druk.lmplayground.storage.StoragePreferences
@@ -47,16 +46,14 @@ class SystemPromptExtras(
 
     /**
      * The system prompt the model gets: the user's prompt as written (the
-     * default when there is none, and [BASE_PROMPT] when that's empty too), the
-     * date, and with tools on, a few plain lines on when to use them. The tool
-     * definitions themselves come from the chat format. Saved notes about the
-     * user follow when the memory tool is on.
+     * default when there is none, and [BASE_PROMPT] when that's empty too) and
+     * the date. Tools add nothing here: their definitions come from the chat
+     * format. Saved notes about the user follow when the memory tool is on.
      *
      * Written for the model, so it stays in English.
      */
     fun compose(
         userPrompt: String,
-        tools: List<Tool> = emptyList(),
         withMemory: Boolean = false,
         /** The user's earlier requests kept after the chat was cleared to fit; see [carriedForward]. */
         carried: String? = null,
@@ -64,7 +61,6 @@ class SystemPromptExtras(
         val parts = mutableListOf<String>()
         parts.add(userPrompt.ifBlank { prefs.defaultSystemPrompt }.ifBlank { BASE_PROMPT })
         if (prefs.includeDateInPrompt) parts.add("The current date is ${LocalDate.now()}.")
-        toolGuidance(tools.flatMap { it.functions }.map { it.name }.toSet())?.let { parts.add(it) }
         if (withMemory) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
         carried?.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
         return parts.joinToString("\n\n")
@@ -106,28 +102,6 @@ class SystemPromptExtras(
                 "all of them. The rest can't be looked up, so answer from what you have.\n" +
                 (listOf(first) + newest.asReversed()).joinToString("\n") { "- " + it.trim().replace("\n", "\n  ") }
         }
-    }
-
-    /**
-     * When to use tools, in short plain sentences a small model can follow:
-     * chatting comes first, tools only for what the model can't know or must
-     * get exact. Then one line each for the web, math and code tools.
-     * Null when no tool is on.
-     *
-     * The first line matters most. A long "use tools when they materially
-     * help" made small models treat every message as a task: shorter, flatter
-     * replies and offers to look things up instead of just talking.
-     */
-    private fun toolGuidance(names: Set<String>): String? {
-        if (names.isEmpty()) return null
-        return buildList {
-            add("You also have tools. Most messages need no tool: just chat, answer or write as usual. Use a " +
-                "tool only when you need something you can't know yourself, like news, the time or where the " +
-                "user is, or when it must be exact, like math.")
-            if ("web_search" in names) add("web_search gives short snippets. To read a whole page, call it again with the url.")
-            if ("calculate" in names) add("Use calculate for math.")
-            if ("run_javascript" in names) add("Use run_javascript for work that is easier in code, like counting, sorting or dates.")
-        }.joinToString(" ")
     }
 
     /**
