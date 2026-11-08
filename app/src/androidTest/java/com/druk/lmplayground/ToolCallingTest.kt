@@ -292,7 +292,8 @@ class ToolCallingTest {
 
         val arr = JSONArray(results)
         val content = arr.getJSONObject(0).getString("content")
-        assertTrue("Should report error", content.contains("error"))
+        assertTrue("Should report error: $content", content.startsWith("Error: There is no tool called \"nonexistent\"."))
+        assertTrue("Should list the tools: $content", content.contains("Available tools:"))
     }
 
     // -- Model capability tests --

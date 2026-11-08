@@ -84,8 +84,10 @@ class ToolCallLoop(
         var emptyRetries = 0
         // Each tool's last result and how many times in a row it came back the same.
         val sameResult = mutableMapOf<String, Pair<String, Int>>()
-        // Each call already run this reply, as name + arguments, so a repeat isn't run again.
-        val made = mutableSetOf<String>()
+        // Each call that worked this reply, as name + arguments, with its result,
+        // so a repeat gets that result back instead of running again. Failed
+        // calls aren't kept: a retry after a network blip should run.
+        val made = mutableMapOf<String, String>()
 
         // Thinking for replies after tool results. Forced on (when asked and the
         // model can think) because Gemma 4 and harmony-style models write an
@@ -146,9 +148,10 @@ class ToolCallLoop(
 
             val toolCallsJson = session.getToolCallsJson()
             val started = System.currentTimeMillis()
-            // Calls repeated exactly from earlier in this reply aren't run again.
+            // Calls repeated exactly from earlier in this reply (or this round) aren't run again.
             val calls = JSONArray(toolCallsJson)
-            val fresh = JSONArray((0 until calls.length()).map { calls.getJSONObject(it) }.filter { made.add(callKey(it)) })
+            val seen = made.keys.toMutableSet()
+            val fresh = JSONArray((0 until calls.length()).map { calls.getJSONObject(it) }.filter { seen.add(callKey(it)) })
             // Tools block (network), so they run off this dispatcher; on cancel the
             // in-flight requests are aborted, which unblocks them promptly.
             val ran = if (fresh.length() == 0) JSONArray() else withContext(Dispatchers.IO) {
@@ -160,7 +163,7 @@ class ToolCallLoop(
                     throw e
                 }
             }
-            val toolResults = finishedResults(calls, ran, sameResult).toString()
+            val toolResults = finishedResults(calls, ran, sameResult, made).toString()
             val durationMs = System.currentTimeMillis() - started
 
             val records = ToolCallPairing.pair(toolCallsJson, toolResults, durationMs)
@@ -181,18 +184,34 @@ class ToolCallLoop(
      * gets a note instead), with a hint after an error and a note when a tool
      * keeps returning the same thing.
      */
-    private fun finishedResults(calls: JSONArray, ran: JSONArray, sameResult: MutableMap<String, Pair<String, Int>>): JSONArray {
+    private fun finishedResults(
+        calls: JSONArray,
+        ran: JSONArray,
+        sameResult: MutableMap<String, Pair<String, Int>>,
+        made: MutableMap<String, String>,
+    ): JSONArray {
         val byId = (0 until ran.length()).associate { ran.getJSONObject(it).let { r -> r.getString("id") to r } }
+        // This round's fresh results first, so a duplicate within the round finds its twin.
+        val fresh = (0 until calls.length()).map { calls.getJSONObject(it) }.mapNotNull { call ->
+            val content = byId[call.getString("id")]?.optString("content") ?: return@mapNotNull null
+            if (!content.startsWith("Error:")) made[callKey(call)] = content
+            call.getString("id") to content
+        }.toMap()
         return JSONArray((0 until calls.length()).map { i ->
             val call = calls.getJSONObject(i)
             val name = call.getString("name")
-            val content = byId[call.getString("id")]?.optString("content") ?: DUPLICATE_CALL
-            val times = sameResult[name]?.takeIf { it.first == content }?.second?.plus(1) ?: 1
-            sameResult[name] = content to times
-            resultFor(call, content +
-                (if (content.startsWith("Error:")) TOOL_ERROR_HINT else "") +
-                (if (times >= SAME_RESULT_LIMIT && content != DUPLICATE_CALL) "\n\n[$name returned exactly this " +
-                    "$times times; it will not change. Continue from what you have and finish the task.]" else ""))
+            fresh[call.getString("id")]?.let { content ->
+                val times = sameResult[name]?.takeIf { it.first == content }?.second?.plus(1) ?: 1
+                sameResult[name] = content to times
+                return@map resultFor(call, content +
+                    (if (content.startsWith("Error:")) TOOL_ERROR_HINT else "") +
+                    (if (times >= SAME_RESULT_LIMIT) "\n\n[$name returned exactly this " +
+                        "$times times; it will not change. Continue from what you have and finish the task.]" else ""))
+            }
+            // A repeat: hand back what the same call returned before, so the
+            // model has something to answer from, and say not to ask again.
+            val earlier = made[callKey(call)]
+            resultFor(call, if (earlier == null) DUPLICATE_CALL else "$earlier\n\n$REPEATED_CALL")
         })
     }
 
@@ -202,17 +221,21 @@ class ToolCallLoop(
             "have found so far, provide your final answer now. Do not call any more tools."
         private const val DUPLICATE_CALL = "You already made this exact call. Do not repeat the same tool call. " +
             "Try a different approach, or provide your final answer now."
-        private const val TOOL_ERROR_HINT = "\n\nThe tool call encountered an issue. Please try a different " +
-            "approach or rephrase your request."
+        private const val REPEATED_CALL = "[You already made this exact call; that is its result again. Do not " +
+            "repeat it. Use it, try something different, or give your final answer.]"
+        private const val TOOL_ERROR_HINT = "\n\nThe call did not work. Fix the arguments and call again, try " +
+            "another tool, or answer with what you know and tell the user the tool failed."
         private const val MAX_REPROMPTS = 3
         private const val MAX_EMPTY_RETRIES = 2
         private const val SAME_RESULT_LIMIT = 3
 
         /** Sent when a reply produced nothing to show, with the end of its thinking if any. */
-        fun nothingProducedMessage(thinking: String) = buildString {
+        fun nothingProducedMessage(thinking: String) = if (thinking.isBlank()) {
+            "Your last reply was empty. Reply to the user now: call a tool if one is needed, or give your answer."
+        } else buildString {
             append("You ran out of room while thinking, so nothing was produced. Stop thinking and act: ")
             append("call a tool or answer now. If it will not all fit, deliver the first part and continue after.")
-            if (thinking.isNotBlank()) append("\n\nWhere you had got to:\n").append(thinking.takeLast(600).trim())
+            append("\n\nWhere you had got to:\n").append(thinking.takeLast(600).trim())
         }
         private const val REPROMPT_MAX_CHARS = 2000
 

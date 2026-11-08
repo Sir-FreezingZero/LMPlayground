@@ -114,14 +114,52 @@ class ToolRegistry {
             val name = call.getString("name")
             val match = functionFor(name)
             val content = when {
-                match == null -> "Error: Unknown tool: $name"
-                enforceEnabled && !isToolEnabled(match.first.name) -> "Error: The $name tool is not enabled."
-                else -> runCatching {
-                    asText(match.first.execute(match.second.name, normalizedArguments(call.getString("arguments"), match.second)))
-                }.getOrElse { "Error: " + (it.message ?: "The $name tool failed.") }
+                match == null -> "Error: There is no tool called \"$name\"." + available(enforceEnabled)
+                enforceEnabled && !isToolEnabled(match.first.name) ->
+                    "Error: The $name tool is turned off, so it can't be used." + available(true)
+                else -> {
+                    val args = normalizedArguments(call.optString("arguments"), match.second)
+                    missingInputs(args, match.second)?.let { "Error: $it" } ?: runCatching {
+                        asText(match.first.execute(match.second.name, args))
+                    }.getOrElse { "Error: " + (it.message ?: "The $name tool failed.") }
+                }
             }
             JSONObject().put("id", call.getString("id")).put("name", name).put("content", content)
         }).toString()
+    }
+
+    /** " Available tools: a, b." (enabled ones only when [enabledOnly]), or "" if none. */
+    private fun available(enabledOnly: Boolean): String {
+        val names = tools.values.filter { !enabledOnly || isToolEnabled(it.name) }.flatMap { it.functions }.map { it.name }
+        return if (names.isEmpty()) " No tools are available; answer without them."
+        else " Available tools: ${names.joinToString(", ")}."
+    }
+
+    /**
+     * Why [args] can't be passed to [function] (not a JSON object, or a
+     * required input missing or blank), with what it takes, or null if fine.
+     * Said up front so the model can fix the call instead of reading a parser
+     * error like `JSONObject["query"] not found`.
+     */
+    private fun missingInputs(args: String, function: ToolFunction): String? {
+        val schema = runCatching { JSONObject(function.parametersSchema) }.getOrNull() ?: return null
+        val required = schema.optJSONArray("required") ?: return null
+        val parsed = runCatching { JSONObject(args.ifBlank { "{}" }) }.getOrNull()
+        val missing = (0 until required.length()).map { required.optString(it) }.filter { key ->
+            val v = parsed?.opt(key)
+            v == null || v == JSONObject.NULL || (v is String && v.isBlank())
+        }
+        if (parsed != null && missing.isEmpty()) return null
+        val props = schema.optJSONObject("properties")
+        val inputs = props?.keys()?.asSequence()?.joinToString("; ") { key ->
+            val p = props.optJSONObject(key)
+            val type = p?.optString("type").orEmpty().ifEmpty { "value" }
+            val req = if ((0 until required.length()).any { required.optString(it) == key }) "required" else "optional"
+            "$key ($type, $req)" + (p?.optString("description")?.takeIf { it.isNotBlank() }?.let { ": $it" } ?: "")
+        }.orEmpty()
+        val what = if (parsed == null) "The arguments for ${function.name} must be a JSON object."
+        else "${function.name} needs ${missing.joinToString(" and ") { "\"$it\"" }}."
+        return "$what Its inputs: $inputs. Call it again with them filled in."
     }
 
     /**

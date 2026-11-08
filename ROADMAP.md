@@ -31,4 +31,6 @@ Replies now show the text the model writes between tool calls, but Copy and Shar
 - **Tool rounds per reply are a setting**: Settings → Tools → Tool steps, 1 to 20, default 10 (`StoragePreferences.maxToolSteps`). At the limit the model is told to answer with what it has.
 - **Thinking after tool results follows the thinking switch**, except for Gemma and gpt-oss, which give blank replies after a tool call without it, so it's forced on for them (`GenerationCoordinator`, `forceThinkingAfterTools`).
 - **The system prompt asks the model to say what it's about to do** before each tool call, whenever any tool is on (`system_prompt_tool_hint`).
+- **Repeated calls aren't run again.** A call made earlier in the reply (same name and arguments) gets its earlier result back with a note not to repeat it; a call that failed can be retried (`ToolCallLoop`).
+- **Bad calls are explained.** An unknown or switched-off tool lists the tools that are on; a call missing a required input lists the tool's inputs, before the tool runs (`ToolRegistry`).
 - **Probably one tool per round.** The app doesn't turn on llama.cpp's parallel tool calls, which are off by default. Not confirmed against the llama.cpp source.
