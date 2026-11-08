@@ -560,9 +560,11 @@ class ModelRuntime(
         systemPrompt: String,
         messages: List<Message>,
         catchPayloadTooLargeOnCreate: Boolean = false,
+        /** False when called from the generating job itself (it would cancel itself). */
+        cancelGeneration: Boolean = true,
     ) {
         if (!isLoaded) return
-        cancelAndJoinGeneration()
+        if (cancelGeneration) cancelAndJoinGeneration()
 
         val prevSession = session
 

@@ -18,6 +18,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -192,6 +194,21 @@ class GenerationCoordinator(
         // — too heavy to run per token).
         val hapticsAllowed = storagePreferences.hapticOnGeneration &&
             GenerationHaptics.isSystemHapticsEnabled(app)
+        // Stuck-reply timeouts, as in PrivateLM: the first token of each
+        // round within 60 s (reading the prompt; plus 50 ms per token of
+        // context here, since a slow phone may read only ~20 tokens a
+        // second), then never more than 30 s
+        // between tokens, and the whole reply within max(longest reply in
+        // seconds, 180 s), plus the thinking limit when thinking. Time spent
+        // running tools doesn't count. A stuck reply ends like Stop.
+        val watch = StallWatch(
+            firstTokenMs = FIRST_TOKEN_TIMEOUT_MS + 50L * storagePreferences.modelParams.contextSize,
+            hardLimitMs = 1000L * maxOf(
+                maxTokens + if (enableThinking) storagePreferences.modelParams.thinkingBudget else 0,
+                MIN_HARD_LIMIT_S,
+            ),
+        )
+        var watchdog: Job? = null
         val callback = object : LlamaGenerationCallback {
             var totalTokens = 0
             var thinkingTokenCount = 0
@@ -229,6 +246,7 @@ class GenerationCoordinator(
 
             override fun onToolCallStarted() = listener.onToolsRunning(true)
             override fun onFullResponse(response: String) {
+                watch.lastTokenMs = System.currentTimeMillis()
                 totalTokens++
                 val nowMs = System.currentTimeMillis()
                 if (nowMs - lastNotifUpdateMs >= 1000L) {
@@ -310,6 +328,19 @@ class GenerationCoordinator(
             notifications.tokensLine(0),
         )
         try {
+            watchdog = launch {
+                while (isActive) {
+                    delay(1000)
+                    if (watch.check(System.currentTimeMillis())) {
+                        Log.w(TAG, "Reply stalled; stopping it")
+                        listener.onUserError(app.getString(R.string.reply_stalled))
+                        try { llamaSession.requestAbort() } catch (_: Throwable) {}
+                        // Server chats have no abort: stop the job, as Stop does.
+                        if (llamaSession !is LlamaGenerationSession) ourJob?.cancel()
+                        break
+                    }
+                }
+            }
             // The loop itself lives in :llamacpp (ToolCallLoop) so the
             // macOS harness drives the exact same code — including the
             // forced-thinking rule below, which is where the Gemma-family
@@ -321,9 +352,11 @@ class GenerationCoordinator(
                     override fun executeToolCalls(toolCallsJson: String): String {
                         Log.d(TAG, "Tool calls: $toolCallsJson")
                         listener.onToolsRunning(true)
+                        watch.toolsStarted(System.currentTimeMillis())
                         try {
                             return toolRegistry.executeToolCalls(toolCallsJson, enforceEnabled = true)
                         } finally {
+                            watch.toolsFinished(System.currentTimeMillis())
                             listener.onToolsRunning(false)
                         }
                     }
@@ -359,6 +392,7 @@ class GenerationCoordinator(
                         // follows responseThinking (the just-submitted flag) —
                         // not the user toggle — so the UI shows the thinking
                         // indicator while we wait for the answer.
+                        watch.roundStarted(System.currentTimeMillis())
                         callback.totalTokens = 0
                         callback.thinkingTokenCount = 0
                         callback.thinkingComplete = !responseThinking
@@ -395,6 +429,7 @@ class GenerationCoordinator(
             // cancelled (Stop tapped). NonCancellable lets us
             // finish the Room writes and UI tear-down without
             // re-throwing CancellationException mid-cleanup.
+            watchdog?.cancel()
             withContext(NonCancellable) {
                 try { llamaSession.printReport() } catch (_: Throwable) {}
                 // Finished, stopped or failed: show the last held text.
@@ -404,7 +439,35 @@ class GenerationCoordinator(
         }
     }
 
+    /** Times one reply for the stuck-reply timeouts (see runTurn). */
+    private class StallWatch(private val firstTokenMs: Long, private val hardLimitMs: Long) {
+        private val startMs = System.currentTimeMillis()
+        @Volatile private var roundStartMs = startMs
+        @Volatile var lastTokenMs = 0L
+        @Volatile private var toolsSinceMs = 0L
+        @Volatile private var toolMs = 0L
+
+        fun roundStarted(now: Long) { roundStartMs = now; lastTokenMs = 0L }
+        fun toolsStarted(now: Long) { toolsSinceMs = now }
+        fun toolsFinished(now: Long) {
+            if (toolsSinceMs > 0) toolMs += now - toolsSinceMs
+            toolsSinceMs = 0L
+        }
+
+        /** True when the reply is stuck or has run too long. */
+        fun check(now: Long): Boolean {
+            if (toolsSinceMs > 0) return false
+            val last = lastTokenMs
+            val stalled = if (last == 0L) now - roundStartMs > firstTokenMs
+            else now - last > TOKEN_STALL_TIMEOUT_MS
+            return stalled || now - startMs - toolMs > hardLimitMs
+        }
+    }
+
     private companion object {
+        private const val FIRST_TOKEN_TIMEOUT_MS = 60_000L
+        private const val TOKEN_STALL_TIMEOUT_MS = 30_000L
+        private const val MIN_HARD_LIMIT_S = 180
         private const val TAG = "GenerationCoordinator"
         /** About 14 screen updates a second while a reply streams. */
         private const val UI_UPDATE_INTERVAL_MS = 70L

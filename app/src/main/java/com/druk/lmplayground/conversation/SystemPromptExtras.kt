@@ -46,8 +46,8 @@ class SystemPromptExtras(
 
     /**
      * The system prompt the model gets: the user's prompt as written (the
-     * default when there is none, and [BASE_PROMPT] when that's empty too) and
-     * the date. Tools add nothing here: their definitions come from the chat
+     * default when there is none, and PrivateLM's [BASE_PROMPT] when that's
+     * empty too) and the date. Tools add nothing here: their definitions come from the chat
      * format. Saved notes about the user follow when the memory tool is on.
      *
      * Written for the model, so it stays in English.
@@ -55,9 +55,11 @@ class SystemPromptExtras(
     fun compose(
         userPrompt: String,
         withMemory: Boolean = false,
+        /** The loaded model's file name, for PrivateLM's uncensored-model prompt. */
+        modelFilename: String? = null,
     ): String {
         val parts = mutableListOf<String>()
-        parts.add(userPrompt.ifBlank { prefs.defaultSystemPrompt }.ifBlank { BASE_PROMPT })
+        parts.add(userPrompt.ifBlank { prefs.defaultSystemPrompt }.ifBlank { basePrompt(modelFilename) })
         if (prefs.includeDateInPrompt) parts.add("The current date is ${LocalDate.now()}.")
         if (withMemory) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
         return parts.joinToString("\n\n")
@@ -65,11 +67,27 @@ class SystemPromptExtras(
 
     companion object {
         /**
-         * With no prompt at all, a small model given tools decides it can only
-         * run tools: it refuses to write a poem and answers "hello" by asking
-         * what tool to use. One line says otherwise.
+         * PrivateLM's default prompt (without its app name): it gives a small
+         * model a tone and a style to copy. Used when neither the chat nor
+         * Settings → System prompts has one.
          */
-        const val BASE_PROMPT = "You are a helpful assistant. You can chat, answer questions and write anything the user asks for."
+        const val BASE_PROMPT = "You are a helpful and friendly assistant. Be concise, accurate, and " +
+            "conversational. Answer questions directly without unnecessary preamble."
+
+        /** PrivateLM's prompt for models published as uncensored. */
+        const val UNCENSORED_PROMPT = "You are a helpful assistant running with an uncensored local model. " +
+            "Be direct, mature, and conversational. Avoid moralizing or unnecessary disclaimers, but keep " +
+            "answers accurate and do not help with real-world harm, abuse, or illegal activity."
+
+        /** PrivateLM's test: the model's name says it's uncensored. */
+        fun isUncensoredModel(name: String?): Boolean {
+            val lower = name.orEmpty().lowercase()
+            return listOf("uncensored", "abliterated", "unrestricted", "dolphin").any { it in lower }
+        }
+
+        fun basePrompt(modelFilename: String?) =
+            if (isUncensoredModel(modelFilename)) UNCENSORED_PROMPT else BASE_PROMPT
+
         private const val MAX_NOTES = 40
         private const val MAX_CHARS = 4000
         private val CONTROL = Regex("[\\u0000-\\u001F]")

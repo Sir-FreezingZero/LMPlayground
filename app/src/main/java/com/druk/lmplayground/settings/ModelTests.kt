@@ -358,8 +358,9 @@ class ModelTestsViewModel(app: Application) : AndroidViewModel(app) {
     @Suppress("UNUSED_PARAMETER")
     private fun params(model: ModelInfo) = prefs.modelParams
 
+    @Suppress("UNUSED_PARAMETER")
     private fun systemPrompt(model: ModelInfo, withTools: Boolean) =
-        promptExtras.compose("")
+        promptExtras.compose("", modelFilename = model.filename)
 
     /**
      * A session as a chat would start it: the model's context size and

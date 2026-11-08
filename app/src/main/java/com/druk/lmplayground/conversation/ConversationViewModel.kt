@@ -146,6 +146,8 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         }
 
         override fun onModelResolved(model: ModelInfo) {
+            // Read by composeSystemPrompt before the posted _loadedModel lands.
+            resolvedModelFilename = model.filename
             _loadedModel.postValue(model)
             _thinkingEnabled.postValue(false)
             _supportsThinking.postValue(false)
@@ -961,6 +963,13 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         runtime.generatingJob = viewModelScope.launch {
             val ourJob = coroutineContext[Job]
 
+            // PrivateLM sends only the newest 16 messages. Rebuilding the
+            // session every turn would throw away the prompt cache each time,
+            // so it's done in steps: once more than 24 earlier messages are
+            // in the session, it's rebuilt with the newest 16. The screen
+            // keeps the whole chat.
+            trimHistoryIfLong(uiState.messages.toList().dropLast(2))
+
             // Persist user message (with the attached image path, if any)
             val sessionId = ensureSession(message)
             sessionStore.persistMessage(sessionId, userMessage, persistedImageFile?.absolutePath)
@@ -983,6 +992,41 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
             )
         }
     }
+
+    /**
+     * Rebuilds the session with the newest [HISTORY_KEEP] of [earlier] (the
+     * chat before the message being sent) once it holds more than
+     * [HISTORY_TRIM_AT]. Runs inside the generating job, so it doesn't cancel
+     * generation. Server chats and short chats are left alone.
+     */
+    private suspend fun trimHistoryIfLong(earlier: List<Message>) {
+        val live = runtime.session
+        if (!runtime.isLoaded || live !is com.druk.llamacpp.LlamaGenerationSession) return
+        val chat = earlier.filter { it.author == "User" || it.author == "Assistant" }
+        // Messages the session doesn't hold: those dropped by the last trim,
+        // as long as that trimmed session is still the live one (any other
+        // rebuild replays the whole chat).
+        val dropped = if (live === trimmedSession) trimmedStart else 0
+        if (chat.size - dropped <= HISTORY_TRIM_AT) return
+        // Start the kept part on a user message, so it replays as whole turns.
+        var start = chat.size - HISTORY_KEEP
+        while (start < chat.size && chat[start].author != "User") start++
+        val kept = chat.subList(start, chat.size)
+        val params = _generationParams.value ?: storagePreferences.modelParams
+        val systemPrompt = _systemPrompt.value.orEmpty()
+        if (!validateReplaySize(systemPrompt, kept)) return
+        runtime.recreateSessionWithReplay(params, systemPrompt, kept, cancelGeneration = false)
+        trimmedSession = runtime.session
+        trimmedStart = start
+        refreshContextUsage()
+    }
+
+    /** The model being loaded or loaded, set at once (unlike _loadedModel, which is posted). */
+    @Volatile private var resolvedModelFilename: String? = null
+
+    /** The session [trimHistoryIfLong] last made, and how many chat messages it left out. */
+    private var trimmedSession: com.druk.llamacpp.GenerationSession? = null
+    private var trimmedStart = 0
 
     /**
      * Regenerate the assistant reply [assistantMessageId]: everything from
@@ -1314,7 +1358,9 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     /** [prompt] with the extras; saved memories only when this chat has the memory tool on. */
     private fun composeSystemPrompt(prompt: String): String {
         val tools = toolStates(_chatTools.value.orEmpty())
-        return systemPromptExtras.compose(prompt, tools["memory"] == true)
+        return systemPromptExtras.compose(
+            prompt, tools["memory"] == true, resolvedModelFilename ?: _loadedModel.value?.filename,
+        )
     }
 
     /** Each tool's state in this chat: [chatTools] over the defaults. */
@@ -1637,6 +1683,13 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
     fun resetModelList() {
         _models.postValue(emptyList())
+    }
+
+    private companion object {
+        /** Earlier messages PrivateLM sends with each turn. */
+        const val HISTORY_KEEP = 16
+        /** Past this many earlier messages the session is rebuilt with [HISTORY_KEEP]. */
+        const val HISTORY_TRIM_AT = 24
     }
 
     data class RamWarning(

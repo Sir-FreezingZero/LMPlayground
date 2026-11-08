@@ -253,6 +253,7 @@
     <string name="device_recommended_max_tokens" tools:ignore="MissingTranslation">Recommended max tokens</string>
     <string name="device_chip" tools:ignore="MissingTranslation">Chipset</string>
     <string name="device_recommended_quant" tools:ignore="MissingTranslation">Recommended quant</string>
+    <string name="reply_stalled" tools:ignore="MissingTranslation">The model stopped responding, so the reply was ended.</string>
     <string name="model_params_all_models" tools:ignore="MissingTranslation">These settings apply to every model.</string>
     <string name="top_p" translatable="false">Top-P</string>
     <string name="repetition_penalty">Repetition Penalty</string>
