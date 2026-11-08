@@ -363,7 +363,7 @@ class ModelTestsViewModel(app: Application) : AndroidViewModel(app) {
         val p = params(model)
         val prompt = systemPrompt(model, withTools)
         val session = llama.createSession(p.contextSize, p.temperature, p.topP, p.repetitionPenalty, p.topK, p.minP,
-            42, 256, prompt, p.presencePenalty) ?: error("Couldn't start a session.")
+            42, 256, prompt) ?: error("Couldn't start a session.")
         if (withTools) {
             session.setTools(toolsJson)
             preambleCache.apply(session, model.filename, llama.getModelSize(), prompt, toolsJson)
@@ -507,7 +507,7 @@ class ModelTestsViewModel(app: Application) : AndroidViewModel(app) {
             val p = params(model)
             appendLine("- Model: ${model.name} (`${model.filename}`)")
             appendLine("- Settings: context ${p.contextSize}, temperature ${p.temperature}, top-p ${p.topP}, top-k ${p.topK}, " +
-                "min-p ${p.minP}, repetition ${p.repetitionPenalty}, presence ${p.presencePenalty}, seed 42, thinking off")
+                "min-p ${p.minP}, repetition ${p.repetitionPenalty}, seed 42, thinking off")
             appendLine()
             appendLine("## System prompt (tools on)")
             appendLine()

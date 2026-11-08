@@ -41,7 +41,7 @@ object ChatExport {
         appendLine("- Model: ${modelName ?: "none loaded"}${modelFilename?.let { " (`$it`)" } ?: ""}")
         params?.let {
             appendLine("- Parameters: context ${it.contextSize}, temperature ${it.temperature}, top-p ${it.topP}, " +
-                "top-k ${it.topK}, min-p ${it.minP}, repetition penalty ${it.repetitionPenalty}, presence penalty ${it.presencePenalty}, thinking budget ${it.thinkingBudget}, seed ${it.seed}")
+                "top-k ${it.topK}, min-p ${it.minP}, repetition penalty ${it.repetitionPenalty}, seed ${it.seed}")
         }
         appendLine("- Thinking: ${if (thinking) "on" else "off"}")
         appendLine()

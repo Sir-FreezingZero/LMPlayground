@@ -430,5 +430,4 @@
     <string name="remote_connecting">Se conectează…</string>
     <string name="remote_unreachable">Nu se poate ajunge la %1$s. Verifică dacă serverul rulează și dacă telefonul e în aceeași rețea.</string>
     <string name="export_chat">Exportă conversația</string>
-    <string name="thinking_no_limit">Fără limită</string>
 </resources>

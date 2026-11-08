@@ -423,5 +423,4 @@
     <string name="remote_connecting">Đang kết nối…</string>
     <string name="remote_unreachable">Không kết nối được %1$s. Hãy kiểm tra máy chủ đang chạy và điện thoại này ở cùng mạng.</string>
     <string name="export_chat">Xuất cuộc trò chuyện</string>
-    <string name="thinking_no_limit">Không giới hạn</string>
 </resources>

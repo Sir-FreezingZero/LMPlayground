@@ -430,5 +430,4 @@
     <string name="remote_connecting">Bağlanıyor…</string>
     <string name="remote_unreachable">%1$s adresine ulaşılamadı. Sunucunun çalıştığını ve bu telefonun aynı ağda olduğunu kontrol edin.</string>
     <string name="export_chat">Sohbeti dışa aktar</string>
-    <string name="thinking_no_limit">Sınırsız</string>
 </resources>

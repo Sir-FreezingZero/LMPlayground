@@ -463,8 +463,7 @@ class ModelRuntime(
                 params.minP,
                 params.seed,
                 params.thinkingBudget,
-                effectivePrompt,
-                params.presencePenalty,
+                effectivePrompt
             )?.also { synchronized(effectivePrompts) { effectivePrompts[it] = effectivePrompt } }
         } catch (e: InferenceUnavailableException) {
             // The :llama service died (or hasn't bound yet). Surface a
@@ -523,18 +522,6 @@ class ModelRuntime(
         session = newSession
         prevSession?.destroy()
         return true
-    }
-
-    /**
-     * A fresh session with no history in place of the live one, called from
-     * inside the reply being generated, so unlike the resets below nothing
-     * is cancelled. Used when the chat no longer fits the context.
-     */
-    suspend fun replaceSession(params: GenerationParams, systemPrompt: String) {
-        if (!isLoaded) return
-        withContext(Dispatchers.Default) {
-            newSession(params, systemPrompt)?.let { swapInSessionWithReplay(it, session, emptyList()) }
-        }
     }
 
     /**

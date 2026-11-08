@@ -471,5 +471,4 @@
     <string name="remote_connecting">Kobler til…</string>
     <string name="remote_unreachable">Fikk ikke kontakt med %1$s. Sjekk at serveren kjører og at telefonen er på samme nettverk.</string>
     <string name="export_chat">Eksporter chat</string>
-    <string name="thinking_no_limit">Ingen grense</string>
 </resources>

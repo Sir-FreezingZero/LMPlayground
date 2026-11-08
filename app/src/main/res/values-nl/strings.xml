@@ -472,5 +472,4 @@
     <string name="remote_connecting">Verbinden…</string>
     <string name="remote_unreachable">Kan %1$s niet bereiken. Controleer of de server draait en deze telefoon op hetzelfde netwerk zit.</string>
     <string name="export_chat">Chat exporteren</string>
-    <string name="thinking_no_limit">Geen limiet</string>
 </resources>

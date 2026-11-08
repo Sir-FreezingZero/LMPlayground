@@ -423,5 +423,4 @@
     <string name="remote_connecting">Підключення…</string>
     <string name="remote_unreachable">Не вдалося з’єднатися з %1$s. Перевірте, що сервер працює, а телефон у тій самій мережі.</string>
     <string name="export_chat">Експортувати чат</string>
-    <string name="thinking_no_limit">Без обмежень</string>
 </resources>

@@ -176,15 +176,9 @@ class RagRepository(
         query: String,
         topK: Int = DEFAULT_TOP_K,
         minScore: Float = DEFAULT_MIN_SCORE,
-        /** Up to this many characters, the documents go in whole, in order, with no search. */
-        wholeDocumentChars: Int = 0,
     ): List<RetrievedChunk> {
         val rows = ragDao.getReadyChunksForSession(sessionId)
         if (rows.isEmpty()) return emptyList()
-        if (rows.sumOf { it.text.length } <= wholeDocumentChars) {
-            val names = rows.map { it.documentId }.distinct().associateWith { ragDao.getDocumentName(it) ?: "document" }
-            return rows.map { RetrievedChunk(documentName = names.getValue(it.documentId), text = it.text, score = 1f) }
-        }
         val queryVector = withContext(Dispatchers.Default) {
             embeddingManager.embedQuery(query)
         } ?: return emptyList()

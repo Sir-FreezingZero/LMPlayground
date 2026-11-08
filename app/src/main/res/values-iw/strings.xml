@@ -474,5 +474,4 @@
     <string name="remote_connecting">מתחבר…</string>
     <string name="remote_unreachable">אין גישה ל-%1$s. ודאו שהשרת פועל ושהטלפון באותה רשת.</string>
     <string name="export_chat">ייצוא הצ\'אט</string>
-    <string name="thinking_no_limit">ללא הגבלה</string>
 </resources>

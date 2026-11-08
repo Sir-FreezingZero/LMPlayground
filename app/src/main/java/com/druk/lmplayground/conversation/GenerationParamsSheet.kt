@@ -215,7 +215,7 @@ private fun ParamsTab(
                 val newContextSize = snapped.coerceIn(contextMin, contextMax)
                 val oldContextSize = params.contextSize
                 // Auto-scale thinking budget proportionally when context size changes
-                val newBudget = if (params.thinkingBudget < 0) -1 else if (oldContextSize > 0) {
+                val newBudget = if (oldContextSize > 0) {
                     (params.thinkingBudget.toLong() * newContextSize / oldContextSize).toInt()
                         .coerceIn(64, newContextSize)
                 } else {
@@ -227,20 +227,18 @@ private fun ParamsTab(
 
         // Thinking Budget (only for thinking-capable models)
         if (supportsThinking) {
-            // The far right of the slider is "no limit" (-1).
             val budgetMin = 64
             val budgetMax = params.contextSize
             ParamSlider(
                 label = stringResource(R.string.thinking_budget),
-                value = if (params.thinkingBudget < 0) budgetMax.toFloat() else params.thinkingBudget.toFloat(),
+                value = params.thinkingBudget.toFloat(),
                 valueRange = budgetMin.toFloat()..budgetMax.toFloat(),
                 steps = 0,
-                valueDisplay = if (params.thinkingBudget < 0) stringResource(R.string.thinking_no_limit)
-                    else stringResource(R.string.tokens_value, params.thinkingBudget),
+                valueDisplay = stringResource(R.string.tokens_value, params.thinkingBudget),
                 onValueChange = {
                     val snapped = (it / 64).roundToInt() * 64
                     onParamsChange(
-                        params.copy(thinkingBudget = if (snapped >= budgetMax) -1 else snapped.coerceIn(budgetMin, budgetMax))
+                        params.copy(thinkingBudget = snapped.coerceIn(budgetMin, budgetMax))
                     )
                 }
             )
@@ -372,7 +370,7 @@ private fun ParamsTab(
 
         OutlinedButton(
             // Sampling only: keeping the context size doesn't wipe the chat.
-            onClick = { onParamsChange(recommendedParams.copy(contextSize = params.contextSize)) },
+            onClick = { onParamsChange(recommendedParams.copy(contextSize = params.contextSize, thinkingBudget = params.thinkingBudget)) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(stringResource(R.string.reset))

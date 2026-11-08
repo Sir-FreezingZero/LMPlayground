@@ -113,7 +113,6 @@ void LlamaGenerationSession::recreateToolSampler(const common_chat_params &rende
     sp.min_p             = sampler_params.min_p;
     sp.temp              = sampler_params.temperature;
     sp.penalty_repeat    = sampler_params.repetition_penalty;
-    sp.penalty_present   = sampler_params.presence_penalty;
     sp.penalty_last_n    = 256;
     sp.seed              = sampler_params.seed;
     sp.min_keep          = 1;
@@ -235,10 +234,9 @@ void LlamaGenerationSession::rebuildSamplerChain(llama_sampler *budget_first) {
         llama_sampler_chain_add(smpl, budget_first);
     }
 
-    // Repetition penalty (only if > 1.0) and presence penalty (only if > 0)
-    if (sampler_params.repetition_penalty > 1.0f || sampler_params.presence_penalty > 0.0f) {
-        llama_sampler_chain_add(smpl, llama_sampler_init_penalties(llama_vocab_n_tokens(vocab), 256,
-            std::max(1.0f, sampler_params.repetition_penalty), 0.0f, sampler_params.presence_penalty));
+    // Repetition penalty (only if > 1.0)
+    if (sampler_params.repetition_penalty > 1.0f) {
+        llama_sampler_chain_add(smpl, llama_sampler_init_penalties(llama_vocab_n_tokens(vocab), 256, sampler_params.repetition_penalty, 0.0f, 0.0f));
     }
 
     // Top-K (only if > 0)

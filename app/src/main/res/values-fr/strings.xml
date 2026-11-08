@@ -429,5 +429,4 @@
     <string name="remote_connecting">Connexion…</string>
     <string name="remote_unreachable">Impossible de joindre %1$s. Vérifiez que le serveur est lancé et que ce téléphone est sur le même réseau.</string>
     <string name="export_chat">Exporter la discussion</string>
-    <string name="thinking_no_limit">Aucune limite</string>
 </resources>

@@ -13,8 +13,7 @@ class NativeLlamaModel {
         minP: Float,
         seed: Int,
         thinkingBudget: Int,
-        systemPrompt: String,
-        presencePenalty: Float = 0f,
+        systemPrompt: String
     ): NativeLlamaSession?
 
     // Embeddings: create a pooling context over this model. Independent of

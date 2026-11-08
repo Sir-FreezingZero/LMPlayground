@@ -460,5 +460,4 @@
     <string name="remote_connecting">Yhdistetään…</string>
     <string name="remote_unreachable">Palvelimeen %1$s ei saatu yhteyttä. Tarkista, että palvelin on käynnissä ja puhelin on samassa verkossa.</string>
     <string name="export_chat">Vie keskustelu</string>
-    <string name="thinking_no_limit">Ei rajaa</string>
 </resources>

@@ -900,7 +900,6 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
             sessionStore.persistMessage(sessionId, userMessage, persistedImageFile?.absolutePath)
 
             val wire = buildWireContent(sessionId, message.content)
-            clearIfFull(sessionId, wire)
             if (wire != message.content) sentContents[userMessage.id] = wire
             generation.runTurn(
                 content = wire,
@@ -1092,20 +1091,16 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         val rag = ragRepository ?: return userText
         return try {
             if (!rag.hasReadyDocuments(sessionId)) return userText
+            val retrieved = rag.retrieve(sessionId, userText)
+            if (retrieved.isEmpty()) return userText
             val contextSize = _generationParams.value?.contextSize ?: 4096
-            // Room for the whole document: what's left after the chat so far,
-            // a quarter for the reply and some slack, at most ~6,000 tokens.
-            val used = _contextUsage.value?.first ?: 0
-            val whole = ((contextSize * 3 / 4 - used - 512) * 4).coerceIn(0, 24_000)
-            // Excerpt budget: ~25% of the session context (or the whole document
-            // when it fits), and never past the binder payload ceiling (the
-            // pre-flight check in addMessage only covered the original text).
+            // Excerpt budget: ~25% of the session context, and never past
+            // the binder payload ceiling (the pre-flight check in
+            // addMessage only covered the original text).
             val budget = minOf(
-                maxOf(RagPromptBuilder.budgetChars(contextSize), whole),
+                RagPromptBuilder.budgetChars(contextSize),
                 InferenceLimits.MAX_PAYLOAD_BYTES / 2 - userText.length - 500,
             )
-            val retrieved = rag.retrieve(sessionId, userText, wholeDocumentChars = minOf(whole, budget))
-            if (retrieved.isEmpty()) return userText
             RagPromptBuilder.build(userText, retrieved, budget)
         } catch (t: Throwable) {
             android.util.Log.w("ConversationViewModel", "Retrieval failed; sending plain message", t)
@@ -1119,7 +1114,6 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
     @MainThread
     fun loadSession(sessionId: String) {
-        carried = null
         newChatFolderId = null
         viewModelScope.launch {
             val uiMessages = sessionStore.loadSessionMessages(sessionId) ?: return@launch
@@ -1153,9 +1147,8 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                     topK = sessionEntity.topK,
                     minP = sessionEntity.minP,
                     seed = sessionEntity.seed,
-                    thinkingBudget = sessionEntity.thinkingBudget,
-                    // Not stored per chat; follow the model's recommendation.
-                    presencePenalty = GenerationParams.recommendedFor(sessionEntity.modelFilename).presencePenalty,
+                    // -1 ("no limit") was briefly possible; use the normal limit instead.
+                    thinkingBudget = sessionEntity.thinkingBudget.takeIf { it >= 0 } ?: (sessionEntity.contextSize / 4)
                 )
                 _generationParams.value = params
                 _systemPrompt.value = sessionEntity.systemPrompt
@@ -1264,28 +1257,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     /** [prompt] with the extras; saved memories only when this chat has the memory tool on. */
     private fun composeSystemPrompt(prompt: String): String {
         val tools = toolStates(_chatTools.value.orEmpty())
-        return systemPromptExtras.compose(
-            prompt, tools["memory"] == true,
-            carried?.takeIf { it.first == _currentSessionId.value }?.second,
-        )
-    }
-
-    /** The chat id and its earlier messages kept after it was cleared to fit; see [clearIfFull]. */
-    @Volatile private var carried: Pair<String, String>? = null
-
-    /**
-     * When [next] won't fit beside the chat so far and room for the reply (a
-     * quarter of the context), start the session over with just the system
-     * prompt and the user's earlier messages quoted in it. Done once when the
-     * chat fills, not a little on every reply, so the phone re-reads it once.
-     */
-    private suspend fun clearIfFull(sessionId: String, next: String) {
-        val (used, total) = _contextUsage.value ?: return
-        if (used + next.length / 3 + total / 4 <= total) return
-        val earlier = uiState.messages.dropLast(2).filter { it.author == "User" }.map { it.content }
-        if (earlier.isEmpty()) return
-        carried = sessionId to SystemPromptExtras.carriedForward(earlier, total)
-        runtime.replaceSession(_generationParams.value ?: GenerationParams(), _systemPrompt.value.orEmpty())
+        return systemPromptExtras.compose(prompt, tools["memory"] == true)
     }
 
     /** Each tool's state in this chat: [chatTools] over the defaults. */

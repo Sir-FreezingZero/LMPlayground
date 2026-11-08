@@ -429,5 +429,4 @@
     <string name="remote_connecting">Conectando…</string>
     <string name="remote_unreachable">Não foi possível acessar %1$s. Verifique se o servidor está rodando e se este celular está na mesma rede.</string>
     <string name="export_chat">Exportar conversa</string>
-    <string name="thinking_no_limit">Sem limite</string>
 </resources>

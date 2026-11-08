@@ -451,8 +451,7 @@ Java_com_druk_llamacpp_jni_NativeLlamaModel_createSession(JNIEnv *env, jobject t
                                                   jfloat minP,
                                                   jint seed,
                                                   jint thinkingBudget,
-                                                  jstring systemPrompt,
-                                                  jfloat presencePenalty) {
+                                                  jstring systemPrompt) {
 
     jclass clazz1 = env->GetObjectClass(thiz);
     jfieldID fid1 = env->GetFieldID(clazz1, "nativeHandle", "J");
@@ -470,7 +469,6 @@ Java_com_druk_llamacpp_jni_NativeLlamaModel_createSession(JNIEnv *env, jobject t
     params.min_p = minP;
     params.seed = (seed < 0) ? LLAMA_DEFAULT_SEED : static_cast<uint32_t>(seed);
     params.thinking_budget = thinkingBudget;
-    params.presence_penalty = presencePenalty;
     if (systemPrompt != nullptr) {
         const char* utfSystemPrompt = env->GetStringUTFChars(systemPrompt, nullptr);
         if (utfSystemPrompt != nullptr) {
