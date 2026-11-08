@@ -237,29 +237,45 @@ class ToolCallLoop(
             append("call a tool or answer now. If it will not all fit, deliver the first part and continue after.")
             append("\n\nWhere you had got to:\n").append(thinking.takeLast(600).trim())
         }
-        private const val REPROMPT_MAX_CHARS = 2000
 
+        /**
+         * Sent when a reply only announced an action. It is a hidden turn, but
+         * whatever the model writes next replaces the announcement on screen,
+         * so it asks for the call or a complete answer, not a reply to itself.
+         */
         fun repromptMessage(toolNames: List<String>) =
-            "You have access to enabled tools. If a tool is needed to satisfy the user's request or complete " +
-                "the action you described, call ${toolNames.joinToString(" or ")} now. If no tool is needed, " +
-                "provide the final answer and follow the user's requested format."
+            "(Note from the app, not the user: you said you would do something but did not call a tool. " +
+                "If a tool is needed, call it now; the tools are ${toolNames.joinToString(", ")}. If none is " +
+                "needed, write your complete answer to the user instead. Do not mention this note.)"
 
-        // Forward-looking intent ("I'll…", "Let me…", "First, …", "Step 1: search…"), but not
-        // offers to help ("I'll be happy to help", "let me know") or refusals ("I will not").
-        private const val ACTION = "(?:search|check|look|find|fetch|get|call|use|run|query|calculate|compute|" +
-            "convert|set|read|retrieve|verify|confirm|determine|identify)"
-        private val INTENT = Regex(
-            "(?im)\\b(?:i['\u2019](?:ll|m going to|m gonna)|i am (?:going to|gonna)|i will|i shall)\\b" +
-                "(?!\\s+(?:not|never)\\b)(?!\\s+(?:do(?:ing)? my best|try my best|be (?:able|happy|glad) to|assist|help you\\b(?!\\s+$ACTION)))" +
-                "|\\b(?:let me|allow me)\\b(?!\\s+(?:not|never|know)\\b)" +
-                "|(?:^|[.!?]\\s+)(?:the\\s+)?first(?:\\s+step)?\\s*[,:]?\\s+(?:i|we|let['\u2019]?s|$ACTION)\\b" +
-                "|\\bstep \\d+\\s*[:.)-]\\s*$ACTION\\b" +
-                "|\\bhere['\u2019]?s (?:my |the |a )?(?:plan|approach)" +
-                "|\\b(?:now i|next i)\\b"
+        /** Longer than this, a reply is an answer that happens to say "let me…", not an announcement. */
+        private const val REPROMPT_MAX_CHARS = 600
+
+        // A verb for something a tool does, as a stem: "search", "searching", "looks up".
+        private const val ACTION = "(?:search|check|look(?:ing|s)?\\s+(?:\\w+\\s+)?(?:up|into|for)|find|fetch|pull(?:ing)?\\s+up|" +
+            "call|run|query|calculat|comput|work(?:ing)?\\s+(?:it\\s+)?out|convert|set|read|retriev|verif|confirm|" +
+            "browse|open|visit|sav|remember|locat|use\\s+(?:the\\s+)?\\w+\\s+tool)\\w*"
+
+        // "I'll", "let me", "I'm going to", "now I'll"… then optional fillers, then the action.
+        private val ANNOUNCE = Regex(
+            "(?i)\\b(?:i['\u2019](?:ll|m going to|m gonna|m)|i (?:will|shall|am going to|am|need to)|" +
+                "let me|allow me|let['\u2019]?s)\\s+" +
+                "(?:(?:quickly|now|first|just|also|go ahead and|try to|try and|then|do a|make a|about to)\\s+)*$ACTION"
         )
+        private val SENTENCE_END = Regex("(?<=[.!?:\u2026])\\s+|\\n+")
 
-        /** A short reply that announces an action without taking it. */
-        fun isIntentWithoutAction(text: String) = text.length in 1 until REPROMPT_MAX_CHARS && INTENT.containsMatchIn(text)
+        /**
+         * A reply that only announces an action ("Sure! Let me look that up.")
+         * without making the call. Only its last two sentences count, so a poem
+         * or an answer that says "I'll…" along the way is never sent back, and a
+         * reply ending in a question is the model asking the user something.
+         */
+        fun isIntentWithoutAction(text: String): Boolean {
+            val t = text.trim()
+            if (t.isEmpty() || t.length > REPROMPT_MAX_CHARS || t.endsWith("?")) return false
+            val tail = t.split(SENTENCE_END).filter { it.isNotBlank() }.takeLast(2).joinToString(" ")
+            return ANNOUNCE.containsMatchIn(tail)
+        }
 
         private val THINKING = Regex("(?s)<think>(.*?)(?:</think>|$)")
 

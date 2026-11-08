@@ -5,6 +5,7 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.druk.llamacpp.tools.Tool
+import com.druk.llamacpp.tools.ToolGuidance
 import com.druk.lmplayground.data.AppDatabase
 import com.druk.lmplayground.data.MemoryNoteEntity
 import com.druk.lmplayground.storage.StoragePreferences
@@ -47,10 +48,9 @@ class SystemPromptExtras(
 
     /**
      * The system prompt the model gets: the user's prompt as written (the
-     * default when there is none, and [BASE_PROMPT] when that's empty too), the date, and with tools on, short general
-     * guidance plus tips, when the web, math or code tools are on. The tool
-     * definitions themselves come from the chat format.
-     * Models under 9B (by the size in their name) get the shorter web tip.
+     * default when there is none, and [BASE_PROMPT] when that's empty too), the date, and with tools on,
+     * when to use each of them and when to just reply ([ToolGuidance]). The
+     * tool definitions themselves come from the chat format.
      * Saved notes about the user follow when the memory tool is on.
      *
      * Written for the model, so it stays in English.
@@ -110,26 +110,13 @@ class SystemPromptExtras(
         }
     }
 
-    /** One line of tool guidance plus tips for the web, math and code tools; null when none of them is on. */
+    /**
+     * When to call each enabled tool, and when to just reply; null without
+     * tools. Models under 9B (by the size in their name) get the shorter web tips.
+     */
     private fun toolGuidance(names: Set<String>, modelName: String?): String? {
-        val web = "web_search" in names
-        val calc = "calculate" in names
-        val code = "run_javascript" in names
-        if (!web && !calc && !code) return null
         val compact = modelName?.let { GenerationParams.sizeInBillions(it) }?.let { it < 9 } == true
-        val tips = buildList {
-            if (web) add(
-                if (compact) "When using web_search, do not repeat the same search query."
-                else "When using web_search and a result URL is relevant, fetch its full content by calling " +
-                    "web_search with the url parameter. Do not repeat the same search query. If a search returns " +
-                    "no useful results, try rephrasing or fetching a result URL directly."
-            )
-            if (calc) add("Use calculate for math and calculations.")
-            if (code) add("Use run_javascript for data processing, or to parse and analyze information from tool results.")
-        }
-        return "Tools are available when they materially improve the answer. Use an enabled tool for current " +
-            "facts, calculations, or code execution when it materially helps; otherwise answer normally and " +
-            "follow the user's requested format. " + tips.joinToString(" ")
+        return ToolGuidance.forFunctions(names, compact)
     }
 
     /**
