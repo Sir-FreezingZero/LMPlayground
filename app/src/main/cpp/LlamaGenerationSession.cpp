@@ -181,6 +181,9 @@ void LlamaGenerationSession::init(llama_model *model, const struct common_chat_t
     ctx_params.n_batch = std::min(n_ctx, kMaxBatchSize);
     ctx_params.n_threads       = n_threads;
     ctx_params.n_threads_batch = n_threads;
+    // Keep the timings on (llama.cpp turns them off by default), so the
+    // report can say how fast reading and writing were.
+    ctx_params.no_perf = false;
 
     ctx = llama_init_from_model(model, ctx_params);
     if (!ctx) {
@@ -1841,7 +1844,7 @@ std::string LlamaGenerationSession::getReport() {
     report << "\n";
 
     report << "Performance\n";
-    report << "  Load time: " << std::fixed << std::setprecision(0) << timings.t_load_ms << " ms\n";
+    report << std::fixed;
     if (timings.n_p_eval > 0 && timings.t_p_eval_ms > 0) {
         report << "  Prompt eval: " << timings.n_p_eval << " tokens, "
                << std::setprecision(1) << (1e3 / timings.t_p_eval_ms * timings.n_p_eval) << " t/s\n";

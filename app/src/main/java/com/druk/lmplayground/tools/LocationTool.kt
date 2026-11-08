@@ -41,10 +41,11 @@ class LocationTool(private val context: Context) : Tool {
                 return toolError("Location is turned off on this phone. Ask the user to turn it on, then try again.")
             }
             // A last-known fix is instant, but many phones have none (or only an
-            // old one) unless another app asked recently; then ask for a fresh one.
+            // old one) unless another app asked recently; then ask for a fresh one,
+            // waiting only briefly when an older fix can stand in.
             val known = bestLastKnown(lm)
             val location = known?.takeIf { System.currentTimeMillis() - it.time < MAX_AGE_MS }
-                ?: currentFix(lm)
+                ?: currentFix(lm, if (known != null) SHORT_WAIT_MS else FIX_TIMEOUT_MS)
                 ?: known
                 ?: return toolError("Couldn't get a location fix. Make sure location is turned on, then try again.")
 
@@ -91,11 +92,11 @@ class LocationTool(private val context: Context) : Tool {
     }
 
     /**
-     * A fresh fix from the first provider that answers within [FIX_TIMEOUT_MS].
+     * A fresh fix from the first provider that answers within [waitMs].
      * Blocks, but tools run off the main thread.
      */
     @Suppress("MissingPermission") // permission is verified in execute() before this runs
-    private fun currentFix(lm: LocationManager): Location? {
+    private fun currentFix(lm: LocationManager, waitMs: Long): Location? {
         val providers = buildList {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) add(LocationManager.FUSED_PROVIDER)
             add(LocationManager.NETWORK_PROVIDER)
@@ -112,7 +113,7 @@ class LocationTool(private val context: Context) : Tool {
                     fix = loc
                     latch.countDown()
                 }
-                if (!latch.await(FIX_TIMEOUT_MS, TimeUnit.MILLISECONDS)) signal.cancel()
+                if (!latch.await(waitMs, TimeUnit.MILLISECONDS)) signal.cancel()
             } catch (_: SecurityException) {
                 // this provider needs finer permission than we hold; try the next
             } catch (_: Exception) {
@@ -148,5 +149,7 @@ class LocationTool(private val context: Context) : Tool {
         /** A last-known fix older than this is replaced by a fresh one when possible. */
         const val MAX_AGE_MS = 10 * 60 * 1000L
         const val FIX_TIMEOUT_MS = 10_000L
+        /** The wait for a fresh fix when an older one can answer instead. */
+        const val SHORT_WAIT_MS = 3_000L
     }
 }

@@ -18,7 +18,7 @@ import org.jsoup.Jsoup
 class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
     override val name = "web_search"
     override val description = "Search the web and fetch page content. Returns snippets for all results. Use the url parameter to fetch full page text from a specific URL."
-    override val parametersSchema = """{"type":"object","properties":{"query":{"type":"string","description":"The search query"},"url":{"type":"string","description":"A URL to fetch full page content from (instead of searching). Use this to read a page found in search results."}},"required":[]}"""
+    override val parametersSchema = """{"type":"object","properties":{"query":{"type":"string","description":"The search query"},"url":{"type":"string","description":"A URL to fetch full page content from (instead of searching). Use this to read a link the user gives or a page found in search results."}},"required":[]}"""
 
     private val page = WebPageReader(linkStore)
 
@@ -82,8 +82,8 @@ class WebSearchTool(private val linkStore: WebLinkStore? = null) : Tool {
             .addQueryParameter("format", "json").addQueryParameter("srlimit", "$MAX_RESULTS")
             .addQueryParameter("srsearch", query).build()
         val request = Request.Builder().url(url).header("User-Agent", WikipediaTool.USER_AGENT).build()
-        val body = WebHttp.client.newCall(request).execute().use { WebHttp.text(it) }
-        val hits = JSONObject(body).getJSONObject("query").getJSONArray("search")
+        val body = WebHttp.client.newCall(request).execute().use { it.takeIf { r -> r.isSuccessful }?.let(WebHttp::text) }
+        val hits = JSONObject(body ?: return null).getJSONObject("query").getJSONArray("search")
         if (hits.length() == 0) return null
         val results = JSONArray((0 until hits.length()).map { i ->
             val hit = hits.getJSONObject(i)

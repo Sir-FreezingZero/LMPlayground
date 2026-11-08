@@ -47,7 +47,7 @@ class SystemPromptExtras(
 
     /**
      * The system prompt the model gets: the user's prompt as written (the
-     * default when there is none), the date, and with tools on, short general
+     * default when there is none, and [BASE_PROMPT] when that's empty too), the date, and with tools on, short general
      * guidance plus tips, when the web, math or code tools are on. The tool
      * definitions themselves come from the chat format.
      * Models under 9B (by the size in their name) get the shorter web tip.
@@ -64,7 +64,7 @@ class SystemPromptExtras(
         carried: String? = null,
     ): String {
         val parts = mutableListOf<String>()
-        userPrompt.ifBlank { prefs.defaultSystemPrompt }.takeIf { it.isNotBlank() }?.let { parts.add(it) }
+        parts.add(userPrompt.ifBlank { prefs.defaultSystemPrompt }.ifBlank { BASE_PROMPT })
         if (prefs.includeDateInPrompt) parts.add("The current date is ${LocalDate.now()}.")
         toolGuidance(tools.flatMap { it.functions }.map { it.name }.toSet(), modelName)?.let { parts.add(it) }
         if (withMemory) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
@@ -73,6 +73,12 @@ class SystemPromptExtras(
     }
 
     companion object {
+        /**
+         * Without any prompt, a small model only sees tool rules and decides
+         * it can do nothing but run tools: it refuses to write a poem and
+         * answers "hello" by asking what tool to use. One line says otherwise.
+         */
+        const val BASE_PROMPT = "You are a helpful assistant. You can chat, answer questions and write anything the user asks for."
         private const val MAX_NOTES = 40
         private const val MAX_CHARS = 4000
         private val CONTROL = Regex("[\\u0000-\\u001F]")

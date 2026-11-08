@@ -3,8 +3,10 @@ package com.druk.lmplayground.tools
 import com.druk.llamacpp.tools.Tool
 import com.druk.llamacpp.tools.toolError
 import com.druk.llamacpp.tools.toolResult
+import com.druk.lmplayground.BuildConfig
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
+import org.jsoup.Jsoup
 import org.json.JSONObject
 
 /**
@@ -42,7 +44,8 @@ class WikipediaTool : Tool {
             .addQueryParameter("redirects", "1")
             .build()
         val request = Request.Builder().url(url).header("User-Agent", USER_AGENT).build()
-        val body = WebHttp.client.newCall(request).execute().use { WebHttp.text(it) }
+        val (code, body) = WebHttp.client.newCall(request).execute().use { it.code to WebHttp.text(it) }
+        if (code !in 200..299 || !body.trimStart().startsWith("{")) return toolError(unreachable(code, body))
         val pages = JSONObject(body).optJSONObject("query")?.optJSONObject("pages")
         val page = pages?.keys()?.asSequence()?.firstOrNull()?.let { pages.optJSONObject(it) }
         val extract = page?.optString("extract")?.trim().orEmpty()
@@ -56,6 +59,16 @@ class WikipediaTool : Tool {
 
     companion object {
         private const val MAX_CHARS = 1500
-        const val USER_AGENT = "LMPlayground-Android/1.0 (github.com/Sir-FreezingZero/LMPlayground)"
+
+        /**
+         * Wikimedia blocks clients whose User-Agent has no contact: it needs
+         * the app's name and version and a link, in this shape.
+         */
+        val USER_AGENT = "LMPlayground/${BuildConfig.VERSION_NAME} (https://github.com/Sir-FreezingZero/LMPlayground) okhttp/4"
+
+        /** Wikipedia's error page (a block, a rate limit) in one readable line. */
+        internal fun unreachable(code: Int, page: String) =
+            "Wikipedia couldn't be reached (HTTP $code" +
+                Jsoup.parse(page).text().trim().take(160).let { if (it.isEmpty()) ")." else ": $it)." }
     }
 }

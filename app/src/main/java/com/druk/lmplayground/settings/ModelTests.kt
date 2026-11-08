@@ -104,7 +104,7 @@ import java.time.format.DateTimeFormatter
  * It passes when the model calls [tool] with arguments [argsOk] accepts and
  * answers with what [expect] picks from the tool's result (null: nothing to
  * check, e.g. live search results). A null [tool] is the opposite check: no
- * tool should be called.
+ * tool should be called, and the answer must satisfy [answerOk].
  */
 class ToolTestCase(
     val tool: String?,
@@ -113,6 +113,7 @@ class ToolTestCase(
     val expect: (String) -> String? = { null },
     /** Shown instead of the tool name for the no-tool checks. */
     val label: String = tool ?: "",
+    val answerOk: (String) -> Boolean = { true },
 )
 
 private fun JSONObject.text(key: String) = optString(key).lowercase()
@@ -147,8 +148,9 @@ val TOOL_TEST_CASES = listOf(
         { it.field("time")?.substringBefore(' ') }),
     // The model should check, not ask the user where they are.
     ToolTestCase("get_location", "I'm lost. Can you tell me where I am?", { true }, { it.field("place")?.substringBefore(',') }),
-    ToolTestCase("get_device_info", "How much RAM does my phone have?", { true }, { it.field("memory")?.substringBefore(' ') }),
-    ToolTestCase("remember", "Please remember that my favorite color is teal.", { "teal" in it.text("fact") }),
+    ToolTestCase("get_device_info", "How much RAM does my phone have?", { true }, { it.field("RAM")?.substringBefore(' ') }),
+    // The fact must say what it is about, not just "teal".
+    ToolTestCase("remember", "Please remember that my favorite color is teal.", { "teal" in it.text("fact") && "colo" in it.text("fact") }),
     // Live search results differ every time, so only the call is checked.
     ToolTestCase("web_search", "What's in the news today?", { it.text("query").isNotBlank() }),
     ToolTestCase("web_search", "What's the title of the page at https://example.com?",
@@ -159,7 +161,9 @@ val TOOL_TEST_CASES = listOf(
         { "strawberry" in it.text("code") }, { it.field("result") }),
     // And the other way round: no tool for small talk or writing.
     ToolTestCase(null, "Hi! How are you today?", label = "No tool: small talk"),
-    ToolTestCase(null, "Write a two-line poem about the sea.", label = "No tool: writing"),
+    // Two lines, so a refusal ("I can't write poems") fails.
+    ToolTestCase(null, "Write a two-line poem about the sea.", label = "No tool: writing",
+        answerOk = { a -> a.lines().count { it.isNotBlank() } >= 2 }),
 )
 
 /**
@@ -432,7 +436,7 @@ class ModelTestsViewModel(app: Application) : AndroidViewModel(app) {
         try {
             val turn = send(llama, session, SPEED_CASES[i].second, maxRounds = 0, withTools = false)
             val report = session.getReport()
-            val speeds = report.lines().filter { "t/s" in it }.joinToString(", ") { it.trim() }
+            val speeds = report.lines().filter { "t/s" in it && "Sampling" !in it }.joinToString(", ") { it.trim() }
             update(TestSuite.SPEED, i, TestResult(
                 passed = turn.rc == 0 && turn.answer.isNotEmpty(),
                 detail = "%.1fs. %s".format(turn.ms / 1000.0, speeds),
@@ -453,6 +457,7 @@ class ModelTestsViewModel(app: Application) : AndroidViewModel(app) {
             return when {
                 records.isNotEmpty() -> false to "Called $called, but no tool was needed."
                 answer.isEmpty() -> false to "Gave no answer."
+                !case.answerOk(answer) -> false to "Didn't do what was asked: " + answer.take(200)
                 else -> true to answer.take(300)
             }
         }
@@ -465,6 +470,8 @@ class ModelTestsViewModel(app: Application) : AndroidViewModel(app) {
             return false to "Right tool, but also called ${it.joinToString()}, which wasn't needed."
         }
         if (!case.argsOk(args(call))) return false to "Right tool, wrong input: ${call.arguments}"
+        // Knowing the answer anyway (e.g. 1889) doesn't make a failed tool pass.
+        if (call.result.startsWith("Error:")) return false to "The tool failed: " + call.result.lineSequence().first()
         if (answer.isEmpty()) return false to "Called it, then gave no answer."
         val expected = case.expect(call.result)
         fun norm(s: String) = s.lowercase().replace(Regex("[,\\s\\u00A0\\u202F]"), "")

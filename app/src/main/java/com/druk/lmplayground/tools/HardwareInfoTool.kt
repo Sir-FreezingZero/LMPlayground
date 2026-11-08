@@ -19,7 +19,7 @@ import java.util.Locale
 class HardwareInfoTool(private val context: Context) : Tool {
     override val name = "device_info"
     override val functionName = "get_device_info"
-    override val description = "Gets details about the user's phone: model, Android version, chipset, CPU cores, memory, storage and battery."
+    override val description = "Gets details about the user's phone: model, Android version, chipset, CPU cores, RAM, storage and battery."
     override val parametersSchema = """{"type":"object","properties":{}}"""
 
     override fun execute(arguments: String): String {
@@ -38,12 +38,12 @@ class HardwareInfoTool(private val context: Context) : Tool {
             if (am != null) {
                 val mi = ActivityManager.MemoryInfo()
                 am.getMemoryInfo(mi)
-                out.put("memory", "${humanBytes(mi.totalMem)} (${humanBytes(mi.availMem)} free)")
+                out.put("RAM", "${humanBytes(mi.totalMem)} total, ${humanBytes(mi.availMem)} free")
             }
 
             val stat = StatFs(context.filesDir.absolutePath)
-            out.put("storage", "${humanBytes(stat.blockCountLong * stat.blockSizeLong)} " +
-                "(${humanBytes(stat.availableBlocksLong * stat.blockSizeLong)} free)")
+            out.put("storage", "${humanBytes(stat.blockCountLong * stat.blockSizeLong)} total, " +
+                "${humanBytes(stat.availableBlocksLong * stat.blockSizeLong)} free")
 
             (context.getSystemService(Context.BATTERY_SERVICE) as? BatteryManager)?.let { bm ->
                 val level = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
