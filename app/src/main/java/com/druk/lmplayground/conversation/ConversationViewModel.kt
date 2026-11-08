@@ -18,6 +18,8 @@ import com.druk.lmplayground.data.ChatSessionEntity
 import com.druk.lmplayground.data.ConversationMetadata
 import com.druk.lmplayground.models.DeviceCapability
 import com.druk.lmplayground.models.ModelInfo
+import com.druk.lmplayground.models.DeviceTier
+import com.druk.lmplayground.models.GgufInfo
 import com.druk.lmplayground.models.ThinkingMode
 import com.druk.lmplayground.models.ModelInfoProvider
 import com.druk.lmplayground.models.ModelWithStatus
@@ -501,6 +503,20 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         loadModel(pending.modelInfo, forceLoad = true)
     }
 
+    /** "Load with N tokens": lower the context for every model, then load. */
+    @MainThread
+    fun loadWithFittingContext() {
+        val pending = _pendingRamWarning.value ?: return
+        val context = pending.fittingContext ?: return
+        _pendingRamWarning.value = null
+        val params = storagePreferences.modelParams
+        storagePreferences.modelParams = params.copy(
+            contextSize = context,
+            thinkingBudget = (params.thinkingBudget.toLong() * context / params.contextSize).toInt().coerceIn(64, context),
+        )
+        loadModel(pending.modelInfo, forceLoad = true)
+    }
+
     val uiState = ConversationUiState(
         initialMessages = emptyList()
     )
@@ -722,6 +738,37 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                 return@launch
             }
 
+            // PrivateLM's check: estimate the memory the model needs at the
+            // current context from its GGUF header (weights + KV cache +
+            // overhead) and compare with free RAM, counting the loaded
+            // model's memory as freed. Server models aren't on the phone.
+            if (!forceLoad && !RemoteServers.isRemote(model.filename)) {
+                val contextSize = storagePreferences.modelParams.contextSize
+                val info = withContext(Dispatchers.IO) {
+                    storageRepository.openModelFile(model.filename)?.let { handle ->
+                        android.os.ParcelFileDescriptor.AutoCloseInputStream(handle.pfd).use {
+                            GgufInfo.read(it, fileSizeBytes)
+                        }
+                    }
+                }
+                val loadedBytes = _loadedModel.value?.filename
+                    ?.let { name -> modelFiles.find { it.name == name }?.sizeBytes } ?: 0L
+                val availableBytes = (DeviceTier.read().availableRamGb * 1024 * 1024 * 1024).toLong() + loadedBytes
+                val estimate = info?.estimateBytes(contextSize)
+                if (info != null && estimate != null && availableBytes > 0 && estimate > availableBytes) {
+                    _pendingRamWarning.value = RamWarning(
+                        modelInfo = modelInfo,
+                        neededRam = Formatter.formatFileSize(app, estimate),
+                        totalRam = Formatter.formatFileSize(app, availableBytes),
+                        contextSize = contextSize,
+                        fittingContext = info.maxContextFitting(availableBytes)
+                            ?.coerceAtMost(GenerationParams.MAX_CONTEXT_SIZE)
+                            ?.takeIf { it < contextSize },
+                    )
+                    return@launch
+                }
+            }
+
             _models.postValue(emptyList())
             _isModelReady.postValue(false)
 
@@ -765,6 +812,9 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         _thinkingEnabled.value = _thinkingEnabled.value != true
     }
 
+
+    /** What the sheet's Reset sets the reply length to: this phone's recommendation. */
+    val recommendedMaxTokens: Int get() = storagePreferences.recommendedMaxTokens
 
     /**
      * Picks up model settings changed in Settings → Model while this chat was
@@ -1593,6 +1643,10 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         val modelInfo: ModelInfo,
         val neededRam: String,
         val totalRam: String,
+        /** From the GGUF header estimate (PrivateLM): the context it was checked at. */
+        val contextSize: Int? = null,
+        /** Largest context that should fit, if any; offered as "Load with N tokens". */
+        val fittingContext: Int? = null,
     )
 
 }

@@ -159,6 +159,9 @@
     <string name="low_ram_warning_title">Model could be unstable</string>
     <string name="low_ram_warning_message">Model needs ~%1$s RAM but this device only has %2$s total. It may run out of memory and crash. If that happens, turn off Enable repack in Settings → Advanced to load it in a low-memory mode.</string>
     <string name="load_anyway">Load anyway</string>
+    <string name="memory_estimate_warning" tools:ignore="MissingTranslation">This model needs about %1$s at a context of %2$d tokens, but only %3$s is free, so it probably won\'t fit. A context of %4$d tokens should fit.</string>
+    <string name="memory_estimate_too_large" tools:ignore="MissingTranslation">This model needs about %1$s but only %2$s is free. It\'s probably too large for this phone, even with a small context. Try a smaller model.</string>
+    <string name="load_with_context" tools:ignore="MissingTranslation">Load with %1$d tokens</string>
 
     <!-- Download notifications -->
     <string name="download_notification_channel">Model Downloads</string>
@@ -238,6 +241,18 @@
     <string name="performance_cpu_desc" tools:ignore="MissingTranslation">CPU only. Most stable, slower</string>
     <string name="performance_note" tools:ignore="MissingTranslation">Takes effect the next time a model is loaded.</string>
     <string name="performance_blocked" tools:ignore="MissingTranslation">A model on the GPU crashed the app before, so Auto keeps models on the CPU. Choose GPU fast to try the GPU again. Takes effect the next time a model is loaded.</string>
+    <string name="device" tools:ignore="MissingTranslation">Device</string>
+    <string name="device_ram" tools:ignore="MissingTranslation">RAM</string>
+    <string name="device_ram_value" tools:ignore="MissingTranslation">%1$.1f GB (%2$.1f GB free)</string>
+    <string name="device_tier" tools:ignore="MissingTranslation">Class</string>
+    <string name="device_tier_low" tools:ignore="MissingTranslation">Low RAM: small models only</string>
+    <string name="device_tier_mid" tools:ignore="MissingTranslation">Mid-range: good for 1-3B models</string>
+    <string name="device_tier_high" tools:ignore="MissingTranslation">High-end: can run 3-7B models</string>
+    <string name="device_tier_ultra" tools:ignore="MissingTranslation">Ultra: full performance</string>
+    <string name="device_recommended_context" tools:ignore="MissingTranslation">Recommended context</string>
+    <string name="device_recommended_max_tokens" tools:ignore="MissingTranslation">Recommended max tokens</string>
+    <string name="device_chip" tools:ignore="MissingTranslation">Chipset</string>
+    <string name="device_recommended_quant" tools:ignore="MissingTranslation">Recommended quant</string>
     <string name="model_params_all_models" tools:ignore="MissingTranslation">These settings apply to every model.</string>
     <string name="top_p" translatable="false">Top-P</string>
     <string name="repetition_penalty">Repetition Penalty</string>

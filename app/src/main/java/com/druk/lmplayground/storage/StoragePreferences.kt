@@ -172,6 +172,22 @@ class StoragePreferences(context: Context) {
         get() = prefs.getInt("recommended_max_tokens", GenerationParams.DEFAULT_MAX_TOKENS)
         set(value) = prefs.edit { putInt("recommended_max_tokens", value) }
 
+    /**
+     * Sets [recommendedContextSize] and [recommendedMaxTokens] from the
+     * device the first time the app runs (only then is [readDevice] called);
+     * saved model settings are left alone.
+     */
+    fun applyDeviceRecommendationsOnce(readDevice: () -> com.druk.lmplayground.models.DeviceTier) {
+        if (prefs.contains("recommended_context_size")) return
+        val device = readDevice()
+        recommendedContextSize = device.recommendedContextSize.coerceIn(
+            GenerationParams.MIN_CONTEXT_SIZE, GenerationParams.MAX_CONTEXT_SIZE,
+        )
+        recommendedMaxTokens = device.recommendedMaxTokens.coerceIn(
+            GenerationParams.MIN_MAX_TOKENS, GenerationParams.MAX_MAX_TOKENS,
+        )
+    }
+
     private fun decodeParams(encoded: String): Map<String, Float>? = try {
         encoded.split(",").associate {
             val (k, v) = it.split("=", limit = 2)

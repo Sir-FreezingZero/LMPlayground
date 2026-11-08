@@ -657,16 +657,37 @@ class ConversationFragment : Fragment() {
                         title = { Text(stringResource(R.string.low_ram_warning_title)) },
                         text = {
                             Text(
-                                stringResource(
-                                    R.string.low_ram_warning_message,
-                                    warning.neededRam,
-                                    warning.totalRam,
-                                )
+                                when {
+                                    warning.contextSize == null -> stringResource(
+                                        R.string.low_ram_warning_message,
+                                        warning.neededRam,
+                                        warning.totalRam,
+                                    )
+                                    warning.fittingContext != null -> stringResource(
+                                        R.string.memory_estimate_warning,
+                                        warning.neededRam,
+                                        warning.contextSize,
+                                        warning.totalRam,
+                                        warning.fittingContext,
+                                    )
+                                    else -> stringResource(
+                                        R.string.memory_estimate_too_large,
+                                        warning.neededRam,
+                                        warning.totalRam,
+                                    )
+                                }
                             )
                         },
                         confirmButton = {
-                            TextButton(onClick = { viewModel.confirmLoadDespiteRamWarning() }) {
-                                Text(stringResource(R.string.load_anyway))
+                            Column(horizontalAlignment = Alignment.End) {
+                                warning.fittingContext?.let { context ->
+                                    TextButton(onClick = { viewModel.loadWithFittingContext() }) {
+                                        Text(stringResource(R.string.load_with_context, context))
+                                    }
+                                }
+                                TextButton(onClick = { viewModel.confirmLoadDespiteRamWarning() }) {
+                                    Text(stringResource(R.string.load_anyway))
+                                }
                             }
                         },
                         dismissButton = {
@@ -692,11 +713,15 @@ class ConversationFragment : Fragment() {
                 }
 
                 if (showParamsSheet) {
+                    val deviceTier = remember { com.druk.lmplayground.models.DeviceTier.read() }
                     GenerationParamsSheet(
                         params = generationParams,
                         maxContextSize = maxContextSize,
                         supportsThinking = supportsThinking,
                         onParamsChanged = { viewModel.updateGenerationParams(it) },
+                        safeContextSize = deviceTier.maxSafeContextSize,
+                        safeMaxTokens = deviceTier.maxSafeTokens,
+                        recommendedMaxTokens = viewModel.recommendedMaxTokens,
                         systemPrompt = systemPrompt,
                         onSystemPromptChanged = { viewModel.applySystemPrompt(it) },
                         renderPromptStart = viewModel::renderPromptStart,

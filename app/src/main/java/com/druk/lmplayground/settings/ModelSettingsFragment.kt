@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.druk.lmplayground.R
+import com.druk.lmplayground.models.DeviceTier
 import com.druk.lmplayground.storage.StoragePreferences
 import com.druk.lmplayground.theme.PlaygroundTheme
 import java.io.File
@@ -79,6 +80,7 @@ class ModelSettingsFragment : Fragment() {
 private fun ModelSettingsScreen(onBackClick: () -> Unit) {
     val context = LocalContext.current
     val prefs = remember { StoragePreferences(context) }
+    val device = remember { DeviceTier.read() }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -109,6 +111,8 @@ private fun ModelSettingsScreen(onBackClick: () -> Unit) {
                     ModelParamsControls(
                         params = params,
                         onParamsChange = { params = it; prefs.modelParams = it },
+                        safeContextSize = device.maxSafeContextSize,
+                        safeMaxTokens = device.maxSafeTokens,
                         recommendedMaxTokens = prefs.recommendedMaxTokens,
                     )
                 }
@@ -146,8 +150,51 @@ private fun ModelSettingsScreen(onBackClick: () -> Unit) {
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 )
             }
+            SettingsSection(R.string.device) {
+                Column(Modifier.padding(horizontal = 16.dp)) {
+                    InfoRow(
+                        stringResource(R.string.device_ram),
+                        stringResource(R.string.device_ram_value, device.totalRamGb, device.availableRamGb),
+                    )
+                    InfoRow(stringResource(R.string.device_tier), stringResource(
+                        when (device.tier) {
+                            DeviceTier.Tier.LOW -> R.string.device_tier_low
+                            DeviceTier.Tier.MID -> R.string.device_tier_mid
+                            DeviceTier.Tier.HIGH -> R.string.device_tier_high
+                            DeviceTier.Tier.ULTRA -> R.string.device_tier_ultra
+                        }
+                    ))
+                    InfoRow(stringResource(R.string.device_recommended_context), "${device.recommendedContextSize}")
+                    InfoRow(stringResource(R.string.device_recommended_max_tokens), "${device.recommendedMaxTokens}")
+                    if (device.chip != DeviceTier.Chip.UNKNOWN) {
+                        InfoRow(stringResource(R.string.device_chip), device.chip.label)
+                        InfoRow(stringResource(R.string.device_recommended_quant), device.chip.recommendedQuant)
+                    }
+                    device.quantWarning?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.padding(vertical = 8.dp),
+                        )
+                    }
+                }
+            }
             Spacer(Modifier.height(24.dp))
         }
+    }
+}
+
+@Composable
+private fun InfoRow(label: String, value: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(label, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+        Text(value, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 

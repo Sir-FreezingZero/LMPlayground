@@ -61,6 +61,9 @@ class App : Application() {
         val appearancePrefs = com.druk.lmplayground.storage.StoragePreferences(this)
         com.druk.lmplayground.settings.applyThemeMode(appearancePrefs.themeMode)
         com.druk.lmplayground.conversation.StatusLineColors.load(appearancePrefs)
+        // First launch (PrivateLM-style): start the context and reply length
+        // at what this phone's RAM handles. Settings → Model can change them.
+        appearancePrefs.applyDeviceRecommendationsOnce { com.druk.lmplayground.models.DeviceTier.read() }
 
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityStarted(activity: Activity) {
