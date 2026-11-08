@@ -53,7 +53,9 @@ import com.druk.llamacpp.chat.ToolCallLoop
 import com.druk.llamacpp.chat.ToolCallRecord
 import com.druk.llamacpp.tools.ToolRegistry
 import com.druk.lmplayground.App
+import com.druk.lmplayground.conversation.GenerationParams
 import com.druk.lmplayground.conversation.PreambleCacheManager
+import com.druk.lmplayground.conversation.SystemPromptExtras
 import com.druk.lmplayground.conversation.stripThinkTags
 import com.druk.lmplayground.models.ChatTemplateOverrides
 import com.druk.lmplayground.models.ModelInfo
@@ -75,47 +77,72 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 /**
- * One check: [prompt] should make the model call [tool] with arguments
- * [argsOk] accepts, then answer with what [expect] picks from the tool's
- * result (null: nothing to check, e.g. the tool reported an error). Tools
- * really run, except those with a [simulated] result (no alarm is set, no
- * note is saved).
+ * One check. [prompt] is an everyday request that doesn't name the tool, so
+ * the model has to work out which one fits from the system prompt alone.
+ * It passes when the model calls [tool] with arguments [argsOk] accepts and
+ * answers with what [expect] picks from the tool's result (null: nothing to
+ * check, e.g. live search results). A null [tool] is the opposite check: no
+ * tool should be called, and [expect] is matched against the answer itself.
+ * Tools really run, except those with a [simulated] result (no alarm is
+ * set, no note is saved).
  */
 class ToolTestCase(
-    val tool: String,
+    val tool: String?,
     val prompt: String,
-    val argsOk: (JSONObject) -> Boolean,
-    val expect: (JSONObject) -> String?,
+    val argsOk: (JSONObject) -> Boolean = { true },
+    val expect: (String) -> String? = { null },
     val simulated: String? = null,
+    /** Shown instead of the tool name for the no-tool checks. */
+    val label: String = tool ?: "",
 )
 
 private fun JSONObject.text(key: String) = optString(key).lowercase()
 
-/** [key] from a successful result, or null after an error or when it's missing. */
-private fun JSONObject.field(key: String): String? =
-    if (has("error")) null else optString(key).trim().takeIf { it.isNotEmpty() }
+/**
+ * [key] from a successful plain-text result ("Key: value" lines, or the whole
+ * text for a lone result), or null after an error or when it's missing.
+ */
+private fun String.field(key: String): String? {
+    if (startsWith("Error:")) return null
+    val label = key.replace('_', ' ').replaceFirstChar { it.uppercase() } + ": "
+    val line = lines().firstOrNull { it.startsWith(label) }?.removePrefix(label)
+    return (line ?: takeIf { key == "result" })?.trim()?.takeIf { it.isNotEmpty() }
+}
 
 val TOOL_TEST_CASES = listOf(
-    // Live search results differ every time, so only the call is checked.
-    ToolTestCase("web_search", "Search the web for this week's weather forecast in Oslo.", { "oslo" in it.text("query") }, { null }),
-    ToolTestCase("web_fetch", "Fetch https://example.com and tell me the page title.",
-        { "example.com" in it.text("url") }, { it.field("title") }),
-    ToolTestCase("wikipedia", "Look up the Eiffel Tower on Wikipedia and tell me the year it was completed.",
-        { "eiffel" in it.text("query") }, { r -> "1889".takeIf { r.field("summary")?.contains(it) == true } }),
-    ToolTestCase("calculator", "Use the calculator: what is 1234 times 5678?",
+    ToolTestCase("calculate", "What is 1234 times 5678?",
         { "1234" in it.text("expression") && "5678" in it.text("expression") }, { it.field("result") }),
+    // Math hidden in an everyday question, which small models try in their heads.
+    ToolTestCase("calculate", "I paid with a \$20 bill for a \$7 order. How much change should I get?",
+        { "20" in it.text("expression") && "7" in it.text("expression") }, { it.field("result") },
+        label = "calculate (everyday)"),
     // The whole number is enough: "42.16 km" and "about 42.2 km" both answer it.
     ToolTestCase("convert_units", "How many kilometers is 26.2 miles?",
-        { it.text("from").startsWith("mi") && it.text("to").startsWith("k") }, { it.field("result")?.substringBefore('.') }),
-    ToolTestCase("run_javascript", "Use JavaScript to reverse the string \"stressed\".",
-        { "stressed" in it.text("code") }, { it.field("result") }),
-    ToolTestCase("get_date_time", "What day of the week is it today?", { true }, { it.field("date")?.substringBefore(',') }),
-    ToolTestCase("set_alarm", "Set an alarm for 6:30 PM.", { "6:30" in it.text("time") }, { "6:30" },
-        simulated = """{"result":"Alarm set for 6:30 PM today."}"""),
-    ToolTestCase("location", "What city am I in right now?", { true }, { it.field("place")?.substringBefore(',') }),
-    ToolTestCase("device_info", "How much RAM does my phone have in total?", { true }, { it.field("ram_total")?.substringBefore(' ') }),
-    ToolTestCase("memory", "Remember that my favorite color is teal.", { "teal" in it.text("content") }, { null },
-        simulated = """{"saved":true,"id":1}"""),
+        { it.text("from").startsWith("mi") && it.text("to").startsWith("k") },
+        { it.field("result")?.substringAfter("= ")?.substringBefore('.') }),
+    // "In the morning" must reach the tool as morning, not get turned into PM.
+    ToolTestCase("set_alarm", "Remind me to take out the trash at 6:15 in the morning.",
+        { t -> "6:15" in t.text("time") && ("am" in t.text("time") || "morning" in t.text("time")) }, { "6:15" },
+        simulated = """{"result":"Alarm \"take out the trash\" set for 6:15 AM tomorrow."}"""),
+    // The date is in the system prompt, so ask for the time, which isn't.
+    ToolTestCase("get_date_time", "What time is it right now?", { true },
+        { it.field("time")?.substringBefore(' ') }),
+    // The model should check, not ask the user where they are.
+    ToolTestCase("get_location", "I'm lost. Can you tell me where I am?", { true }, { it.field("place")?.substringBefore(',') }),
+    ToolTestCase("get_device_info", "How much RAM does my phone have?", { true }, { it.field("memory")?.substringBefore(' ') }),
+    ToolTestCase("remember", "Please remember that my favorite color is teal.", { "teal" in it.text("fact") }, { null },
+        simulated = """{"result":"Saved as fact 1."}"""),
+    // Live search results differ every time, so only the call is checked.
+    ToolTestCase("web_search", "What's in the news today?", { it.text("query").isNotBlank() }, { null }),
+    ToolTestCase("web_search", "What's the title of the page at https://example.com?",
+        { "example.com" in it.text("url") }, { it.field("title") }),
+    ToolTestCase("search_wikipedia", "According to Wikipedia, what year was the Eiffel Tower completed?",
+        { "eiffel" in it.text("query") }, { r -> "1889".takeIf { !r.startsWith("Error:") && it in r } }),
+    ToolTestCase("run_javascript", "Write and run code to count the letter r in \"strawberry raspberry\".",
+        { "strawberry" in it.text("code") }, { it.field("result") }),
+    // And the other way round: no tool for small talk or writing.
+    ToolTestCase(null, "Hi! How are you today?", label = "No tool: small talk"),
+    ToolTestCase(null, "Write a two-line poem about the sea.", label = "No tool: writing"),
 )
 
 /** null: not run yet; Running: in progress; otherwise whether it passed and why. */
@@ -136,6 +163,8 @@ class ToolTestViewModel(app: Application) : AndroidViewModel(app) {
     // The real tools and descriptions, all switched on, as a chat would send them.
     private val registry = ToolRegistry.createDefault(app).apply { getAllTools().forEach { setToolEnabled(it.name, true) } }
     private val toolsJson = registry.toOpenAIToolsJson()
+    // The same system prompt builder a chat uses (no memory notes).
+    private val promptExtras = SystemPromptExtras(app, prefs)
 
     private val _models = MutableStateFlow<List<ModelInfo>>(emptyList())
     val models: StateFlow<List<ModelInfo>> = _models
@@ -188,11 +217,13 @@ class ToolTestViewModel(app: Application) : AndroidViewModel(app) {
             _running.value = true
             try {
                 val loaded = load(model) ?: return@launch
+                // A changed default prompt or settings needs a fresh session.
+                session?.destroy(); session = null
                 for (i in indices) {
-                    _status.value = "Testing ${TOOL_TEST_CASES[i].tool}…"
+                    _status.value = "Testing ${TOOL_TEST_CASES[i].label}…"
                     update(i, ToolTestResult(running = true))
                     val started = System.currentTimeMillis()
-                    val r = runCase(loaded, model.filename, TOOL_TEST_CASES[i])
+                    val r = runCase(loaded, model.filename, model.name, TOOL_TEST_CASES[i])
                     update(i, r.copy(detail = "%.1fs. ".format((System.currentTimeMillis() - started) / 1000.0) + r.detail))
                 }
                 _status.value = "${model.name}: ${indices.count { _results.value[it].passed == true }} of ${indices.size} passed."
@@ -241,16 +272,22 @@ class ToolTestViewModel(app: Application) : AndroidViewModel(app) {
         return loaded
     }
 
-    private suspend fun runCase(llama: LlamaModel, filename: String, case: ToolTestCase): ToolTestResult {
+    private suspend fun runCase(llama: LlamaModel, filename: String, modelName: String, case: ToolTestCase): ToolTestResult {
         // Reuse the session, rewound to before its first question; a new one
         // when that isn't possible. The chat's default context (the tool list
         // alone is about 2,500 tokens), a short thinking budget so thinking
         // models fit both rounds, greedy decoding and a fixed seed.
         val live = session?.takeIf { it.rewindToTurn(0, "") >= 0 } ?: run {
             session?.destroy()
-            llama.createSession(4096, 0f, 1f, 1f, 1, 0f, 42, 256, "")?.also {
+            // What a chat would send: the default system prompt (or the one
+            // from Settings) with the tool list, and this model's own sampling
+            // settings. Only the seed is fixed, so a rerun gives the same result.
+            val prompt = promptExtras.compose("")
+            val p = prefs.getModelGenerationParams(filename)?.let { GenerationParams.fromMap(it) }
+                ?: GenerationParams.recommendedFor(filename)
+            llama.createSession(4096, p.temperature, p.topP, p.repetitionPenalty, p.topK, p.minP, 42, 256, prompt)?.also {
                 it.setTools(toolsJson)
-                preambleCache.apply(it, filename, llama.getModelSize(), "", toolsJson)
+                preambleCache.apply(it, filename, llama.getModelSize(), prompt, toolsJson)
             }.also { session = it }
         } ?: return ToolTestResult(false, detail = "Couldn't start a session.")
         live.addMessage(case.prompt, false)
@@ -273,30 +310,51 @@ class ToolTestViewModel(app: Application) : AndroidViewModel(app) {
         if (rc != 0 && records.isEmpty() && answer.isEmpty()) {
             return ToolTestResult(false, detail = "The engine stopped with error $rc before the model answered.")
         }
-        val call = records.firstOrNull { it.name == case.tool }
-            ?: return ToolTestResult(false, detail = "Called ${records.joinToString { it.name }.ifEmpty { "no tool" }}. $said")
+        val called = records.joinToString { it.name }
+        if (case.tool == null) {
+            return when {
+                records.isNotEmpty() -> ToolTestResult(false, detail = "Called $called, but no tool was needed. $said")
+                answer.isEmpty() -> ToolTestResult(false, detail = "Gave no answer.")
+                else -> ToolTestResult(true, detail = said)
+            }
+        }
+        // The call with the right input if there is one (a search before reading a page is fine).
+        val calls = records.filter { it.name == case.tool }
+        val call = calls.firstOrNull { case.argsOk(runCatching { JSONObject(it.arguments) }.getOrDefault(JSONObject())) }
+            ?: calls.firstOrNull() ?: return ToolTestResult(
+            false,
+            detail = (if (records.isEmpty()) "Didn't use a tool; answered on its own." else "Used $called instead.") + " $said",
+        )
+        // Other calls that weren't asked for (a memory note for an alarm) fail it
+        // too; looking up the time first is harmless.
+        records.map { it.name }.filter { it != case.tool && it != "get_date_time" }.distinct().takeIf { it.isNotEmpty() }?.let {
+            return ToolTestResult(false, detail = "Right tool, but also called ${it.joinToString()}, which wasn't needed. $said")
+        }
         val args = runCatching { JSONObject(call.arguments) }.getOrDefault(JSONObject())
-        if (!case.argsOk(args)) return ToolTestResult(false, detail = "Wrong arguments: ${call.arguments}")
+        if (!case.argsOk(args)) return ToolTestResult(false, detail = "Right tool, wrong input: ${call.arguments}")
         val returned = (if (case.simulated != null) "Simulated: " else "Tool returned: ") + call.result.take(200)
-        val expected = case.expect(runCatching { JSONObject(call.result) }.getOrDefault(JSONObject()))
+        if (answer.isEmpty()) return ToolTestResult(false, detail = "Called it, then gave no answer. $returned")
+        val expected = case.expect(call.result)
         fun norm(s: String) = s.lowercase().replace(Regex("[,\\s\\u00A0\\u202F]"), "")
         if (expected != null && norm(expected) !in norm(answer)) {
-            return ToolTestResult(false, detail = "Answer doesn't use the result (\"$expected\"). $returned\n$said")
+            return ToolTestResult(false, detail = "Called it, but the answer doesn't use the result (\"$expected\"). $returned\n$said")
         }
         return ToolTestResult(true, detail = "Called with ${call.arguments}. $returned\n$said")
     }
 
     /** The real tools, except the ones with side effects, which get their case's simulated result. */
     private val testTools = object : ToolCallLoop.ToolExecutor {
-        private val simulated = TOOL_TEST_CASES.filter { it.simulated != null }.associate { it.tool to it.simulated!! }
+        // forget has no case of its own, but must never delete a real note in a test.
+        private val simulated = TOOL_TEST_CASES.mapNotNull { c -> c.simulated?.let { c.tool!! to it } }.toMap() +
+            ("forget" to """{"result":"Fact deleted."}""")
         override fun executeToolCalls(toolCallsJson: String): String {
             val calls = JSONArray(toolCallsJson)
             return JSONArray((0 until calls.length()).map { i ->
                 val call = calls.getJSONObject(i)
                 val name = call.getString("name")
-                val content = simulated[name] ?: runCatching {
+                val content = simulated[name]?.let(registry::asText) ?: runCatching {
                     JSONArray(registry.executeToolCalls(JSONArray().put(call).toString())).getJSONObject(0).getString("content")
-                }.getOrElse { JSONObject().put("error", it.message ?: "The $name tool failed.").toString() }
+                }.getOrElse { "Error: " + (it.message ?: "The $name tool failed.") }
                 JSONObject().put("id", call.getString("id")).put("name", name).put("content", content)
             }).toString()
         }
@@ -322,7 +380,7 @@ fun ToolTestDialog(viewModel: ToolTestViewModel, onDismiss: () -> Unit) {
     fun start(only: Int? = null) {
         val model = chosen ?: return
         val run = { viewModel.run(model, only) }
-        if ((only == null || TOOL_TEST_CASES[only].tool == "location") && !locationGranted && askLocation != null) {
+        if ((only == null || TOOL_TEST_CASES[only].tool == "get_location") && !locationGranted && askLocation != null) {
             afterAsking = run
             askLocation()
         } else {
@@ -342,10 +400,12 @@ fun ToolTestDialog(viewModel: ToolTestViewModel, onDismiss: () -> Unit) {
         ) { padding ->
             Column(Modifier.fillMaxSize().padding(padding).padding(horizontal = 16.dp)) {
                 Text(
-                    "One prompt per tool: the model must call the right tool and use what it returned. Tools " +
-                        "really run, except Set alarm and Memory, which are simulated. The " +
-                        "model loads alongside any chat model (unload that first if memory is tight) and stays " +
-                        "loaded until you close this screen.",
+                    "Each tool gets an everyday request that doesn't name it, with the same system prompt, " +
+                        "tool list and sampling settings a chat uses. It passes when the model picks that tool " +
+                        "on its own, gives it the right input and answers with the result. Two more checks make " +
+                        "sure it answers small talk and writing without tools. Tools really run, except Set " +
+                        "alarm and Memory, which are simulated. The model loads alongside any chat model " +
+                        "(unload that first if memory is tight) and stays loaded until you close this screen.",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -391,7 +451,7 @@ private fun ToolTestRow(case: ToolTestCase, r: ToolTestResult, canRun: Boolean, 
         Row(verticalAlignment = Alignment.CenterVertically) {
             val mark = when { r.running -> "…"; r.passed == true -> "✓"; failed -> "✗"; else -> "·" }
             Text(mark, color = if (failed) MaterialTheme.colorScheme.error else faint, modifier = Modifier.width(24.dp))
-            Text(case.tool, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+            Text(case.label, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
             TextButton(onClick = onRun, enabled = canRun) { Text("Run") }
         }
         Column(Modifier.padding(start = 24.dp)) {

@@ -41,9 +41,7 @@ object HtmlToMarkdown {
             ?: doc.selectFirst("main")
             ?: doc.body()
 
-        // Drop noise inside whatever root we picked. Keep this list in
-        // sync with the strip set in WebFetchTool's pre-Jsoup era so
-        // behaviour is at least as good as the old plain-text path.
+        // Drop noise inside whatever root we picked.
         root.select(
             "script, style, nav, footer, header, aside, " +
                 "form, iframe, noscript, " +

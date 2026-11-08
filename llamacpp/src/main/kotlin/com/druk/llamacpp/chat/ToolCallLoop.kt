@@ -74,7 +74,10 @@ class ToolCallLoop(
         var rc: Int
         var hitLimit = false
 
-        // See the forced-thinking note further down.
+        // Thinking for replies after tool results. Forced on (when asked and the
+        // model can think) because Gemma 4 and harmony-style models write an
+        // empty answer after tool calls with thinking off; the thinking still
+        // goes to the collapsed section. Otherwise it follows the user toggle.
         val responseThinking = enableThinking || (supportsThinking && forceThinkingAfterTools)
 
         while (true) {
@@ -88,7 +91,12 @@ class ToolCallLoop(
                 // give it one more pass to answer with what it already has,
                 // rather than ending the reply on an unanswered tool call.
                 hitLimit = true
-                session.submitToolResults(limitReachedResults(session.getToolCallsJson()), responseThinking)
+                val unanswered = JSONArray(session.getToolCallsJson())
+                session.submitToolResults(JSONArray((0 until unanswered.length()).map {
+                    val call = unanswered.getJSONObject(it)
+                    JSONObject().put("id", call.getString("id")).put("name", call.getString("name"))
+                        .put("content", LIMIT_MESSAGE)
+                }).toString(), responseThinking)
                 observer.onRoundStarted(toolRounds, responseThinking)
                 continue
             }
@@ -96,9 +104,8 @@ class ToolCallLoop(
 
             val toolCallsJson = session.getToolCallsJson()
             val started = System.currentTimeMillis()
-            // Tool execution blocks (network); run it off the calling
-            // dispatcher and await it so cancellation can interrupt — on
-            // cancel we abort in-flight requests, which unblocks promptly.
+            // Tools block (network), so they run off this dispatcher; on cancel the
+            // in-flight requests are aborted, which unblocks them promptly.
             val toolResults = withContext(Dispatchers.IO) {
                 val exec = async { tools.executeToolCalls(toolCallsJson) }
                 try {
@@ -113,16 +120,6 @@ class ToolCallLoop(
             val records = ToolCallPairing.pair(toolCallsJson, toolResults, durationMs)
             allRecords += records
             observer.onToolCalls(records)
-
-            // When asked, force thinking on for the response phase if the model
-            // has a thinking mode, regardless of the user toggle: Gemma 4 and
-            // harmony-style models emit an empty content channel after tool
-            // calls when thinking is off, which would show a blank assistant
-            // bubble after every tool call. Reasoning still routes to the
-            // collapsed thinking section via the always-on DEEPSEEK
-            // extraction in the parser. A no-op for models without a
-            // thinking mode (the flag is ignored).
-            // Otherwise thinking follows the user toggle, as in round one.
             session.submitToolResults(toolResults, responseThinking)
             observer.onRoundStarted(toolRounds, responseThinking)
         }
@@ -130,25 +127,9 @@ class ToolCallLoop(
         return Result(rc = rc, toolRounds = toolRounds, hitRoundLimit = hitLimit, records = allRecords)
     }
 
-    /** A result for each of [toolCallsJson]'s calls saying the round limit stopped it. */
-    private fun limitReachedResults(toolCallsJson: String): String {
-        val calls = JSONArray(toolCallsJson)
-        val results = JSONArray()
-        for (i in 0 until calls.length()) {
-            val call = calls.getJSONObject(i)
-            results.put(
-                JSONObject()
-                    .put("id", call.getString("id"))
-                    .put("name", call.getString("name"))
-                    .put("content", JSONObject().put("error", LIMIT_MESSAGE).toString())
-            )
-        }
-        return results.toString()
-    }
-
     companion object {
-        private const val LIMIT_MESSAGE =
-            "Not run: the tool limit for this reply has been reached. Answer now with what you already have."
+        private const val LIMIT_MESSAGE = "Error: Not run, the tool limit for this reply was reached. " +
+            "Answer now with what you already have."
         const val RC_TOOL_CALLS = 2
         const val DEFAULT_MAX_TOOL_ROUNDS = 10
     }

@@ -343,8 +343,6 @@
     <string name="tool_get_date_time_desc">Sdělí modelu dnešní datum, den v týdnu a aktuální čas z vašeho telefonu. Funguje offline.</string>
     <string name="tool_get_date_time_example">\"Jaký je dnes den?\"</string>
     <string name="tool_run_javascript_title">Spustit JavaScript</string>
-    <string name="tool_web_fetch_desc">Otevře odkaz a načte jeho hlavní obsah jako text, aby model mohl stránku shrnout nebo citovat.</string>
-    <string name="tool_web_fetch_example">\"Shrň článek na tomto odkazu.\"</string>
     <string name="tool_set_alarm_title">Nastavit budík</string>
     <string name="tool_set_alarm_desc">Vytvoří budík v aplikaci Hodiny. Funguje offline; v aplikaci Hodiny ho můžete upravit nebo smazat.</string>
     <string name="tool_set_alarm_example">\"Nastav budík na 6:30 ráno.\"</string>
@@ -362,7 +360,6 @@
     <string name="tools_html_preview_internet_title">Přístup k internetu v náhledech</string>
     <string name="tools_html_preview_internet_desc">Umožní živým náhledům načítat z internetu knihovny, písma, obrázky a data. Když je vypnuto, náhledy běží zcela offline. Otevřít v prohlížeči používá vaši aplikaci prohlížeče, kterou toto nastavení neovlivňuje. Vypnutím se smaže vše, co náhledy stáhly nebo uložily.</string>
     <string name="html_artifact_offline_notice">Tato stránka se pokusila načíst soubory z internetu. Náhledy běží offline; přístup k internetu můžete povolit v Nastavení \u2192 Nástroje.</string>
-    <string name="tool_web_fetch_title">Načíst webovou stránku</string>
     <string name="tool_web_search_desc">Prohledá web a vrátí názvy výsledků, odkazy a úryvky, aby model mohl najít aktuální informace.</string>
     <string name="tool_web_search_example">\"Najdi nedávné recenze nejnovějšího telefonu Pixel.\"</string>
     <string name="tool_web_search_title">Vyhledávání na webu</string>

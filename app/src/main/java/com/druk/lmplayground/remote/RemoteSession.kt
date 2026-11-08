@@ -58,7 +58,7 @@ class RemoteSession(
             submitToolResults(
                 JSONArray((0 until calls.length()).map {
                     JSONObject().put("id", calls.getJSONObject(it).getString("id"))
-                        .put("content", """{"error":"Not run: the reply ended before this tool ran."}""")
+                        .put("content", "Error: Not run: the reply ended before this tool ran.")
                 }).toString(),
                 thinking,
             )

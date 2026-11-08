@@ -6,7 +6,7 @@ import android.os.BatteryManager
 import android.os.Build
 import android.os.StatFs
 import com.druk.llamacpp.tools.Tool
-import org.json.JSONArray
+import com.druk.llamacpp.tools.toolError
 import org.json.JSONObject
 import java.util.Locale
 
@@ -18,44 +18,40 @@ import java.util.Locale
  */
 class HardwareInfoTool(private val context: Context) : Tool {
     override val name = "device_info"
-    override val description = "Get this device's hardware and system information: manufacturer and model, Android version, chipset (SoC), CPU core count, supported ABIs, total and available RAM, internal storage total/free, and battery level and charging state. Useful to reason about what can run on this device."
+    override val functionName = "get_device_info"
+    override val description = "Gets details about the user's phone: model, Android version, chipset, CPU cores, RAM, storage and battery."
     override val parametersSchema = """{"type":"object","properties":{}}"""
 
     override fun execute(arguments: String): String {
         return try {
+            // Plain values the model can repeat as they are; no internal
+            // fields (API level, ABIs) that small models read out verbatim.
             val out = JSONObject()
-            out.put("manufacturer", Build.MANUFACTURER)
-            out.put("model", Build.MODEL)
-            out.put("android_version", Build.VERSION.RELEASE)
-            out.put("api_level", Build.VERSION.SDK_INT)
+            out.put("phone", "${Build.MANUFACTURER} ${Build.MODEL}")
+            out.put("android", Build.VERSION.RELEASE)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                out.put("soc_manufacturer", Build.SOC_MANUFACTURER)
-                out.put("soc_model", Build.SOC_MODEL)
+                out.put("chipset", "${Build.SOC_MANUFACTURER} ${Build.SOC_MODEL}")
             }
             out.put("cpu_cores", Runtime.getRuntime().availableProcessors())
-            out.put("supported_abis", JSONArray(Build.SUPPORTED_ABIS.toList()))
 
             val am = context.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager
             if (am != null) {
                 val mi = ActivityManager.MemoryInfo()
                 am.getMemoryInfo(mi)
-                out.put("ram_total", humanBytes(mi.totalMem))
-                out.put("ram_available", humanBytes(mi.availMem))
-                out.put("ram_low", mi.lowMemory)
+                out.put("RAM", "${humanBytes(mi.totalMem)} total, ${humanBytes(mi.availMem)} free")
             }
 
             val stat = StatFs(context.filesDir.absolutePath)
-            out.put("storage_total", humanBytes(stat.blockCountLong * stat.blockSizeLong))
-            out.put("storage_free", humanBytes(stat.availableBlocksLong * stat.blockSizeLong))
+            out.put("storage", "${humanBytes(stat.blockCountLong * stat.blockSizeLong)} total, " +
+                "${humanBytes(stat.availableBlocksLong * stat.blockSizeLong)} free")
 
             (context.getSystemService(Context.BATTERY_SERVICE) as? BatteryManager)?.let { bm ->
                 val level = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
-                if (level in 0..100) out.put("battery_percent", level)
-                out.put("battery_charging", bm.isCharging)
+                if (level in 0..100) out.put("battery", "$level%, " + if (bm.isCharging) "charging" else "not charging")
             }
             out.toString()
         } catch (e: Exception) {
-            """{"error":"${(e.message ?: "Could not read device info").replace("\"", "'")}"}"""
+            toolError(e.message ?: "Could not read device info")
         }
     }
 

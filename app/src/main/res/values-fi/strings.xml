@@ -340,8 +340,6 @@
     <string name="tool_get_date_time_desc">Kertoo mallille tämän päivän päivämäärän, viikonpäivän ja nykyisen ajan puhelimestasi. Toimii offline-tilassa.</string>
     <string name="tool_get_date_time_example">\"Mikä päivä tänään on?\"</string>
     <string name="tool_run_javascript_title">Suorita JavaScript</string>
-    <string name="tool_web_fetch_desc">Avaa linkin ja lukee sen pääsisällön tekstinä, jotta malli voi tiivistää tai lainata sivun.</string>
-    <string name="tool_web_fetch_example">\"Tiivistä tämän linkin artikkeli.\"</string>
     <string name="tool_set_alarm_title">Aseta herätys</string>
     <string name="tool_set_alarm_desc">Luo herätyksen Kello-sovellukseen. Toimii offline-tilassa; voit muuttaa tai poistaa sen Kello-sovelluksessa.</string>
     <string name="tool_set_alarm_example">\"Aseta herätys klo 6.30.\"</string>
@@ -359,7 +357,6 @@
     <string name="tools_html_preview_internet_title">Internetyhteys esikatseluissa</string>
     <string name="tools_html_preview_internet_desc">Sallii live-esikatseluiden ladata kirjastoja, fontteja, kuvia ja dataa internetistä. Kun asetus on pois päältä, esikatselut toimivat täysin offline-tilassa. Avaa selaimessa käyttää selainsovellustasi, jota tämä asetus ei ohjaa. Kun asetus poistetaan käytöstä, kaikki esikatselujen lataama tai tallentama poistetaan.</string>
     <string name="html_artifact_offline_notice">Tämä sivu yritti ladata tiedostoja internetistä. Esikatselut ovat offline-tilassa; voit sallia internetyhteyden kohdassa Asetukset \u2192 Työkalut.</string>
-    <string name="tool_web_fetch_title">Nouda verkkosivu</string>
     <string name="tool_web_search_desc">Hakee verkosta ja palauttaa tulosten otsikot, linkit ja katkelmat, jotta malli voi löytää ajantasaista tietoa.</string>
     <string name="tool_web_search_example">\"Etsi tuoreita arvioita uusimmasta Pixel-puhelimesta.\"</string>
     <string name="tool_web_search_title">Verkkohaku</string>

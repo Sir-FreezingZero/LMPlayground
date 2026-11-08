@@ -8,7 +8,7 @@ class ToolRegistry {
     private val enabledState = mutableMapOf<String, Boolean>()
 
     /**
-     * Shared by web_search / web_fetch for compact result references. Exposed so
+     * Shared by web_search and its page reader for compact result references. Exposed so
      * the conversation layer can snapshot it into a session's metadata and
      * restore it when that conversation is reopened. See [WebLinkStore].
      */
@@ -20,7 +20,29 @@ class ToolRegistry {
 
     fun getAllTools(): List<Tool> = tools.values.toList()
 
-    fun getTool(name: String): Tool? = tools[name]
+    /**
+     * A tool's JSON result as plain text, which every model reads the same way:
+     * an error as "Error: …", a lone result as itself, anything else as
+     * "Key: value" lines (empty ones left out), with lists as blocks between "---".
+     */
+    fun asText(json: String): String {
+        val o = runCatching { JSONObject(json) }.getOrNull() ?: return json
+        o.optString("error").takeIf { it.isNotEmpty() }?.let { return "Error: $it" }
+        if (o.length() == 1 && o.has("result")) return o.optString("result").ifEmpty { "(empty)" }
+        return lines(o)
+    }
+
+    private fun lines(o: JSONObject): String = o.keys().asSequence().filter {
+        o.opt(it).let { v -> v != null && v != JSONObject.NULL && v.toString().isNotBlank() }
+    }.joinToString("\n") { key ->
+        when (val v = o.get(key)) {
+            is JSONArray -> (0 until v.length()).joinToString("\n\n---\n\n", postfix = "\n") { i ->
+                v.optJSONObject(i)?.let { lines(it) } ?: v.optString(i)
+            }
+            is JSONObject -> lines(v)
+            else -> key.replace('_', ' ').replaceFirstChar { it.uppercase() } + ": " + v
+        }
+    }
 
     fun isToolEnabled(name: String): Boolean = enabledState[name] ?: false
 
@@ -37,24 +59,13 @@ class ToolRegistry {
         }
     }
 
-    /**
-     * Returns OpenAI-format JSON for enabled tools only.
-     */
-    fun toOpenAIToolsJson(): String {
-        val arr = JSONArray()
-        for (tool in tools.values) {
-            if (!isToolEnabled(tool.name)) continue
-            val obj = JSONObject()
-            obj.put("type", "function")
-            val func = JSONObject()
-            func.put("name", tool.name)
-            func.put("description", tool.description)
-            func.put("parameters", JSONObject(tool.parametersSchema))
-            obj.put("function", func)
-            arr.put(obj)
+    /** The enabled tools' functions in OpenAI format. */
+    fun toOpenAIToolsJson(): String = JSONArray(
+        tools.values.filter { isToolEnabled(it.name) }.flatMap { it.functions }.map { f ->
+            JSONObject().put("type", "function").put("function", JSONObject()
+                .put("name", f.name).put("description", f.description).put("parameters", JSONObject(f.parametersSchema)))
         }
-        return arr.toString()
-    }
+    ).toString()
 
     /**
      * Run the calls the model made and return `[{id,name,content}]`.
@@ -66,27 +77,18 @@ class ToolRegistry {
      */
     fun executeToolCalls(toolCallsJson: String, enforceEnabled: Boolean = false): String {
         val calls = JSONArray(toolCallsJson)
-        val results = JSONArray()
-        for (i in 0 until calls.length()) {
+        return JSONArray((0 until calls.length()).map { i ->
             val call = calls.getJSONObject(i)
             val name = call.getString("name")
-            val arguments = call.getString("arguments")
-            val id = call.getString("id")
-
-            val tool = getTool(name)
+            val tool = tools.values.firstOrNull { t -> t.functions.any { it.name == name } }
             val content = when {
-                tool == null -> """{"error":"Unknown tool: $name"}"""
-                enforceEnabled && !isToolEnabled(name) -> """{"error":"The $name tool is not enabled."}"""
-                else -> tool.execute(arguments)
+                tool == null -> "Error: Unknown tool: $name"
+                enforceEnabled && !isToolEnabled(tool.name) -> "Error: The $name tool is not enabled."
+                else -> runCatching { asText(tool.execute(name, call.getString("arguments"))) }
+                    .getOrElse { "Error: " + (it.message ?: "The $name tool failed.") }
             }
-
-            val result = JSONObject()
-            result.put("id", id)
-            result.put("name", name)
-            result.put("content", content)
-            results.put(result)
-        }
-        return results.toString()
+            JSONObject().put("id", call.getString("id")).put("name", name).put("content", content)
+        }).toString()
     }
 
     /**

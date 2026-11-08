@@ -1,6 +1,7 @@
 package com.druk.lmplayground.tools
 
 import com.druk.llamacpp.tools.Tool
+import com.druk.llamacpp.tools.toolError
 import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.MathContext
@@ -36,8 +37,9 @@ import kotlin.math.tanh
  */
 class CalculatorTool : Tool {
     override val name = "calculator"
-    override val description = "Evaluate a mathematical expression exactly and return the numeric result. Supports + - * / % ^ (power), parentheses, functions (sqrt, cbrt, abs, exp, ln, log, log10, log2, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, floor, ceil, round, sign, min, max, pow, hypot) and constants (pi, e, tau). Trig functions use radians. Always use this for arithmetic instead of computing it yourself."
-    override val parametersSchema = """{"type":"object","properties":{"expression":{"type":"string","description":"The math expression, e.g. \"(1234 * 5678) / 3\", \"sqrt(2)\", \"sin(pi/4)\", \"log(1000)\"."}},"required":["expression"]}"""
+    override val functionName = "calculate"
+    override val description = "Works out math exactly, from simple sums and money to percentages and formulas. Returns the result."
+    override val parametersSchema = """{"type":"object","properties":{"expression":{"type":"string","description":"The math to work out, e.g. \"20 - 7\", \"0.15 * 80\", \"(1234 * 5678) / 3\", \"sqrt(2)\". Supports + - * / ^, parentheses, functions like sqrt, log and sin, and pi and e. Angles are in radians."}},"required":["expression"]}"""
 
     override fun execute(arguments: String): String {
         return try {
@@ -46,7 +48,7 @@ class CalculatorTool : Tool {
             val normalized = expr.replace('×', '*').replace('·', '*').replace('÷', '/').replace('−', '-').replace("**", "^")
             val value = Parser(normalized).parse()
             if (value.isNaN() || value.isInfinite()) {
-                return """{"error":"Result is not a finite number (check for division by zero or an invalid operation)."}"""
+                return toolError("Result is not a finite number (check for division by zero or an invalid operation).")
             }
             JSONObject()
                 .put("expression", expr)
@@ -58,8 +60,7 @@ class CalculatorTool : Tool {
             // stack with a StackOverflowError, which is an Error, not an Exception.
             // Catching it here returns a clean error instead of crashing the app.
             // execute() has no suspension points, so this can't swallow cancellation.
-            // JSONObject escapes quotes/backslashes/control chars in the parser message.
-            JSONObject().put("error", e.message ?: "Could not evaluate the expression").toString()
+            toolError(e.message ?: "Could not evaluate the expression")
         }
     }
 

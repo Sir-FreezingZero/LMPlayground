@@ -354,9 +354,6 @@
     <string name="tool_web_search_title">חיפוש באינטרנט</string>
     <string name="tool_web_search_desc">מחפש באינטרנט ומחזיר כותרות תוצאות, קישורים וקטעים כדי שהמודל יוכל למצוא מידע עדכני.</string>
     <string name="tool_web_search_example">\"מצא ביקורות אחרונות על טלפון ה-Pixel האחרון.\"</string>
-    <string name="tool_web_fetch_title">שלוף דף אינטרנט</string>
-    <string name="tool_web_fetch_desc">פותח קישור וקורא את התוכן המרכזי שלו כטקסט כדי שהמודל יוכל לסכם או לצטט דף.</string>
-    <string name="tool_web_fetch_example">\"סכם את המאמר בקישור הזה.\"</string>
     <string name="tool_set_alarm_title">הגדרת שעון מעורר</string>
     <string name="tool_set_alarm_desc">יוצר שעון מעורר באפליקציית השעון. עובד במצב לא מקוון; אפשר לשנות או למחוק אותו באפליקציית השעון.</string>
     <string name="tool_set_alarm_example">\"תכוון שעון מעורר ל־6:30 בבוקר.\"</string>

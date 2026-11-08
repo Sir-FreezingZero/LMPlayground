@@ -472,8 +472,8 @@ class TabletStoreScreenshots(
 
     @Composable
     private fun ColumnScope.ToolsTabBody() {
-        val tools = listOf(StubTool("web_search"), StubTool("web_fetch"), StubTool("run_javascript"))
-        val enabled = mapOf("web_search" to true, "web_fetch" to true, "run_javascript" to true)
+        val tools = listOf(StubTool("web_search"), StubTool("run_javascript"))
+        val enabled = mapOf("web_search" to true, "run_javascript" to true)
         ToolsContent(
             tools = tools,
             enabledStates = enabled,

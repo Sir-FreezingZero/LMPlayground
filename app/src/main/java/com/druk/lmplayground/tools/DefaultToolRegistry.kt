@@ -16,10 +16,9 @@ fun ToolRegistry.Companion.createDefault(context: Context): ToolRegistry =
         // The order every tool list shows: grouped by what the tools do (the
         // web, math and code, the phone, then memory).
         // Shared link store: web_search hands the model compact "ddg:N"
-        // references instead of long URLs, web_fetch resolves them back at
-        // call time. See WebLinkStore.
+        // references instead of long URLs and resolves them back when it's
+        // asked to read one. See WebLinkStore.
         register(WebSearchTool(webLinkStore))
-        register(WebFetchTool(webLinkStore))
         register(WikipediaTool())
         register(CalculatorTool())
         register(UnitConverterTool())

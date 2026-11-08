@@ -711,6 +711,7 @@ class ConversationFragment : Fragment() {
                         maxContextSize = maxContextSize,
                         supportsThinking = supportsThinking,
                         onParamsChanged = { viewModel.updateGenerationParams(it) },
+                        recommendedParams = GenerationParams.recommendedFor(modelInfo?.filename),
                         systemPrompt = systemPrompt,
                         onSystemPromptChanged = { viewModel.applySystemPrompt(it) },
                         renderPromptStart = viewModel::renderPromptStart,

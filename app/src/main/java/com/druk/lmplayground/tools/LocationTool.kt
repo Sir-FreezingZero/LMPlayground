@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.CancellationSignal
 import androidx.core.content.ContextCompat
 import com.druk.llamacpp.tools.Tool
+import com.druk.llamacpp.tools.toolError
 import org.json.JSONObject
 import java.util.Locale
 import java.util.concurrent.CountDownLatch
@@ -25,39 +26,41 @@ import java.util.concurrent.TimeUnit
  */
 class LocationTool(private val context: Context) : Tool {
     override val name = "location"
-    override val description = "Get the device's current approximate location: latitude, longitude, accuracy in meters, and, when available, the nearby place (city, region, country). Requires location permission; if it isn't granted, tell the user to enable the Location tool in Settings."
+    override val functionName = "get_location"
+    override val description = "Finds where the user's phone is right now. Returns the place (city, region and country), the coordinates and how accurate they are."
     override val parametersSchema = """{"type":"object","properties":{}}"""
 
     override fun execute(arguments: String): String {
         return try {
             if (!hasPermission()) {
-                return """{"error":"Location permission is not granted. Enable the Location tool in Settings so the app can ask for permission."}"""
+                return toolError("Location permission is not granted. Enable the Location tool in Settings so the app can ask for permission.")
             }
             val lm = context.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
-                ?: return """{"error":"Location service is unavailable on this device."}"""
+                ?: return toolError("Location service is unavailable on this device.")
             if (!lm.isLocationEnabled) {
-                return """{"error":"Location is turned off on this phone. Ask the user to turn it on, then try again."}"""
+                return toolError("Location is turned off on this phone. Ask the user to turn it on, then try again.")
             }
             // A last-known fix is instant, but many phones have none (or only an
-            // old one) unless another app asked recently; then ask for a fresh one.
+            // old one) unless another app asked recently; then ask for a fresh one,
+            // waiting only briefly when an older fix can stand in.
             val known = bestLastKnown(lm)
             val location = known?.takeIf { System.currentTimeMillis() - it.time < MAX_AGE_MS }
-                ?: currentFix(lm)
+                ?: currentFix(lm, if (known != null) SHORT_WAIT_MS else FIX_TIMEOUT_MS)
                 ?: known
-                ?: return """{"error":"Couldn't get a location fix. Make sure location is turned on, then try again."}"""
+                ?: return toolError("Couldn't get a location fix. Make sure location is turned on, then try again.")
 
+            // Only what an answer needs, place first, so the model says where
+            // the user is instead of reading out fields.
             val out = JSONObject()
-                .put("latitude", location.latitude)
-                .put("longitude", location.longitude)
-                .put("accuracy_m", if (location.hasAccuracy()) location.accuracy.toDouble() else JSONObject.NULL)
-                .put("provider", location.provider ?: "")
-                .put("timestamp_ms", location.time)
             reverseGeocode(location.latitude, location.longitude)?.let { out.put("place", it) }
+            out.put("latitude", "%.4f".format(Locale.US, location.latitude))
+                .put("longitude", "%.4f".format(Locale.US, location.longitude))
+            if (location.hasAccuracy()) out.put("accuracy", accuracyText(location.accuracy))
             out.toString()
         } catch (e: SecurityException) {
-            """{"error":"Location permission is not granted."}"""
+            toolError("Location permission is not granted.")
         } catch (e: Exception) {
-            JSONObject().put("error", e.message ?: "Could not read the location").toString()
+            toolError(e.message ?: "Could not read the location")
         }
     }
 
@@ -89,11 +92,11 @@ class LocationTool(private val context: Context) : Tool {
     }
 
     /**
-     * A fresh fix from the first provider that answers within [FIX_TIMEOUT_MS].
+     * A fresh fix from the first provider that answers within [waitMs].
      * Blocks, but tools run off the main thread.
      */
     @Suppress("MissingPermission") // permission is verified in execute() before this runs
-    private fun currentFix(lm: LocationManager): Location? {
+    private fun currentFix(lm: LocationManager, waitMs: Long): Location? {
         val providers = buildList {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) add(LocationManager.FUSED_PROVIDER)
             add(LocationManager.NETWORK_PROVIDER)
@@ -110,7 +113,7 @@ class LocationTool(private val context: Context) : Tool {
                     fix = loc
                     latch.countDown()
                 }
-                if (!latch.await(FIX_TIMEOUT_MS, TimeUnit.MILLISECONDS)) signal.cancel()
+                if (!latch.await(waitMs, TimeUnit.MILLISECONDS)) signal.cancel()
             } catch (_: SecurityException) {
                 // this provider needs finer permission than we hold; try the next
             } catch (_: Exception) {
@@ -122,6 +125,11 @@ class LocationTool(private val context: Context) : Tool {
         }
         return null
     }
+
+    /** "within about 30 m" / "within about 2 km": the precision, without false digits. */
+    private fun accuracyText(meters: Float): String =
+        if (meters < 1000) "within about ${maxOf(10, (meters / 10).toInt() * 10)} m"
+        else "within about ${"%.0f".format(Locale.US, meters / 1000)} km"
 
     private fun reverseGeocode(lat: Double, lon: Double): String? {
         return try {
@@ -141,5 +149,7 @@ class LocationTool(private val context: Context) : Tool {
         /** A last-known fix older than this is replaced by a fresh one when possible. */
         const val MAX_AGE_MS = 10 * 60 * 1000L
         const val FIX_TIMEOUT_MS = 10_000L
+        /** The wait for a fresh fix when an older one can answer instead. */
+        const val SHORT_WAIT_MS = 3_000L
     }
 }

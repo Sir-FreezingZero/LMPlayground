@@ -341,9 +341,6 @@
     <string name="tool_web_search_title">Web search</string>
     <string name="tool_web_search_desc">Naghahanap sa web at nagbabalik ng mga title ng resulta, link, at snippet para makahanap ang model ng kasalukuyang impormasyon.</string>
     <string name="tool_web_search_example">\"Find recent reviews of the latest Pixel phone.\"</string>
-    <string name="tool_web_fetch_title">Kunin ang web page</string>
-    <string name="tool_web_fetch_desc">Nagbubukas ng link at binabasa ang pangunahing nilalaman nito bilang teksto para mabuod o ma-quote ng model ang isang page.</string>
-    <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
     <string name="tool_set_alarm_title">Mag-set ng alarm</string>
     <string name="tool_set_alarm_desc">Gumagawa ng alarm sa iyong Clock app. Gumagana offline; puwede mo itong baguhin o burahin sa Clock app.</string>
     <string name="tool_set_alarm_example">\"Mag-set ng alarm nang 6:30 ng umaga.\"</string>

@@ -73,6 +73,8 @@ fun GenerationParamsSheet(
     maxContextSize: Int,
     supportsThinking: Boolean = false,
     onParamsChanged: (GenerationParams) -> Unit,
+    /** What Reset goes back to: the model's recommended sampling. */
+    recommendedParams: GenerationParams = GenerationParams(),
     systemPrompt: String = "",
     onSystemPromptChanged: (String) -> Unit = {},
     renderPromptStart: suspend () -> String? = { null },
@@ -154,6 +156,7 @@ fun GenerationParamsSheet(
                     showAdvanced = showAdvanced,
                     onShowAdvancedChange = { showAdvanced = it },
                     onParamsChange = { editedParams = it },
+                    recommendedParams = recommendedParams,
                     maxHeight = maxTabHeight
                 )
                 1 -> Column(tabModifier) {
@@ -182,6 +185,7 @@ private fun ParamsTab(
     showAdvanced: Boolean,
     onShowAdvancedChange: (Boolean) -> Unit,
     onParamsChange: (GenerationParams) -> Unit,
+    recommendedParams: GenerationParams,
     maxHeight: Dp
 ) {
     val contextMin = 512
@@ -365,7 +369,8 @@ private fun ParamsTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedButton(
-            onClick = { onParamsChange(GenerationParams()) },
+            // Sampling only: keeping the context size doesn't wipe the chat.
+            onClick = { onParamsChange(recommendedParams.copy(contextSize = params.contextSize, thinkingBudget = params.thinkingBudget)) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(stringResource(R.string.reset))

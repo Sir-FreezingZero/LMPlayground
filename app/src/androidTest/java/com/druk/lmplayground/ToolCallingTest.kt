@@ -10,7 +10,6 @@ import com.druk.llamacpp.tools.ToolRegistry
 import com.druk.lmplayground.tools.createDefault
 import com.druk.lmplayground.tools.WebSearchTool
 import com.druk.lmplayground.tools.JavaScriptTool
-import com.druk.lmplayground.tools.WebFetchTool
 import org.json.JSONArray
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.After
@@ -819,16 +818,11 @@ class ToolCallingTest {
 
         val outcome = runToolCycle(
             model, s, registry,
-            // Three things tighten this prompt to stay inside Gemma 4's
-            // thinking budget: (1) explicit max_length=200 keeps the tool
-            // payload tiny so there's little for the model to chew on
-            // before answering; (2) "in one short sentence" caps the
-            // visible output; (3) we ask for the page title, which
-            // web_fetch returns as a top-level field — always present.
-            prompt = "Use the web_fetch tool with max_length=200 to retrieve " +
+            // "In one short sentence" keeps the visible output inside Gemma 4's
+            // thinking budget, and the page title is always in the result.
+            prompt = "Use the web_search tool with the url parameter to read " +
                 "https://lmplayground.app, then in one short sentence give me the page title.",
-            // Even with max_length=200 the model may ignore the hint and
-            // pull the full 2.6 KB body. With thinking auto-enabled for
+            // With thinking auto-enabled for
             // Gemma 4 (see runToolCycle), generation can spend a lot of
             // wall clock filtering through reasoning tokens before the
             // visible answer surfaces. Bumping ceiling tokens *and* the
@@ -840,10 +834,8 @@ class ToolCallingTest {
             Log.d(TAG, "TASK-FETCH: skipped, no tool call")
             return
         }
-        assertEquals("Should call web_fetch", "web_fetch", outcome.toolName)
-        // Tool result is deterministic — both literals appear in the
-        // fetched body text, and "LM Playground" sits in the title field
-        // even when the model truncates content via max_length.
+        assertEquals("Should call web_search", "web_search", outcome.toolName)
+        // "LM Playground" is in the page title, which the result always has.
         assertTrue(
             "Tool content must include 'LM Playground'. content head=${outcome.toolContent.take(400)}",
             outcome.toolContent.contains("LM Playground")
@@ -883,57 +875,27 @@ class ToolCallingTest {
     }
 
     @Test
-    fun testWebSearchMaxResults() {
-        val tool = WebSearchTool()
-        val result = tool.execute("""{"query":"Android development","max_results":2}""")
-        Log.d(TAG, "WebSearch max_results result: ${result.take(500)}")
-        val json = org.json.JSONObject(result)
-        if (!json.has("error")) {
-            val results = json.getJSONArray("results")
-            assertTrue("Should have at most 2 results", results.length() <= 2)
-        }
-    }
-
-    @Test
-    fun testWebFetchReturnsContent() {
-        val tool = WebFetchTool()
-        val result = tool.execute("""{"url":"https://httpbin.org/html"}""")
-        Log.d(TAG, "WebFetch result: ${result.take(500)}")
+    fun testWebSearchReadsPage() {
+        val result = WebSearchTool().execute("""{"url":"https://httpbin.org/html"}""")
+        Log.d(TAG, "Page result: ${result.take(500)}")
         val json = org.json.JSONObject(result)
         assertFalse("Should not have error: $result", json.has("error"))
-        assertTrue("Should have content", json.has("content"))
-        val content = json.getString("content")
-        assertTrue("Content should not be empty", content.isNotEmpty())
+        assertTrue("Content should not be empty", json.optString("content").isNotEmpty())
     }
 
     @Test
-    fun testWebFetchTruncation() {
-        val tool = WebFetchTool()
-        val result = tool.execute("""{"url":"https://httpbin.org/html","max_length":50}""")
-        Log.d(TAG, "WebFetch truncated: ${result.take(200)}")
-        val json = org.json.JSONObject(result)
-        assertFalse("Should not have error: $result", json.has("error"))
-        val content = json.getString("content")
-        assertTrue("Content should be truncated to ~50 chars, got ${content.length}", content.length <= 54)
-    }
-
-    @Test
-    fun testWebFetchInvalidUrl() {
-        val tool = WebFetchTool()
-        val result = tool.execute("""{"url":"https://thisdoesnotexist.invalid"}""")
-        Log.d(TAG, "WebFetch invalid: $result")
-        val json = org.json.JSONObject(result)
-        assertTrue("Should have error for invalid URL", json.has("error"))
+    fun testWebSearchInvalidUrl() {
+        val result = WebSearchTool().execute("""{"url":"https://thisdoesnotexist.invalid"}""")
+        assertTrue("Should have error for invalid URL", org.json.JSONObject(result).has("error"))
     }
 
     @Test
     fun testToolRegistryIncludesWebTools() {
         val registry = ToolRegistry.createDefault(InstrumentationRegistry.getInstrumentation().targetContext)
-        // The catalog itself must carry the three built-in tools; enablement
+        // The catalog itself must carry the built-in web tools; enablement
         // (default off) is a separate per-model concern.
         val names = registry.getAllTools().map { it.name }
         assertTrue("Should include web_search", names.contains("web_search"))
-        assertTrue("Should include web_fetch", names.contains("web_fetch"))
         assertTrue("Should include run_javascript", names.contains("run_javascript"))
     }
 

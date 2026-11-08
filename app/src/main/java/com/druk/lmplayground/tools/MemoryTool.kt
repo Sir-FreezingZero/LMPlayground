@@ -2,101 +2,68 @@ package com.druk.lmplayground.tools
 
 import android.content.Context
 import com.druk.llamacpp.tools.Tool
+import com.druk.llamacpp.tools.toolError
+import com.druk.llamacpp.tools.toolResult
+import com.druk.llamacpp.tools.ToolFunction
 import com.druk.lmplayground.data.AppDatabase
 import com.druk.lmplayground.data.MemoryNoteEntity
-import org.json.JSONArray
 import org.json.JSONObject
 
 /**
- * Lets the model save and recall short notes/facts that persist across chats,
- * stored locally in Room. Bounded (max notes + max length) so it can't grow
- * unchecked. Runs off the main thread (the tool loop), so the synchronous DAO
- * calls are safe.
+ * Lets the model keep short facts about the user across chats, stored
+ * locally in Room. Two plain functions, remember and forget, rather than one
+ * with an "action" switch, which small models fill in wrong. Saved facts
+ * are already in the system prompt with their numbers, so there is no list.
+ * Bounded (max notes + max length) so it can't grow unchecked. Runs off the
+ * main thread (the tool loop), so the synchronous DAO calls are safe.
  */
 class MemoryTool(private val context: Context) : Tool {
     override val name = "memory"
-    override val description = "Save and recall notes or facts that persist across chats. Use action \"save\" to remember something (with \"content\", optional \"category\"), \"list\" to recall all saved notes, \"update\" to edit one (with its \"id\" and new \"content\"), or \"delete\" to remove one (with its \"id\"). Notes are stored only on this device."
-    override val parametersSchema = """{"type":"object","properties":{"action":{"type":"string","description":"\"save\", \"list\", \"update\", or \"delete\""},"content":{"type":"string","description":"The note text, required for \"save\" and \"update\""},"id":{"type":"integer","description":"The note id, required for \"update\" and \"delete\""},"category":{"type":"string","description":"Optional short tag for a saved note, e.g. \"preferences\", \"projects\""}},"required":["action"]}"""
+    override val description = "Saves a short fact about the user, like their name or a preference, so you know it in later chats."
+    override val parametersSchema = """{"type":"object","properties":{"fact":{"type":"string","description":"The fact in a few words, e.g. \"Name is Zach\""}},"required":["fact"]}"""
+
+    override val functions = listOf(
+        ToolFunction("remember", description, parametersSchema),
+        ToolFunction(
+            "forget",
+            "Deletes a saved fact about the user, by the number shown next to it in your instructions.",
+            """{"type":"object","properties":{"number":{"type":"integer","description":"The fact's number"}},"required":["number"]}""",
+        ),
+    )
 
     private val dao get() = AppDatabase.getInstance(context).memoryDao()
 
-    override fun execute(arguments: String): String {
+    override fun execute(arguments: String) = execute("remember", arguments)
+
+    override fun execute(function: String, arguments: String): String {
         return try {
             val args = JSONObject(arguments)
-            // Small models often leave "action" out: with content they mean
-            // save, with nothing at all they mean list.
-            val action = args.optString("action").trim().lowercase().ifEmpty {
-                if (args.optString("content").isNotBlank()) "save" else "list"
-            }
-            when (action) {
-                "save", "add", "remember", "store" -> {
-                    val content = args.optString("content").trim()
-                    if (content.isEmpty()) return errorJson("Nothing to save: 'content' is empty.")
-                    if (content.length > MAX_LEN) return errorJson("Note too long (max $MAX_LEN characters).")
+            when (function) {
+                "forget" -> {
+                    val id = args.optLong("number", args.optLong("id", -1L))
+                    if (id < 0L) return toolError("Give the number of the fact to delete.")
+                    if (dao.deleteById(id) > 0) toolResult("Fact $id deleted.")
+                    else toolError("There is no fact number $id.")
+                }
+                else -> {
+                    val fact = args.optString("fact").ifBlank { args.optString("content") }.trim()
+                    if (fact.isEmpty()) return toolError("Give the fact to save.")
+                    if (fact.length > MAX_LEN) return toolError("That fact is too long (max $MAX_LEN characters).")
                     if (dao.count() >= MAX_NOTES) {
-                        return errorJson("Memory is full ($MAX_NOTES notes). Delete some before saving more.")
+                        return toolError("Memory is full ($MAX_NOTES facts). Ask the user to delete some in Settings.")
                     }
-                    val category = args.optString("category").trim().take(MAX_CATEGORY_LEN).ifEmpty { null }
                     val now = System.currentTimeMillis()
-                    val id = dao.insert(
-                        MemoryNoteEntity(
-                            content = content,
-                            createdAt = now,
-                            updatedAt = now,
-                            category = category,
-                        )
-                    )
-                    JSONObject().put("saved", true).put("id", id).toString()
+                    val id = dao.insert(MemoryNoteEntity(content = fact, createdAt = now, updatedAt = now))
+                    toolResult("Saved as fact $id.")
                 }
-                "list", "recall", "get", "all" -> {
-                    val arr = JSONArray()
-                    for (note in dao.getAll()) {
-                        arr.put(
-                            JSONObject()
-                                .put("id", note.id)
-                                .put("content", note.content)
-                                .put("createdAt", note.createdAt)
-                                .apply { note.category?.let { put("category", it) } }
-                        )
-                    }
-                    JSONObject().put("notes", arr).put("count", arr.length()).toString()
-                }
-                "update", "edit", "change" -> {
-                    val id = args.optLong("id", -1L)
-                    if (id < 0L) return errorJson("Provide the numeric 'id' of the note to update (see the list action).")
-                    val content = args.optString("content").trim()
-                    if (content.isEmpty()) return errorJson("Nothing to update: 'content' is empty.")
-                    if (content.length > MAX_LEN) return errorJson("Note too long (max $MAX_LEN characters).")
-                    val existing = dao.getById(id) ?: return errorJson("No note with id $id.")
-                    val category = args.optString("category").trim().take(MAX_CATEGORY_LEN)
-                        .ifEmpty { existing.category }
-                    dao.update(
-                        existing.copy(
-                            content = content,
-                            category = category,
-                            updatedAt = System.currentTimeMillis(),
-                        )
-                    )
-                    JSONObject().put("updated", true).put("id", id).toString()
-                }
-                "delete", "remove", "forget" -> {
-                    val id = args.optLong("id", -1L)
-                    if (id < 0L) return errorJson("Provide the numeric 'id' of the note to delete (see the list action).")
-                    val removed = dao.deleteById(id)
-                    JSONObject().put("deleted", removed > 0).toString()
-                }
-                else -> errorJson("Unknown action. Use \"save\", \"list\", \"update\", or \"delete\".")
             }
         } catch (e: Exception) {
-            errorJson(e.message ?: "Memory operation failed")
+            toolError(e.message ?: "Memory operation failed")
         }
     }
-
-    private fun errorJson(message: String) = JSONObject().put("error", message).toString()
 
     companion object {
         private const val MAX_LEN = 2000
         private const val MAX_NOTES = 200
-        private const val MAX_CATEGORY_LEN = 40
     }
 }

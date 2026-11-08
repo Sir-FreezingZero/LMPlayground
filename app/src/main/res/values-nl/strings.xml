@@ -336,9 +336,6 @@
     <string name="tool_web_search_title">Zoeken op het web</string>
     <string name="tool_web_search_desc">Doorzoekt het web en geeft titels, links en fragmenten van resultaten terug, zodat het model actuele informatie kan vinden.</string>
     <string name="tool_web_search_example">“Vind recente reviews van de nieuwste Pixel-telefoon.”</string>
-    <string name="tool_web_fetch_title">Webpagina ophalen</string>
-    <string name="tool_web_fetch_desc">Opent een link en leest de belangrijkste inhoud als tekst, zodat het model een pagina kan samenvatten of citeren.</string>
-    <string name="tool_web_fetch_example">“Vat het artikel achter deze link samen.”</string>
     <string name="tool_set_alarm_title">Wekker instellen</string>
     <string name="tool_set_alarm_desc">Maakt een wekker in je Klok-app. Werkt offline; je kunt hem wijzigen of verwijderen in de Klok-app.</string>
     <string name="tool_set_alarm_example">\"Zet een wekker om 6:30 uur.\"</string>

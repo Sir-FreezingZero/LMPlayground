@@ -310,13 +310,14 @@ class ModelRuntime(
                 val params = if (savedMap != null) {
                     GenerationParams.fromMap(savedMap)
                 } else {
-                    GenerationParams()
+                    GenerationParams.recommendedFor(model.filename)
                 }
                 listener.onGenerationParams(params)
                 // Every model load starts without a system prompt. Per-model
                 // MRU is surfaced in the picker row so the user can one-tap
                 // re-apply their most-recent prompt for this model.
                 listener.onSystemPromptReset()
+                com.druk.lmplayground.tools.WebHttp.contextTokens = params.contextSize
                 val llamaSession = createSessionWithParams(llamaModel, params, "")
                 if (llamaSession == null) {
                     listener.onLoadStatus("Failed to create session")
@@ -404,7 +405,7 @@ class ModelRuntime(
             notifications.update(R.string.inference_notification_loaded_title)
             listener.onMaxContextSize(caps.contextSize)
             val params = storagePreferences.getModelGenerationParams(model.filename)
-                ?.let { GenerationParams.fromMap(it) } ?: GenerationParams()
+                ?.let { GenerationParams.fromMap(it) } ?: GenerationParams.recommendedFor(model.filename)
             listener.onGenerationParams(params)
             listener.onSystemPromptReset()
             val newSession = newSession(params, "") ?: return@withContext
@@ -423,6 +424,8 @@ class ModelRuntime(
 
     /** A session on the loaded model, on the phone or on a server; null when none is loaded. */
     private fun newSession(params: GenerationParams, systemPrompt: String): GenerationSession? {
+        // Tools size their results to the chat's context (see WebHttp.pageChars).
+        com.druk.lmplayground.tools.WebHttp.contextTokens = remote?.caps?.contextSize ?: params.contextSize
         val r = remote ?: return model?.let { createSessionWithParams(it, params, systemPrompt) }
         val effectivePrompt = composeSystemPrompt(systemPrompt)
         return RemoteSession(r.server, r.id, effectivePrompt, params, r.caps.contextSize)

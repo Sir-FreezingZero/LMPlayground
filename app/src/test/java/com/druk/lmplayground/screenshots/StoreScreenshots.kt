@@ -598,8 +598,8 @@ private fun PhoneSavedPromptCard(text: String, selected: Boolean) {
 
 @Composable
 private fun ColumnScope.PhoneToolsTabBody() {
-    val tools = listOf(FakeTool("web_search"), FakeTool("web_fetch"), FakeTool("run_javascript"))
-    val enabled = mapOf("web_search" to true, "web_fetch" to true, "run_javascript" to true)
+    val tools = listOf(FakeTool("web_search"), FakeTool("run_javascript"))
+    val enabled = mapOf("web_search" to true, "run_javascript" to true)
     ToolsContent(
         tools = tools,
         enabledStates = enabled,

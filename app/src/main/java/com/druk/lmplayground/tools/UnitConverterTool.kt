@@ -1,6 +1,8 @@
 package com.druk.lmplayground.tools
 
 import com.druk.llamacpp.tools.Tool
+import com.druk.llamacpp.tools.toolError
+import com.druk.llamacpp.tools.toolResult
 import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.MathContext
@@ -13,8 +15,8 @@ import kotlin.math.abs
  */
 class UnitConverterTool : Tool {
     override val name = "convert_units"
-    override val description = "Convert a value between units of the same kind. Length (m, km, cm, mm, mi, yd, ft, in, nmi), mass (kg, g, mg, t, lb, oz, st), temperature (c, f, k), volume (l, ml, m3, gal, qt, pt, cup, floz), area (m2, km2, ha, acre, ft2, in2), speed (mps, kph, mph, knot), data (b, kb, mb, gb, tb, kib, mib, gib), time (s, min, h, day, week). Use the short codes shown."
-    override val parametersSchema = """{"type":"object","properties":{"value":{"type":"number","description":"The numeric value to convert"},"from":{"type":"string","description":"Source unit code, e.g. \"mi\""},"to":{"type":"string","description":"Target unit code, e.g. \"km\""}},"required":["value","from","to"]}"""
+    override val description = "Converts an amount between units of length, weight, temperature, volume, area, speed, data size or time, such as miles to kilometers or Fahrenheit to Celsius. Returns the converted amount."
+    override val parametersSchema = """{"type":"object","properties":{"value":{"type":"number","description":"The amount to convert"},"from":{"type":"string","description":"The unit it is in now, as a name or short code, e.g. \"miles\" or \"mi\""},"to":{"type":"string","description":"The unit wanted, e.g. \"kilometers\" or \"km\""}},"required":["value","from","to"]}"""
 
     override fun execute(arguments: String): String {
         return try {
@@ -26,14 +28,14 @@ class UnitConverterTool : Tool {
             // Temperature first (affine conversion, not a shared linear base).
             convertTemp(value, from, to)?.let { return resultJson(value, from, to, it) }
 
-            val f = UNITS[from] ?: return errorJson("Unknown unit '$from'")
-            val t = UNITS[to] ?: return errorJson("Unknown unit '$to'")
+            val f = UNITS[from] ?: return toolError("Unknown unit '$from'")
+            val t = UNITS[to] ?: return toolError("Unknown unit '$to'")
             if (f.category != t.category) {
-                return errorJson("Cannot convert '$from' (${f.category}) to '$to' (${t.category})")
+                return toolError("Cannot convert '$from' (${f.category}) to '$to' (${t.category})")
             }
             resultJson(value, from, to, value * f.factor / t.factor)
         } catch (e: Exception) {
-            errorJson(e.message ?: "Conversion failed")
+            toolError(e.message ?: "Conversion failed")
         }
     }
 
@@ -65,21 +67,23 @@ class UnitConverterTool : Tool {
         }
     }
 
+    /** One ready-to-say line ("2000 m = 6561.68 ft"), so the units can't get mixed up in the answer. */
     private fun resultJson(value: Double, from: String, to: String, result: Double): String =
-        JSONObject()
-            .put("value", value)
-            .put("from", from)
-            .put("to", to)
-            .put("result", format(result))
-            .toString()
+        toolResult("${format(value)} ${shown(from)} = ${format(result)} ${shown(to)}")
+
+    private fun shown(unit: String) = when (unit) {
+        "c", "celsius" -> "°C"
+        "f", "fahrenheit" -> "°F"
+        "k", "kelvin" -> "K"
+        else -> unit
+    }
 
     private fun format(v: Double): String {
         if (v == 0.0) return "0"
         if (v == v.toLong().toDouble() && abs(v) < 1e15) return v.toLong().toString()
-        return BigDecimal(v).round(MathContext(12)).stripTrailingZeros().toPlainString()
+        return BigDecimal(v).round(MathContext(6)).stripTrailingZeros().toPlainString()
     }
 
-    private fun errorJson(m: String) = """{"error":"${m.replace("\"", "'")}"}"""
 
     private data class U(val category: String, val factor: Double)
 

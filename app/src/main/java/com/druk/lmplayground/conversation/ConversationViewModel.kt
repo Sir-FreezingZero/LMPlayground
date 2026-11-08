@@ -207,6 +207,8 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         override fun onModelReady(model: ModelInfo) {
             _isModelReady.postValue(true)
             viewModelScope.launch { refreshContextUsage() }
+            // Keep the session's prompt in step with the chat's settings.
+            viewModelScope.launch { syncSystemPrompt() }
             // Update session model info if we have an active session
             val sessionId = _currentSessionId.value
             if (sessionId != null) {
@@ -1145,7 +1147,8 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                     topK = sessionEntity.topK,
                     minP = sessionEntity.minP,
                     seed = sessionEntity.seed,
-                    thinkingBudget = sessionEntity.thinkingBudget
+                    // -1 ("no limit") was briefly possible; use the normal limit instead.
+                    thinkingBudget = sessionEntity.thinkingBudget.takeIf { it >= 0 } ?: (sessionEntity.contextSize / 4)
                 )
                 _generationParams.value = params
                 _systemPrompt.value = sessionEntity.systemPrompt
@@ -1153,7 +1156,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                     .getStringMap(ConversationMetadata.KEY_TOOLS)
 
                 // Restore web_search link references saved with this conversation
-                // so the model can still web_fetch a previously-returned ref.
+                // so the model can still read a previously-returned ref.
                 toolRegistry.webLinkStore.restore(
                     ConversationMetadata.parse(sessionEntity.metadata)
                         .getStringMap(ConversationMetadata.KEY_WEB_LINKS)
@@ -1251,13 +1254,10 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
-    /**
-     * [prompt] with the extras; saved memories only when this chat has the memory
-     * tool on, and the tool hint when any tool is on.
-     */
+    /** [prompt] with the extras; saved memories only when this chat has the memory tool on. */
     private fun composeSystemPrompt(prompt: String): String {
         val tools = toolStates(_chatTools.value.orEmpty())
-        return systemPromptExtras.compose(prompt, tools["memory"] == true, tools.values.any { it })
+        return systemPromptExtras.compose(prompt, tools["memory"] == true)
     }
 
     /** Each tool's state in this chat: [chatTools] over the defaults. */

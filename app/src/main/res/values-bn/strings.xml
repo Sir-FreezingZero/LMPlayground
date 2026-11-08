@@ -351,9 +351,6 @@
     <string name="tool_web_search_title">ওয়েব অনুসন্ধান</string>
     <string name="tool_web_search_desc">ওয়েবে অনুসন্ধান করে এবং ফলাফলের শিরোনাম, লিঙ্ক ও স্নিপেট ফেরত দেয় যাতে মডেল সাম্প্রতিক তথ্য খুঁজে পেতে পারে।</string>
     <string name="tool_web_search_example">\"সর্বশেষ Pixel ফোনের সাম্প্রতিক রিভিউ খুঁজুন।\"</string>
-    <string name="tool_web_fetch_title">ওয়েব পেজ ফেচ করুন</string>
-    <string name="tool_web_fetch_desc">একটি লিঙ্ক খোলে এবং এর মূল বিষয়বস্তু টেক্সট হিসেবে পড়ে যাতে মডেল কোনো পেজের সারসংক্ষেপ বা উদ্ধৃতি দিতে পারে।</string>
-    <string name="tool_web_fetch_example">\"এই লিঙ্কের নিবন্ধটির সারসংক্ষেপ দিন।\"</string>
     <string name="tool_set_alarm_title">অ্যালার্ম সেট করুন</string>
     <string name="tool_set_alarm_desc">আপনার ঘড়ি অ্যাপে একটি অ্যালার্ম তৈরি করে। অফলাইনে কাজ করে; ঘড়ি অ্যাপে এটি বদলাতে বা মুছতে পারেন।</string>
     <string name="tool_set_alarm_example">\"সকাল ৬:৩০-এ একটি অ্যালার্ম দাও।\"</string>

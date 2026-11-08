@@ -296,9 +296,6 @@
     <string name="tool_web_search_title">Websuche</string>
     <string name="tool_web_search_desc">Durchsucht das Web und liefert Titel, Links und Ausschnitte der Ergebnisse, damit das Modell aktuelle Informationen finden kann.</string>
     <string name="tool_web_search_example">“Finde aktuelle Testberichte zum neuesten Pixel-Smartphone.”</string>
-    <string name="tool_web_fetch_title">Webseite abrufen</string>
-    <string name="tool_web_fetch_desc">Öffnet einen Link und liest dessen Hauptinhalt als Text, damit das Modell eine Seite zusammenfassen oder zitieren kann.</string>
-    <string name="tool_web_fetch_example">“Fasse den Artikel unter diesem Link zusammen.”</string>
     <string name="tool_set_alarm_title">Wecker stellen</string>
     <string name="tool_set_alarm_desc">Erstellt einen Wecker in deiner Uhr-App. Funktioniert offline; du kannst ihn in der Uhr-App ändern oder löschen.</string>
     <string name="tool_set_alarm_example">\"Stell einen Wecker auf 6:30 Uhr.\"</string>

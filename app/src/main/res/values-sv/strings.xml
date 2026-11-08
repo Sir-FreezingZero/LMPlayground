@@ -335,9 +335,6 @@
     <string name="tool_web_search_title">Webbsökning</string>
     <string name="tool_web_search_desc">Söker på webben och returnerar resultatens titlar, länkar och utdrag så att modellen kan hitta aktuell information.</string>
     <string name="tool_web_search_example">“Hitta färska recensioner av den senaste Pixel-telefonen.”</string>
-    <string name="tool_web_fetch_title">Hämta webbsida</string>
-    <string name="tool_web_fetch_desc">Öppnar en länk och läser dess huvudinnehåll som text så att modellen kan sammanfatta eller citera en sida.</string>
-    <string name="tool_web_fetch_example">“Sammanfatta artikeln på den här länken.”</string>
     <string name="tool_set_alarm_title">Ställ in alarm</string>
     <string name="tool_set_alarm_desc">Skapar ett alarm i appen Klocka. Fungerar offline; du kan ändra eller ta bort det i Klocka.</string>
     <string name="tool_set_alarm_example">\"Ställ ett alarm på kl. 6.30.\"</string>
