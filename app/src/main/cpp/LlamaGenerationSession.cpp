@@ -168,7 +168,11 @@ void LlamaGenerationSession::init(llama_model *model, const struct common_chat_t
     vocab = llama_model_get_vocab(model);
     chat_tmpls = tmpls;
 
-    int n_threads = std::max(1, std::min(kMaxGenerationThreads, (int) sysconf(_SC_NPROCESSORS_ONLN) - 2));
+    // Threads by this phone's RAM tier (Settings → Model, as in PrivateLM),
+    // or the default when the app didn't send one.
+    int n_threads = generationThreads() > 0
+        ? generationThreads()
+        : std::max(1, std::min(kMaxGenerationThreads, (int) sysconf(_SC_NPROCESSORS_ONLN) - 2));
     LOGi("Using %d threads", n_threads);
 
     int n_ctx_train = llama_model_n_ctx_train(model);
@@ -1172,7 +1176,11 @@ int LlamaGenerationSession::generate(const ResponseCallback& callback) {
         while (remaining > 0) {
             int n = std::min(remaining, n_batch_limit);
             if (split > 0 && done < split && done + n > split) n = split - done;
-            if (llama_decode(ctx, llama_batch_get_one(const_cast<llama_token *>(tok), n))) {
+            textGpuFirstDecodeBegin();
+            const int32_t decoded = llama_decode(ctx, llama_batch_get_one(const_cast<llama_token *>(tok), n));
+            // Returned rather than crashed: the GPU got through its first decode.
+            textGpuSentinelEnd();
+            if (decoded) {
                 LOGe("failed to decode the batch");
                 // Keep the token mirror honest about whatever part of the
                 // chunk stayed in the cache.

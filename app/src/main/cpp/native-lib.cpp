@@ -11,7 +11,11 @@
 #include "llama.h"
 #include "log.h"
 
+#include <algorithm>
+#include <atomic>
 #include <cassert>
+#include <cctype>
+#include <mutex>
 #include <cinttypes>
 #include <cmath>
 #include <cstdio>
@@ -193,6 +197,112 @@ void clipSentinelBlockVulkan() {
     LOGw("Vulkan CLIP failed; disabling Vulkan vision");
 }
 
+// --- Text model on the GPU ----------------------------------------------------
+static std::mutex g_loadOptionsMutex;
+static LoadOptions g_loadOptions;
+static std::atomic<bool> g_lastLoadUsedGpu{false};
+static std::atomic<int> g_generationThreads{0};
+static std::atomic<bool> g_textGpuInflight{false};
+static std::string textInflightPath() { return g_clipStateDir + "/vulkan_text.inflight"; }
+static std::string textBlockedPath()  { return g_clipStateDir + "/vulkan_text.blocked"; }
+
+void setLoadOptions(const LoadOptions &options) {
+    std::lock_guard<std::mutex> lock(g_loadOptionsMutex);
+    g_loadOptions = options;
+}
+
+LoadOptions takeLoadOptions() {
+    std::lock_guard<std::mutex> lock(g_loadOptionsMutex);
+    LoadOptions taken = g_loadOptions;
+    g_loadOptions = LoadOptions();
+    return taken;
+}
+
+bool lastLoadUsedGpu() { return g_lastLoadUsedGpu.load(); }
+void setLastLoadUsedGpu(bool used) { g_lastLoadUsedGpu = used; }
+
+void setGenerationThreads(int threads) { g_generationThreads = std::max(0, threads); }
+int generationThreads() { return g_generationThreads.load(); }
+
+void textGpuSentinelBegin() {
+    g_textGpuInflight = true;
+    if (!g_clipStateDir.empty()) touchFile(textInflightPath());
+}
+
+void textGpuSentinelEnd() {
+    // Called after every decode; only one that began the guard does work.
+    if (!g_textGpuInflight.exchange(false)) return;
+    if (!g_clipStateDir.empty()) remove(textInflightPath().c_str());
+}
+
+// Set after a GPU load succeeds; the next decode is guarded on its own, so
+// closing the app between loading and the first message isn't taken for a
+// crash.
+static std::atomic<bool> g_textGpuUnverified{false};
+
+void textGpuFirstDecodeBegin() {
+    if (g_textGpuUnverified.exchange(false)) textGpuSentinelBegin();
+}
+
+static bool textGpuBlocked() {
+    return !g_clipStateDir.empty() && fileExists(textBlockedPath());
+}
+
+// The first GPU device's description (the Vulkan deviceName), or "".
+static std::string gpuDescription() {
+    for (size_t i = 0; i < ggml_backend_dev_count(); i++) {
+        ggml_backend_dev_t dev = ggml_backend_dev_get(i);
+        if (ggml_backend_dev_type(dev) == GGML_BACKEND_DEVICE_TYPE_GPU) {
+            const char *desc = ggml_backend_dev_description(dev);
+            return desc != nullptr ? desc : "GPU";
+        }
+    }
+    return "";
+}
+
+// PrivateLM's rules (LlamaFlutterAndroidPlugin.computeRecommendedLayers and
+// inference_android.dart), plus two of ours: Mali GPUs keep vision models on
+// CPU (the M-RoPE garbage-output bug above), and a GPU load that crashed the
+// app once keeps Auto on CPU.
+bool decideTextGpu(const LoadOptions &options, std::string &why) {
+#if defined(__ANDROID__)
+    if (options.gpu_mode == kGpuNever) { why = "CPU safe mode"; return false; }
+    const std::string desc = gpuDescription();
+    if (desc.empty()) { why = "no Vulkan GPU"; return false; }
+    if (options.gpu_mode == kGpuAlways) { why = desc; return true; }
+
+    if (textGpuBlocked()) { why = "a GPU load crashed before"; return false; }
+    std::string lower = desc;
+    std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+    if (lower.find("powervr") != std::string::npos || lower.find("img ") != std::string::npos) {
+        why = "PowerVR GPU"; return false;
+    }
+    if (lower.find("mali-t") != std::string::npos) { why = "old Mali-T GPU"; return false; }
+    size_t adreno = lower.find("adreno");
+    if (adreno != std::string::npos) {
+        size_t digit = lower.find_first_of("0123456789", adreno);
+        if (digit != std::string::npos && atoi(lower.c_str() + digit) < 640) {
+            why = "Adreno below 640"; return false;
+        }
+    }
+    if (options.has_vision && lower.find("mali") != std::string::npos) {
+        why = "vision model on a Mali GPU"; return false;
+    }
+    const int64_t gb = 1024LL * 1024 * 1024;
+    if (options.free_ram_bytes > 0) {
+        if (options.free_ram_bytes * 7 / 10 < gb) { why = "less than 1.4 GB free"; return false; }
+        if (options.model_bytes * 5 / 4 > options.free_ram_bytes) {
+            why = "the model wouldn't fit in free memory on the GPU"; return false;
+        }
+    }
+    why = desc;
+    return true;
+#else
+    why = "host build";
+    return false;
+#endif
+}
+
 extern "C" JNIEXPORT int
 JNICALL
 Java_com_druk_llamacpp_jni_NativeLlamaCpp_init(JNIEnv *env, jobject object, jstring nativeLibDir, jstring stateDir) {
@@ -201,6 +311,13 @@ Java_com_druk_llamacpp_jni_NativeLlamaCpp_init(JNIEnv *env, jobject object, jstr
         const char *sd = env->GetStringUTFChars(stateDir, nullptr);
         clipSentinelInit(sd);
         env->ReleaseStringUTFChars(stateDir, sd);
+        // Same for the text model: a GPU load or first decode that took the
+        // process down keeps Auto on CPU from now on.
+        if (!g_clipStateDir.empty() && fileExists(textInflightPath())) {
+            touchFile(textBlockedPath());
+            remove(textInflightPath().c_str());
+            LOGw("previous GPU model load crashed; Auto keeps models on CPU");
+        }
     }
 
 #if defined(__ANDROID__)
@@ -324,8 +441,24 @@ Java_com_druk_llamacpp_jni_NativeLlamaCpp_loadModel(JNIEnv *env,
             env->ReleaseStringUTFChars(chatTemplateOverride, tpl);
         }
     }
+    // Settings → Model → Performance, sent just before this load.
+#if defined(__ANDROID__)
+    LoadOptions options = takeLoadOptions();
+    std::string why;
+    const bool useGpu = decideTextGpu(options, why);
+    LOGi("loadModel: %s (%s)", useGpu ? "GPU" : "CPU", why.c_str());
+    if (useGpu) textGpuSentinelBegin();
+    // On the GPU PrivateLM uses 4 CPU threads whatever the tier (1 stays 1:
+    // Gemma on Google Tensor).
+    if (useGpu && generationThreads() != 1) setGenerationThreads(4);
+    const int32_t nGpuLayers = useGpu ? 99 : 0;
+#else
+    const bool useGpu = false;
+    const int32_t nGpuLayers = -1;
+#endif
+    setLastLoadUsedGpu(useGpu);
     model->loadModel(utfModelPath,
-                     -1,
+                     nGpuLayers,
                      [](float progress, void *ctx) -> bool {
                             auto* context = static_cast<CallbackContext*>(ctx);
                             jclass clazz = context->env->GetObjectClass(context->progressCallback);
@@ -339,6 +472,10 @@ Java_com_druk_llamacpp_jni_NativeLlamaCpp_loadModel(JNIEnv *env,
                      );
     env->ReleaseStringUTFChars(modelPath, utfModelPath);
 
+    // The load is over either way: a clean failure isn't a crash (the app
+    // retries on CPU), and a loaded model's first decode is guarded next.
+    if (useGpu) textGpuSentinelEnd();
+    g_textGpuUnverified = useGpu && model->isLoaded();
     if (!model->isLoaded()) {
         return nullptr;
     }
@@ -861,4 +998,21 @@ extern "C" JNIEXPORT void JNICALL Java_com_druk_llamacpp_jni_NativeLlamaSession_
         delete session;
         LMP_LOGT(ANDROID_LOG_DEBUG, "Llama", "Destroy");
     }
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_druk_llamacpp_jni_NativeLlamaCpp_setLoadOptions(JNIEnv *env, jobject thiz,
+        jint gpuMode, jint threads, jlong freeRamBytes, jlong modelBytes, jboolean hasVision) {
+    LoadOptions options;
+    options.gpu_mode = gpuMode;
+    options.free_ram_bytes = freeRamBytes;
+    options.model_bytes = modelBytes;
+    options.has_vision = hasVision == JNI_TRUE;
+    setLoadOptions(options);
+    setGenerationThreads(threads);
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_druk_llamacpp_jni_NativeLlamaCpp_lastLoadUsedGpu(JNIEnv *env, jobject thiz) {
+    return lastLoadUsedGpu() ? JNI_TRUE : JNI_FALSE;
 }

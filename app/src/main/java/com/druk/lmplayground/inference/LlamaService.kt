@@ -431,6 +431,16 @@ class LlamaService : Service() {
             }
         }
 
+        override fun setLoadOptions(
+            gpuMode: Int,
+            threads: Int,
+            freeRamBytes: Long,
+            modelBytes: Long,
+            hasVision: Boolean,
+        ) = nativeLlamaCpp.setLoadOptions(gpuMode, threads, freeRamBytes, modelBytes, hasVision)
+
+        override fun lastLoadUsedGpu(): Boolean = nativeLlamaCpp.lastLoadUsedGpu()
+
         override fun loadModel(
             path: String?,
             pfd: ParcelFileDescriptor?,

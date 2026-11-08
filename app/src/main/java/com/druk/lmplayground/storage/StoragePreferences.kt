@@ -13,6 +13,9 @@ class StoragePreferences(context: Context) {
     companion object {
         private const val KEY_URI = "model_storage_uri"
         private const val KEY_MODEL_PARAMS = "model_params"
+        const val PERFORMANCE_AUTO = 0
+        const val PERFORMANCE_GPU = 1
+        const val PERFORMANCE_CPU = 2
     }
 
     var modelStorageUri: Uri?
@@ -148,6 +151,16 @@ class StoragePreferences(context: Context) {
             )
             prefs.edit { putString(KEY_MODEL_PARAMS, kept.entries.joinToString(",") { "${it.key}=${it.value}" }) }
         }
+
+    /**
+     * Settings → Model → Performance, as in PrivateLM: [PERFORMANCE_AUTO] puts
+     * the model on the GPU when the phone passes the checks,
+     * [PERFORMANCE_GPU] always tries the GPU, [PERFORMANCE_CPU] never does.
+     * Values match ILlamaService.setLoadOptions' gpuMode.
+     */
+    var performanceMode: Int
+        get() = prefs.getInt("performance_mode", PERFORMANCE_AUTO)
+        set(value) = prefs.edit { putInt("performance_mode", value) }
 
     /** Context size suggested for this phone's RAM; set once by DeviceTier. */
     var recommendedContextSize: Int

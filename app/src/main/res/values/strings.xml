@@ -229,6 +229,15 @@
     <string name="model_settings" tools:ignore="MissingTranslation">Model</string>
     <string name="model_settings_subtitle" tools:ignore="MissingTranslation">Temperature, reply length, context, speed</string>
     <string name="model_parameters" tools:ignore="MissingTranslation">Model parameters</string>
+    <string name="performance" tools:ignore="MissingTranslation">Performance</string>
+    <string name="performance_auto" tools:ignore="MissingTranslation">Auto fast</string>
+    <string name="performance_auto_desc" tools:ignore="MissingTranslation">Uses the GPU when this phone supports it, the CPU otherwise</string>
+    <string name="performance_gpu" tools:ignore="MissingTranslation">GPU fast</string>
+    <string name="performance_gpu_desc" tools:ignore="MissingTranslation">Always tries the GPU. Fastest, may crash on some devices</string>
+    <string name="performance_cpu" tools:ignore="MissingTranslation">CPU safe</string>
+    <string name="performance_cpu_desc" tools:ignore="MissingTranslation">CPU only. Most stable, slower</string>
+    <string name="performance_note" tools:ignore="MissingTranslation">Takes effect the next time a model is loaded.</string>
+    <string name="performance_blocked" tools:ignore="MissingTranslation">A model on the GPU crashed the app before, so Auto keeps models on the CPU. Choose GPU fast to try the GPU again. Takes effect the next time a model is loaded.</string>
     <string name="model_params_all_models" tools:ignore="MissingTranslation">These settings apply to every model.</string>
     <string name="top_p" translatable="false">Top-P</string>
     <string name="repetition_penalty">Repetition Penalty</string>

@@ -63,6 +63,36 @@ void clipSentinelBeginVulkanAttempt();
 void clipSentinelEndVulkanAttempt();
 void clipSentinelBlockVulkan();
 
+// --- Text model on the GPU (Settings → Model → Performance) ------------------
+// PrivateLM-style: the whole model on the GPU (Vulkan) or none of it.
+enum GpuMode { kGpuAuto = 0, kGpuAlways = 1, kGpuNever = 2 };
+// Set by the app right before a model load; that load takes them and they
+// go back to the defaults (CPU), so other loads (the embedding model) stay
+// on the CPU.
+struct LoadOptions {
+    int gpu_mode = kGpuNever;
+    int64_t free_ram_bytes = 0;
+    int64_t model_bytes = 0;
+    bool has_vision = false;
+};
+void setLoadOptions(const LoadOptions &options);
+LoadOptions takeLoadOptions();
+// Whether this load should put the model on the GPU; [why] says why not.
+bool decideTextGpu(const LoadOptions &options, std::string &why);
+// Whether the last model load put the model on the GPU.
+bool lastLoadUsedGpu();
+void setLastLoadUsedGpu(bool used);
+// Threads for generation sessions (0 = the default, min(4, cores - 2)).
+void setGenerationThreads(int threads);
+int generationThreads();
+// Crash guard like the CLIP one: a marker brackets a GPU model load and its
+// first decode; if the app dies in between, Auto keeps the model on the CPU
+// from the next start on.
+void textGpuSentinelBegin();
+void textGpuSentinelEnd();
+// Before a decode: guards it if it's the first since a GPU load.
+void textGpuFirstDecodeBegin();
+
 struct SamplerParams {
     int n_ctx;
     float temperature;
@@ -405,10 +435,14 @@ public:
 
     bool isLoaded() const { return model != nullptr; }
 
+    // Whether the weights went to the GPU (n_gpu_layers > 0 on Android).
+    bool onGpu() const { return on_gpu; }
+
     void unloadModel();
 
 private:
     llama_model *model = nullptr;
+    bool on_gpu = false;
     common_chat_templates_ptr chat_tmpls;
     mtmd_context *mtmd_ctx = nullptr;
     // Path backing mtmd_ctx, so re-attaching the same projector is a no-op.

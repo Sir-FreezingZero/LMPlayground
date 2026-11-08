@@ -333,13 +333,20 @@ class ModelTestsViewModel(app: Application) : AndroidViewModel(app) {
         val file = storage.openModelFile(model.filename) ?: error("Can't open ${model.filename}.")
         handle = file
         _status.value = "Loading ${model.name}…"
-        val loaded = llamaCpp.loadModel(
+        // The same GPU/CPU choice and threads as a chat (Settings → Model).
+        val device = com.druk.lmplayground.models.DeviceTier.read()
+        val (loaded, _) = llamaCpp.loadModelWithOptions(
             file.pfd,
             object : LlamaProgressCallback {
                 override fun onProgress(progress: Float) {
                     _status.value = "Loading ${model.name}… ${(progress * 100).toInt()}%"
                 }
             },
+            gpuMode = prefs.performanceMode,
+            threads = device.cpuThreads(model.filename),
+            freeRamBytes = (device.availableRamGb * 1024 * 1024 * 1024).toLong(),
+            modelBytes = file.pfd.statSize,
+            hasVision = model.mmprojFilename != null,
             disableRepack = !prefs.repackEnabled,
             chatTemplateOverride = ChatTemplateOverrides.forModel(app, model.filename),
         )

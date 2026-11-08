@@ -47,22 +47,32 @@ void LlamaModel::loadModel(const std::string &modelPath,
 
     // initialize the model
     llama_model_params model_params = llama_model_default_params();
-    // Keep the LLM entirely on CPU; Vulkan is reserved exclusively for the
-    // mtmd/CLIP vision encoder (much faster there). n_gpu_layers=0 alone is
-    // NOT enough: with a Vulkan backend loaded (GGML_BACKEND_DL), the
-    // scheduler still reserves a Vulkan compute buffer and routes part of the
-    // decode graph to Vulkan0 — and the image-conditioned decode for M-RoPE
-    // vision models (Qwen3VL) then fails on the Mali Vulkan backend
-    // (ggml graph compute status 1 -> garbage output). Pinning the model to a
-    // CPU-only device list removes Vulkan from the text graph entirely. The
-    // mtmd CLIP context gets its own device (clipVisionDevice()),
-    // so vision encoding still runs on the GPU.
+    // By default the LLM stays entirely on CPU and Vulkan is reserved for
+    // the mtmd/CLIP vision encoder. n_gpu_layers=0 alone is NOT enough: with
+    // a Vulkan backend loaded (GGML_BACKEND_DL), the scheduler still reserves
+    // a Vulkan compute buffer and routes part of the decode graph to Vulkan0
+    // — and the image-conditioned decode for M-RoPE vision models (Qwen3VL)
+    // then fails on the Mali Vulkan backend (ggml graph compute status 1 ->
+    // garbage output). Pinning the model to a CPU-only device list removes
+    // Vulkan from the text graph entirely. The mtmd CLIP context gets its
+    // own device (clipVisionDevice()), so vision encoding still runs on the
+    // GPU.
+    //
+    // With n_gpu_layers > 0 (Settings → Model → Performance, decided by
+    // decideTextGpu, which keeps Mali vision models on CPU in Auto) every
+    // layer goes to the GPU, as PrivateLM does: phone GPUs share the
+    // system RAM, so partial offload only adds CPU<->GPU traffic.
 #if defined(__ANDROID__)
-    model_params.n_gpu_layers = 0;
-    static ggml_backend_dev_t cpu_only_devices[2] = { nullptr, nullptr };
-    cpu_only_devices[0] = ggml_backend_dev_by_type(GGML_BACKEND_DEVICE_TYPE_CPU);
-    if (cpu_only_devices[0] != nullptr) {
-        model_params.devices = cpu_only_devices;
+    on_gpu = n_gpu_layers > 0;
+    if (on_gpu) {
+        model_params.n_gpu_layers = n_gpu_layers;
+    } else {
+        model_params.n_gpu_layers = 0;
+        static ggml_backend_dev_t cpu_only_devices[2] = { nullptr, nullptr };
+        cpu_only_devices[0] = ggml_backend_dev_by_type(GGML_BACKEND_DEVICE_TYPE_CPU);
+        if (cpu_only_devices[0] != nullptr) {
+            model_params.devices = cpu_only_devices;
+        }
     }
 #else
     // Host build (:model-harness on macOS): none of the above applies —

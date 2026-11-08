@@ -265,4 +265,13 @@ interface ILlamaService {
      * the app should keep running, and the next call should rebind).
      */
     void crashForTest();
+
+    /**
+     * Settings → Model → Performance for the next loadModel only (see
+     * NativeLlamaCpp.setLoadOptions): gpuMode 0 Auto, 1 GPU, 2 CPU.
+     */
+    void setLoadOptions(int gpuMode, int threads, long freeRamBytes, long modelBytes, boolean hasVision);
+
+    /** Whether the last loadModel put the model on the GPU. */
+    boolean lastLoadUsedGpu();
 }

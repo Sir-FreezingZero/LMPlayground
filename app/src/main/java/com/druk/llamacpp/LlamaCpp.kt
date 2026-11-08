@@ -33,8 +33,10 @@ class LlamaCpp(private val client: InferenceClient) {
         disableRepack: Boolean = false,
         chatTemplateOverride: String? = null,
     ): LlamaModel {
-        val id = client.withService {
-            it.loadModel(path, null, wrapProgress(progressCallback), disableRepack, chatTemplateOverride)
+        val id = synchronized(loadLock) {
+            client.withService {
+                it.loadModel(path, null, wrapProgress(progressCallback), disableRepack, chatTemplateOverride)
+            }
         }
         if (id == 0) throw IllegalStateException("loadModel failed for $path")
         return LlamaModel(client, id)
@@ -51,11 +53,49 @@ class LlamaCpp(private val client: InferenceClient) {
         disableRepack: Boolean = false,
         chatTemplateOverride: String? = null,
     ): LlamaModel {
-        val id = client.withService {
-            it.loadModel(null, pfd, wrapProgress(progressCallback), disableRepack, chatTemplateOverride)
+        val id = synchronized(loadLock) {
+            client.withService {
+                it.loadModel(null, pfd, wrapProgress(progressCallback), disableRepack, chatTemplateOverride)
+            }
         }
         if (id == 0) throw IllegalStateException("loadModel failed for pfd")
         return LlamaModel(client, id)
+    }
+
+    /** Held for every load, so load options reach the load they were sent for. */
+    private val loadLock = Any()
+
+    /** Thrown when a load on the GPU failed; the caller may retry on the CPU. */
+    class GpuLoadFailedException(cause: Throwable) : IllegalStateException("GPU load failed", cause)
+
+    /**
+     * Loads [pfd] with Settings → Model → Performance options (see
+     * ILlamaService.setLoadOptions): [gpuMode] 0 Auto, 1 GPU, 2 CPU. The
+     * options and the load are one step, so another load (the embedding
+     * model) can't take them in between. Returns the model and whether it
+     * went to the GPU; throws [GpuLoadFailedException] when a GPU load failed.
+     */
+    fun loadModelWithOptions(
+        pfd: ParcelFileDescriptor,
+        progressCallback: LlamaProgressCallback,
+        gpuMode: Int,
+        threads: Int,
+        freeRamBytes: Long,
+        modelBytes: Long,
+        hasVision: Boolean,
+        disableRepack: Boolean = false,
+        chatTemplateOverride: String? = null,
+    ): Pair<LlamaModel, Boolean> = synchronized(loadLock) {
+        val id = client.withService {
+            it.setLoadOptions(gpuMode, threads, freeRamBytes, modelBytes, hasVision)
+            it.loadModel(null, pfd, wrapProgress(progressCallback), disableRepack, chatTemplateOverride)
+        }
+        val onGpu = client.withService { it.lastLoadUsedGpu() }
+        if (id == 0) {
+            val failure = IllegalStateException("loadModel failed for pfd")
+            throw if (onGpu) GpuLoadFailedException(failure) else failure
+        }
+        LlamaModel(client, id) to onGpu
     }
 
     fun probeModelMetadata(path: String): Array<String>? =

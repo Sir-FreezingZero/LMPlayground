@@ -14,6 +14,7 @@ import com.druk.llamacpp.LlamaProgressCallback
 import com.druk.llamacpp.PayloadTooLargeException
 import com.druk.lmplayground.R
 import com.druk.lmplayground.conversation.GenerationParams
+import com.druk.lmplayground.models.DeviceTier
 import com.druk.lmplayground.conversation.HistoryReplay
 import com.druk.lmplayground.conversation.InferenceNotificationUpdater
 import com.druk.lmplayground.conversation.Message
@@ -247,22 +248,46 @@ class ModelRuntime(
                 // fd:N string. The app keeps `fileHandle` (the original
                 // PFD) alive via `modelFileHandle` for the model's
                 // lifetime.
-                val llamaModel = llamaCpp.loadModel(
-                    fileHandle.pfd,
-                    object : LlamaProgressCallback {
-                        override fun onProgress(progress: Float) {
-                            realProgressSeen.set(true)
-                            listener.onLoadProgress(progress)
-                            listener.onLoadStatus(
-                                "${round(100 * progress).toInt()}%"
-                            )
-                        }
-                    },
+                val progress = object : LlamaProgressCallback {
+                    override fun onProgress(progress: Float) {
+                        realProgressSeen.set(true)
+                        listener.onLoadProgress(progress)
+                        listener.onLoadStatus(
+                            "${round(100 * progress).toInt()}%"
+                        )
+                    }
+                }
+                // Settings → Model → Performance (PrivateLM-style): GPU or
+                // CPU and the thread count, decided by the engine for this
+                // load from the phone's GPU, free memory and the model size.
+                val device = DeviceTier.read()
+                val mode = storagePreferences.performanceMode
+                val modelBytes = fileHandle.pfd.statSize
+                fun load(pfd: android.os.ParcelFileDescriptor, gpuMode: Int) = llamaCpp.loadModelWithOptions(
+                    pfd,
+                    progress,
+                    gpuMode = gpuMode,
+                    threads = device.cpuThreads(model.filename),
+                    freeRamBytes = (device.availableRamGb * 1024 * 1024 * 1024).toLong(),
+                    modelBytes = modelBytes,
+                    hasVision = model.mmprojFilename != null,
                     disableRepack = disableRepack,
                     // Non-null only for models whose published template is
                     // known-broken; see ChatTemplateOverrides.
                     chatTemplateOverride = ChatTemplateOverrides.forModel(app, model.filename),
                 )
+                val (llamaModel, onGpu) = try {
+                    load(fileHandle.pfd, mode)
+                } catch (e: LlamaCpp.GpuLoadFailedException) {
+                    // The GPU couldn't take it (out of GPU memory, driver
+                    // refusal): load again on the CPU from a fresh file handle.
+                    Log.w(TAG, "GPU load failed, retrying on CPU", e)
+                    fileHandle.close()
+                    val retryHandle = storageRepository.openModelFile(model.filename) ?: throw e
+                    modelFileHandle = retryHandle
+                    load(retryHandle.pfd, StoragePreferences.PERFORMANCE_CPU)
+                }
+                Log.i(TAG, "Model loaded on the ${if (onGpu) "GPU" else "CPU"}")
 
                 // Load mmproj for vision models. The mtmd loader needs a
                 // real filesystem path, so we copy the mmproj GGUF to a
@@ -366,6 +391,8 @@ class ModelRuntime(
                 listener.onLoadProgress(0f)
                 listener.onLoadStatus(app.getString(R.string.model_load_failed_status))
                 fileHandle.close()
+                // The CPU retry's handle, if the GPU load failed first.
+                modelFileHandle?.takeIf { it !== fileHandle }?.close()
                 if (t !is CancellationException) {
                     Log.w(TAG, "loadModel failed", t)
                     listener.onModelLoadFailed(model.name)

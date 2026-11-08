@@ -48,4 +48,15 @@ class NativeLlamaCpp {
     ): NativeLlamaModel? = loadModel(path, progressCallback, disableRepack, "")
 
     external fun probeModelMetadata(path: String): Array<String>?
+
+    /**
+     * Settings for the next [loadModel] only (it goes back to CPU after):
+     * [gpuMode] 0 = Auto (PrivateLM's GPU rules), 1 = always GPU, 2 = CPU.
+     * [threads] is kept for every generation session from now on (0 = the
+     * default). [freeRamBytes] and [modelBytes] feed Auto's memory check.
+     */
+    external fun setLoadOptions(gpuMode: Int, threads: Int, freeRamBytes: Long, modelBytes: Long, hasVision: Boolean)
+
+    /** Whether the last [loadModel] put the model on the GPU. */
+    external fun lastLoadUsedGpu(): Boolean
 }
