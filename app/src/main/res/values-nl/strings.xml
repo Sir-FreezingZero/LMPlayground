@@ -455,6 +455,8 @@
     <string name="tool_steps_desc">Maximaal aantal keer dat het model tools gebruikt in één antwoord voordat het moet antwoorden</string>
     <string name="remote_servers">Externe servers</string>
     <string name="remote_servers_subtitle">Modellen op een computer in je netwerk</string>
+    <string name="testing">Testen</string>
+    <string name="testing_subtitle">Voer tool-, chat- en snelheidstests uit op een model en exporteer de resultaten</string>
     <string name="remote_help">Gebruik modellen die in LM Studio, Ollama of llama-server op een andere computer draaien. Sta op die computer verbindingen vanaf het lokale netwerk toe.</string>
     <string name="remote_saved">Servers</string>
     <string name="remote_add">Server toevoegen</string>

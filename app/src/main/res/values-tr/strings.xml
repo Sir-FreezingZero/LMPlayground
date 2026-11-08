@@ -413,6 +413,8 @@
     <string name="tool_steps_desc">Modelin yanıt vermesi gerekmeden önce bir yanıtta en fazla araç kullanımı</string>
     <string name="remote_servers">Uzak sunucular</string>
     <string name="remote_servers_subtitle">Ağınızdaki bir bilgisayardaki modeller</string>
+    <string name="testing">Test</string>
+    <string name="testing_subtitle">Bir modelde araç, sohbet ve hız testleri çalıştırın ve sonuçları dışa aktarın</string>
     <string name="remote_help">Başka bir bilgisayarda LM Studio, Ollama veya llama-server içinde çalışan modelleri kullanın. O bilgisayarda yerel ağdan gelen bağlantılara izin verin.</string>
     <string name="remote_saved">Sunucular</string>
     <string name="remote_add">Sunucu ekle</string>

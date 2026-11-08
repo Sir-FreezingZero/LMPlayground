@@ -412,6 +412,8 @@
     <string name="tool_steps_desc">Máximo de usos de herramientas en una respuesta antes de que el modelo deba contestar</string>
     <string name="remote_servers">Servidores remotos</string>
     <string name="remote_servers_subtitle">Modelos en un ordenador de tu red</string>
+    <string name="testing">Pruebas</string>
+    <string name="testing_subtitle">Ejecuta pruebas de herramientas, chat y velocidad en un modelo y exporta los resultados</string>
     <string name="remote_help">Usa modelos que se ejecutan en LM Studio, Ollama o llama-server en otro ordenador. En ese ordenador, permite las conexiones desde la red local.</string>
     <string name="remote_saved">Servidores</string>
     <string name="remote_add">Añadir un servidor</string>

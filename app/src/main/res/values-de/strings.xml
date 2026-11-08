@@ -414,6 +414,8 @@
     <string name="tool_steps_desc">Höchstzahl an Tool-Aufrufen pro Antwort, bevor das Modell antworten muss</string>
     <string name="remote_servers">Remote-Server</string>
     <string name="remote_servers_subtitle">Modelle auf einem Computer in deinem Netzwerk</string>
+    <string name="testing">Tests</string>
+    <string name="testing_subtitle">Werkzeug-, Chat- und Geschwindigkeitstests mit einem Modell ausführen und die Ergebnisse exportieren</string>
     <string name="remote_help">Nutze Modelle, die in LM Studio, Ollama oder llama-server auf einem anderen Computer laufen. Erlaube auf diesem Computer Verbindungen aus dem lokalen Netzwerk.</string>
     <string name="remote_saved">Server</string>
     <string name="remote_add">Server hinzufügen</string>

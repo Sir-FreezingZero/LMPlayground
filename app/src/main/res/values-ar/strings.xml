@@ -419,6 +419,8 @@
     <string name="tool_steps_desc">أقصى عدد لاستخدام الأدوات في رد واحد قبل أن يجب على النموذج الإجابة</string>
     <string name="remote_servers">الخوادم البعيدة</string>
     <string name="remote_servers_subtitle">نماذج على حاسوب في شبكتك</string>
+    <string name="testing">الاختبار</string>
+    <string name="testing_subtitle">شغّل اختبارات الأدوات والدردشة والسرعة على نموذج وصدّر النتائج</string>
     <string name="remote_help">استخدم نماذج تعمل في LM Studio أو Ollama أو llama-server على حاسوب آخر. على ذلك الحاسوب، اسمح بالاتصالات من الشبكة المحلية.</string>
     <string name="remote_saved">الخوادم</string>
     <string name="remote_add">إضافة خادم</string>

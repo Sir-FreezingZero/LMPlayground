@@ -1,7 +1,13 @@
 package com.druk.lmplayground.conversation
 
+import android.content.Context
+import android.content.Intent
+import androidx.core.content.FileProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -54,18 +60,18 @@ object ChatExport {
             if (m.imageUri != null || m.imagePath != null) appendLine("_[image attached]_\n")
             val sent = if (m.author == "User") sentContent(m) else null
             if (sent != null) {
-                block("Shown", m.content, "text")
-                block("Sent to the model (with document excerpts)", sent, "text")
+                codeBlock("Shown", m.content, "text")
+                codeBlock("Sent to the model (with document excerpts)", sent, "text")
             }
             m.toolCalls?.forEach { call ->
-                if (call.precedingThinking.isNotBlank()) block("Written before the tool call", call.precedingThinking, "text")
+                if (call.precedingThinking.isNotBlank()) codeBlock("Written before the tool call", call.precedingThinking, "text")
                 appendLine("**Tool call: `${call.name}`** (${call.durationMs} ms)")
                 appendLine()
-                block("Arguments", pretty(call.arguments), "json")
-                block("Result", call.result, "text")
+                codeBlock("Arguments", pretty(call.arguments), "json")
+                codeBlock("Result", call.result, "text")
             }
             if (sent == null && (m.content.isNotEmpty() || m.toolCalls.isNullOrEmpty())) {
-                block(if (m.toolCalls.isNullOrEmpty()) null else "Reply", m.content, "text")
+                codeBlock(if (m.toolCalls.isNullOrEmpty()) null else "Reply", m.content, "text")
             }
             if (m.responseTokens > 0 || m.thinkingTokens > 0) {
                 appendLine("_${m.thinkingTokens} thinking tokens, ${m.responseTokens} reply tokens, " +
@@ -78,17 +84,7 @@ object ChatExport {
     private fun StringBuilder.section(heading: String, body: String, lang: String) {
         appendLine("## $heading")
         appendLine()
-        block(null, body, lang)
-    }
-
-    /** A labelled code block; the fence grows past any backticks inside. */
-    private fun StringBuilder.block(label: String?, body: String, lang: String) {
-        label?.let { appendLine("$it:") }
-        val fence = "`".repeat(maxOf(3, (Regex("`+").findAll(body).maxOfOrNull { it.value.length } ?: 0) + 1))
-        appendLine("$fence$lang")
-        appendLine(body)
-        appendLine(fence)
-        appendLine()
+        codeBlock(null, body, lang)
     }
 
     private fun pretty(json: String): String = try {
@@ -97,4 +93,30 @@ object ChatExport {
     } catch (_: Exception) {
         json
     }
+}
+
+/** A labelled Markdown code block; the fence grows past any backticks inside. */
+internal fun StringBuilder.codeBlock(label: String?, body: String, lang: String = "text") {
+    label?.let { appendLine("$it:") }
+    val fence = "`".repeat(maxOf(3, (Regex("`+").findAll(body).maxOfOrNull { it.value.length } ?: 0) + 1))
+    appendLine("$fence$lang")
+    appendLine(body)
+    appendLine(fence)
+    appendLine()
+}
+
+/**
+ * Writes [text] to `cache/exports/<name>_<time>.md` (only the newest export
+ * is kept) and opens the share sheet for it.
+ */
+suspend fun shareMarkdown(context: Context, name: String, text: String, chooserTitle: String) {
+    val file = withContext(Dispatchers.IO) {
+        val dir = File(context.cacheDir, "exports").apply { mkdirs() }
+        dir.listFiles()?.forEach { it.delete() }
+        File(dir, name + "_" + SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.US).format(Date()) + ".md").apply { writeText(text) }
+    }
+    val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+    val send = Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_STREAM, uri)
+        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    context.startActivity(Intent.createChooser(send, chooserTitle))
 }

@@ -445,6 +445,8 @@
     <string name="tool_steps_desc">Bilangan maksimum penggunaan alat dalam satu balasan sebelum model mesti menjawab</string>
     <string name="remote_servers">Pelayan jauh</string>
     <string name="remote_servers_subtitle">Model pada komputer dalam rangkaian anda</string>
+    <string name="testing">Ujian</string>
+    <string name="testing_subtitle">Jalankan ujian alat, sembang dan kelajuan pada model dan eksport keputusannya</string>
     <string name="remote_help">Gunakan model yang berjalan dalam LM Studio, Ollama atau llama-server pada komputer lain. Pada komputer itu, benarkan sambungan daripada rangkaian setempat.</string>
     <string name="remote_saved">Pelayan</string>
     <string name="remote_add">Tambah pelayan</string>

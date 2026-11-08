@@ -31,6 +31,7 @@ import androidx.compose.material.icons.outlined.Policy
 import androidx.compose.material.icons.outlined.Computer
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Psychology
+import androidx.compose.material.icons.outlined.Science
 import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.material.icons.outlined.ToggleOn
 import androidx.compose.material.icons.outlined.Tune
@@ -89,6 +90,8 @@ fun SettingsScreen(
     onAppearanceClick: () -> Unit = {},
     /** Remote servers opens full screen too. */
     onRemoteServersClick: () -> Unit = {},
+    /** Testing opens full screen too. */
+    onTestingClick: () -> Unit = {},
     /**
      * Tablet-only: when non-null, tapping Models in the master pane opens
      * this composable inline in the detail pane instead of navigating to
@@ -248,6 +251,7 @@ fun SettingsScreen(
                         onGeneralClick = onGeneralClick,
                         onAppearanceClick = onAppearanceClick,
                         onRemoteServersClick = onRemoteServersClick,
+                        onTestingClick = onTestingClick,
                         onPrivacyPolicyClick = { detail = SettingsDetail.PrivacyPolicy },
                         onFaqClick = { detail = SettingsDetail.Faq },
                         onCrashEngineClick = onCrashEngineClick
@@ -329,6 +333,7 @@ fun SettingsScreen(
                 onGeneralClick = onGeneralClick,
                 onAppearanceClick = onAppearanceClick,
                 onRemoteServersClick = onRemoteServersClick,
+                onTestingClick = onTestingClick,
                 onPrivacyPolicyClick = onPrivacyPolicyClick,
                 onFaqClick = onFaqClick,
                 onCrashEngineClick = onCrashEngineClick,
@@ -360,6 +365,7 @@ private fun SettingsList(
     onGeneralClick: () -> Unit,
     onAppearanceClick: () -> Unit,
     onRemoteServersClick: () -> Unit,
+    onTestingClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onFaqClick: () -> Unit,
     onCrashEngineClick: (() -> Unit)?,
@@ -462,6 +468,14 @@ private fun SettingsList(
             subtitle = stringResource(R.string.advanced_subtitle),
             selected = selectedDetail == SettingsDetail.Advanced,
             onClick = onAdvancedClick
+        )
+
+        // Testing row (opens full screen; no detail pane)
+        SettingsRow(
+            icon = Icons.Outlined.Science,
+            title = stringResource(R.string.testing),
+            subtitle = stringResource(R.string.testing_subtitle),
+            onClick = onTestingClick
         )
 
         // FAQ row

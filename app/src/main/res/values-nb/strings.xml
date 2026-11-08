@@ -454,6 +454,8 @@
     <string name="tool_steps_desc">Høyst så mange verktøykall i ett svar før modellen må svare</string>
     <string name="remote_servers">Eksterne servere</string>
     <string name="remote_servers_subtitle">Modeller på en datamaskin i nettverket ditt</string>
+    <string name="testing">Testing</string>
+    <string name="testing_subtitle">Kjør verktøy-, chat- og hastighetstester på en modell, og eksporter resultatene</string>
     <string name="remote_help">Bruk modeller som kjører i LM Studio, Ollama eller llama-server på en annen datamaskin. Tillat tilkoblinger fra det lokale nettverket på den datamaskinen.</string>
     <string name="remote_saved">Servere</string>
     <string name="remote_add">Legg til en server</string>

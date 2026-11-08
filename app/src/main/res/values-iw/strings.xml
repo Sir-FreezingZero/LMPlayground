@@ -457,6 +457,8 @@
     <string name="tool_steps_desc">מספר השימושים המרבי בכלים בתשובה אחת לפני שהמודל חייב לענות</string>
     <string name="remote_servers">שרתים מרוחקים</string>
     <string name="remote_servers_subtitle">מודלים במחשב ברשת שלך</string>
+    <string name="testing">בדיקות</string>
+    <string name="testing_subtitle">הרצת בדיקות כלים, צ׳אט ומהירות על מודל וייצוא התוצאות</string>
     <string name="remote_help">השתמשו במודלים שרצים ב-LM Studio, ‏Ollama או llama-server במחשב אחר. במחשב הזה, אפשרו חיבורים מהרשת המקומית.</string>
     <string name="remote_saved">שרתים</string>
     <string name="remote_add">הוספת שרת</string>

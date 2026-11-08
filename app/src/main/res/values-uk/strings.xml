@@ -406,6 +406,8 @@
     <string name="tool_steps_desc">Найбільша кількість використань інструментів в одній відповіді, перш ніж модель має відповісти</string>
     <string name="remote_servers">Віддалені сервери</string>
     <string name="remote_servers_subtitle">Моделі на комп’ютері у вашій мережі</string>
+    <string name="testing">Тестування</string>
+    <string name="testing_subtitle">Запускайте тести інструментів, чату й швидкості на моделі та експортуйте результати</string>
     <string name="remote_help">Використовуйте моделі, що працюють у LM Studio, Ollama або llama-server на іншому комп’ютері. На тому комп’ютері дозвольте з’єднання з локальної мережі.</string>
     <string name="remote_saved">Сервери</string>
     <string name="remote_add">Додати сервер</string>

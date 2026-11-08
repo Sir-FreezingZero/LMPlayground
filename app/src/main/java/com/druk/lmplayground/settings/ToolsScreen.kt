@@ -32,7 +32,6 @@ import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Repeat
 import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.Science
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Smartphone
 import androidx.compose.material.icons.outlined.SwapHoriz
@@ -145,8 +144,6 @@ fun ToolsScreen(
     enabledStates: Map<String, Boolean>,
     onToolEnabledChanged: (String, Boolean) -> Unit,
     onBackClick: () -> Unit,
-    /** Opens the tool test (see ToolTest.kt); no button when null. */
-    onRunToolTest: (() -> Unit)? = null,
 ) {
     Scaffold(
         topBar = {
@@ -160,13 +157,6 @@ fun ToolsScreen(
                         )
                     }
                 },
-                actions = {
-                    if (onRunToolTest != null) {
-                        IconButton(onClick = onRunToolTest) {
-                            Icon(Icons.Outlined.Science, contentDescription = "Test tools")
-                        }
-                    }
-                }
             )
         }
     ) { padding ->
