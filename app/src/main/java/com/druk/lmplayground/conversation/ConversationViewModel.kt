@@ -144,7 +144,6 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         }
 
         override fun onModelResolved(model: ModelInfo) {
-            promptModelName = model.name
             promptToolCalling = model.resolveCapabilities(storagePreferences).supportsTools
             _loadedModel.postValue(model)
             _thinkingEnabled.postValue(false)
@@ -1275,7 +1274,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         // write calls that go nowhere.
         val usable = if (promptToolCalling) toolRegistry.getAllTools().filter { tools[it.name] == true } else emptyList()
         return systemPromptExtras.compose(
-            prompt, usable, tools["memory"] == true, promptModelName,
+            prompt, usable, tools["memory"] == true,
             carried?.takeIf { it.first == _currentSessionId.value }?.second,
         )
     }
@@ -1297,9 +1296,6 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         carried = sessionId to SystemPromptExtras.carriedForward(earlier, total)
         runtime.replaceSession(_generationParams.value ?: GenerationParams(), _systemPrompt.value.orEmpty())
     }
-
-    /** The loading model's name, set before its first session is made (LiveData would lag). */
-    @Volatile private var promptModelName: String? = null
 
     /**
      * Whether the loading model can call tools: the saved guess at first, then

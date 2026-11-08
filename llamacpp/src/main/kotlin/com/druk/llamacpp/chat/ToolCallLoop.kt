@@ -198,12 +198,10 @@ class ToolCallLoop(
 
     companion object {
         // Kept short and plain so small models follow it.
-        private const val BUDGET_EXHAUSTED = "You have used all available tool calls. Based on everything you " +
-            "have found so far, provide your final answer now. Do not call any more tools."
-        private const val DUPLICATE_CALL = "You already made this exact call. Do not repeat the same tool call. " +
-            "Try a different approach, or provide your final answer now."
-        private const val TOOL_ERROR_HINT = "\n\nThe tool call encountered an issue. Please try a different " +
-            "approach or rephrase your request."
+        private const val BUDGET_EXHAUSTED = "No more tool calls are allowed. Answer now with what you have found."
+        private const val DUPLICATE_CALL = "You already made this exact call. Don't repeat it. Try something " +
+            "different, or answer now."
+        private const val TOOL_ERROR_HINT = "\n\nThat didn't work. Try a different way, or answer without it."
         private const val MAX_REPROMPTS = 3
         private const val MAX_EMPTY_RETRIES = 2
         private const val SAME_RESULT_LIMIT = 3
@@ -217,22 +215,25 @@ class ToolCallLoop(
         private const val REPROMPT_MAX_CHARS = 2000
 
         fun repromptMessage(toolNames: List<String>) =
-            "You have access to enabled tools. If a tool is needed to satisfy the user's request or complete " +
-                "the action you described, call ${toolNames.joinToString(" or ")} now. If no tool is needed, " +
-                "provide the final answer and follow the user's requested format."
+            "You said you would do something but didn't call a tool. If you need one, call it now " +
+                "(${toolNames.joinToString(", ")}). If not, just give your answer."
 
-        // Forward-looking intent ("I'll…", "Let me…", "First, …", "Step 1: search…"), but not
-        // offers to help ("I'll be happy to help", "let me know") or refusals ("I will not").
-        private const val ACTION = "(?:search|check|look|find|fetch|get|call|use|run|query|calculate|compute|" +
-            "convert|set|read|retrieve|verify|confirm|determine|identify)"
+        // The model says it is about to use a tool ("I'll search…", "Let me check…",
+        // "First, I'll look it up", "Step 1: search…") and stops there. Only tool-like
+        // actions count, so ordinary chat ("Let me explain", "I'll write you a poem",
+        // "First, a little background", "Here's my plan") is left alone, as are offers
+        // ("let me know", "I'll be happy to help") and refusals ("I will not search").
+        private const val ACTION = "(?:search|google|browse|check|look(?:\\s+(?:it|that|this|them))?\\s+(?:up|into|for)|" +
+            "find\\s+out|fetch|query|retrieve|call|run(?!\\s+(?:through|over|by))|calculate|compute|convert|verify|" +
+            "set\\s+(?:an?\\s+|the\\s+|your\\s+)?(?:alarm|timer)|save\\s+(?:that|this|it)|" +
+            "get\\s+(?:the\\s+)?(?:current|latest|time|date|weather|location))"
+        private const val FILLER = "(?:(?:just|quickly|now|first|then|also|go ahead and|try to|need to|have to|" +
+            "want to|do a(?:\\s+quick)?)\\s+)*"
         private val INTENT = Regex(
-            "(?im)\\b(?:i['\u2019](?:ll|m going to|m gonna)|i am (?:going to|gonna)|i will|i shall)\\b" +
-                "(?!\\s+(?:not|never)\\b)(?!\\s+(?:do(?:ing)? my best|try my best|be (?:able|happy|glad) to|assist|help you\\b(?!\\s+$ACTION)))" +
-                "|\\b(?:let me|allow me)\\b(?!\\s+(?:not|never|know)\\b)" +
-                "|(?:^|[.!?]\\s+)(?:the\\s+)?first(?:\\s+step)?\\s*[,:]?\\s+(?:i|we|let['\u2019]?s|$ACTION)\\b" +
-                "|\\bstep \\d+\\s*[:.)-]\\s*$ACTION\\b" +
-                "|\\bhere['\u2019]?s (?:my |the |a )?(?:plan|approach)" +
-                "|\\b(?:now i|next i)\\b"
+            "(?im)(?:\\b(?:i['\u2019](?:ll|m going to|m gonna)|i am (?:going to|gonna)|i will|i shall|let me|let['\u2019]?s|allow me)" +
+                "|(?:^|[.!?]\\s+)(?:first|next|now)\\s*,?\\s+i(?:['\u2019]ll| will)?)" +
+                "\\s+$FILLER$ACTION\\b" +
+                "|\\bstep \\d+\\s*[:.)-]\\s*$ACTION\\b"
         )
 
         /** A short reply that announces an action without taking it. */

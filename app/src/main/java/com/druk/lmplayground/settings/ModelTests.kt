@@ -353,7 +353,7 @@ class ModelTestsViewModel(app: Application) : AndroidViewModel(app) {
         prefs.getModelGenerationParams(model.filename)?.let { GenerationParams.fromMap(it) } ?: GenerationParams.recommendedFor(model.filename)
 
     private fun systemPrompt(model: ModelInfo, withTools: Boolean) =
-        promptExtras.compose("", if (withTools) registry.getAllTools() else emptyList(), modelName = model.name)
+        promptExtras.compose("", if (withTools) registry.getAllTools() else emptyList())
 
     /**
      * A session as a chat would start it: the model's context size and

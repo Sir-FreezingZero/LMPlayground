@@ -47,11 +47,10 @@ class SystemPromptExtras(
 
     /**
      * The system prompt the model gets: the user's prompt as written (the
-     * default when there is none, and [BASE_PROMPT] when that's empty too), the date, and with tools on, short general
-     * guidance plus tips, when the web, math or code tools are on. The tool
-     * definitions themselves come from the chat format.
-     * Models under 9B (by the size in their name) get the shorter web tip.
-     * Saved notes about the user follow when the memory tool is on.
+     * default when there is none, and [BASE_PROMPT] when that's empty too), the
+     * date, and with tools on, a few plain lines on when to use them. The tool
+     * definitions themselves come from the chat format. Saved notes about the
+     * user follow when the memory tool is on.
      *
      * Written for the model, so it stays in English.
      */
@@ -59,14 +58,13 @@ class SystemPromptExtras(
         userPrompt: String,
         tools: List<Tool> = emptyList(),
         withMemory: Boolean = false,
-        modelName: String? = null,
         /** The user's earlier requests kept after the chat was cleared to fit; see [carriedForward]. */
         carried: String? = null,
     ): String {
         val parts = mutableListOf<String>()
         parts.add(userPrompt.ifBlank { prefs.defaultSystemPrompt }.ifBlank { BASE_PROMPT })
         if (prefs.includeDateInPrompt) parts.add("The current date is ${LocalDate.now()}.")
-        toolGuidance(tools.flatMap { it.functions }.map { it.name }.toSet(), modelName)?.let { parts.add(it) }
+        toolGuidance(tools.flatMap { it.functions }.map { it.name }.toSet())?.let { parts.add(it) }
         if (withMemory) memoryBlock.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
         carried?.takeIf { it.isNotEmpty() }?.let { parts.add(it) }
         return parts.joinToString("\n\n")
@@ -110,26 +108,26 @@ class SystemPromptExtras(
         }
     }
 
-    /** One line of tool guidance plus tips for the web, math and code tools; null when none of them is on. */
-    private fun toolGuidance(names: Set<String>, modelName: String?): String? {
-        val web = "web_search" in names
-        val calc = "calculate" in names
-        val code = "run_javascript" in names
-        if (!web && !calc && !code) return null
-        val compact = modelName?.let { GenerationParams.sizeInBillions(it) }?.let { it < 9 } == true
-        val tips = buildList {
-            if (web) add(
-                if (compact) "When using web_search, do not repeat the same search query."
-                else "When using web_search and a result URL is relevant, fetch its full content by calling " +
-                    "web_search with the url parameter. Do not repeat the same search query. If a search returns " +
-                    "no useful results, try rephrasing or fetching a result URL directly."
-            )
-            if (calc) add("Use calculate for math and calculations.")
-            if (code) add("Use run_javascript for data processing, or to parse and analyze information from tool results.")
-        }
-        return "Tools are available when they materially improve the answer. Use an enabled tool for current " +
-            "facts, calculations, or code execution when it materially helps; otherwise answer normally and " +
-            "follow the user's requested format. " + tips.joinToString(" ")
+    /**
+     * When to use tools, in short plain sentences a small model can follow:
+     * chatting comes first, tools only for what the model can't know or must
+     * get exact. Then one line each for the web, math and code tools.
+     * Null when no tool is on.
+     *
+     * The first line matters most. A long "use tools when they materially
+     * help" made small models treat every message as a task: shorter, flatter
+     * replies and offers to look things up instead of just talking.
+     */
+    private fun toolGuidance(names: Set<String>): String? {
+        if (names.isEmpty()) return null
+        return buildList {
+            add("You also have tools. Most messages need no tool: just chat, answer or write as usual. Use a " +
+                "tool only when you need something you can't know yourself, like news, the time or where the " +
+                "user is, or when it must be exact, like math.")
+            if ("web_search" in names) add("web_search gives short snippets. To read a whole page, call it again with the url.")
+            if ("calculate" in names) add("Use calculate for math.")
+            if ("run_javascript" in names) add("Use run_javascript for work that is easier in code, like counting, sorting or dates.")
+        }.joinToString(" ")
     }
 
     /**
