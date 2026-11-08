@@ -232,6 +232,9 @@ class SettingsFragment : Fragment() {
                     onModelSettingsClick = {
                         findNavController().navigateFromSettings(R.id.action_settings_to_model_settings)
                     },
+                    onPhoneServerClick = {
+                        findNavController().navigateFromSettings(R.id.action_settings_to_phone_server)
+                    },
                     onLanguageClick = {
                         findNavController().navigateFromSettings(R.id.action_settings_to_language)
                     },

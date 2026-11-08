@@ -70,6 +70,9 @@
             android:id="@+id/action_settings_to_model_settings"
             app:destination="@id/nav_model_settings" />
         <action
+            android:id="@+id/action_settings_to_phone_server"
+            app:destination="@id/nav_phone_server" />
+        <action
             android:id="@+id/action_settings_to_language"
             app:destination="@id/nav_language" />
     </fragment>
@@ -93,6 +96,11 @@
         android:id="@+id/nav_remote_servers"
         android:name="com.druk.lmplayground.settings.RemoteServersFragment"
         android:label="@string/remote_servers" />
+
+    <fragment
+        android:id="@+id/nav_phone_server"
+        android:name="com.druk.lmplayground.settings.PhoneServerFragment"
+        android:label="@string/phone_server" />
 
     <fragment
         android:id="@+id/nav_model_settings"

@@ -32,6 +32,7 @@ import androidx.compose.material.icons.outlined.Computer
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Science
+import androidx.compose.material.icons.outlined.Dns
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.material.icons.outlined.ToggleOn
@@ -95,6 +96,8 @@ fun SettingsScreen(
     onTestingClick: () -> Unit = {},
     /** Model (settings every model uses) opens full screen too. */
     onModelSettingsClick: () -> Unit = {},
+    /** Phone server opens full screen too. */
+    onPhoneServerClick: () -> Unit = {},
     /**
      * Tablet-only: when non-null, tapping Models in the master pane opens
      * this composable inline in the detail pane instead of navigating to
@@ -256,6 +259,7 @@ fun SettingsScreen(
                         onRemoteServersClick = onRemoteServersClick,
                         onTestingClick = onTestingClick,
                         onModelSettingsClick = onModelSettingsClick,
+                        onPhoneServerClick = onPhoneServerClick,
                         onPrivacyPolicyClick = { detail = SettingsDetail.PrivacyPolicy },
                         onFaqClick = { detail = SettingsDetail.Faq },
                         onCrashEngineClick = onCrashEngineClick
@@ -339,6 +343,7 @@ fun SettingsScreen(
                 onRemoteServersClick = onRemoteServersClick,
                 onTestingClick = onTestingClick,
                 onModelSettingsClick = onModelSettingsClick,
+                onPhoneServerClick = onPhoneServerClick,
                 onPrivacyPolicyClick = onPrivacyPolicyClick,
                 onFaqClick = onFaqClick,
                 onCrashEngineClick = onCrashEngineClick,
@@ -372,6 +377,7 @@ private fun SettingsList(
     onRemoteServersClick: () -> Unit,
     onTestingClick: () -> Unit,
     onModelSettingsClick: () -> Unit,
+    onPhoneServerClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onFaqClick: () -> Unit,
     onCrashEngineClick: (() -> Unit)?,
@@ -420,6 +426,14 @@ private fun SettingsList(
             title = stringResource(R.string.remote_servers),
             subtitle = stringResource(R.string.remote_servers_subtitle),
             onClick = onRemoteServersClick
+        )
+
+        // Phone server row (opens full screen; no detail pane)
+        SettingsRow(
+            icon = Icons.Outlined.Dns,
+            title = stringResource(R.string.phone_server),
+            subtitle = stringResource(R.string.phone_server_subtitle),
+            onClick = onPhoneServerClick
         )
 
         // System Prompts row

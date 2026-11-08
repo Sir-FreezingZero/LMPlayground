@@ -254,6 +254,20 @@
     <string name="device_chip" tools:ignore="MissingTranslation">Chipset</string>
     <string name="device_recommended_quant" tools:ignore="MissingTranslation">Recommended quant</string>
     <string name="reply_stalled" tools:ignore="MissingTranslation">The model stopped responding, so the reply was ended.</string>
+    <string name="phone_server" tools:ignore="MissingTranslation">Phone server</string>
+    <string name="phone_server_subtitle" tools:ignore="MissingTranslation">Share the loaded model with other apps</string>
+    <string name="phone_server_run" tools:ignore="MissingTranslation">Run server</string>
+    <string name="phone_server_run_desc" tools:ignore="MissingTranslation">Answers OpenAI-style requests (/v1/chat/completions) with the model loaded on the phone, while the app is open. One request at a time, text only, and not while a chat is replying.</string>
+    <string name="phone_server_network" tools:ignore="MissingTranslation">Allow other devices on Wi-Fi</string>
+    <string name="phone_server_network_desc" tools:ignore="MissingTranslation">Off: only apps on this phone can connect. On: devices on the same Wi-Fi can too, with the API key. Stop and start the server to apply.</string>
+    <string name="phone_server_port" tools:ignore="MissingTranslation">Port</string>
+    <string name="phone_server_api_key" tools:ignore="MissingTranslation">API key</string>
+    <string name="phone_server_new_key" tools:ignore="MissingTranslation">New key</string>
+    <string name="phone_server_key_local" tools:ignore="MissingTranslation">Apps on this phone need the key too.</string>
+    <string name="phone_server_model" tools:ignore="MissingTranslation">Serving %1$s</string>
+    <string name="phone_server_busy" tools:ignore="MissingTranslation">The phone server is answering a request. Try again when it\'s done.</string>
+    <string name="phone_server_no_model" tools:ignore="MissingTranslation">No model loaded on the phone. Load one in a chat to serve it.</string>
+    <string name="logs" tools:ignore="MissingTranslation">Log</string>
     <string name="model_params_all_models" tools:ignore="MissingTranslation">These settings apply to every model.</string>
     <string name="top_p" translatable="false">Top-P</string>
     <string name="repetition_penalty">Repetition Penalty</string>

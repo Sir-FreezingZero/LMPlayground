@@ -162,6 +162,17 @@ class StoragePreferences(context: Context) {
         get() = prefs.getInt("performance_mode", PERFORMANCE_AUTO)
         set(value) = prefs.edit { putInt("performance_mode", value) }
 
+    /** Settings → Phone server: port, whether other devices may connect, and the API key. */
+    var serverPort: Int
+        get() = prefs.getInt("server_port", 8080)
+        set(value) = prefs.edit { putInt("server_port", value) }
+    var serverAllowNetwork: Boolean
+        get() = prefs.getBoolean("server_allow_network", false)
+        set(value) = prefs.edit { putBoolean("server_allow_network", value) }
+    var serverApiKey: String
+        get() = prefs.getString("server_api_key", "").orEmpty()
+        set(value) = prefs.edit { putString("server_api_key", value) }
+
     /** Context size suggested for this phone's RAM; set once by DeviceTier. */
     var recommendedContextSize: Int
         get() = prefs.getInt("recommended_context_size", GenerationParams.DEFAULT_CONTEXT_SIZE)

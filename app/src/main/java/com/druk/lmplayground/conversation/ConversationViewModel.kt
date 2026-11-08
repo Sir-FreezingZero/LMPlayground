@@ -148,6 +148,8 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         override fun onModelResolved(model: ModelInfo) {
             // Read by composeSystemPrompt before the posted _loadedModel lands.
             resolvedModelFilename = model.filename
+            // The phone server stops answering while another model loads.
+            com.druk.lmplayground.server.PhoneServer.served = null
             _loadedModel.postValue(model)
             _thinkingEnabled.postValue(false)
             _supportsThinking.postValue(false)
@@ -210,6 +212,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
         override fun onModelReady(model: ModelInfo) {
             _isModelReady.postValue(true)
+            servePhoneModel(model)
             viewModelScope.launch { refreshContextUsage() }
             // Keep the session's prompt in step with the chat's settings.
             viewModelScope.launch { syncSystemPrompt() }
@@ -663,6 +666,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     override fun onCleared() {
+        com.druk.lmplayground.server.PhoneServer.served = null
         systemPromptExtras.stop()
         stopObservingEmbeddingDownload()
         runtime.shutdown()
@@ -771,6 +775,8 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                 }
             }
 
+            // The server stops using the old model before it's unloaded.
+            com.druk.lmplayground.server.PhoneServer.served = null
             _models.postValue(emptyList())
             _isModelReady.postValue(false)
 
@@ -814,6 +820,39 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         _thinkingEnabled.value = _thinkingEnabled.value != true
     }
 
+
+    /**
+     * Lets Settings → Phone server answer with [model] (models on the phone
+     * only; a server model is already on a computer). Each request gets its
+     * own session with the app's model settings and, when the request has no
+     * system prompt, the app's default prompt.
+     */
+    private fun servePhoneModel(model: ModelInfo) {
+        val llama = runtime.model
+        if (llama == null || RemoteServers.isRemote(model.filename)) {
+            com.druk.lmplayground.server.PhoneServer.served = null
+            return
+        }
+        com.druk.lmplayground.server.PhoneServer.served = com.druk.lmplayground.server.PhoneServer.Served(
+            name = model.name,
+            newSession = { systemPrompt, temperature, topP, seed ->
+                val p = storagePreferences.modelParams
+                llama.createSession(
+                    p.contextSize,
+                    temperature ?: p.temperature,
+                    topP ?: p.topP,
+                    p.repetitionPenalty,
+                    p.topK,
+                    p.minP,
+                    seed ?: p.seed,
+                    p.thinkingBudget,
+                    systemPrompt ?: systemPromptExtras.compose("", modelFilename = model.filename),
+                )
+            },
+            maxTokens = { storagePreferences.modelParams.maxTokens },
+            isChatBusy = { runtime.generatingJob?.isActive == true },
+        )
+    }
 
     /** What the sheet's Reset sets the reply length to: this phone's recommendation. */
     val recommendedMaxTokens: Int get() = storagePreferences.recommendedMaxTokens
@@ -916,6 +955,13 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         }
 
         val enableThinking = _thinkingEnabled.value == true
+
+        // One reply at a time on the phone: a Phone server request may be
+        // running (two at once can run a low-RAM phone out of memory).
+        if (com.druk.lmplayground.server.PhoneServer.isBusy) {
+            _userError.postValue(app.getString(com.druk.lmplayground.R.string.phone_server_busy))
+            return
+        }
 
         // Pre-validate the message size BEFORE we mutate any UI state.
         // If we appended the user/assistant placeholder first, an
@@ -1646,6 +1692,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     fun getReport(): String? = runtime.getReport()
 
     fun unloadModel() {
+        com.druk.lmplayground.server.PhoneServer.served = null
         viewModelScope.launch {
             // Tear down native handles only when something is actually
             // loaded — but always clear the user-visible LiveData state
