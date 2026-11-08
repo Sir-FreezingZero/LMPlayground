@@ -215,15 +215,8 @@
     <string name="tokens_value">%d tokens</string>
     <string name="temperature">Temperatuur</string>
     <string name="top_p" translatable="false">Top-P</string>
-    <string name="top_k" translatable="false">Top-K</string>
-    <string name="min_p" translatable="false">Min-P</string>
     <string name="repetition_penalty">Herhalingsstraf</string>
     <string name="advanced">Geavanceerd</string>
-    <string name="collapse">Inklappen</string>
-    <string name="expand">Uitklappen</string>
-    <string name="seed">Seed</string>
-    <string name="random">Willekeurig</string>
-    <string name="disabled_label">uitgeschakeld</string>
     <string name="unload_model">Model ontladen</string>
 
     <!-- Thinking -->

@@ -6,8 +6,6 @@ import com.druk.lmplayground.conversation.GenerationParams
 import com.druk.lmplayground.storage.StoragePreferences
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,57 +27,38 @@ class StoragePreferencesTest {
     }
 
     @Test
-    fun noSavedParamsReturnsNull() {
-        assertNull(prefs.getModelGenerationParams("nonexistent-model.gguf"))
+    fun noSavedParamsUsesThePhonesRecommendation() {
+        prefs.recommendedContextSize = 3072
+        prefs.recommendedMaxTokens = 768
+        val params = prefs.modelParams
+        assertEquals(3072, params.contextSize)
+        assertEquals(768, params.maxTokens)
+        assertEquals(GenerationParams().temperature, params.temperature)
     }
 
     @Test
-    fun saveAndLoadParamsRoundtrip() {
-        val params = GenerationParams(
-            contextSize = 2048,
-            temperature = 0.5f,
-            topP = 0.9f,
-            repetitionPenalty = 1.3f,
-            topK = 100,
-            minP = 0.02f,
-            seed = 123,
-            thinkingBudget = 256
-        )
-        prefs.setModelGenerationParams("model-a.gguf", params.toMap())
-
-        val loaded = prefs.getModelGenerationParams("model-a.gguf")
-        assertNotNull(loaded)
-        val restored = GenerationParams.fromMap(loaded!!)
-        assertEquals(params, restored)
+    fun saveAndLoadRoundtrip() {
+        val params = GenerationParams(contextSize = 4096, temperature = 0.5f, thinkingBudget = 256, maxTokens = 2048)
+        prefs.modelParams = params
+        assertEquals(params, prefs.modelParams)
     }
 
     @Test
-    fun differentModelsHaveSeparateParams() {
-        val paramsA = GenerationParams(contextSize = 2048, temperature = 0.3f)
-        val paramsB = GenerationParams(contextSize = 8192, temperature = 1.5f)
-
-        prefs.setModelGenerationParams("model-a.gguf", paramsA.toMap())
-        prefs.setModelGenerationParams("model-b.gguf", paramsB.toMap())
-
-        val loadedA = GenerationParams.fromMap(prefs.getModelGenerationParams("model-a.gguf")!!)
-        val loadedB = GenerationParams.fromMap(prefs.getModelGenerationParams("model-b.gguf")!!)
-
-        assertEquals(2048, loadedA.contextSize)
-        assertEquals(0.3f, loadedA.temperature)
-        assertEquals(8192, loadedB.contextSize)
-        assertEquals(1.5f, loadedB.temperature)
+    fun samplingOtherThanTemperatureIsFixed() {
+        prefs.modelParams = GenerationParams(topP = 0.5f, topK = 7, minP = 0.3f, repetitionPenalty = 1.9f, seed = 5)
+        val loaded = prefs.modelParams
+        val defaults = GenerationParams()
+        assertEquals(defaults.topP, loaded.topP)
+        assertEquals(defaults.topK, loaded.topK)
+        assertEquals(defaults.minP, loaded.minP)
+        assertEquals(defaults.repetitionPenalty, loaded.repetitionPenalty)
+        assertEquals(defaults.seed, loaded.seed)
     }
 
     @Test
-    fun overwriteParamsForSameModel() {
-        val initial = GenerationParams(temperature = 0.5f)
-        prefs.setModelGenerationParams("model.gguf", initial.toMap())
-
-        val updated = GenerationParams(temperature = 1.0f)
-        prefs.setModelGenerationParams("model.gguf", updated.toMap())
-
-        val loaded = GenerationParams.fromMap(prefs.getModelGenerationParams("model.gguf")!!)
-        assertEquals(1.0f, loaded.temperature)
+    fun overwrite() {
+        prefs.modelParams = GenerationParams(temperature = 0.5f)
+        prefs.modelParams = GenerationParams(temperature = 1.0f)
+        assertEquals(1.0f, prefs.modelParams.temperature)
     }
-
 }

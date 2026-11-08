@@ -178,11 +178,6 @@
     <string name="temperature">温度</string>
     <string name="repetition_penalty">繰り返しペナルティ</string>
     <string name="advanced">詳細設定</string>
-    <string name="collapse">折りたたむ</string>
-    <string name="expand">展開する</string>
-    <string name="seed">シード</string>
-    <string name="random">ランダム</string>
-    <string name="disabled_label">無効</string>
     <string name="unload_model">モデルをアンロード</string>
     <string name="thinking">思考中</string>
     <string name="processing">処理中</string>

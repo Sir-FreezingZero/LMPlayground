@@ -178,11 +178,6 @@
     <string name="temperature">S\u0131cakl\u0131k</string>
     <string name="repetition_penalty">Tekrar Cezas\u0131</string>
     <string name="advanced">Geli\u015Fmi\u015F</string>
-    <string name="collapse">Daralt</string>
-    <string name="expand">Geni\u015Flet</string>
-    <string name="seed">Tohum</string>
-    <string name="random">Rastgele</string>
-    <string name="disabled_label">devre d\u0131\u015F\u0131</string>
     <string name="unload_model">Modeli Kald\u0131r</string>
     <string name="thinking">D\u00FC\u015F\u00FCn\u00FCyor</string>
     <string name="processing">İşleniyor</string>

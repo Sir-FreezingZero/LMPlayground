@@ -178,11 +178,6 @@
     <string name="temperature">Temperatur</string>
     <string name="repetition_penalty">Penalti Pengulangan</string>
     <string name="advanced">Lanjutan</string>
-    <string name="collapse">Ciutkan</string>
-    <string name="expand">Perluas</string>
-    <string name="seed">Seed</string>
-    <string name="random">Acak</string>
-    <string name="disabled_label">nonaktif</string>
     <string name="unload_model">Lepas Model</string>
     <string name="thinking">Berpikir</string>
     <string name="processing">Memproses</string>

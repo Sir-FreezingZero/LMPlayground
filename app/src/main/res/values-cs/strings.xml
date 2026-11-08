@@ -215,15 +215,8 @@
     <string name="tokens_value">%d tokenů</string>
     <string name="temperature">Teplota</string>
     <string name="top_p" translatable="false">Top-P</string>
-    <string name="top_k" translatable="false">Top-K</string>
-    <string name="min_p" translatable="false">Min-P</string>
     <string name="repetition_penalty">Penalizace opakování</string>
     <string name="advanced">Pokročilé</string>
-    <string name="collapse">Sbalit</string>
-    <string name="expand">Rozbalit</string>
-    <string name="seed">Seed</string>
-    <string name="random">Náhodné</string>
-    <string name="disabled_label">vypnuto</string>
     <string name="unload_model">Uvolnit model</string>
 
     <!-- Thinking -->

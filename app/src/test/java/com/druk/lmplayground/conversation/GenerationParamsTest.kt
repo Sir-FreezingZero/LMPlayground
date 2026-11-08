@@ -9,7 +9,7 @@ class GenerationParamsTest {
     @Test
     fun `default thinkingBudget is 25 percent of contextSize`() {
         val params = GenerationParams()
-        assertEquals(1024, params.thinkingBudget) // 4096 / 4
+        assertEquals(512, params.thinkingBudget) // 2048 / 4
     }
 
     @Test

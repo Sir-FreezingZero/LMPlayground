@@ -120,6 +120,9 @@ class RemoteSession(
         put("min_p", params.minP.toDouble())
         put("repeat_penalty", params.repetitionPenalty.toDouble())
         if (params.seed >= 0) put("seed", params.seed)
+        // Longest reply (Settings → Model). Servers count thinking in it, so
+        // the thinking limit is added when the model may think.
+        put("max_tokens", params.maxTokens + if (thinking) params.thinkingBudget else 0)
         if (!thinking) put("chat_template_kwargs", JSONObject().put("enable_thinking", false))
         if (withTools) tools?.let { put("tools", it) }
         put("messages", JSONArray().apply {

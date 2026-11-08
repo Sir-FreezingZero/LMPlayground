@@ -48,6 +48,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.druk.lmplayground.R
+import com.druk.lmplayground.settings.ModelParamsControls
 import com.druk.lmplayground.settings.PromptField
 import com.druk.lmplayground.settings.PromptSection
 import com.druk.lmplayground.settings.PromptStartSection
@@ -58,7 +59,7 @@ import kotlin.math.roundToInt
 
 /**
  * Bottom sheet for this chat's settings, in three tabs:
- *   - Params: generation parameters (context size, sampling, advanced).
+ *   - Params: the model settings, shared by every model (see ModelParamsControls).
  *   - Prompt: the chat's own system prompt (empty: the default from
  *     Settings) and the exact text the chat starts with.
  *   - Tools: the chat's own tool switches, over the defaults from Settings.
@@ -73,8 +74,12 @@ fun GenerationParamsSheet(
     maxContextSize: Int,
     supportsThinking: Boolean = false,
     onParamsChanged: (GenerationParams) -> Unit,
-    /** What Reset goes back to: the model's recommended sampling. */
-    recommendedParams: GenerationParams = GenerationParams(),
+    /** Context above this may run the phone out of memory (see DeviceTier). */
+    safeContextSize: Int = Int.MAX_VALUE,
+    /** Replies longer than this may run the phone out of memory. */
+    safeMaxTokens: Int = Int.MAX_VALUE,
+    /** What Reset sets the reply length to. */
+    recommendedMaxTokens: Int = GenerationParams.DEFAULT_MAX_TOKENS,
     systemPrompt: String = "",
     onSystemPromptChanged: (String) -> Unit = {},
     renderPromptStart: suspend () -> String? = { null },
@@ -87,9 +92,6 @@ fun GenerationParamsSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var editedParams by remember(params) { mutableStateOf(params) }
     var editedPrompt by remember(systemPrompt) { mutableStateOf(systemPrompt) }
-    // Hoisted so the expanded state survives a tab round-trip (the tab body is
-    // disposed when another tab is selected).
-    var showAdvanced by rememberSaveable { mutableStateOf(false) }
     var selectedTab by rememberSaveable { mutableIntStateOf(initialTab) }
 
     // The sheet wraps its content and grows naturally — e.g. expanding the
@@ -153,10 +155,10 @@ fun GenerationParamsSheet(
                     baselineParams = params,
                     maxContextSize = maxContextSize,
                     supportsThinking = supportsThinking,
-                    showAdvanced = showAdvanced,
-                    onShowAdvancedChange = { showAdvanced = it },
                     onParamsChange = { editedParams = it },
-                    recommendedParams = recommendedParams,
+                    safeContextSize = safeContextSize,
+                    safeMaxTokens = safeMaxTokens,
+                    recommendedMaxTokens = recommendedMaxTokens,
                     maxHeight = maxTabHeight
                 )
                 1 -> Column(tabModifier) {
@@ -182,16 +184,12 @@ private fun ParamsTab(
     baselineParams: GenerationParams,
     maxContextSize: Int,
     supportsThinking: Boolean,
-    showAdvanced: Boolean,
-    onShowAdvancedChange: (Boolean) -> Unit,
     onParamsChange: (GenerationParams) -> Unit,
-    recommendedParams: GenerationParams,
+    safeContextSize: Int,
+    safeMaxTokens: Int,
+    recommendedMaxTokens: Int,
     maxHeight: Dp
 ) {
-    val contextMin = 512
-    val contextMax = maxContextSize.coerceAtLeast(512)
-    val contextStep = 512
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -200,236 +198,22 @@ private fun ParamsTab(
             .padding(horizontal = 24.dp)
     ) {
         Spacer(modifier = Modifier.height(16.dp))
-
-        // Context Size
-        val contextWarning = params.contextSize != baselineParams.contextSize
-        ParamSlider(
-            label = stringResource(R.string.context_size),
-            value = params.contextSize.toFloat(),
-            valueRange = contextMin.toFloat()..contextMax.toFloat(),
-            steps = (((contextMax - contextMin) / contextStep) - 1).coerceAtLeast(0),
-            valueDisplay = "${params.contextSize}",
-            warning = if (contextWarning) stringResource(R.string.will_reset_conversation) else null,
-            onValueChange = {
-                val snapped = (it / contextStep).roundToInt() * contextStep
-                val newContextSize = snapped.coerceIn(contextMin, contextMax)
-                val oldContextSize = params.contextSize
-                // Auto-scale thinking budget proportionally when context size changes
-                val newBudget = if (oldContextSize > 0) {
-                    (params.thinkingBudget.toLong() * newContextSize / oldContextSize).toInt()
-                        .coerceIn(64, newContextSize)
-                } else {
-                    newContextSize / 4
-                }
-                onParamsChange(params.copy(contextSize = newContextSize, thinkingBudget = newBudget))
-            }
+        Text(
+            text = stringResource(R.string.model_params_all_models),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-
-        // Thinking Budget (only for thinking-capable models)
-        if (supportsThinking) {
-            val budgetMin = 64
-            val budgetMax = params.contextSize
-            ParamSlider(
-                label = stringResource(R.string.thinking_budget),
-                value = params.thinkingBudget.toFloat(),
-                valueRange = budgetMin.toFloat()..budgetMax.toFloat(),
-                steps = 0,
-                valueDisplay = stringResource(R.string.tokens_value, params.thinkingBudget),
-                onValueChange = {
-                    val snapped = (it / 64).roundToInt() * 64
-                    onParamsChange(
-                        params.copy(thinkingBudget = snapped.coerceIn(budgetMin, budgetMax))
-                    )
-                }
-            )
-        }
-
-        // Temperature
-        ParamSlider(
-            label = stringResource(R.string.temperature),
-            value = params.temperature,
-            valueRange = 0f..2f,
-            steps = 0,
-            valueDisplay = "%.2f".format(params.temperature),
-            onValueChange = {
-                onParamsChange(params.copy(temperature = (it * 100).roundToInt() / 100f))
-            }
-        )
-
-        // Top-P
-        ParamSlider(
-            label = stringResource(R.string.top_p),
-            value = params.topP,
-            valueRange = 0f..1f,
-            steps = 0,
-            valueDisplay = "%.2f".format(params.topP),
-            subtitle = if (params.topP >= 1f) stringResource(R.string.disabled_label) else null,
-            onValueChange = {
-                onParamsChange(params.copy(topP = (it * 100).roundToInt() / 100f))
-            }
-        )
-
-        // Repetition Penalty
-        ParamSlider(
-            label = stringResource(R.string.repetition_penalty),
-            value = params.repetitionPenalty,
-            valueRange = 1f..2f,
-            steps = 0,
-            valueDisplay = "%.2f".format(params.repetitionPenalty),
-            subtitle = if (params.repetitionPenalty <= 1f) stringResource(R.string.disabled_label) else null,
-            onValueChange = {
-                onParamsChange(params.copy(repetitionPenalty = (it * 100).roundToInt() / 100f))
-            }
-        )
-
-        // Advanced section
         Spacer(modifier = Modifier.height(8.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { onShowAdvancedChange(!showAdvanced) }
-                .padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(R.string.advanced),
-                style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.weight(1f)
-            )
-            Icon(
-                imageVector = if (showAdvanced) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                contentDescription = if (showAdvanced) stringResource(R.string.collapse) else stringResource(R.string.expand)
-            )
-        }
-
-        AnimatedVisibility(visible = showAdvanced) {
-            Column {
-                // Top-K
-                ParamSlider(
-                    label = stringResource(R.string.top_k),
-                    value = params.topK.toFloat(),
-                    valueRange = 0f..200f,
-                    steps = 0,
-                    valueDisplay = "${params.topK}",
-                    subtitle = if (params.topK == 0) stringResource(R.string.disabled_label) else null,
-                    onValueChange = {
-                        onParamsChange(params.copy(topK = it.roundToInt()))
-                    }
-                )
-
-                // Min-P
-                ParamSlider(
-                    label = stringResource(R.string.min_p),
-                    value = params.minP,
-                    valueRange = 0f..0.5f,
-                    steps = 0,
-                    valueDisplay = "%.3f".format(params.minP),
-                    subtitle = if (params.minP <= 0f) stringResource(R.string.disabled_label) else null,
-                    onValueChange = {
-                        onParamsChange(params.copy(minP = (it * 1000).roundToInt() / 1000f))
-                    }
-                )
-
-                // Seed
-                var seedText by remember(params.seed) {
-                    mutableStateOf(if (params.seed < 0) "" else params.seed.toString())
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(R.string.seed),
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.weight(1f)
-                    )
-                    OutlinedTextField(
-                        value = seedText,
-                        onValueChange = { text ->
-                            seedText = text
-                            val value = text.toIntOrNull() ?: -1
-                            onParamsChange(params.copy(seed = value))
-                        },
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(start = 16.dp),
-                        placeholder = { Text(stringResource(R.string.random)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        singleLine = true,
-                        textStyle = MaterialTheme.typography.bodyMedium
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedButton(
-            // Sampling only: keeping the context size doesn't wipe the chat.
-            onClick = { onParamsChange(recommendedParams.copy(contextSize = params.contextSize, thinkingBudget = params.thinkingBudget)) },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(stringResource(R.string.reset))
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-    }
-}
-
-@Composable
-private fun ParamSlider(
-    label: String,
-    value: Float,
-    valueRange: ClosedFloatingPointRange<Float>,
-    steps: Int,
-    valueDisplay: String,
-    subtitle: String? = null,
-    warning: String? = null,
-    onValueChange: (Float) -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = label, style = MaterialTheme.typography.bodyMedium)
-                if (subtitle != null) {
-                    Text(
-                        text = " ($subtitle)",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-            Text(
-                text = valueDisplay,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
-        Slider(
-            value = value,
-            onValueChange = onValueChange,
-            valueRange = valueRange,
-            steps = steps,
-            modifier = Modifier.fillMaxWidth()
+        ModelParamsControls(
+            params = params,
+            onParamsChange = onParamsChange,
+            maxContextSize = maxContextSize,
+            supportsThinking = supportsThinking,
+            safeContextSize = safeContextSize,
+            safeMaxTokens = safeMaxTokens,
+            contextChangeResets = baselineParams.contextSize,
+            recommendedMaxTokens = recommendedMaxTokens,
         )
-        if (warning != null) {
-            Text(
-                text = warning,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error
-            )
-        }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }

@@ -178,11 +178,6 @@
     <string name="temperature">온도</string>
     <string name="repetition_penalty">반복 패널티</string>
     <string name="advanced">고급</string>
-    <string name="collapse">접기</string>
-    <string name="expand">펼치기</string>
-    <string name="seed">시드</string>
-    <string name="random">랜덤</string>
-    <string name="disabled_label">비활성화됨</string>
     <string name="unload_model">모델 언로드</string>
     <string name="thinking">사고 중</string>
     <string name="processing">처리 중</string>

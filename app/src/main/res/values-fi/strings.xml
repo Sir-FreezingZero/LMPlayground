@@ -214,15 +214,8 @@
     <string name="tokens_value">%d tokenia</string>
     <string name="temperature">Lämpötila</string>
     <string name="top_p" translatable="false">Top-P</string>
-    <string name="top_k" translatable="false">Top-K</string>
-    <string name="min_p" translatable="false">Min-P</string>
     <string name="repetition_penalty">Toistosakko</string>
     <string name="advanced">Lisäasetukset</string>
-    <string name="collapse">Kutista</string>
-    <string name="expand">Laajenna</string>
-    <string name="seed">Siemen</string>
-    <string name="random">Satunnainen</string>
-    <string name="disabled_label">poistettu käytöstä</string>
     <string name="unload_model">Pura malli</string>
 
     <!-- Thinking -->

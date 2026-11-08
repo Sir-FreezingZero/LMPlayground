@@ -178,11 +178,6 @@
     <string name="temperature">Temperatur\u0103</string>
     <string name="repetition_penalty">Penalizare de repeti\u021Bie</string>
     <string name="advanced">Avansat</string>
-    <string name="collapse">Restr\u00E2nge</string>
-    <string name="expand">Extinde</string>
-    <string name="seed">S\u0103m\u00E2n\u021B\u0103</string>
-    <string name="random">Aleatoriu</string>
-    <string name="disabled_label">dezactivat</string>
     <string name="unload_model">Desc\u0103rca\u021Bi modelul</string>
     <string name="thinking">G\u00E2ndire</string>
     <string name="processing">Procesare</string>

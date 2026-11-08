@@ -213,15 +213,8 @@
     <string name="tokens_value">%d mga token</string>
     <string name="temperature">Temperatura</string>
     <string name="top_p" translatable="false">Top-P</string>
-    <string name="top_k" translatable="false">Top-K</string>
-    <string name="min_p" translatable="false">Min-P</string>
     <string name="repetition_penalty">Parusa sa Pag-uulit</string>
     <string name="advanced">Advanced</string>
-    <string name="collapse">I-collapse</string>
-    <string name="expand">Palawakin</string>
-    <string name="seed">Seed</string>
-    <string name="random">Random</string>
-    <string name="disabled_label">naka-disable</string>
     <string name="unload_model">I-unload ang Modelo</string>
 
     <!-- Thinking -->

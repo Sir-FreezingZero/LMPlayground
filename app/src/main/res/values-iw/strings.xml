@@ -214,15 +214,8 @@
     <string name="tokens_value">%d טוקנים</string>
     <string name="temperature">טמפרטורה</string>
     <string name="top_p" translatable="false">Top-P</string>
-    <string name="top_k" translatable="false">Top-K</string>
-    <string name="min_p" translatable="false">Min-P</string>
     <string name="repetition_penalty">עונש על חזרות</string>
     <string name="advanced">מתקדם</string>
-    <string name="collapse">כווץ</string>
-    <string name="expand">הרחב</string>
-    <string name="seed">Seed</string>
-    <string name="random">אקראי</string>
-    <string name="disabled_label">מושבת</string>
     <string name="unload_model">פרוק מודל</string>
 
     <!-- Thinking -->

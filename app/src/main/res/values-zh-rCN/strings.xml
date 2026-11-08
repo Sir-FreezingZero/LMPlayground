@@ -178,11 +178,6 @@
     <string name="temperature">温度</string>
     <string name="repetition_penalty">重复惩罚</string>
     <string name="advanced">高级</string>
-    <string name="collapse">收起</string>
-    <string name="expand">展开</string>
-    <string name="seed">种子</string>
-    <string name="random">随机</string>
-    <string name="disabled_label">已禁用</string>
     <string name="unload_model">卸载模型</string>
     <string name="thinking">思考中</string>
     <string name="processing">处理中</string>

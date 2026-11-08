@@ -213,15 +213,8 @@
     <string name="tokens_value">%d token</string>
     <string name="temperature">Suhu</string>
     <string name="top_p" translatable="false">Top-P</string>
-    <string name="top_k" translatable="false">Top-K</string>
-    <string name="min_p" translatable="false">Min-P</string>
     <string name="repetition_penalty">Penalti Pengulangan</string>
     <string name="advanced">Lanjutan</string>
-    <string name="collapse">Runtuhkan</string>
-    <string name="expand">Kembangkan</string>
-    <string name="seed">Benih</string>
-    <string name="random">Rawak</string>
-    <string name="disabled_label">dilumpuhkan</string>
     <string name="unload_model">Nyahmuatkan Model</string>
 
     <!-- Thinking -->

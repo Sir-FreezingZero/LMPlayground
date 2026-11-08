@@ -222,16 +222,17 @@
     <string name="thinking_budget">Thinking Budget</string>
     <string name="tokens_value">%d tokens</string>
     <string name="temperature">Temperature</string>
+    <string name="max_tokens" tools:ignore="MissingTranslation">Max tokens</string>
+    <string name="temperature_high_warning" tools:ignore="MissingTranslation">High temperature = unpredictable output!</string>
+    <string name="max_tokens_warning" tools:ignore="MissingTranslation">Your phone may crash with this value!</string>
+    <string name="context_size_warning" tools:ignore="MissingTranslation">Context this large will eat all your RAM!</string>
+    <string name="model_settings" tools:ignore="MissingTranslation">Model</string>
+    <string name="model_settings_subtitle" tools:ignore="MissingTranslation">Temperature, reply length, context, speed</string>
+    <string name="model_parameters" tools:ignore="MissingTranslation">Model parameters</string>
+    <string name="model_params_all_models" tools:ignore="MissingTranslation">These settings apply to every model.</string>
     <string name="top_p" translatable="false">Top-P</string>
-    <string name="top_k" translatable="false">Top-K</string>
-    <string name="min_p" translatable="false">Min-P</string>
     <string name="repetition_penalty">Repetition Penalty</string>
     <string name="advanced">Advanced</string>
-    <string name="collapse">Collapse</string>
-    <string name="expand">Expand</string>
-    <string name="seed">Seed</string>
-    <string name="random">Random</string>
-    <string name="disabled_label">disabled</string>
     <string name="unload_model">Unload Model</string>
 
     <!-- Thinking -->

@@ -178,11 +178,6 @@
     <string name="temperature">Temperatura</string>
     <string name="repetition_penalty">Penalizaci\u00F3n por repetici\u00F3n</string>
     <string name="advanced">Avanzado</string>
-    <string name="collapse">Contraer</string>
-    <string name="expand">Expandir</string>
-    <string name="seed">Semilla</string>
-    <string name="random">Aleatorio</string>
-    <string name="disabled_label">desactivado</string>
     <string name="unload_model">Descargar modelo</string>
     <string name="thinking">Pensando</string>
     <string name="processing">Procesando</string>

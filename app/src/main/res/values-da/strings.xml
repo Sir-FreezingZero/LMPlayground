@@ -214,15 +214,8 @@
     <string name="tokens_value">%d tokens</string>
     <string name="temperature">Temperatur</string>
     <string name="top_p" translatable="false">Top-P</string>
-    <string name="top_k" translatable="false">Top-K</string>
-    <string name="min_p" translatable="false">Min-P</string>
     <string name="repetition_penalty">Gentagelsesstraf</string>
     <string name="advanced">Avanceret</string>
-    <string name="collapse">Skjul</string>
-    <string name="expand">Udvid</string>
-    <string name="seed">Frø</string>
-    <string name="random">Tilfældig</string>
-    <string name="disabled_label">deaktiveret</string>
     <string name="unload_model">Afindlæs model</string>
 
     <!-- Thinking -->

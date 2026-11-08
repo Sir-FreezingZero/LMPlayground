@@ -766,6 +766,19 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
 
+    /**
+     * Picks up model settings changed in Settings → Model while this chat was
+     * in the background. Only with a model loaded (loading reads them anyway);
+     * a new context size starts the chat over, as in the chat's own sheet.
+     */
+    @MainThread
+    fun syncModelParams() {
+        val current = _generationParams.value ?: return
+        if (!runtime.isLoaded) return
+        val saved = storagePreferences.modelParams
+        if (saved != current) updateGenerationParams(saved)
+    }
+
     @MainThread
     fun updateGenerationParams(params: GenerationParams) {
         val oldParams = _generationParams.value ?: GenerationParams()
@@ -786,11 +799,8 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
 
         _generationParams.value = params
 
-        // Save as per-model defaults
-        val modelFilename = _loadedModel.value?.filename
-        if (modelFilename != null) {
-            storagePreferences.setModelGenerationParams(modelFilename, params.toMap())
-        }
+        // One set of settings for every model (PrivateLM-style).
+        storagePreferences.modelParams = params
 
         // Persist to Room if we have an active session
         val sessionId = _currentSessionId.value
@@ -812,6 +822,12 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                 runtime.resetSessionForContextChange(params, systemPrompt)
             }
         } else {
+            // The reply length is applied while streaming; the engine's
+            // session doesn't need rebuilding for it. A server chat sends it
+            // with each request from its session's settings, so it does.
+            if (oldParams.copy(maxTokens = params.maxTokens) == params &&
+                runtime.session !is com.druk.lmplayground.remote.RemoteSession
+            ) return
             // Other params: recreate session but replay history. We
             // already pre-validated at the top, so no validation here.
             if (!runtime.isLoaded) return
@@ -913,6 +929,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
                 sessionId = sessionId,
                 ourJob = ourJob,
                 chatTools = _chatTools.value.orEmpty(),
+                maxTokens = (_generationParams.value ?: storagePreferences.modelParams).maxTokens,
             )
         }
     }
@@ -1137,20 +1154,10 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
             // session's own references (if any) are restored just below.
             toolRegistry.webLinkStore.clear()
 
-            // Restore generation params from session
+            // Every chat uses the current model settings (one set for all
+            // models); the values stored with an old chat are ignored.
             if (sessionEntity != null) {
-                val params = GenerationParams(
-                    contextSize = sessionEntity.contextSize,
-                    temperature = sessionEntity.temperature,
-                    topP = sessionEntity.topP,
-                    repetitionPenalty = sessionEntity.repetitionPenalty,
-                    topK = sessionEntity.topK,
-                    minP = sessionEntity.minP,
-                    seed = sessionEntity.seed,
-                    // -1 ("no limit") was briefly possible; use the normal limit instead.
-                    thinkingBudget = sessionEntity.thinkingBudget.takeIf { it >= 0 } ?: (sessionEntity.contextSize / 4)
-                )
-                _generationParams.value = params
+                _generationParams.value = storagePreferences.modelParams
                 _systemPrompt.value = sessionEntity.systemPrompt
                 _chatTools.value = ConversationMetadata.parse(sessionEntity.metadata)
                     .getStringMap(ConversationMetadata.KEY_TOOLS)

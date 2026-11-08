@@ -178,11 +178,6 @@
     <string name="temperature">Nhi\u1EC7t \u0111\u1ED9</string>
     <string name="repetition_penalty">Ph\u1EA1t l\u1EB7p l\u1EA1i</string>
     <string name="advanced">N\u00E2ng cao</string>
-    <string name="collapse">Thu g\u1ECDn</string>
-    <string name="expand">M\u1EDF r\u1ED9ng</string>
-    <string name="seed">H\u1EA1t gi\u1ED1ng</string>
-    <string name="random">Ng\u1EABu nhi\u00EAn</string>
-    <string name="disabled_label">t\u1EAFt</string>
     <string name="unload_model">G\u1EE1 m\u00F4 h\u00ECnh</string>
     <string name="thinking">\u0110ang suy ngh\u0129</string>
     <string name="processing">Đang xử lý</string>

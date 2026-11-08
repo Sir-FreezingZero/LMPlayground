@@ -178,11 +178,6 @@
     <string name="temperature">Температура</string>
     <string name="repetition_penalty">Штраф за повторення</string>
     <string name="advanced">Додатково</string>
-    <string name="collapse">Згорнути</string>
-    <string name="expand">Розгорнути</string>
-    <string name="seed">Seed</string>
-    <string name="random">Випадковий</string>
-    <string name="disabled_label">вимкнено</string>
     <string name="unload_model">Вивантажити модель</string>
     <string name="thinking">Думає</string>
     <string name="processing">Обробка</string>

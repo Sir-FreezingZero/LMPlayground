@@ -259,6 +259,8 @@ class ConversationFragment : Fragment() {
         super.onResume()
         // A default prompt changed in Settings → System prompts applies now.
         viewModel.syncSystemPrompt()
+        // So do model settings changed in Settings → Model.
+        viewModel.syncModelParams()
     }
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3WindowSizeClassApi::class)
@@ -695,7 +697,6 @@ class ConversationFragment : Fragment() {
                         maxContextSize = maxContextSize,
                         supportsThinking = supportsThinking,
                         onParamsChanged = { viewModel.updateGenerationParams(it) },
-                        recommendedParams = GenerationParams(),
                         systemPrompt = systemPrompt,
                         onSystemPromptChanged = { viewModel.applySystemPrompt(it) },
                         renderPromptStart = viewModel::renderPromptStart,

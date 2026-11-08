@@ -1,6 +1,7 @@
 package com.druk.lmplayground.storage
 
 import android.content.Context
+import com.druk.lmplayground.conversation.GenerationParams
 import android.net.Uri
 import androidx.core.content.edit
 import androidx.core.net.toUri
@@ -11,6 +12,7 @@ class StoragePreferences(context: Context) {
 
     companion object {
         private const val KEY_URI = "model_storage_uri"
+        private const val KEY_MODEL_PARAMS = "model_params"
     }
 
     var modelStorageUri: Uri?
@@ -113,20 +115,56 @@ class StoragePreferences(context: Context) {
         prefs.edit { putString("custom_model_$filename", "$name|$hasChatTemplate") }
     }
 
-    fun getModelGenerationParams(filename: String): Map<String, Float>? {
-        val json = prefs.getString("gen_params_$filename", null) ?: return null
-        return try {
-            json.split(",").associate {
-                val (k, v) = it.split("=", limit = 2)
-                k to v.toFloat()
-            }
-        } catch (_: Exception) { null }
-    }
+    /**
+     * The model settings every model uses (PrivateLM-style: one set, not per
+     * model). Only temperature, context size, longest reply and the thinking
+     * limit are kept; the rest of the sampling is fixed (see GenerationParams).
+     * Before the first save the context and reply length follow this phone's
+     * RAM (see DeviceTier).
+     */
+    var modelParams: GenerationParams
+        get() {
+            val saved = prefs.getString(KEY_MODEL_PARAMS, null)?.let(::decodeParams)
+                ?: return GenerationParams(
+                    contextSize = recommendedContextSize,
+                    maxTokens = recommendedMaxTokens,
+                )
+            val context = (saved["contextSize"]?.toInt() ?: recommendedContextSize)
+                .coerceIn(GenerationParams.MIN_CONTEXT_SIZE, GenerationParams.MAX_CONTEXT_SIZE)
+            return GenerationParams(
+                contextSize = context,
+                temperature = (saved["temperature"] ?: GenerationParams().temperature).coerceIn(0f, 2f),
+                thinkingBudget = saved["thinkingBudget"]?.toInt()?.takeIf { it >= 0 } ?: (context / 4),
+                maxTokens = (saved["maxTokens"]?.toInt() ?: recommendedMaxTokens)
+                    .coerceIn(GenerationParams.MIN_MAX_TOKENS, GenerationParams.MAX_MAX_TOKENS),
+            )
+        }
+        set(value) {
+            val kept = mapOf(
+                "contextSize" to value.contextSize.toFloat(),
+                "temperature" to value.temperature,
+                "thinkingBudget" to value.thinkingBudget.toFloat(),
+                "maxTokens" to value.maxTokens.toFloat(),
+            )
+            prefs.edit { putString(KEY_MODEL_PARAMS, kept.entries.joinToString(",") { "${it.key}=${it.value}" }) }
+        }
 
-    fun setModelGenerationParams(filename: String, params: Map<String, Float>) {
-        val encoded = params.entries.joinToString(",") { "${it.key}=${it.value}" }
-        prefs.edit { putString("gen_params_$filename", encoded) }
-    }
+    /** Context size suggested for this phone's RAM; set once by DeviceTier. */
+    var recommendedContextSize: Int
+        get() = prefs.getInt("recommended_context_size", GenerationParams.DEFAULT_CONTEXT_SIZE)
+        set(value) = prefs.edit { putInt("recommended_context_size", value) }
+
+    /** Longest reply suggested for this phone's RAM; set once by DeviceTier. */
+    var recommendedMaxTokens: Int
+        get() = prefs.getInt("recommended_max_tokens", GenerationParams.DEFAULT_MAX_TOKENS)
+        set(value) = prefs.edit { putInt("recommended_max_tokens", value) }
+
+    private fun decodeParams(encoded: String): Map<String, Float>? = try {
+        encoded.split(",").associate {
+            val (k, v) = it.split("=", limit = 2)
+            k to v.toFloat()
+        }
+    } catch (_: Exception) { null }
 
     // --- Tool enablement (two-level: default + per-chat setting) ---
     //

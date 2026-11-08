@@ -229,6 +229,9 @@ class SettingsFragment : Fragment() {
                     onTestingClick = {
                         findNavController().navigateFromSettings(R.id.action_settings_to_testing)
                     },
+                    onModelSettingsClick = {
+                        findNavController().navigateFromSettings(R.id.action_settings_to_model_settings)
+                    },
                     onLanguageClick = {
                         findNavController().navigateFromSettings(R.id.action_settings_to_language)
                     },

@@ -213,15 +213,8 @@
     <string name="tokens_value">%d টোকেন</string>
     <string name="temperature">তাপমাত্রা</string>
     <string name="top_p" translatable="false">Top-P</string>
-    <string name="top_k" translatable="false">Top-K</string>
-    <string name="min_p" translatable="false">Min-P</string>
     <string name="repetition_penalty">পুনরাবৃত্তি পেনাল্টি</string>
     <string name="advanced">উন্নত</string>
-    <string name="collapse">সংকুচিত করুন</string>
-    <string name="expand">প্রসারিত করুন</string>
-    <string name="seed">সিড</string>
-    <string name="random">এলোমেলো</string>
-    <string name="disabled_label">নিষ্ক্রিয়</string>
     <string name="unload_model">মডেল আনলোড করুন</string>
 
     <!-- Thinking -->

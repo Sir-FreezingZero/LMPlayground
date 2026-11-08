@@ -78,7 +78,7 @@ class ModelRuntime(
         fun onVisionModuleHint(model: ModelInfo?)
         fun onMaxContextSize(maxContextSize: Int)
 
-        /** Per-model saved params (or defaults) resolved during load. */
+        /** The model settings (the same for every model) resolved during load. */
         fun onGenerationParams(params: GenerationParams)
 
         /** Every model load starts without a system prompt. */
@@ -305,13 +305,8 @@ class ModelRuntime(
                 notifications.update(R.string.inference_notification_loaded_title)
                 val nCtxTrain = llamaModel.getContextTrainSize()
                 listener.onMaxContextSize(minOf(nCtxTrain, 16384))
-                // Load saved per-model params, or use defaults
-                val savedMap = storagePreferences.getModelGenerationParams(model.filename)
-                val params = if (savedMap != null) {
-                    GenerationParams.fromMap(savedMap)
-                } else {
-                    GenerationParams()
-                }
+                // The same settings for every model (Settings → Model).
+                val params = storagePreferences.modelParams
                 listener.onGenerationParams(params)
                 // Every model load starts without a system prompt. Per-model
                 // MRU is surfaced in the picker row so the user can one-tap
@@ -404,8 +399,7 @@ class ModelRuntime(
             notifications.modelName = model.name
             notifications.update(R.string.inference_notification_loaded_title)
             listener.onMaxContextSize(caps.contextSize)
-            val params = storagePreferences.getModelGenerationParams(model.filename)
-                ?.let { GenerationParams.fromMap(it) } ?: GenerationParams()
+            val params = storagePreferences.modelParams
             listener.onGenerationParams(params)
             listener.onSystemPromptReset()
             val newSession = newSession(params, "") ?: return@withContext

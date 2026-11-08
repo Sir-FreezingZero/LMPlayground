@@ -214,15 +214,8 @@
     <string name="tokens_value">%d โทเค็น</string>
     <string name="temperature">Temperature</string>
     <string name="top_p" translatable="false">Top-P</string>
-    <string name="top_k" translatable="false">Top-K</string>
-    <string name="min_p" translatable="false">Min-P</string>
     <string name="repetition_penalty">โทษการทำซ้ำ</string>
     <string name="advanced">ขั้นสูง</string>
-    <string name="collapse">ยุบ</string>
-    <string name="expand">ขยาย</string>
-    <string name="seed">Seed</string>
-    <string name="random">สุ่ม</string>
-    <string name="disabled_label">ปิดใช้งาน</string>
     <string name="unload_model">ยกเลิกโหลดโมเดล</string>
 
     <!-- Thinking -->

@@ -112,6 +112,8 @@ class GenerationCoordinator(
         ourJob: Job?,
         /** The chat's own tool settings ([ConversationViewModel.chatTools]). */
         chatTools: Map<String, String> = emptyMap(),
+        /** Longest visible answer in tokens; the reply is stopped there. */
+        maxTokens: Int = GenerationParams.DEFAULT_MAX_TOKENS,
     ) = withContext(Dispatchers.Default) {
         val llamaSession = runtime.session ?: return@withContext
 
@@ -210,6 +212,8 @@ class GenerationCoordinator(
             var pendingThinkingTokens = 0
             var pendingResponseTokens = 0
             var pendingThinkingStart = false
+            // Set once the answer reaches [maxTokens] and the engine was told to stop.
+            var hitMaxTokens = false
 
             fun flush() = synchronized(this) {
                 val text = pendingText ?: return@synchronized
@@ -271,6 +275,12 @@ class GenerationCoordinator(
                     pendingThinkingTokens = currentThinkingTokens
                     pendingResponseTokens = totalTokens - currentThinkingTokens
                     pendingThinkingStart = pendingThinkingStart || thinkingJustStarted
+                }
+                // Longest reply (Settings → Model): stop like the Stop button,
+                // keeping what was written. Thinking doesn't count.
+                if (!hitMaxTokens && totalTokens - currentThinkingTokens >= maxTokens) {
+                    hitMaxTokens = true
+                    try { llamaSession.requestAbort() } catch (_: Throwable) {}
                 }
                 // Send at once when thinking starts, so its timer is exact.
                 if (thinkingJustStarted || nowMs - lastUiUpdateMs >= UI_UPDATE_INTERVAL_MS) {
