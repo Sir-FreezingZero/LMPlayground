@@ -1092,6 +1092,11 @@ class ConversationFragment : Fragment() {
                                     if (findNavController().currentDestination?.id == R.id.nav_home) {
                                         findNavController().navigate(R.id.action_home_to_settings)
                                     }
+                                },
+                                onProjectsClicked = {
+                                    if (findNavController().currentDestination?.id == R.id.nav_home) {
+                                        findNavController().navigate(R.id.action_home_to_projects)
+                                    }
                                 }
                             )
                         }
@@ -1121,6 +1126,14 @@ class ConversationFragment : Fragment() {
                                         drawerState.close()
                                         if (findNavController().currentDestination?.id == R.id.nav_home) {
                                             findNavController().navigate(R.id.action_home_to_settings)
+                                        }
+                                    }
+                                },
+                                onProjectsClicked = {
+                                    scope.launch {
+                                        drawerState.close()
+                                        if (findNavController().currentDestination?.id == R.id.nav_home) {
+                                            findNavController().navigate(R.id.action_home_to_projects)
                                         }
                                     }
                                 }

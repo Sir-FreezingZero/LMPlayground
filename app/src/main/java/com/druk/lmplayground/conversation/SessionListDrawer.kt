@@ -1,6 +1,7 @@
 package com.druk.lmplayground.conversation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountTree
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.filled.PushPin
@@ -60,7 +62,8 @@ fun SessionListDrawer(
     onDeleteSession: (String) -> Unit,
     onRenameSession: (String, String) -> Unit,
     onPinSession: (String, Boolean) -> Unit,
-    onSettingsClicked: () -> Unit
+    onSettingsClicked: () -> Unit,
+    onProjectsClicked: () -> Unit = {},
 ) {
     ModalDrawerSheet(modifier = Modifier.width(300.dp)) {
         SessionListContent(
@@ -70,7 +73,8 @@ fun SessionListDrawer(
             onDeleteSession = onDeleteSession,
             onRenameSession = onRenameSession,
             onPinSession = onPinSession,
-            onSettingsClicked = onSettingsClicked
+            onSettingsClicked = onSettingsClicked,
+            onProjectsClicked = onProjectsClicked,
         )
     }
 }
@@ -84,6 +88,7 @@ fun PermanentSessionList(
     onRenameSession: (String, String) -> Unit,
     onPinSession: (String, Boolean) -> Unit,
     onSettingsClicked: () -> Unit,
+    onProjectsClicked: () -> Unit = {},
     width: Dp = 320.dp
 ) {
     // "Floating card" sidebar (Apple Maps / Liquid Glass style): the drawer
@@ -120,6 +125,7 @@ fun PermanentSessionList(
                 onRenameSession = onRenameSession,
                 onPinSession = onPinSession,
                 onSettingsClicked = onSettingsClicked,
+                onProjectsClicked = onProjectsClicked,
                 // Tablet path runs alongside the compact (40dp) top bar, so
                 // the sidebar header shrinks to match — "Conversations" lines
                 // up with "Select Model" and the gear icon with the new-chat
@@ -140,6 +146,7 @@ private fun SessionListContent(
     onRenameSession: (String, String) -> Unit,
     onPinSession: (String, Boolean) -> Unit,
     onSettingsClicked: () -> Unit,
+    onProjectsClicked: () -> Unit = {},
     /**
      * When true, the header row matches the 40dp compact top bar height so
      * the "Conversations" title aligns horizontally with the chat title and
@@ -192,6 +199,29 @@ private fun SessionListContent(
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+            }
+
+            // Entry to the autonomous Projects section — one compact row so the
+            // chat list keeps its space.
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable(onClick = onProjectsClicked)
+                    .padding(horizontal = 8.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.AccountTree,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(
+                    text = stringResource(R.string.projects),
+                    style = MaterialTheme.typography.bodyLarge
+                )
             }
 
             LazyColumn(

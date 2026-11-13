@@ -189,7 +189,7 @@ class ListFiles : AgentTool("list_files", "(no args) — list workspace files") 
     }
 }
 
-class RunCode : AgentTool("run_code", "language(js|python), code(block) or file — run code in the sandbox; print results. Lines 'METRIC name=value' are captured", "code") {
+class RunCode : AgentTool("run_code", "language, code(block) or file — run code in the sandbox; print results. Lines 'METRIC name=value' are captured", "code") {
     override suspend fun run(args: Map<String, String>, ctx: ToolContext): ToolResult {
         val (r, code, lang) = execCode(args, ctx) ?: return err("no code runtime available on this device")
         val key = "run:" + Text.normalizedHash(lang + code) + ":" + Text.normalizedHash(r.stdout)

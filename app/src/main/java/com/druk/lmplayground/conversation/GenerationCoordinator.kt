@@ -263,6 +263,8 @@ class GenerationCoordinator(
             R.string.inference_notification_generating_title,
             notifications.tokensLine(0),
         )
+        // Tell the background agent to yield the CPU while the user chats.
+        com.druk.lmplayground.agent.ChatActivityGate.begin()
         try {
             // The loop itself lives in :llamacpp (ToolCallLoop) so the
             // macOS harness drives the exact same code — including the
@@ -332,6 +334,7 @@ class GenerationCoordinator(
             // cancelled (Stop tapped). NonCancellable lets us
             // finish the Room writes and UI tear-down without
             // re-throwing CancellationException mid-cleanup.
+            com.druk.lmplayground.agent.ChatActivityGate.end()
             withContext(NonCancellable) {
                 try { llamaSession.printReport() } catch (_: Throwable) {}
                 listener.onTurnFinished(ourJob, messageId, sessionId, callback.totalTokens)

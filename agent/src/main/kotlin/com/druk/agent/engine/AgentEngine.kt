@@ -67,7 +67,7 @@ class AgentEngine(
     private val clock: () -> Long = System::currentTimeMillis,
     private val faults: FaultInjector = FaultInjector.NONE,
 ) {
-    private val ctxBuilder = ContextBuilder(config.contextBudgetChars)
+    private val ctxBuilder = ContextBuilder(config.contextBudgetChars, runner?.languages ?: emptySet())
 
     private val activeTools: Set<String> = tools.names.filter { name ->
         when (name) {

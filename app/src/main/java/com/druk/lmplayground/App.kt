@@ -118,5 +118,15 @@ class App : Application() {
         )
         // Documents stuck INDEXING from a previous process death → ERROR.
         ragRepository.resetStaleIndexing()
+
+        // Autonomous projects: after a process death or reboot, ACTIVE
+        // projects resume from their last committed step (paused ones stay
+        // paused). Off the main thread — it reads the project store.
+        thread(isDaemon = true, name = "agent-resume") {
+            runCatching {
+                val agent = com.druk.lmplayground.agent.AgentManager.get(appContext)
+                if (agent.hasActive()) agent.startRunner()
+            }
+        }
     }
 }

@@ -74,6 +74,33 @@ turn — see `ConversationViewModel.buildWireContent`).
   call, then unloads (`EmbeddingModelManager`) so ~300 MB doesn't sit
   next to a multi-GB chat model.
 
+## Autonomous projects (agent)
+
+Long-running projects live beside chat (drawer → **Projects**). The core is
+the pure-JVM `:agent` module; `:app` only adds the Android pieces. See
+[`agent/DEVLOG.md`](agent/DEVLOG.md) for the full design log and test ledger.
+
+```
+AgentWorker (WorkManager, foreground dataSync)   AgentResumeWorker (15 min)
+  └── AgentRunner        round-robin over ACTIVE projects, RunPolicy
+        └── AgentEngine  one step: load → plan | reflect | act → commit
+              ├── ProjectStore     files/agent/projects/<id>/ (atomic snapshots,
+              │                    checkpoints, steps.jsonl, workspace/)
+              ├── ContextBuilder   bounded prompt from durable state
+              ├── LlmBackend  ←    AgentLlmBackend: fresh llama.cpp session per call
+              ├── ToolRegistry     files, run_code/run_experiment (SandboxJsRunner,
+              │                    V8 isolate), web (existing web tools), memory,
+              │                    tasks, evidence-gated completion
+              └── Watchdog         progress classification, stagnation escalation
+```
+
+- The model is stateless per step; nothing important lives in a KV cache,
+  so model unloads and `:llama` crashes cost at most one uncommitted step.
+- Every commit applies the step's result to the *latest* state, so user
+  controls (pause, objective, instructions) made mid-step win.
+- Paused/stopped projects never resume without a user action.
+- The agent throttles while the user is chatting (`ChatActivityGate`).
+
 ## KV-cache reuse and rewind
 
 A generation session keeps its KV cache between turns and feeds only

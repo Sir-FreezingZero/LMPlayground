@@ -15,7 +15,7 @@ import com.druk.agent.tools.Workspace
  * Budget defaults target a 4k-token context on a 1–4B model: ~2k tokens of
  * prompt leaves room for the reply.
  */
-class ContextBuilder(private val budgetChars: Int = 7000) {
+class ContextBuilder(private val budgetChars: Int = 7000, private val codeLanguages: Set<String> = setOf("js", "python")) {
 
     private data class Section(val priority: Int, val title: String, val body: String, val minChars: Int = 0)
 
@@ -78,8 +78,15 @@ ACTION: <tool name>
         s += Section(45, "FILES", if (files.isEmpty()) "(none yet)" else files.joinToString(", ") { "${it.first}(${it.second}B)" })
         if (p.summary.isNotBlank()) s += Section(40, "PROJECT SUMMARY", Text.clip(p.summary, 600))
         s += Section(98, "TOOLS", tools.usage(), 400)
-        s += Section(99, "REPLY", "One action in the format from the instructions. Code runs in a sandbox: in js use print(x), readFile(name), writeFile(name, text); in python use print() and open(). For measurements print lines like: METRIC ratio=0.41", 100)
+        s += Section(99, "REPLY", "One action in the format from the instructions. " + codeHint() + " For measurements print lines like: METRIC ratio=0.41", 100)
         return fit(s)
+    }
+
+    private fun codeHint(): String {
+        val parts = mutableListOf<String>()
+        if ("js" in codeLanguages) parts += "language js: use print(x), readFile(name), writeFile(name, text)"
+        if ("python" in codeLanguages) parts += "language python: use print() and open()"
+        return if (parts.isEmpty()) "No code execution is available on this device." else "Code runs in a sandbox (" + parts.joinToString("; ") + ")."
     }
 
     fun plan(p: Project, workspace: Workspace): String {
