@@ -220,7 +220,8 @@ class AgentEngine(
         var p = base.copy(stepCount = stepNo)
         val gen = p.strategyHistory.size
         val localIds = HashMap<String, String>()
-        val existingTitles = p.tasks.filter { it.status != TaskStatus.CANCELLED && it.status != TaskStatus.FAILED }.map { it.title }
+        // Cancelled tasks (retired by a strategy change) may be re-planned; failed ones may not.
+        val existingTitles = p.tasks.filter { it.status != TaskStatus.CANCELLED }.map { it.title }
         var added = 0
         out.tasks.forEachIndexed { i, t ->
             if (existingTitles.any { Text.similarity(it, t.title) > 0.7 }) return@forEachIndexed
@@ -299,7 +300,7 @@ class AgentEngine(
      * retried a task while the model was thinking: those edits win.
      */
     fun merge(base: Project, latest: Project, computed: Project): Project {
-        if (latest.updatedAt == base.updatedAt && latest.stepCount == base.stepCount) return computed
+        if (latest.rev == base.rev) return computed
         var r = computed.copy(
             title = latest.title, objective = latest.objective, instructions = latest.instructions, modelFile = latest.modelFile,
             idCounter = maxOf(computed.idCounter, latest.idCounter),

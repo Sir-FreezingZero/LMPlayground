@@ -48,6 +48,8 @@ data class Project(
     val modelFile: String = "",
     val createdAt: Long = 0,
     val updatedAt: Long = 0,
+    /** Incremented on every committed write; detects concurrent edits during a step. */
+    val rev: Long = 0,
 ) {
     fun task(id: String): Task? = tasks.firstOrNull { it.id == id }
     fun openBlockers(): List<Blocker> = blockers.filter { !it.resolved }
@@ -87,7 +89,7 @@ data class Project(
         "recentSteps" to recentSteps.map { it.toMap() },
         "llmFailures" to llmFailures, "notBeforeMillis" to notBeforeMillis,
         "finalReport" to finalReport, "modelFile" to modelFile,
-        "createdAt" to createdAt, "updatedAt" to updatedAt,
+        "createdAt" to createdAt, "updatedAt" to updatedAt, "rev" to rev,
     )
 
     companion object {
@@ -114,7 +116,7 @@ data class Project(
             recentSteps = m.objList("recentSteps").map(StepRecord::fromMap),
             llmFailures = m.int("llmFailures"), notBeforeMillis = m.long("notBeforeMillis"),
             finalReport = m.str("finalReport"), modelFile = m.str("modelFile"),
-            createdAt = m.long("createdAt"), updatedAt = m.long("updatedAt"),
+            createdAt = m.long("createdAt"), updatedAt = m.long("updatedAt"), rev = m.long("rev"),
         )
     }
 }
@@ -340,20 +342,22 @@ data class WatchdogState(
     /** Set by the watchdog: the next step must be a REFLECT (why did this fail, what instead). */
     val reflectPending: Boolean = false,
     val reflectReason: String = "",
+    /** Bodies of the last few executed programs, for near-duplicate detection. */
+    val recentCode: List<String> = emptyList(),
 ) {
     fun toMap(): Map<String, Any?> = linkedMapOf(
         "stepsWithoutProgress" to stepsWithoutProgress,
         "strategyChangesWithoutProgress" to strategyChangesWithoutProgress,
         "recentFingerprints" to recentFingerprints, "recentContentHashes" to recentContentHashes,
         "warnings" to warnings, "planRounds" to planRounds, "emptyPlanRounds" to emptyPlanRounds,
-        "reflectPending" to reflectPending, "reflectReason" to reflectReason,
+        "reflectPending" to reflectPending, "reflectReason" to reflectReason, "recentCode" to recentCode,
     )
 
     companion object {
         fun fromMap(m: Map<String, Any?>) = WatchdogState(
             m.int("stepsWithoutProgress"), m.int("strategyChangesWithoutProgress"),
             m.strings("recentFingerprints"), m.strings("recentContentHashes"), m.strings("warnings"),
-            m.int("planRounds"), m.int("emptyPlanRounds"), m.bool("reflectPending"), m.str("reflectReason"),
+            m.int("planRounds"), m.int("emptyPlanRounds"), m.bool("reflectPending"), m.str("reflectReason"), m.strings("recentCode"),
         )
     }
 }

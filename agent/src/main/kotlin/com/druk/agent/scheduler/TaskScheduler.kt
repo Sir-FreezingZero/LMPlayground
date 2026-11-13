@@ -117,7 +117,8 @@ object TaskScheduler {
     })
 
     fun cancel(p: Project, taskId: String, reason: String): Project = refreshBlocked(mapTask(p, taskId) {
-        if (it.isTerminal) it else it.copy(status = TaskStatus.CANCELLED, failureReason = reason)
+        if (it.isTerminal) it else it.copy(status = TaskStatus.CANCELLED,
+            failureReason = if (it.failureReason.isBlank()) reason else (it.failureReason + "; then " + reason).take(400))
     })
 
     /**

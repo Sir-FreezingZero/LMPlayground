@@ -9,7 +9,7 @@ import com.druk.agent.verify.EvidenceChecker
 
 /** What a tool call did, for progress classification. */
 enum class Effect {
-    NONE, READ, SEARCH, WRITE_NEW, WRITE_DUP, CODE_RUN, CODE_REPEAT, CODE_FAIL, EXPERIMENT, EXPERIMENT_REPEAT,
+    NONE, READ, SEARCH, WRITE_NEW, WRITE_DUP, CODE_RUN, CODE_SIMILAR, CODE_REPEAT, CODE_FAIL, EXPERIMENT, EXPERIMENT_REPEAT,
     FINDING, FINDING_DUP, NOTE, TASK_ADDED, TASK_DONE, TASK_FAILED, CRITERION, PROJECT_DONE, REJECTED, ERROR,
 }
 
@@ -117,6 +117,14 @@ private fun formatRun(r: CodeResult, maxChars: Int = 1800): String = buildString
     if (r.writtenFiles.isNotEmpty()) append("wrote: ").append(r.writtenFiles.keys.joinToString()).append('\n')
 }
 
+/** True if [code] is nearly identical to a recently executed program; records it either way. */
+private fun noteCode(ctx: ToolContext, code: String): Boolean {
+    val wd = ctx.project.watchdog
+    val similar = wd.recentCode.any { Text.similarity(it, code) > 0.9 }
+    ctx.project = ctx.project.copy(watchdog = wd.copy(recentCode = (wd.recentCode + code.take(2000)).takeLast(6)))
+    return similar
+}
+
 private suspend fun execCode(args: Map<String, String>, ctx: ToolContext): Triple<CodeResult, String, String>? {
     val runner = ctx.runner ?: return null
     val file = args["file"]?.takeIf { it.isNotBlank() }
@@ -186,7 +194,8 @@ class RunCode : AgentTool("run_code", "language(js|python), code(block) or file 
         val (r, code, lang) = execCode(args, ctx) ?: return err("no code runtime available on this device")
         val key = "run:" + Text.normalizedHash(lang + code) + ":" + Text.normalizedHash(r.stdout)
         val repeat = ctx.project.watchdog.recentContentHashes.contains(key)
-        val effect = when { !r.ok -> Effect.CODE_FAIL; repeat -> Effect.CODE_REPEAT; else -> Effect.CODE_RUN }
+        val similar = noteCode(ctx, code)
+        val effect = when { !r.ok -> Effect.CODE_FAIL; repeat -> Effect.CODE_REPEAT; similar -> Effect.CODE_SIMILAR; else -> Effect.CODE_RUN }
         return ToolResult(r.ok, formatRun(r), effect, key, if (r.ok) "ran code successfully" else "")
     }
 }
@@ -208,9 +217,14 @@ class RunExperiment : AgentTool(
             runCatching { ctx.workspace.write(p, code); ctx.registerArtifact(p, "experiment code: $name") }
             p
         }
-        val (p2, id) = ctx.project.nextId("e")
-        ctx.project = p2.copy(experiments = p2.experiments + Experiment(id, ctx.taskId, name.take(80), args["hypothesis"].orEmpty().take(300),
-            codeHash, codePath, metrics, Text.clip(r.stdout.trim(), 600), succeeded, p2.stepCount))
+        noteCode(ctx, code)
+        // An identical rerun adds no evidence; don't clutter the record with it.
+        val id = if (same != null) same.id else {
+            val (p2, nid) = ctx.project.nextId("e")
+            ctx.project = p2.copy(experiments = p2.experiments + Experiment(nid, ctx.taskId, name.take(80), args["hypothesis"].orEmpty().take(300),
+                codeHash, codePath, metrics, Text.clip(r.stdout.trim(), 600), succeeded, p2.stepCount))
+            nid
+        }
         val effect = when {
             !r.ok -> Effect.CODE_FAIL
             same != null -> Effect.EXPERIMENT_REPEAT
@@ -218,7 +232,7 @@ class RunExperiment : AgentTool(
             else -> Effect.EXPERIMENT
         }
         val msg = buildString {
-            append("experiment $id ").append(if (succeeded) "recorded" else "FAILED")
+            append("experiment $id ").append(if (same != null) "repeated" else if (succeeded) "recorded" else "FAILED")
             if (metrics.isNotEmpty()) append(": ").append(metrics.entries.joinToString { "${it.key}=${it.value}" })
             if (r.ok && metrics.isEmpty()) append(" (no METRIC lines printed — print e.g. 'METRIC ratio=0.42')")
             if (same != null) append(" — identical to ${same.id}, not new evidence")

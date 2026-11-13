@@ -35,7 +35,7 @@ object Watchdog {
             Effect.EXPERIMENT, Effect.FINDING, Effect.TASK_DONE, Effect.CRITERION, Effect.PROJECT_DONE ->
                 if (repeated) Progress.NONE else Progress.MEANINGFUL
             Effect.CODE_RUN -> if (repeated) Progress.NONE else Progress.MEANINGFUL
-            Effect.WRITE_NEW, Effect.READ, Effect.SEARCH, Effect.TASK_ADDED, Effect.NOTE ->
+            Effect.WRITE_NEW, Effect.READ, Effect.SEARCH, Effect.TASK_ADDED, Effect.NOTE, Effect.CODE_SIMILAR ->
                 if (repeated) Progress.NONE else Progress.NEUTRAL
             Effect.TASK_FAILED -> Progress.NEUTRAL
             else -> Progress.NONE

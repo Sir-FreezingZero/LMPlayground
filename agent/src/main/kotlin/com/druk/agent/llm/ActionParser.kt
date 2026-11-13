@@ -74,7 +74,7 @@ object ActionParser {
                         args[key] = buf.toString().trimEnd('\n'); pendingKey = null; i = j; continue
                     }
                 } else {
-                    args[key] = unquote(value)
+                    args[key] = unquote(value.trim { it == '*' || it.isWhitespace() })
                     pendingKey = null
                 }
             }
@@ -99,7 +99,7 @@ object ActionParser {
     }
 
     private fun normalizeTool(name: String, known: Set<String>): String? {
-        val n = name.trim().trim('`', '*', '"', '\'', '.').substringBefore('(').trim().lowercase().replace(' ', '_').replace('-', '_')
+        val n = name.trim { it.isWhitespace() || it in "`*\"'.:" }.substringBefore('(').trim { it.isWhitespace() || it in "`*\"'" }.lowercase().replace(' ', '_').replace('-', '_')
         if (n in known) return n
         return known.firstOrNull { n.startsWith(it) || it.startsWith(n) && n.length >= 4 }
     }

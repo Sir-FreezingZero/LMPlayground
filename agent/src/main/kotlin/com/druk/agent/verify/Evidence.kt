@@ -42,8 +42,14 @@ class EvidenceChecker(
             val kind = m.groupValues[1].lowercase()
             val id = kind + m.groupValues[2]
             return when (kind) {
-                "e" -> project.experiments.firstOrNull { it.id == id }?.let { if (it.succeeded) null else "experiment $id did not succeed" } ?: "no experiment $id"
-                "a" -> project.artifacts.firstOrNull { it.id == id }?.let { artifactProblem(it.path, it.sha256) } ?: "no artifact $id"
+                "e" -> {
+                    val e = project.experiments.firstOrNull { it.id == id } ?: return "no experiment $id"
+                    if (e.succeeded) null else "experiment $id did not succeed"
+                }
+                "a" -> {
+                    val a = project.artifacts.firstOrNull { it.id == id } ?: return "no artifact $id"
+                    artifactProblem(a.path, a.sha256)
+                }
                 "m" -> {
                     val e = project.memory.firstOrNull { it.id == id } ?: return "no memory entry $id"
                     if (depth > 2) return "evidence chain too deep at $id"

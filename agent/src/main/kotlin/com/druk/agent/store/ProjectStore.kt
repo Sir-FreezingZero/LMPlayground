@@ -109,7 +109,7 @@ class ProjectStore(val root: File, private val clock: () -> Long = System::curre
             val cur = loadUnlocked(id) ?: return null
             val next = fn(cur)
             if (next === cur) return cur
-            val stamped = next.copy(updatedAt = clock())
+            val stamped = next.copy(updatedAt = clock(), rev = cur.rev + 1)
             writeSnapshot(stamped)
             stamped
         }
