@@ -3,6 +3,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="projects">Projects</string>
     <string name="new_project">New project</string>
+    <string name="new_project_prompt">Start a new project…</string>
+    <string name="prompt_hint_active">Add an instruction, or /help</string>
+    <string name="prompt_hint_idle">/resume to continue, or /help</string>
     <string name="projects_empty">No projects yet. Give the agent an objective and it will plan, run experiments, record evidence and keep going in the background.</string>
     <string name="projects_active">Active</string>
     <string name="projects_paused">Paused &amp; stopped</string>
